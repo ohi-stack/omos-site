@@ -1,0 +1,84 @@
+<!--
+OMOS Homepage — Real Content + White Header Override
+Site target: https://omos.onegodian.com
+Use: paste into WordPress homepage HTML/custom HTML block or WPBakery raw HTML block.
+Note: The header override changes the visible navy header/navigation area to white while preserving the OMOS content design.
+-->
+
+<style>
+/* Header override: navy header to white */
+.site-header,
+#masthead,
+header,
+.main-header,
+.main-navigation,
+.elementor-location-header,
+.wp-site-blocks > header{
+  background:#ffffff !important;
+  color:#071827 !important;
+  border-bottom:1px solid #e5e7eb !important;
+  box-shadow:0 8px 24px rgba(11,30,46,.06) !important;
+}
+.site-header a,
+#masthead a,
+header a,
+.main-header a,
+.main-navigation a,
+.elementor-location-header a{
+  color:#071827 !important;
+}
+.site-header svg,
+#masthead svg,
+header svg,
+.main-header svg,
+.main-navigation svg,
+.elementor-location-header svg{
+  color:#071827 !important;
+  fill:#071827 !important;
+  stroke:#071827 !important;
+}
+.site-logo img,
+.custom-logo,
+.wp-block-site-logo img{
+  max-height:86px;
+  width:auto;
+}
+</style>
+
+<section class="omos-page">
+<style>
+.omos-page{font-family:Inter,Arial,sans-serif;background:#f7f8fb;color:#111827;overflow:hidden;border-radius:24px}
+.omos-wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+.omos-hero{background:radial-gradient(circle at 20% 10%,rgba(212,175,55,.20),transparent 32%),linear-gradient(180deg,#071827,#0b1e2e);color:#fff;padding:86px 20px;border-radius:0 0 34px 34px}
+.omos-badge{display:inline-block;padding:9px 15px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.07);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:#dbeafe;margin-bottom:22px}
+.omos-page h1{font-size:clamp(40px,6vw,76px);line-height:.96;letter-spacing:-.05em;margin:0 0 18px;font-weight:950}
+.omos-sub{max-width:850px;font-size:clamp(18px,2vw,23px);line-height:1.6;color:rgba(255,255,255,.86);margin:0 0 28px}
+.omos-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.omos-btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 22px;border-radius:999px;text-decoration:none;font-weight:850;transition:.2s ease;border:1px solid transparent}
+.omos-btn-primary{background:#d4af37;color:#071827;box-shadow:0 12px 28px rgba(212,175,55,.26)}
+.omos-btn-secondary{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.18)}
+.omos-section{padding:64px 0}.omos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.omos-card{background:#fff;border:1px solid #e5e7eb;border-radius:24px;padding:24px;box-shadow:0 16px 42px rgba(11,30,46,.08);min-height:180px;position:relative;overflow:hidden}
+.omos-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at top right,rgba(212,175,55,.12),transparent 34%);pointer-events:none}
+.omos-card-tag{position:relative;display:inline-block;margin-bottom:12px;padding:7px 11px;border-radius:999px;background:#f3f4f6;color:#0b1e2e;font-size:11px;letter-spacing:.10em;text-transform:uppercase;font-weight:900}
+.omos-card h3{position:relative;margin:0 0 10px;font-size:21px;color:#0b1e2e;font-weight:900}.omos-card p{position:relative;margin:0;color:#4b5563;line-height:1.7;font-size:15px}
+.omos-rich{background:#fff;border:1px solid #e5e7eb;border-radius:26px;padding:28px;box-shadow:0 16px 42px rgba(11,30,46,.08);line-height:1.75;color:#374151;margin-top:24px}
+.omos-rich h2{color:#0b1e2e;font-size:34px;line-height:1.1;margin:0 0 14px}
+.omos-rich .omos-btn-secondary{background:#0b1e2e;color:#fff;border-color:#0b1e2e}
+@media(max-width:980px){.omos-grid{grid-template-columns:1fr}.omos-hero{padding:64px 20px}.omos-actions{gap:10px}.omos-btn{width:100%;max-width:340px}.omos-page h1{font-size:clamp(36px,11vw,58px)}}
+</style>
+
+<div class="omos-hero"><div class="omos-wrap">
+  <div class="omos-badge">OMOS • OHI • Models • Tools • Shop</div>
+  <h1>omos.onegodian.com/</h1>
+  <p class="omos-sub">The operating site for the OneGodian Metaphysical Operating System — connecting identity, alignment, AI reasoning, model synthesis, tools, timekeeping, and digital products into one structured system.</p>
+  <div class="omos-actions"><a class="omos-btn omos-btn-primary" href="/ohi/">Explore OHI</a><a class="omos-btn omos-btn-secondary" href="/tools/">Use the Tools</a><a class="omos-btn omos-btn-secondary" href="/shop/">Shop Digital Products</a></div>
+</div></div>
+
+<div class="omos-section"><div class="omos-wrap"><div class="omos-grid">
+  <article class="omos-card"><div class="omos-card-tag">Identity</div><h3>OneGodian Identity</h3><p>A structured identity layer centered on One God, unity, dignity, and clear recognition across human and digital environments.</p></article>
+  <article class="omos-card"><div class="omos-card-tag">OHI</div><h3>Model Synthesis</h3><p>Multiple model perspectives are observed, distilled, aligned, selected, executed, and verified into one governed result.</p></article>
+  <article class="omos-card"><div class="omos-card-tag">Tools</div><h3>Interactive System</h3><p>Generators, demos, converters, and product pathways turn OMOS from explanation into public use.</p></article>
+</div>
+<div class="omos-rich"><h2>Use the System</h2><p>Start with a tool, read the protocol, explore OHI, or get the first OneGodian products. OMOS is built to move from concept into execution.</p><div class="omos-actions"><a class="omos-btn omos-btn-primary" href="/tools/declaration-generator/">Generate Declaration</a><a class="omos-btn omos-btn-secondary" href="/omos/protocol/">Read the Protocol</a><a class="omos-btn omos-btn-secondary" href="/shop/">Shop Products</a></div></div>
+</div></div></section>
