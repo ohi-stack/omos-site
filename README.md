@@ -34,6 +34,8 @@ This repo maps the following source materials into implementation-ready document
 - Founder and origin statement
 - OMOS WordPress/WXR assets
 - OMOS Core Tools / Page Generator plugin assets
+- Bridge-Builder Protocol specification
+- Bridge-Builder Tool specification and WordPress page draft
 
 ## Master site architecture
 
@@ -43,6 +45,7 @@ This repo maps the following source materials into implementation-ready document
 /ohi
 /models
 /tools
+/tools/bridge-builder
 /artifacts
 /docs
 /shop
@@ -77,22 +80,35 @@ Supporting links such as Latest News, Legal, and Contact belong in the footer, m
 4. Set Home as the static front page.
 5. Build the seven-link main navigation and 4-column footer.
 6. Connect tool shortcodes to generated pages.
-7. Connect shop pages to Stripe/WooCommerce products.
-8. Publish first OMOS news, OHI reports, and Council updates.
-9. Add analytics and conversion tracking.
-10. Confirm all public claims match implemented/runtime status.
+7. Implement and test `[omos_bridge_builder]`, then connect `/tools/bridge-builder`.
+8. Connect shop pages to Stripe/WooCommerce products.
+9. Publish first OMOS news, OHI reports, and Council updates.
+10. Add analytics and conversion tracking.
+11. Confirm all public claims match implemented/runtime status.
 
 ## WordPress assets
 
 Store WXR/XML, shortcodes, import instructions, menu/footer structure, and plugin support files in `/wordpress`.
 
+Current WordPress page drafts:
+
+- `wordpress/pages/bridge-builder-tool-page.md`
+
 ## Documentation assets
 
 Store protocol, runtime, algorithm, timekeeping, agent authority, declaration generator, and founder references in `/docs`.
 
+Current documentation additions:
+
+- `docs/bridge-builder-protocol.md`
+
 ## Tool requirements
 
 Store interactive tool specs in `/tools`.
+
+Current tool specs:
+
+- `tools/bridge-builder-tool-spec.md`
 
 ## Plugin sync rule
 
@@ -100,6 +116,8 @@ The WordPress plugin manifest must match the master sitemap. Any new public rout
 
 1. the sitemap/source-map documentation; and
 2. the WordPress page generator manifest.
+
+For Bridge-Builder, the route `/tools/bridge-builder` and shortcode `[omos_bridge_builder]` should not be treated as operational until the shortcode is implemented, tested, and connected through the plugin manifest.
 
 ## Commercial path
 
