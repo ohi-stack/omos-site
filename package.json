@@ -1,12 +1,13 @@
 {
   "name": "omos-site",
-  "version": "1.0.0",
-  "description": "OMOS.OneGodian.org Node website for the OneGodian Metaphysical Operating System.",
+  "version": "1.0.1",
+  "description": "OMOS.OneGodian.com Node website for the OneGodian Metaphysical Operating System.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "check": "node --check server.js",
-    "smoke": "node tests/smoke.test.js"
+    "smoke": "node tests/smoke.test.js",
+    "smoke:pages": "node tests/pages.test.js"
   },
   "engines": {
     "node": ">=20"
