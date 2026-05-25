@@ -1,0 +1,135 @@
+{
+  "site": {
+    "name": "OMOS — OneGodian Metaphysical Operating System",
+    "canonical_domain": "https://omos.onegodian.com",
+    "status": "node-public-site-scaffold",
+    "version": "0.2.0-content-map"
+  },
+  "primary_navigation": [
+    { "label": "OMOS", "href": "/omos" },
+    { "label": "OHI", "href": "/ohi" },
+    { "label": "Models", "href": "/models" },
+    { "label": "Tools", "href": "/tools" },
+    { "label": "Artifacts", "href": "/artifacts" },
+    { "label": "Docs", "href": "/docs" },
+    { "label": "Shop", "href": "/shop" }
+  ],
+  "cta": { "label": "Open Console", "href": "/dashboard" },
+  "routes": [
+    {
+      "path": "/",
+      "title": "OMOS — OneGodian Metaphysical Operating System",
+      "template": "home",
+      "purpose": "Public homepage explaining OMOS as the protocol/specification and alignment layer for OneGodian digital systems."
+    },
+    {
+      "path": "/omos",
+      "title": "What Is OMOS?",
+      "template": "pillar",
+      "purpose": "Define OMOS as the operating layer connecting OneGodian identity, OHI synthesis, protocol logic, tools, and documentation."
+    },
+    {
+      "path": "/ohi",
+      "title": "OHI Synthesis Layer",
+      "template": "pillar",
+      "purpose": "Explain OneGodian Hyper-Conscious Intelligence as the governed synthesis and output discipline layer."
+    },
+    {
+      "path": "/models",
+      "title": "Model Synthesis & GCD Logic",
+      "template": "pillar",
+      "purpose": "Explain multi-model reasoning, remainder filtering, and highest-coherence synthesis."
+    },
+    {
+      "path": "/tools",
+      "title": "OMOS Tools",
+      "template": "index",
+      "purpose": "List interactive tools including Bridge Builder, Belief Mapper, Declaration Generator, and future protocol tools."
+    },
+    {
+      "path": "/tools/bridge-builder",
+      "title": "Bridge Builder Tool",
+      "template": "tool",
+      "shortcode": "[omos_bridge_builder]",
+      "purpose": "Tool page for mapping differences into common ground and constructive alignment language."
+    },
+    {
+      "path": "/tools/belief-mapper",
+      "title": "Belief Mapper Lite",
+      "template": "tool",
+      "shortcode": "[omos_belief_mapper]",
+      "purpose": "Interactive entry point for identity recognition and educational guidance."
+    },
+    {
+      "path": "/artifacts",
+      "title": "Artifacts",
+      "template": "index",
+      "purpose": "Display official documents, prompts, protocol records, animations, and downloadable files."
+    },
+    {
+      "path": "/docs",
+      "title": "Documentation",
+      "template": "docs-index",
+      "purpose": "Developer and institutional documentation for OMOS, Protocol, Algorithm, OHI, OTS, and plugin integration."
+    },
+    {
+      "path": "/docs/protocol",
+      "title": "OneGodian Protocol Specification",
+      "template": "doc",
+      "purpose": "Protocol documentation for identity, semantic, agent, and interface layers."
+    },
+    {
+      "path": "/docs/algorithm",
+      "title": "OneGodian Algorithm Specification",
+      "template": "doc",
+      "purpose": "Algorithm documentation for Observe, Distill, Align, Select, Execute, and Verify."
+    },
+    {
+      "path": "/docs/ots-v5",
+      "title": "OTS-V5 Timekeeping Standard",
+      "template": "doc",
+      "purpose": "Dual-date and timestamp governance rules for OMOS records."
+    },
+    {
+      "path": "/shop",
+      "title": "OMOS Shop Pathways",
+      "template": "shop-index",
+      "purpose": "Send users to approved OneGodian.com products, digital downloads, prompts, courses, and kits."
+    },
+    {
+      "path": "/dashboard",
+      "title": "OMOS Console Preview",
+      "template": "dashboard",
+      "purpose": "Read-only public console preview for status, routes, docs, and tool readiness."
+    },
+    {
+      "path": "/legal",
+      "title": "Legal & Classification Notice",
+      "template": "legal",
+      "purpose": "Clarify that OMOS is a framework and documentation system, not a church, government, securities offering, or compulsory authority."
+    },
+    {
+      "path": "/contact",
+      "title": "Contact",
+      "template": "contact",
+      "purpose": "Contact and support page for OMOS inquiries."
+    }
+  ],
+  "external_platform_targets": [
+    {
+      "domain": "https://onegodian.com",
+      "role": "store and commerce platform",
+      "plugin_use": "OMOS product cards, document downloads, shop pathways, and shortcodes"
+    },
+    {
+      "domain": "https://onegodian.org",
+      "role": "organization / public identity / institutional home",
+      "plugin_use": "public explainer pages, educational embeds, belief mapper entry points, and documentation links"
+    },
+    {
+      "domain": "https://quantumohi.com",
+      "role": "Quantum-OHI and governance hub",
+      "plugin_use": "OHI synthesis, protocol diagrams, AI alignment docs, and runtime status embeds"
+    }
+  ]
+}
