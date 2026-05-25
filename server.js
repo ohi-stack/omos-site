@@ -6,11 +6,16 @@ const path = require("path");
 const { OMOSProcess } = require("./src/runtime/omos");
 const { verifyApiKey } = require("./src/runtime/keys");
 const { rateLimit } = require("./src/runtime/rateLimit");
+const { SITE, pages, tools, documents, pluginTargets } = require("./src/content/site-content");
+const { renderPage } = require("./src/render/page");
+const { renderDashboard } = require("./src/render/dashboard");
 
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-const OMOS_VERSION = "0.1.0";
+const OMOS_VERSION = "1.0.0";
+
+const runtimeRoutes = Object.keys(pages);
 
 const omosManifest = {
   id: "omos-site",
@@ -18,52 +23,42 @@ const omosManifest = {
   fullName: "OneGodian Metaphysical Operating System Runtime",
   version: OMOS_VERSION,
   status: "active",
+  canonicalUrl: SITE.canonicalUrl,
   environment: process.env.NODE_ENV || "development",
   authority: {
     operator: "ONEGODIAN, LLC",
     framework: "OMOS — OneGodian Metaphysical Operating System",
-    classification: "runtime and protocol service"
+    classification: "runtime, protocol, specification, documentation, and alignment service"
+  },
+  publicRoutes: runtimeRoutes,
+  appStructure: {
+    publicAppLayer: ["/", "/omos", "/protocol", "/algorithm", "/alignment-api", "/tools", "/docs", "/plugin-bridge", "/legal", "/contact"],
+    dashboardLayer: ["/dashboard"],
+    adminLayer: ["/admin"],
+    apiBridgeLayer: ["/health", "/manifest", "/api/health", "/api/manifest", "/api/tools", "/api/stats", "/process"]
   },
   endpoints: {
-    health: {
-      method: "GET",
-      path: "/health",
-      authRequired: false
-    },
-    manifest: {
-      method: "GET",
-      path: "/manifest",
-      authRequired: false
-    },
-    process: {
-      method: "POST",
-      path: "/process",
-      authRequired: true,
-      authHeader: "x-omos-key"
-    },
-    dashboard: {
-      method: "GET",
-      path: "/dashboard",
-      authRequired: false
-    }
+    health: { method: "GET", path: "/health", authRequired: false },
+    manifest: { method: "GET", path: "/manifest", authRequired: false },
+    apiHealth: { method: "GET", path: "/api/health", authRequired: false },
+    apiManifest: { method: "GET", path: "/api/manifest", authRequired: false },
+    apiTools: { method: "GET", path: "/api/tools", authRequired: false },
+    apiStats: { method: "GET", path: "/api/stats", authRequired: false },
+    process: { method: "POST", path: "/process", authRequired: true, authHeader: "x-omos-key" },
+    dashboard: { method: "GET", path: "/dashboard", authRequired: false }
   },
-  capabilities: [
-    "observe",
-    "distill",
-    "align",
-    "select",
-    "execute",
-    "verify"
-  ],
+  capabilities: ["observe", "distill", "align", "select", "execute", "verify"],
   integrationTargets: [
-    "OneGodian.org public explanation layer",
-    "OneGodian.com commerce and membership layer",
-    "ACC WordPress Adapter",
-    "OMOS dashboard clients"
+    "OneGodian.org organization and public identity layer",
+    "OneGodian.com commerce and product layer",
+    "QuantumOHI.com platform plugin layer",
+    "app.OneGodian.com Node control plane",
+    "OMOS WordPress Core Tools plugin"
   ],
+  pluginTargets,
   safety: {
     participation: "voluntary",
-    scope: "educational, identity-reflection, and runtime support tooling",
+    scope: "educational, identity-reflection, protocol documentation, and runtime support tooling",
     legalAuthority: "Gregorian/civil records remain controlling for legal, financial, and institutional purposes",
     prohibitedClaims: [
       "independent nation-state authority",
@@ -73,20 +68,21 @@ const omosManifest = {
     ]
   },
   links: {
-    publicSite: "https://onegodian.org",
-    commerceSite: "https://onegodian.com",
-    omosSite: "https://omos.onegodian.com"
+    publicSite: SITE.orgUrl,
+    commerceSite: SITE.storeUrl,
+    omosSite: SITE.canonicalUrl,
+    appSite: SITE.appUrl,
+    quantumOhi: SITE.quantumUrl
   }
 };
 
 app.use(express.json());
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(compression());
-
 app.use(express.static(path.join(__dirname, "public")));
 
 function requireApiKey(req, res, next) {
-  const apiKey = req.headers["x-omos-key"];
+  const apiKey = req.headers["x-omos-key"] || req.headers["x-omos-app-key"];
   const meta = verifyApiKey(apiKey);
 
   if (!meta) {
@@ -97,13 +93,38 @@ function requireApiKey(req, res, next) {
   next();
 }
 
-app.get("/health", (req, res) => {
-  res.json({ status: "ok", service: omosManifest.id, version: OMOS_VERSION });
+function healthPayload() {
+  return {
+    status: "ok",
+    service: omosManifest.id,
+    version: OMOS_VERSION,
+    environment: omosManifest.environment,
+    timestampUtc: new Date().toISOString()
+  };
+}
+
+function manifestPayload() {
+  return { ...omosManifest, generatedAtUtc: new Date().toISOString() };
+}
+
+app.get("/health", (req, res) => res.json(healthPayload()));
+app.get("/api/health", (req, res) => res.json(healthPayload()));
+
+app.get("/manifest", (req, res) => res.json(manifestPayload()));
+app.get("/api/manifest", (req, res) => res.json(manifestPayload()));
+
+app.get("/api/tools", (req, res) => {
+  res.json({ status: "ok", count: tools.length, items: tools });
 });
 
-app.get("/manifest", (req, res) => {
+app.get("/api/stats", (req, res) => {
   res.json({
-    ...omosManifest,
+    status: "ok",
+    publicRoutes: runtimeRoutes.length,
+    tools: tools.length,
+    documents: documents.length,
+    pluginTargets: pluginTargets.length,
+    version: OMOS_VERSION,
     generatedAtUtc: new Date().toISOString()
   });
 });
@@ -113,8 +134,21 @@ app.post("/process", requireApiKey, rateLimit(), (req, res) => {
   res.json({ status: "ok", data: result });
 });
 
-app.get("/dashboard", (req, res) => {
-  res.sendFile(path.join(__dirname, "src/pages/dashboard.html"));
+app.get("/dashboard", (req, res) => res.send(renderDashboard()));
+
+for (const [route, page] of Object.entries(pages)) {
+  app.get(route, (req, res) => res.send(renderPage(route, page)));
+}
+
+app.use((req, res) => {
+  res.status(404).send(renderPage("/", {
+    title: "OMOS Route Not Found",
+    eyebrow: "404",
+    summary: "The requested OMOS route is not currently mapped. Return to the OMOS homepage or open the dashboard.",
+    cta: { label: "Return Home", href: "/" },
+    secondaryCta: { label: "Open Dashboard", href: "/dashboard" },
+    sections: [{ heading: "Production note", body: "Add new routes to src/content/site-content.js and the WordPress plugin manifest before treating them as operational." }]
+  }));
 });
 
 app.listen(PORT, () => {
