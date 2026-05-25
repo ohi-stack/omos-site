@@ -1,0 +1,39 @@
+{
+  "id": "omos-plugin-manifest",
+  "version": "1.0.0",
+  "canonical": "https://omos.onegodian.com",
+  "distributionTargets": [
+    "https://onegodian.com",
+    "https://onegodian.org",
+    "https://quantumohi.com"
+  ],
+  "routes": [
+    "/",
+    "/omos",
+    "/protocol",
+    "/algorithm",
+    "/human-ai-robot-era",
+    "/ohi",
+    "/tools",
+    "/tools/belief-mapper",
+    "/tools/bridge-builder",
+    "/docs",
+    "/artifacts",
+    "/plugin",
+    "/legal",
+    "/dashboard"
+  ],
+  "wordpressShortcodes": [
+    "[omos_protocol_card]",
+    "[omos_algorithm_card]",
+    "[omos_belief_mapper]",
+    "[omos_bridge_builder]",
+    "[omos_dashboard_link]",
+    "[omos_contribution_product]"
+  ],
+  "syncRules": {
+    "nodeIsCanonical": true,
+    "wordpressIsDistribution": true,
+    "runtimeClaimsMustBeImplemented": true
+  }
+}
