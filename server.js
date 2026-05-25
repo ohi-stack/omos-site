@@ -10,6 +10,74 @@ const { rateLimit } = require("./src/runtime/rateLimit");
 const app = express();
 
 const PORT = process.env.PORT || 3000;
+const OMOS_VERSION = "0.1.0";
+
+const omosManifest = {
+  id: "omos-site",
+  name: "OMOS Runtime",
+  fullName: "OneGodian Metaphysical Operating System Runtime",
+  version: OMOS_VERSION,
+  status: "active",
+  environment: process.env.NODE_ENV || "development",
+  authority: {
+    operator: "ONEGODIAN, LLC",
+    framework: "OMOS — OneGodian Metaphysical Operating System",
+    classification: "runtime and protocol service"
+  },
+  endpoints: {
+    health: {
+      method: "GET",
+      path: "/health",
+      authRequired: false
+    },
+    manifest: {
+      method: "GET",
+      path: "/manifest",
+      authRequired: false
+    },
+    process: {
+      method: "POST",
+      path: "/process",
+      authRequired: true,
+      authHeader: "x-omos-key"
+    },
+    dashboard: {
+      method: "GET",
+      path: "/dashboard",
+      authRequired: false
+    }
+  },
+  capabilities: [
+    "observe",
+    "distill",
+    "align",
+    "select",
+    "execute",
+    "verify"
+  ],
+  integrationTargets: [
+    "OneGodian.org public explanation layer",
+    "OneGodian.com commerce and membership layer",
+    "ACC WordPress Adapter",
+    "OMOS dashboard clients"
+  ],
+  safety: {
+    participation: "voluntary",
+    scope: "educational, identity-reflection, and runtime support tooling",
+    legalAuthority: "Gregorian/civil records remain controlling for legal, financial, and institutional purposes",
+    prohibitedClaims: [
+      "independent nation-state authority",
+      "governmental authority over non-members",
+      "exemption from U.S. law",
+      "financial guarantees"
+    ]
+  },
+  links: {
+    publicSite: "https://onegodian.org",
+    commerceSite: "https://onegodian.com",
+    omosSite: "https://omos.onegodian.com"
+  }
+};
 
 app.use(express.json());
 app.use(helmet({ contentSecurityPolicy: false }));
@@ -30,7 +98,14 @@ function requireApiKey(req, res, next) {
 }
 
 app.get("/health", (req, res) => {
-  res.json({ status: "ok" });
+  res.json({ status: "ok", service: omosManifest.id, version: OMOS_VERSION });
+});
+
+app.get("/manifest", (req, res) => {
+  res.json({
+    ...omosManifest,
+    generatedAtUtc: new Date().toISOString()
+  });
 });
 
 app.post("/process", requireApiKey, rateLimit(), (req, res) => {
