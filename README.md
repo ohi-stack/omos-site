@@ -1,20 +1,32 @@
 # OMOS Site
 
-Public site and documentation repository for **OMOS — OneGodian Metaphysical Operating System**.
+Public Node site and documentation repository for **OMOS — OneGodian Metaphysical Operating System**.
 
 Canonical site target: `https://omos.onegodian.com`
 
 ## Purpose
 
-This repo holds the public-facing OMOS site plan, documentation map, WordPress import assets, protocol references, tool-page requirements, plugin page-generation logic, and production notes for building OMOS.OneGodian.com.
+This repo holds the public-facing OMOS Node runtime, documentation map, WordPress import assets, protocol references, tool-page requirements, plugin bridge guidance, and production notes for building OMOS.OneGodian.com.
 
-OMOS is positioned as the operating layer where OneGodian identity, OHI synthesis, model pages, protocol documents, tools, post categories, shop pathways, and developer-facing assets are organized into a usable public platform.
+OMOS.OneGodian.com is the dedicated protocol/specification/alignment platform in the current OneGodian digital ecosystem. It should not replace the organization site, store, LMS, galaxy, capital site, or app control plane.
+
+## Current ecosystem foundation
+
+```text
+OneGodian.org         = Organization / public identity / institutional home
+OneGodian.com         = Store / commerce platform
+u.OneGodian.com       = Education / LMS
+galaxy.OneGodian.com  = Galaxy / planets / planet stores
+capital.OneGodian.com = Corporate finance / capital platform
+OMOS.OneGodian.com    = Protocol / specification / alignment system
+app.OneGodian.com     = Node control plane tying everything together
+```
 
 ## Current repository status
 
 This repository is a hybrid documentation + lightweight Node runtime + WordPress support repository.
 
-The Node layer currently provides a basic Express runtime with `/health`, `/process`, and `/dashboard` routes. The WordPress layer contains the OMOS page generator plugin used to create and repair the public page structure.
+The Node layer provides a basic Express runtime with public pages, dashboard, API aliases, `/health`, `/manifest`, and protected `/process` routes.
 
 Use this rule for version discipline:
 
@@ -36,53 +48,91 @@ This repo maps the following source materials into implementation-ready document
 - OMOS Core Tools / Page Generator plugin assets
 - Bridge-Builder Protocol specification
 - Bridge-Builder Tool specification and WordPress page draft
+- OMOS financial and institutional classification references
+- Algorithmic GCD Model Synthesis reference
+- Seeger Test and OneGodian Identity reference
 
 ## Master site architecture
 
 ```text
 /
 /omos
-/ohi
-/models
+/protocol
+/algorithm
+/alignment-api
 /tools
-/tools/bridge-builder
-/artifacts
 /docs
-/shop
-/latest-news
-/dashboard
-/admin
+/plugin-bridge
 /legal
 /contact
+/dashboard
+/admin
+/health
+/manifest
+/api/health
+/api/manifest
+/api/tools
+/api/stats
+/process
 ```
+
+Legacy/planned WordPress sitemap routes may still include:
+
+```text
+/ohi
+/models
+/artifacts
+/shop
+/latest-news
+```
+
+Those should not be treated as operational on the Node runtime until they are implemented, tested, and added to `src/content/site-content.js`.
 
 ## Primary mega menu
 
 The public mega menu should use these seven primary links:
 
 1. OMOS
-2. OHI
-3. Models
-4. Tools
-5. Artifacts
+2. Protocol
+3. Algorithm
+4. Alignment API
+5. Tools
 6. Docs
-7. Shop
+7. Plugin Bridge
 
 `Open Console` should remain a persistent CTA that links to `/dashboard`.
 
-Supporting links such as Latest News, Legal, and Contact belong in the footer, mobile menu, and secondary navigation, not in the seven-slot primary mega menu.
+Supporting links such as Legal and Contact belong in the footer, mobile menu, and secondary navigation.
+
+## WordPress plugin targets
+
+The OMOS plugin will be used on:
+
+```text
+OneGodian.com
+OneGodian.org
+QuantumOHI.com
+```
+
+Each target should expose its own bridge under:
+
+```text
+/wp-json/omos/v1
+```
+
+The app bridge keys must remain server-side or inside protected WordPress admin settings. Do not expose bridge keys or LLM provider keys in frontend JavaScript.
 
 ## Priority implementation order
 
-1. Import WXR pages and category taxonomies into WordPress.
-2. Activate the OMOS page generator / core tools plugin.
-3. Run **Tools → OMOS Page Generator** to generate or repair route pages.
-4. Set Home as the static front page.
-5. Build the seven-link main navigation and 4-column footer.
-6. Connect tool shortcodes to generated pages.
-7. Implement and test `[omos_bridge_builder]`, then connect `/tools/bridge-builder`.
+1. Merge the Node content foundation.
+2. Deploy OMOS.OneGodian.com Node runtime.
+3. Verify `/health`, `/manifest`, `/api/health`, `/api/manifest`, `/api/tools`, and `/api/stats`.
+4. Import WXR pages and category taxonomies into the appropriate WordPress targets.
+5. Activate the OMOS Core Tools plugin on OneGodian.com, OneGodian.org, and QuantumOHI.com.
+6. Generate or repair route pages in WordPress using the plugin.
+7. Connect tool shortcodes to generated pages.
 8. Connect shop pages to Stripe/WooCommerce products.
-9. Publish first OMOS news, OHI reports, and Council updates.
+9. Mirror OMOS status inside app.OneGodian.com.
 10. Add analytics and conversion tracking.
 11. Confirm all public claims match implemented/runtime status.
 
@@ -101,6 +151,7 @@ Store protocol, runtime, algorithm, timekeeping, agent authority, declaration ge
 Current documentation additions:
 
 - `docs/bridge-builder-protocol.md`
+- `docs/OMOS_NODE_PRODUCTION_PLAN.md`
 
 ## Tool requirements
 
@@ -126,6 +177,25 @@ The immediate commercial objective is to turn OMOS from documentation into a cus
 ```text
 Understand OMOS → Use a tool → Get product/download → Join/member → Follow updates
 ```
+
+## Local commands
+
+```bash
+npm install
+npm run check
+npm start
+npm run smoke
+```
+
+## Deployment rule
+
+After any frontend or public route update:
+
+1. Run checks.
+2. Run smoke tests.
+3. Redeploy the updated frontend/runtime.
+4. Verify live routes.
+5. Confirm app.OneGodian.com mirrors the updated status.
 
 ## Production note
 
