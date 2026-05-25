@@ -1,0 +1,26 @@
+{
+  "id": "omos-site",
+  "name": "OMOS Runtime",
+  "domain": "omos.onegodian.com",
+  "framework": "OMOS — OneGodian Metaphysical Operating System",
+  "operator": "ONEGODIAN, LLC",
+  "version": "0.1.0",
+  "routes": [
+    "/",
+    "/omos",
+    "/ohi",
+    "/models",
+    "/tools",
+    "/artifacts",
+    "/docs",
+    "/shop",
+    "/dashboard",
+    "/manifest",
+    "/health"
+  ],
+  "runtime": {
+    "engine": "express",
+    "node": ">=20"
+  },
+  "status": "active"
+}
