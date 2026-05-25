@@ -1,0 +1,27 @@
+{
+  "id": "omos-platform-console-v1",
+  "name": "OMOS.OneGodian.com Platform Console",
+  "version": "1.0.0",
+  "canonicalHost": "https://omos.onegodian.com",
+  "status": "production-planning",
+  "primaryNavigation": ["OMOS", "OHI", "Models", "Tools", "Artifacts", "Docs", "Shop"],
+  "persistentCta": { "label": "OPEN CONSOLE", "href": "/dashboard" },
+  "supportingNavigation": ["Latest News", "Legal", "Contact"],
+  "productionStandard": "Every OMOS app/module must be usable as public-facing page, logged-in dashboard, and admin/control panel.",
+  "entitySeparation": {
+    "omOS": "Node runtime, protocol/documentation, agent-facing integration, tools, and platform console.",
+    "onegodianCom": "Commerce, digital products, WooCommerce checkout, products, memberships, and downloads.",
+    "onegodianOrg": "Organization, public identity, institutional explanation, membership orientation, and public records.",
+    "quantumOHI": "Quantum-OHI / OHI explanation, services, intelligence architecture, and technical positioning."
+  },
+  "excludedRoutes": [
+    "/artifacts/packages",
+    "/artifacts/onegodian-site",
+    "/artifacts/onegodian-consensus-counter-v2",
+    "/tools/consensus-counter-v2"
+  ],
+  "notes": [
+    "onegodian-site is a test file and must not appear as a public artifact.",
+    "Only one consensus counter should exist as /tools/consensus-counter and /artifacts/onegodian-consensus-counter."
+  ]
+}
