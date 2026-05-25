@@ -1,0 +1,108 @@
+{
+  "canonicalSite": "https://omos.onegodian.com",
+  "runtime": "OMOS Node Runtime",
+  "version": "0.4.0",
+  "updated": "2026-05-25",
+  "principle": "OMOS.OneGodian.com is the canonical protocol, documentation, runtime, and tool-page node. Product checkout remains on OneGodian.com. Public institutional identity remains on OneGodian.org. Quantum/OHI infrastructure positioning remains on QuantumOHI.com.",
+  "routeGroups": {
+    "public": [
+      "/",
+      "/omos",
+      "/ohi",
+      "/models",
+      "/tools",
+      "/artifacts",
+      "/docs",
+      "/shop",
+      "/latest-news",
+      "/dashboard",
+      "/legal",
+      "/contact",
+      "/protocol",
+      "/algorithm",
+      "/digital-sanctuary"
+    ],
+    "tools": [
+      "/tools/bridge-builder",
+      "/tools/belief-mapper",
+      "/tools/declaration-generator",
+      "/tools/zolfi"
+    ],
+    "api": [
+      "/health",
+      "/api/health",
+      "/manifest",
+      "/api/manifest",
+      "/process",
+      "/api/zolfi/manifest"
+    ],
+    "commerceBridge": [
+      "/shop",
+      "https://onegodian.com/product-category/omos/"
+    ]
+  },
+  "contentPillars": [
+    {
+      "name": "OMOS",
+      "role": "Operating system and public specification layer",
+      "primaryRoutes": ["/", "/omos", "/docs"]
+    },
+    {
+      "name": "OHI",
+      "role": "Intelligence synthesis and runtime reasoning layer",
+      "primaryRoutes": ["/ohi", "/models", "/dashboard"]
+    },
+    {
+      "name": "Protocol",
+      "role": "Identity, alignment, and interaction standard",
+      "primaryRoutes": ["/protocol", "/docs"]
+    },
+    {
+      "name": "Algorithm",
+      "role": "Observe, distill, align, select, execute, verify decision model",
+      "primaryRoutes": ["/algorithm", "/models"]
+    },
+    {
+      "name": "Tools",
+      "role": "Interactive utility pages and WordPress shortcode targets",
+      "primaryRoutes": ["/tools", "/tools/bridge-builder", "/tools/belief-mapper", "/tools/declaration-generator", "/tools/zolfi"]
+    },
+    {
+      "name": "Artifacts",
+      "role": "Whitepapers, WXR imports, animations, PDFs, manifests, and build records",
+      "primaryRoutes": ["/artifacts"]
+    },
+    {
+      "name": "Commerce",
+      "role": "WooCommerce/Stripe product bridge, not direct checkout on OMOS node",
+      "primaryRoutes": ["/shop", "https://onegodian.com/product-category/omos/"]
+    }
+  ],
+  "pluginTargets": [
+    {
+      "site": "OneGodian.com",
+      "role": "Commerce and WooCommerce product checkout layer",
+      "pluginUse": "Display OMOS product cards, route users to documentation, sync manifest, show runtime status."
+    },
+    {
+      "site": "OneGodian.org",
+      "role": "Public institutional explanation and identity layer",
+      "pluginUse": "Display OMOS explainers, tools, public framework summaries, and canonical content blocks."
+    },
+    {
+      "site": "QuantumOHI.com",
+      "role": "Quantum-OHI / infrastructure positioning layer",
+      "pluginUse": "Display runtime, protocol, OHI, and technical capability blocks that link back to OMOS."
+    }
+  ],
+  "definitionOfDone": [
+    "Route exists in Node runtime",
+    "Route exists in content map",
+    "Route exists in WordPress plugin manifest",
+    "Route is covered by smoke tests",
+    "Route has public-safe copy",
+    "Route has correct canonical link target",
+    "Route is connected to app.OneGodian.com manifest consumer",
+    "Route has deployment notes"
+  ]
+}
