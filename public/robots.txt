@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://omos.onegodian.com/sitemap.xml
