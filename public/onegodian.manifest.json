@@ -1,0 +1,33 @@
+{
+  "id": "omos",
+  "name": "OMOS.OneGodian.com",
+  "version": "0.1.0",
+  "host": "omos.onegodian.com",
+  "runtime": "node",
+  "role": "OMOS protocol, specification, alignment, and documentation node",
+  "syncTarget": "https://app.onegodian.com",
+  "routes": [
+    "/",
+    "/manifest",
+    "/protocol",
+    "/specification",
+    "/alignment",
+    "/docs",
+    "/api/health",
+    "/api/manifest"
+  ],
+  "modules": [
+    "OMOS Core",
+    "Digital Sanctuary",
+    "Protocol Specification",
+    "Alignment Sequence",
+    "Identity Architecture",
+    "OHI Relationship"
+  ],
+  "pluginTargets": [
+    "onegodian.org",
+    "onegodian.com",
+    "quantumohi.com"
+  ],
+  "status": "setup"
+}
