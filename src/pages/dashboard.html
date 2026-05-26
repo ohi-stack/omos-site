@@ -1,30 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>OMOS Dashboard</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OMOS Runtime Dashboard</title>
+<link rel="stylesheet" href="/css/main.css" />
 <style>
-body { background:#07090d; color:#fff; font-family:sans-serif; padding:40px }
-.card { border:1px solid #d6b85b; padding:20px; margin-bottom:20px }
+.dashboard-hero{padding:48px 0 32px}.widget-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin:28px 0}.widget{position:relative;overflow:hidden;border:1px solid var(--og-line);border-radius:24px;padding:22px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.025));box-shadow:var(--og-shadow);min-height:190px}.widget:before{content:"";position:absolute;inset:-40%;background:linear-gradient(90deg,transparent,rgba(216,179,90,.12),transparent);transform:translateX(-70%) rotate(12deg);animation:shine 4.8s infinite}.widget h3{margin:0 0 10px;color:var(--og-gold-light)}.metric{font-size:clamp(34px,6vw,54px);line-height:1;font-weight:900;letter-spacing:-.05em;margin:16px 0 8px}.meter{height:8px;border-radius:999px;background:rgba(255,255,255,.09);overflow:hidden;margin-top:18px}.meter span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--og-blue),var(--og-gold));animation:loadbar 2.2s ease-out both}.pulse-dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#7dd3fc;box-shadow:0 0 18px #7dd3fc;animation:pulse 1.8s infinite}.terminal{border:1px solid var(--og-line);border-radius:22px;background:#03060b;color:#d9f3ff;padding:20px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.terminal code{white-space:pre-wrap}.route-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.route-list a{border:1px solid var(--og-line);border-radius:14px;padding:10px 12px;text-decoration:none;background:rgba(255,255,255,.035);font-weight:800}.route-list a:hover{border-color:var(--og-gold);color:var(--og-gold-light)}@keyframes shine{0%{transform:translateX(-80%) rotate(12deg)}55%,100%{transform:translateX(120%) rotate(12deg)}}@keyframes loadbar{from{width:0}to{width:var(--value)}}@keyframes pulse{0%,100%{transform:scale(.85);opacity:.65}50%{transform:scale(1.2);opacity:1}}
 </style>
 </head>
 <body>
-<h1>OMOS Developer Dashboard</h1>
-<div class="card">
-<h2>Your API</h2>
-<p>Endpoint: /process</p>
-<p>Auth: x-omos-key</p>
-</div>
-<div class="card">
-<h2>Plans</h2>
-<ul>
-<li>Starter</li>
-<li>Pro</li>
-<li>Enterprise</li>
-</ul>
-</div>
-<div class="card">
-<h2>Test Request</h2>
-<pre>curl -X POST /process</pre>
-</div>
+<main class="shell">
+<nav class="nav"><a href="/">Home</a><a href="/omos">OMOS</a><a href="/ohi">OHI</a><a href="/protocol">Protocol</a><a href="/algorithm">Algorithm</a><a href="/tools">Tools</a><a href="/api/manifest">Manifest</a></nav>
+<section class="dashboard-hero">
+<div class="eyebrow">Runtime Dashboard</div>
+<h1>OMOS Console</h1>
+<p class="lead">Live-facing dashboard shell for route health, manifest federation, plugin bridge readiness, commerce handoff, and app.OneGodian.com synchronization.</p>
+<div class="cta"><a class="btn" href="/api/health">Check Health</a><a class="btn ghost" href="/api/manifest">Open Manifest JSON</a><a class="btn ghost" href="https://app.onegodian.com">Open App Console</a></div>
+</section>
+<section class="widget-grid">
+<article class="widget"><span class="status"><span class="pulse-dot"></span> Runtime Active</span><h3>Health</h3><div class="metric" data-count="100">0%</div><p>Health endpoint is available at <strong>/api/health</strong>.</p><div class="meter"><span style="--value:100%"></span></div></article>
+<article class="widget"><span class="status">Manifest</span><h3>Public Routes</h3><div class="metric" data-count="15">0</div><p>Route inventory is published through the OMOS runtime manifest.</p><div class="meter"><span style="--value:88%"></span></div></article>
+<article class="widget"><span class="status">Plugin Bridge</span><h3>WordPress Sync</h3><div class="metric" data-count="3">0</div><p>Target plugin hosts: OneGodian.com, OneGodian.org, QuantumOHI.com.</p><div class="meter"><span style="--value:72%"></span></div></article>
+<article class="widget"><span class="status">Commerce</span><h3>Store Handoff</h3><div class="metric" data-count="4">0</div><p>Products, memberships, downloads, and checkout route to OneGodian.com.</p><div class="meter"><span style="--value:64%"></span></div></article>
+</section>
+<section class="split">
+<div class="panel"><h2>Runtime Routes</h2><p class="muted">Use this route grid to verify the public-facing OMOS site structure.</p><div class="route-list"><a href="/omos">/omos</a><a href="/ohi">/ohi</a><a href="/models">/models</a><a href="/tools">/tools</a><a href="/artifacts">/artifacts</a><a href="/docs">/docs</a><a href="/protocol">/protocol</a><a href="/algorithm">/algorithm</a><a href="/digital-sanctuary">/digital-sanctuary</a></div></div>
+<div class="panel"><h2>API Test</h2><p class="muted">Protected runtime processing remains behind the <strong>x-omos-key</strong> header.</p><div class="terminal"><code>curl -X POST https://omos.onegodian.com/process \
+  -H "Content-Type: application/json" \
+  -H "x-omos-key: $OMOS_API_KEY" \
+  -d '{"input":"Run OMOS alignment check"}'</code></div></div>
+</section>
+<footer>OMOS Dashboard • Runtime status shell • Manifest, plugin bridge, commerce handoff, and app console synchronization.</footer>
+</main>
+<script>
+const counters=document.querySelectorAll('[data-count]');
+const ease=t=>1-Math.pow(1-t,3);
+counters.forEach(el=>{const target=Number(el.dataset.count);let start=null;const suffix=el.textContent.includes('%')?'%':'';function step(ts){if(!start)start=ts;const p=Math.min((ts-start)/1300,1);el.textContent=Math.round(ease(p)*target)+suffix;if(p<1)requestAnimationFrame(step)}requestAnimationFrame(step)});
+</script>
 </body>
 </html>
