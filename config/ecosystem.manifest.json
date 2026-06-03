@@ -1,0 +1,143 @@
+{
+  "version": "1.0.0",
+  "status": "foundation_locked",
+  "canonicalControlPlane": "https://app.onegodian.com",
+  "properties": [
+    {
+      "id": "organization",
+      "name": "OneGodian.org",
+      "url": "https://onegodian.org",
+      "role": "Organization / public identity / institutional home",
+      "purpose": [
+        "Public OneGodian explanation",
+        "Mission, history, membership, records, and educational orientation",
+        "Best location for the public What is OneGodian? explanation"
+      ],
+      "runtimeType": "wordpress",
+      "pluginTarget": true
+    },
+    {
+      "id": "store",
+      "name": "OneGodian.com",
+      "url": "https://onegodian.com",
+      "role": "Store platform / commerce plugin",
+      "purpose": [
+        "Products",
+        "Digital downloads",
+        "Merchandise",
+        "Certificates",
+        "Member purchases",
+        "Campaign collections such as ONEGODIAN — Remember"
+      ],
+      "runtimeType": "wordpress_woocommerce",
+      "pluginTarget": true
+    },
+    {
+      "id": "university",
+      "name": "u.OneGodian.com",
+      "url": "https://u.onegodian.com",
+      "role": "E-learning / LMS plugin",
+      "purpose": [
+        "OneGodian University",
+        "Courses",
+        "Lessons",
+        "Learning paths",
+        "Training certificates",
+        "Educational onboarding"
+      ],
+      "runtimeType": "wordpress_lms",
+      "pluginTarget": false
+    },
+    {
+      "id": "galaxy",
+      "name": "galaxy.OneGodian.com",
+      "url": "https://galaxy.onegodian.com",
+      "role": "Galaxy console / planet navigator / planet-store gateway",
+      "purpose": [
+        "OneGodian Galaxy introduction",
+        "Planet pages",
+        "Planet stores",
+        "Galaxy map",
+        "Planet-specific lore, commerce, and navigation"
+      ],
+      "runtimeType": "wordpress_or_node",
+      "pluginTarget": false
+    },
+    {
+      "id": "capital",
+      "name": "capital.OneGodian.com",
+      "url": "https://capital.onegodian.com",
+      "role": "Corporate finance / capital platform plugin",
+      "purpose": [
+        "ONEGODIAN, LLC finance materials",
+        "Funding pages",
+        "Corporate finance documents",
+        "Capital strategy",
+        "Investor/contributor information",
+        "Financial dashboard expansion"
+      ],
+      "runtimeType": "node_and_wordpress_plugin",
+      "pluginTarget": false
+    },
+    {
+      "id": "omos",
+      "name": "OMOS.OneGodian.com",
+      "url": "https://omos.onegodian.com",
+      "role": "OMOS protocol / specification / alignment system",
+      "purpose": [
+        "OMOS documentation",
+        "OMOS-1.0 protocol",
+        "Alignment API",
+        "Developer-facing specification",
+        "Human / AI / agent / humanoid alignment framework",
+        "Separate from commerce, LMS, galaxy, and capital"
+      ],
+      "runtimeType": "node_runtime_with_wordpress_plugin_support",
+      "pluginTarget": true
+    },
+    {
+      "id": "app",
+      "name": "app.OneGodian.com",
+      "url": "https://app.onegodian.com",
+      "role": "Node app / command center / repository-connected control plane",
+      "purpose": [
+        "Master dashboard",
+        "Registry",
+        "Tools",
+        "Certificates",
+        "Products",
+        "Members",
+        "Media",
+        "Plugin bridge status",
+        "API health checks",
+        "Repository-connected development layer"
+      ],
+      "runtimeType": "node_control_plane",
+      "pluginTarget": false
+    },
+    {
+      "id": "quantumohi",
+      "name": "QuantumOHI.com",
+      "url": "https://quantumohi.com",
+      "role": "Quantum-OHI platform / alignment and governance content",
+      "purpose": [
+        "Quantum-OHI explanations",
+        "Platform plugin target",
+        "OHI / QOHI service and education pathways",
+        "Cross-linking to OMOS protocol specifications"
+      ],
+      "runtimeType": "wordpress_or_platform_plugin",
+      "pluginTarget": true
+    }
+  ],
+  "expansionRule": "Do not add more subdomains until these properties are operational, clearly linked, mirrored inside app.OneGodian.com, documented, and production-stable.",
+  "pluginUse": {
+    "primaryPlugin": "omos-core-tools",
+    "targets": [
+      "OneGodian.com",
+      "OneGodian.org",
+      "QuantumOHI.com"
+    ],
+    "purpose": "Display OMOS content, protocol links, alignment docs, tool cards, artifact cards, and node manifest/health status from OMOS.OneGodian.com."
+  }
+}
