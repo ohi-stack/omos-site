@@ -11,7 +11,7 @@ const { rateLimit } = require("./src/runtime/rateLimit");
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-const OMOS_VERSION = process.env.OMOS_VERSION || "0.3.0";
+const OMOS_VERSION = process.env.OMOS_VERSION || "0.4.0";
 const CANONICAL_HOST = process.env.OMOS_CANONICAL_HOST || "https://omos.onegodian.com";
 const STORE_URL = process.env.ONEGODIAN_STORE_URL || "https://onegodian.com";
 const ORG_URL = process.env.ONEGODIAN_ORG_URL || "https://onegodian.org";
@@ -21,6 +21,17 @@ const ALLOWED_PLUGIN_ORIGINS = (process.env.OMOS_PLUGIN_ALLOWED_ORIGINS || `${ST
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
+
+const primaryNav = [
+  ["OMOS", "/omos"],
+  ["OHI", "/ohi"],
+  ["Protocol", "/protocol"],
+  ["Algorithm", "/algorithm"],
+  ["Pipeline", "/ohi-output-pipeline"],
+  ["Tools", "/tools"],
+  ["Docs", "/docs"],
+  ["Console", "/dashboard"]
+];
 
 const publicRoutes = [
   "/",
@@ -37,136 +48,203 @@ const publicRoutes = [
   "/contact",
   "/protocol",
   "/algorithm",
-  "/digital-sanctuary"
+  "/digital-sanctuary",
+  "/ohi-output-pipeline"
 ];
 
 const pageMeta = {
   "/": {
-    file: "home.html",
     title: "OMOS — OneGodian Metaphysical Operating System",
     eyebrow: "OMOS.OneGodian.com",
-    heading: "OneGodian Metaphysical Operating System™",
-    summary: "The Node runtime and protocol site for OMOS content, documentation, runtime tools, and cross-site integration across the OneGodian ecosystem.",
-    cards: ["Runtime manifest", "Protocol documentation", "Plugin synchronization", "App command-center bridge"]
+    heading: "The Node Runtime for OneGodian Intelligence Architecture",
+    summary: "OMOS is the systems-integration layer for the ONEGODIAN framework. It connects the OneGodian Algorithm, the OneGodian Protocol, OHI synthesis, runtime manifests, developer tools, and public documentation into one navigable platform.",
+    cards: [
+      ["OMOS Architecture", "The operating layer that connects identity, protocol, algorithm, tools, documentation, and runtime services.", "/omos"],
+      ["OHI Output Pipeline", "A visual explanation of how multi-model reasoning becomes an OHI-governed output.", "/ohi-output-pipeline"],
+      ["Protocol + Algorithm", "The formal standards for alignment, identity recognition, and implementation.", "/protocol"],
+      ["Developer Console", "Runtime health, manifest checks, route inventory, and app console handoff.", "/dashboard"]
+    ]
   },
   "/omos": {
-    file: "omos.html",
     title: "OMOS Architecture",
     eyebrow: "Operating Layer",
     heading: "OMOS Architecture",
-    summary: "The orchestration, routing, documentation, and runtime layer connecting OneGodian identity, OHI synthesis, tools, pages, and integrations.",
-    cards: ["Root identity layer", "Operating layer", "Protocol + Algorithm", "Commercial separation"]
+    summary: "OMOS is not the storefront. It is the Node-based operating layer for protocol documentation, runtime routes, manifests, tools, and cross-site coordination across OneGodian.com, OneGodian.org, QuantumOHI.com, and app.OneGodian.com.",
+    cards: [
+      ["Root Identity", "ONEGODIAN remains the root identity and authored framework.", "/docs"],
+      ["Runtime Layer", "OMOS handles routes, manifests, protocol pages, tools, and developer-facing runtime services.", "/api/manifest"],
+      ["Commerce Bridge", "Products and checkout remain on OneGodian.com through WooCommerce and Stripe.", "/shop"],
+      ["App Bridge", "Operational control belongs in app.OneGodian.com, with OMOS serving as the public runtime node.", "/dashboard"]
+    ]
   },
   "/ohi": {
-    file: "ohi.html",
-    title: "OHI — OneGodian Hyper-Conscious Intelligence",
+    title: "OHI Runtime and Synthesis Layer",
     eyebrow: "Intelligence Layer",
-    heading: "OHI Runtime and Synthesis Layer",
-    summary: "OHI organizes multi-model synthesis, GCD-style distillation, and governed outputs for OneGodian-aligned documentation and runtime experiences.",
-    cards: ["Council of models", "Signal extraction", "GCD synthesis", "Highest-coherence output"]
+    heading: "OHI — OneGodian Hyper-Conscious Intelligence",
+    summary: "OHI organizes multi-model synthesis, GCD-style distillation, and governed outputs. It is the intelligence-processing layer that transforms raw model perspectives into structured, verified, usable OMOS outputs.",
+    cards: [
+      ["Council of Models", "ChatGPT, Claude, Gemini, Grok, and other systems contribute distinct reasoning perspectives.", "/models"],
+      ["GCD Synthesis", "OHI reduces remainders and extracts the highest shared signal.", "/ohi-output-pipeline"],
+      ["Verification", "Outputs are checked against scope, source, legal-safe positioning, and production readiness.", "/legal"],
+      ["Runtime Output", "Final results become pages, docs, prompts, tools, or manifest entries.", "/artifacts"]
+    ]
   },
   "/models": {
-    file: "models.html",
-    title: "OMOS Model Layer",
+    title: "OMOS Model Council",
     eyebrow: "Model Council",
     heading: "Multi-Model Reasoning and Comparison",
-    summary: "A structured content area for ChatGPT, Claude, Gemini, Grok, OHI synthesis notes, and model-output governance.",
-    cards: ["ChatGPT", "Claude", "Gemini", "Grok", "OHI synthesis"]
+    summary: "This area explains how OMOS uses multiple model perspectives without treating any single model as the governing authority. OHI synthesis compares, filters, and structures the result.",
+    cards: [
+      ["ChatGPT", "Structure, implementation planning, code tasks, and documentation architecture.", "/models"],
+      ["Claude", "Caution, careful reasoning, institutional framing, and edge-case review.", "/models"],
+      ["Gemini", "Pattern recognition, broad synthesis, multimodal and ecosystem relationships.", "/models"],
+      ["Grok", "Direct contrast, raw framing, cultural signal, and fast interpretation.", "/models"]
+    ]
   },
   "/tools": {
-    file: "tools.html",
     title: "OMOS Tools",
     eyebrow: "Execution Tools",
-    heading: "OMOS Tools and Runtime Utilities",
-    summary: "Tool pages for the Belief Mapper, Bridge Builder, Declaration Generator, runtime processing, and future protocol utilities.",
-    cards: ["Belief Mapper", "Bridge Builder", "Declaration Generator", "Runtime processor"]
+    heading: "Tools for Identity, Alignment, and Runtime Execution",
+    summary: "OMOS tools turn the framework into usable experiences: belief mapping, declarations, bridge-building, protocol exploration, algorithm visualization, and runtime inspection.",
+    cards: [
+      ["Belief Mapper", "Maps a person through Seeker, Believer, OneGodian, and Elder journey stages.", "/tools"],
+      ["Declaration Generator", "Produces structured statements for identity, sincerity, and institutional clarity.", "/tools"],
+      ["Protocol Explorer", "Shows how the OneGodian Protocol applies across human, semantic, agent, and interface layers.", "/protocol"],
+      ["OHI Output Pipeline", "Visualizes model input, synthesis, verification, and final OMOS output.", "/ohi-output-pipeline"]
+    ]
   },
   "/artifacts": {
-    file: "artifacts.html",
     title: "OMOS Artifacts",
-    eyebrow: "Documentation Artifacts",
-    heading: "OMOS Artifacts and Source Materials",
-    summary: "A publication layer for whitepapers, source PDFs, WXR files, animation assets, diagrams, manifests, and institutional documents.",
-    cards: ["Whitepapers", "WXR imports", "Animation assets", "Protocol files"]
+    eyebrow: "Source Materials",
+    heading: "Artifacts, Source Documents, and Runtime Evidence",
+    summary: "Artifacts are the source materials behind OMOS: whitepapers, system prompts, WXR files, animation files, manifests, product docs, and institutional records.",
+    cards: [
+      ["Whitepapers", "Algorithm, Protocol, Digital Sanctuary, GCD synthesis, and institutional classification documents.", "/docs"],
+      ["Animations", "OHI pipeline and Digital Sanctuary visual experiences.", "/ohi-output-pipeline"],
+      ["Manifests", "Machine-readable route, plugin, app, and commerce bridge metadata.", "/api/manifest"],
+      ["Build Notes", "Implementation logs and release status for OMOS.OneGodian.com.", "/latest-news"]
+    ]
   },
   "/docs": {
-    file: "docs.html",
-    title: "OMOS Docs",
+    title: "OMOS Documentation Center",
     eyebrow: "Documentation",
-    heading: "OMOS Documentation Center",
-    summary: "Developer, institutional, legal, runtime, and public documentation for OMOS and related OneGodian systems.",
-    cards: ["Protocol", "Algorithm", "Runtime", "Deployment", "Compliance"]
+    heading: "Documentation for OMOS, OHI, Protocol, and Algorithm",
+    summary: "The docs section organizes public-safe explanations, developer specifications, legal positioning, system prompt guidance, and runtime integration notes.",
+    cards: [
+      ["Protocol Spec", "Identity, semantic, agent, and interface layers for OneGodian interaction.", "/protocol"],
+      ["Algorithm Spec", "Observe, Distill, Align, Select, Execute, Verify.", "/algorithm"],
+      ["System Prompt", "AI context instructions for OneGodian-aware platforms and agents.", "/docs"],
+      ["Compliance", "Clarifies voluntary use, commerce separation, and civil/Gregorian control.", "/legal"]
+    ]
   },
   "/shop": {
-    file: "shop.html",
-    title: "OMOS Shop Bridge",
+    title: "OMOS Product Bridge",
     eyebrow: "Commerce Bridge",
-    heading: "OMOS Products and Downloads",
-    summary: "Commercial product paths remain on OneGodian.com. OMOS routes provide explanation, documentation, and bridge links into WooCommerce products.",
-    cards: ["Prompt packs", "PDF guides", "Developer kits", "Membership paths"]
+    heading: "OMOS Products Live on OneGodian.com",
+    summary: "OMOS.OneGodian.com explains and documents the products. OneGodian.com handles WooCommerce, Stripe, downloads, courses, memberships, and checkout.",
+    cards: [
+      ["Algorithm Whitepaper", "Downloadable PDF and implementation package.", `${STORE_URL}/product-category/omos/`],
+      ["Protocol Kit", "Protocol spec, schemas, prompt templates, and developer notes.", `${STORE_URL}/product-category/omos/`],
+      ["System Prompt Pack", "Prompt package for AI agents and OneGodian-aware platforms.", `${STORE_URL}/product-category/omos/`],
+      ["Courses + Memberships", "Education and access pathways remain inside OneGodian.com.", `${STORE_URL}/product-category/omos/`]
+    ]
   },
   "/latest-news": {
-    file: "latest-news.html",
-    title: "OMOS Latest News",
+    title: "OMOS Build Notes",
     eyebrow: "Updates",
-    heading: "OMOS News and Build Notes",
-    summary: "Release notes, Council updates, implementation status, route changes, product drops, and runtime milestones.",
-    cards: ["Build notes", "Release status", "Council updates", "Product launches"]
+    heading: "OMOS News, Releases, and Build Status",
+    summary: "Track OMOS implementation as it moves from documents into a working Node runtime and cross-site infrastructure layer.",
+    cards: [
+      ["v0.4.0 Navigation Upgrade", "Real content, improved navigation, pipeline route, and stronger manifest architecture.", "/latest-news"],
+      ["Node Runtime Direction", "OMOS is now positioned as a Node runtime, not a WordPress storefront.", "/omos"],
+      ["Pipeline Added", "The OHI Output Pipeline now has a dedicated public route.", "/ohi-output-pipeline"],
+      ["Next Build", "Dashboard widgets, OpenAPI spec, and plugin bridge sync.", "/dashboard"]
+    ]
   },
   "/dashboard": {
-    file: "dashboard.html",
-    title: "OMOS Dashboard",
+    title: "OMOS Runtime Dashboard",
     eyebrow: "Runtime Dashboard",
     heading: "OMOS Runtime Dashboard",
-    summary: "Dashboard entry point for manifest status, health checks, process testing, route inventory, and app.OneGodian.com console handoff.",
-    cards: ["Health", "Manifest", "Process", "Open App Console"]
-  },
-  "/admin": {
-    title: "OMOS Admin Handoff",
-    eyebrow: "Admin",
-    heading: "OMOS Admin Handoff",
-    summary: "Administrative execution belongs in app.OneGodian.com and authenticated WordPress dashboards. This public route provides safe handoff only.",
-    cards: ["App console", "WordPress plugin", "Deployment notes", "Runtime logs"]
+    summary: "A public-safe dashboard entry for health checks, manifest viewing, route inventory, OHI pipeline access, and app.OneGodian.com handoff.",
+    cards: [
+      ["Health", "Check runtime service status.", "/api/health"],
+      ["Manifest", "View route, plugin, commerce, and app bridge metadata.", "/api/manifest"],
+      ["OHI Pipeline", "Open the visual OHI output process.", "/ohi-output-pipeline"],
+      ["App Console", "Operational command belongs in app.OneGodian.com.", APP_URL]
+    ]
   },
   "/legal": {
-    file: "legal.html",
-    title: "OMOS Legal Positioning",
+    title: "OMOS Legal and Institutional Positioning",
     eyebrow: "Compliance",
     heading: "Legal and Institutional Positioning",
-    summary: "OMOS is presented as a voluntary educational, identity-reflection, documentation, and runtime-support framework. Civil/Gregorian records remain legally controlling.",
-    cards: ["Voluntary use", "No public authority claims", "No financial guarantees", "Commercial/IP separation"]
+    summary: "OMOS is a voluntary educational, identity-reflection, protocol documentation, and runtime-support framework. It does not create public authority, legal immunity, or financial guarantees.",
+    cards: [
+      ["Civil Control", "Gregorian/civil records remain controlling for legal, tax, banking, and institutional matters.", "/legal"],
+      ["Commerce Separation", "ONEGODIAN, LLC handles commerce, software, IP, education, and product operations.", "/shop"],
+      ["INO Separation", "Governance/religious society language belongs only where legally appropriate.", "/legal"],
+      ["No Overclaims", "OMOS does not assert authority over non-members or replace civil law.", "/legal"]
+    ]
   },
   "/contact": {
-    file: "contact.html",
     title: "Contact OMOS",
     eyebrow: "Contact",
     heading: "Contact and Ecosystem Links",
-    summary: "Connect OMOS runtime, documentation, products, app console, and OneGodian public properties.",
-    cards: ["OneGodian.org", "OneGodian.com", "QuantumOHI.com", "app.OneGodian.com"]
+    summary: "Connect the OMOS runtime layer to the wider OneGodian ecosystem: public information, commerce, app console, and QuantumOHI infrastructure.",
+    cards: [
+      ["OneGodian.org", "Public explanation, education, and institutional content.", ORG_URL],
+      ["OneGodian.com", "Products, downloads, memberships, courses, and checkout.", STORE_URL],
+      ["QuantumOHI.com", "Enterprise-facing systems and technology positioning.", QUANTUM_OHI_URL],
+      ["app.OneGodian.com", "Command center and operational dashboards.", APP_URL]
+    ]
   },
   "/protocol": {
-    file: "protocol.html",
     title: "The OneGodian Protocol™",
     eyebrow: "Protocol",
     heading: "The OneGodian Protocol™",
-    summary: "An optional identity, semantic, and alignment framework for human identity expression, AI interaction, digital communication, and interface systems.",
-    cards: ["Human layer", "Semantic layer", "Agent layer", "Interface layer"]
+    summary: "The Protocol is the optional identity, semantic, agent, and interface framework for respectful interaction across human users, AI systems, platforms, and future interface environments.",
+    cards: [
+      ["Human Layer", "Voluntary identity expression and public-safe self-description.", "/protocol"],
+      ["Semantic Layer", "Knowledge graph, classification, search, and metadata support.", "/protocol"],
+      ["Agent Layer", "AI alignment, tone control, and interaction standards.", "/protocol"],
+      ["Interface Layer", "Robotics, dashboards, apps, and user-facing systems.", "/protocol"]
+    ]
   },
   "/algorithm": {
-    file: "algorithm.html",
     title: "The OneGodian Algorithm™",
     eyebrow: "Algorithm",
     heading: "The OneGodian Algorithm™",
-    summary: "A unity-centered decision and execution model that ranks paths by truth, clarity, coherence, dignity, and constructive unity.",
-    cards: ["Observe", "Distill", "Align", "Select", "Execute", "Verify"]
+    summary: "The Algorithm is a unity-centered decision and execution model for selecting the clearest, most aligned, least destructive path across human, digital, and AI-mediated systems.",
+    cards: [
+      ["Observe", "Collect facts, claims, actors, systems, risks, and context.", "/algorithm"],
+      ["Distill", "Remove noise, distortion, unnecessary conflict, and weak signal.", "/algorithm"],
+      ["Align", "Score against truth, clarity, coherence, dignity, and constructive unity.", "/algorithm"],
+      ["Verify", "Check the output against reality, implementation status, and source authority.", "/ohi-output-pipeline"]
+    ]
   },
   "/digital-sanctuary": {
-    file: "digital-sanctuary.html",
     title: "The OneGodian Digital Sanctuary",
     eyebrow: "Digital Sanctuary",
     heading: "The Digital Sanctuary Experience",
-    summary: "A premium OMOS landing experience using liquid-glass visual language, motion, typing, sacred geometry, and public-safe system positioning.",
-    cards: ["Liquid glass UI", "Typed definition", "Pathway cards", "Runtime architecture"]
+    summary: "The Digital Sanctuary is the immersive public-facing experience for OneGodian identity, OMOS architecture, OHI synthesis, and interactive learning.",
+    cards: [
+      ["Liquid Glass UI", "Premium visual system using dark, gold, and purple OneGodian presentation.", "/digital-sanctuary"],
+      ["Typed Definition", "First-contact explanation of OneGodian identity and OMOS architecture.", "/digital-sanctuary"],
+      ["Pathway Cards", "Routes into Protocol, Algorithm, Tools, Docs, and Shop.", "/digital-sanctuary"],
+      ["Pipeline Link", "Interactive explanation of OHI output synthesis.", "/ohi-output-pipeline"]
+    ]
+  },
+  "/ohi-output-pipeline": {
+    file: "ohi-output-pipeline.html",
+    title: "OHI Output Pipeline",
+    eyebrow: "OHI Visualization",
+    heading: "OHI Output Pipeline",
+    summary: "A visual OMOS explanation of how a source prompt moves through multiple model perspectives, OHI synthesis, verification, and final structured output.",
+    cards: [
+      ["Source Prompt", "A single controlled request begins the process.", "/ohi-output-pipeline"],
+      ["Council of Models", "Multiple systems contribute different reasoning patterns.", "/models"],
+      ["OHI Synthesis", "Signal is distilled into a governed output.", "/ohi"],
+      ["OMOS Artifact", "The final result becomes a page, doc, prompt, tool, or manifest item.", "/artifacts"]
+    ]
   }
 };
 
@@ -178,6 +256,7 @@ const omosManifest = {
   status: "active",
   environment: process.env.NODE_ENV || "development",
   canonicalHost: CANONICAL_HOST,
+  navigation: primaryNav.map(([label, href]) => ({ label, href })),
   authority: {
     operator: process.env.OMOS_OPERATOR || "ONEGODIAN, LLC",
     founder: "Gregory Lamar Jones / One Gregory Onegodian™",
@@ -189,15 +268,24 @@ const omosManifest = {
     public: publicRoutes,
     api: ["/health", "/manifest", "/api/health", "/api/manifest", "/process"]
   },
+  featuredRoutes: [
+    { id: "omos", label: "OMOS Architecture", path: "/omos" },
+    { id: "ohi", label: "OHI Synthesis", path: "/ohi" },
+    { id: "pipeline", label: "OHI Output Pipeline", path: "/ohi-output-pipeline" },
+    { id: "protocol", label: "Protocol", path: "/protocol" },
+    { id: "algorithm", label: "Algorithm", path: "/algorithm" },
+    { id: "docs", label: "Docs", path: "/docs" }
+  ],
   endpoints: {
     health: { method: "GET", path: "/health", authRequired: false },
     apiHealth: { method: "GET", path: "/api/health", authRequired: false },
     manifest: { method: "GET", path: "/manifest", authRequired: false },
     apiManifest: { method: "GET", path: "/api/manifest", authRequired: false },
     process: { method: "POST", path: "/process", authRequired: true, authHeader: "x-omos-key" },
-    dashboard: { method: "GET", path: "/dashboard", authRequired: false }
+    dashboard: { method: "GET", path: "/dashboard", authRequired: false },
+    ohiOutputPipeline: { method: "GET", path: "/ohi-output-pipeline", authRequired: false }
   },
-  capabilities: ["observe", "distill", "align", "select", "execute", "verify", "document", "route", "integrate"],
+  capabilities: ["observe", "distill", "align", "select", "execute", "verify", "document", "route", "integrate", "visualize"],
   contentModel: {
     rootIdentity: "ONEGODIAN™",
     operatingLayer: "OMOS™",
@@ -206,16 +294,23 @@ const omosManifest = {
     algorithmLayer: "The OneGodian Algorithm™",
     commerceLayer: "OneGodian.com"
   },
+  tools: [
+    { id: "belief-mapper", name: "Belief Mapper", status: "planned", route: "/tools" },
+    { id: "declaration-generator", name: "Declaration Generator", status: "planned", route: "/tools" },
+    { id: "ohi-output-pipeline", name: "OHI Output Pipeline", status: "active", route: "/ohi-output-pipeline" },
+    { id: "protocol-explorer", name: "Protocol Explorer", status: "planned", route: "/protocol" },
+    { id: "algorithm-visualizer", name: "Algorithm Visualizer", status: "planned", route: "/algorithm" }
+  ],
   wordpressPlugin: {
     compatibleHosts: ALLOWED_PLUGIN_ORIGINS,
     requiredEndpoints: ["/api/health", "/api/manifest"],
-    shortcodes: ["[omos_manifest]", "[omos_runtime_status]", "[omos_bridge_builder]", "[omos_tool_grid]", "[omos_docs_grid]"],
+    shortcodes: ["[omos_manifest]", "[omos_runtime_status]", "[omos_bridge_builder]", "[omos_tool_grid]", "[omos_docs_grid]", "[omos_ohi_pipeline]"],
     responsibilities: ["route synchronization", "shortcode registration", "OMOS card rendering", "tool manifest sync", "dashboard launch links", "canonical route verification"],
     pluginTargets: ["OneGodian.com", "OneGodian.org", "QuantumOHI.com"]
   },
   appBridge: {
     appConsole: APP_URL,
-    expectedSyncRoutes: ["/api/manifest", "/api/health", "/process"],
+    expectedSyncRoutes: ["/api/manifest", "/api/health", "/process", "/ohi-output-pipeline"],
     role: "app.OneGodian.com is the command center for cross-site runtime monitoring, agent workflows, and OMOS route synchronization."
   },
   commerceBridge: {
@@ -275,11 +370,15 @@ function escapeHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
+function renderCard(card) {
+  const [title, body, href] = Array.isArray(card) ? card : [card, "Configured in the OMOS runtime manifest and ready for content expansion.", "#"];
+  return `<article class="card"><h3>${escapeHtml(title)}</h3><p>${escapeHtml(body)}</p><a href="${escapeHtml(href)}">Open →</a></article>`;
+}
+
 function renderGeneratedPage(route) {
   const meta = pageMeta[route] || pageMeta["/"];
-  const cards = (meta.cards || [])
-    .map((card) => `<article class="card"><h3>${escapeHtml(card)}</h3><p>Configured in the OMOS runtime manifest and ready for content expansion.</p></article>`)
-    .join("");
+  const cards = (meta.cards || []).map(renderCard).join("");
+  const nav = primaryNav.map(([label, href]) => `<a href="${href}">${escapeHtml(label)}</a>`).join("");
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -288,11 +387,10 @@ function renderGeneratedPage(route) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>${escapeHtml(meta.title)}</title>
 <style>
-:root{--bg:#070607;--panel:#111827;--panel2:#17121f;--gold:#d8b35a;--text:#f5f1e8;--muted:rgba(245,241,232,.74);--line:rgba(216,179,90,.24)}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,rgba(111,60,255,.16),transparent 35%),radial-gradient(circle at bottom right,rgba(216,179,90,.13),transparent 35%),linear-gradient(180deg,var(--bg),var(--panel2));color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;line-height:1.65}.wrap{max-width:1180px;margin:0 auto;padding:44px 22px}.nav{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:42px}.nav a{color:var(--text);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:13px;background:rgba(255,255,255,.04)}.hero{padding:70px 0 48px}.eyebrow{color:var(--gold);font-weight:800;letter-spacing:.18em;text-transform:uppercase;font-size:12px}h1{font-size:clamp(42px,7vw,76px);line-height:1.02;margin:14px 0 18px;letter-spacing:-.04em}p{color:var(--muted);font-size:18px;max-width:880px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:34px}.card{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.025));border-radius:22px;padding:22px;min-height:150px}.card h3{margin:0 0 10px;color:var(--gold)}.cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}.btn{display:inline-block;text-decoration:none;color:#070607;background:var(--gold);padding:13px 18px;border-radius:999px;font-weight:800}.btn.secondary{color:var(--text);background:transparent;border:1px solid var(--line)}footer{border-top:1px solid var(--line);margin-top:60px;padding-top:24px;color:var(--muted);font-size:14px}
+:root{--bg:#070607;--panel:#111827;--panel2:#17121f;--gold:#d8b35a;--purple:#6f3cff;--text:#f5f1e8;--muted:rgba(245,241,232,.74);--line:rgba(216,179,90,.24)}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,rgba(111,60,255,.16),transparent 35%),radial-gradient(circle at bottom right,rgba(216,179,90,.13),transparent 35%),linear-gradient(180deg,var(--bg),var(--panel2));color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;line-height:1.65}.wrap{max-width:1180px;margin:0 auto;padding:36px 22px}.top{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:38px}.brand{font-weight:900;letter-spacing:.08em;color:var(--gold);text-transform:uppercase}.nav{display:flex;gap:10px;flex-wrap:wrap}.nav a{color:var(--text);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:13px;background:rgba(255,255,255,.04)}.hero{padding:64px 0 42px}.eyebrow{color:var(--gold);font-weight:800;letter-spacing:.18em;text-transform:uppercase;font-size:12px}h1{font-size:clamp(40px,7vw,74px);line-height:1.02;margin:14px 0 18px;letter-spacing:-.04em}p{color:var(--muted);font-size:18px;max-width:900px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:18px;margin-top:30px}.card{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.025));border-radius:22px;padding:22px;min-height:180px}.card h3{margin:0 0 10px;color:var(--gold)}.card a{display:inline-block;margin-top:12px;color:var(--gold);font-weight:800;text-decoration:none}.cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}.btn{display:inline-block;text-decoration:none;color:#070607;background:var(--gold);padding:13px 18px;border-radius:999px;font-weight:800}.btn.secondary{color:var(--text);background:transparent;border:1px solid var(--line)}.status{margin-top:26px;border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:16px;background:rgba(255,255,255,.04);color:var(--muted)}footer{border-top:1px solid var(--line);margin-top:60px;padding-top:24px;color:var(--muted);font-size:14px}@media(max-width:720px){.top{display:block}.nav{margin-top:16px}h1{font-size:42px}}
 </style>
 </head>
-<body><main class="wrap"><nav class="nav"><a href="/omos">OMOS</a><a href="/ohi">OHI</a><a href="/models">Models</a><a href="/tools">Tools</a><a href="/artifacts">Artifacts</a><a href="/docs">Docs</a><a href="/shop">Shop</a><a href="/dashboard">Open Console</a></nav><section class="hero"><div class="eyebrow">${escapeHtml(meta.eyebrow)}</div><h1>${escapeHtml(meta.heading)}</h1><p>${escapeHtml(meta.summary)}</p><div class="cta"><a class="btn" href="/dashboard">Open OMOS Dashboard</a><a class="btn secondary" href="/api/manifest">View Manifest</a><a class="btn secondary" href="${STORE_URL}/product-category/omos/">OMOS Products</a></div></section><section class="grid">${cards}</section><footer>OMOS.OneGodian.com is the Node runtime and protocol documentation layer. Commerce remains on OneGodian.com. Public institutional explanations remain on OneGodian.org.</footer></main></body></html>`;
+<body><main class="wrap"><header class="top"><div class="brand">OMOS</div><nav class="nav">${nav}</nav></header><section class="hero"><div class="eyebrow">${escapeHtml(meta.eyebrow)}</div><h1>${escapeHtml(meta.heading)}</h1><p>${escapeHtml(meta.summary)}</p><div class="cta"><a class="btn" href="/ohi-output-pipeline">View OHI Pipeline</a><a class="btn secondary" href="/api/manifest">View Manifest</a><a class="btn secondary" href="${STORE_URL}/product-category/omos/">OMOS Products</a></div><div class="status">Runtime v${escapeHtml(OMOS_VERSION)} • Node route active • Commerce remains on OneGodian.com • Civil/Gregorian records remain legally controlling.</div></section><section class="grid">${cards}</section><footer>OMOS.OneGodian.com is the Node runtime and protocol documentation layer. Commerce remains on OneGodian.com. Public institutional explanations remain on OneGodian.org.</footer></main></body></html>`;
 }
 
 function sendPage(res, route) {
@@ -315,7 +413,8 @@ function healthPayload() {
     environment: omosManifest.environment,
     canonicalHost: CANONICAL_HOST,
     publicRouteCount: publicRoutes.length,
-    pluginSync: "available"
+    pluginSync: "available",
+    featured: "/ohi-output-pipeline"
   };
 }
 
