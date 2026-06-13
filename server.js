@@ -6,21 +6,21 @@ const path = require("path");
 const { OMOSProcess } = require("./src/runtime/omos");
 const { verifyApiKey } = require("./src/runtime/keys");
 const { rateLimit } = require("./src/runtime/rateLimit");
-const { SITE, pages, tools, documents, pluginTargets } = require("./src/content/site-content");
+const { SITE, pages, tools, documents, pluginTargets, ecosystem } = require("./src/content/rich-content");
 const { renderPage } = require("./src/render/page");
 const { renderDashboard } = require("./src/render/dashboard");
 
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-const OMOS_VERSION = "1.0.0";
+const OMOS_VERSION = SITE.version || "1.1.0";
 
 const runtimeRoutes = Object.keys(pages);
 
 const omosManifest = {
   id: "omos-site",
   name: "OMOS Runtime",
-  fullName: "OneGodian Metaphysical Operating System Runtime",
+  fullName: SITE.fullName,
   version: OMOS_VERSION,
   status: "active",
   canonicalUrl: SITE.canonicalUrl,
@@ -32,7 +32,7 @@ const omosManifest = {
   },
   publicRoutes: runtimeRoutes,
   appStructure: {
-    publicAppLayer: ["/", "/omos", "/protocol", "/algorithm", "/alignment-api", "/tools", "/docs", "/plugin-bridge", "/legal", "/contact"],
+    publicAppLayer: ["/", "/omos", "/protocol", "/algorithm", "/ohi", "/alignment-api", "/tools", "/docs", "/plugin-bridge", "/legal", "/contact"],
     dashboardLayer: ["/dashboard"],
     adminLayer: ["/admin"],
     apiBridgeLayer: ["/health", "/manifest", "/api/health", "/api/manifest", "/api/tools", "/api/stats", "/process"]
@@ -55,6 +55,7 @@ const omosManifest = {
     "app.OneGodian.com Node control plane",
     "OMOS WordPress Core Tools plugin"
   ],
+  ecosystem,
   pluginTargets,
   safety: {
     participation: "voluntary",
@@ -124,6 +125,7 @@ app.get("/api/stats", (req, res) => {
     tools: tools.length,
     documents: documents.length,
     pluginTargets: pluginTargets.length,
+    ecosystemNodes: ecosystem.length,
     version: OMOS_VERSION,
     generatedAtUtc: new Date().toISOString()
   });
@@ -147,7 +149,7 @@ app.use((req, res) => {
     summary: "The requested OMOS route is not currently mapped. Return to the OMOS homepage or open the dashboard.",
     cta: { label: "Return Home", href: "/" },
     secondaryCta: { label: "Open Dashboard", href: "/dashboard" },
-    sections: [{ heading: "Production note", body: "Add new routes to src/content/site-content.js and the WordPress plugin manifest before treating them as operational." }]
+    sections: [{ title: "Production note", body: "Add new routes to src/content/rich-content.js and the WordPress plugin manifest before treating them as operational." }]
   }));
 });
 
