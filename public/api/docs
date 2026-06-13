@@ -1,0 +1,10 @@
+{
+  "status": "ok",
+  "source": "static-fallback",
+  "items": [
+    {"id":"node-plugin-bridge-plan","title":"OMOS Node Content and Plugin Bridge Plan","path":"docs/OMOS_NODE_CONTENT_AND_PLUGIN_BRIDGE_PLAN.md"},
+    {"id":"bridge-builder-protocol","title":"Bridge-Builder Protocol","path":"docs/bridge-builder-protocol.md"},
+    {"id":"plugin-structure","title":"OMOS Core Tools Production Plugin Structure","path":"wordpress/plugin-architecture/omos-core-tools-production-structure.md"},
+    {"id":"plugin-targets","title":"OMOS Core Tools Plugin Targets","path":"wordpress/plugin-architecture/PLUGIN_TARGETS_ONEGODIAN_COM_ORG_QUANTUMOHI.md"}
+  ]
+}
