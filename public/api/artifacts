@@ -1,0 +1,11 @@
+{
+  "status": "ok",
+  "source": "static-fallback",
+  "items": [
+    {"id":"algorithm-whitepaper","title":"OneGodian Algorithm White Paper","type":"pdf","status":"source_document"},
+    {"id":"ai-system-prompt","title":"OneGodian AI System Prompt","type":"pdf","status":"source_document"},
+    {"id":"ots-v5","title":"Onegodian Timekeeping System — OTS-V5","type":"pdf","status":"source_document"},
+    {"id":"ohi-output-pipeline","title":"OHI Output Pipeline Animation","type":"html","status":"active_page"},
+    {"id":"digital-sanctuary","title":"The Onegodian Digital Sanctuary","type":"spec","status":"source_document"}
+  ]
+}
