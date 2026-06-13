@@ -1,0 +1,12 @@
+{
+  "status": "ok",
+  "source": "static-fallback",
+  "bridge": {
+    "plugin": "omos-core-tools",
+    "version": "1.3.0",
+    "operational": false,
+    "runtimeStatus": "planned_placeholder",
+    "targets": ["OneGodian.com", "OneGodian.org", "QuantumOHI.com"],
+    "note": "Bridge files and target maps are staged. Treat plugin bridge as planned until installed, configured, and tested on each WordPress property."
+  }
+}
