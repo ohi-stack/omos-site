@@ -1,0 +1,10 @@
+{
+  "status": "ok",
+  "source": "static-fallback",
+  "items": [
+    {"id":"belief-mapper","name":"Belief Mapper","route":"/tools","status":"planned","operational":false},
+    {"id":"bridge-builder","name":"Bridge-Builder Tool™","route":"/tools/bridge-builder/","status":"planned_placeholder","operational":false},
+    {"id":"declaration-generator","name":"OHI Declaration Generator","route":"/tools","status":"planned","operational":false},
+    {"id":"ohi-output-pipeline","name":"OHI Output Pipeline","route":"/ohi-output-pipeline","status":"active_page","operational":true}
+  ]
+}
