@@ -52,8 +52,10 @@ async function run() {
   const manifest = await expectJson("/manifest");
   assert.strictEqual(manifest.id, "omos-site");
   assert.strictEqual(manifest.name, "OMOS Runtime");
+  assert.strictEqual(manifest.version, "1.1.0");
   assert.ok(Array.isArray(manifest.publicRoutes));
   assert.ok(manifest.publicRoutes.includes("/omos"));
+  assert.ok(manifest.publicRoutes.includes("/ohi"));
 
   const apiManifest = await expectJson("/api/manifest");
   assert.strictEqual(apiManifest.id, "omos-site");
@@ -61,12 +63,14 @@ async function run() {
   const tools = await expectJson("/api/tools");
   assert.strictEqual(tools.status, "ok");
   assert.ok(Array.isArray(tools.items));
+  assert.ok(tools.items.length >= 4);
 
   const stats = await expectJson("/api/stats");
   assert.strictEqual(stats.status, "ok");
-  assert.ok(stats.publicRoutes >= 10);
+  assert.ok(stats.publicRoutes >= 12);
+  assert.ok(stats.ecosystemNodes >= 6);
 
-  for (const route of ["/", "/omos", "/protocol", "/algorithm", "/alignment-api", "/tools", "/docs", "/plugin-bridge", "/legal", "/contact", "/dashboard"]) {
+  for (const route of ["/", "/omos", "/protocol", "/algorithm", "/ohi", "/alignment-api", "/tools", "/docs", "/plugin-bridge", "/legal", "/contact", "/dashboard", "/admin"]) {
     await expectHtml(route);
   }
 
