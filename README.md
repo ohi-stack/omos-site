@@ -6,7 +6,7 @@ Canonical site target: `https://omos.onegodian.com`
 
 ## Purpose
 
-This repo holds the public-facing OMOS site plan, documentation map, WordPress import assets, protocol references, tool-page requirements, plugin page-generation logic, runtime manifests, and production deployment notes for building OMOS.OneGodian.com.
+This repo holds the public-facing OMOS site plan, documentation map, WordPress import assets, protocol references, tool-page requirements, plugin page-generation logic, runtime manifests, environment files, static API fallbacks, and production deployment notes for building OMOS.OneGodian.com.
 
 OMOS is positioned as the operating layer where OneGodian identity, OHI synthesis, model pages, protocol documents, tools, post categories, shop pathways, and developer-facing assets are organized into a usable public platform.
 
@@ -20,10 +20,17 @@ The Node layer currently provides:
 - `/api/health`
 - `/manifest`
 - `/api/manifest`
+- `/api/ecosystem`
+- `/api/tools`
+- `/api/artifacts`
+- `/api/docs`
+- `/api/bridge/status`
 - `/process`
 - `/dashboard`
 
-The WordPress layer contains the OMOS page generator plugin used to create and repair the public page structure.
+Some API extension routes are currently provided as static fallback JSON under `/public/api/` until the dynamic runtime controller is expanded.
+
+The WordPress layer contains the OMOS page generator / core tools architecture used to create and repair the public page structure and to support plugin deployment on OneGodian.com, OneGodian.org, and QuantumOHI.com.
 
 Use this rule for version discipline:
 
@@ -55,6 +62,8 @@ This repo maps the following source materials into implementation-ready document
 - OMOS Core Tools / Page Generator plugin assets
 - Bridge-Builder Protocol specification
 - Bridge-Builder Tool specification and WordPress page draft
+- OMOS Node Content and Plugin Bridge Plan
+- OneGodian ecosystem manifest
 
 ## Master site architecture
 
@@ -76,6 +85,7 @@ This repo maps the following source materials into implementation-ready document
 /protocol
 /algorithm
 /digital-sanctuary
+/ohi-output-pipeline
 ```
 
 ## Primary mega menu
@@ -90,9 +100,47 @@ The public mega menu should use these seven primary links:
 6. Docs
 7. Shop
 
-`Open Console` should remain a persistent CTA that links to `/dashboard`.
+`Open Console` should remain a persistent CTA that links to `/dashboard` or the app control plane.
 
-Supporting links such as Latest News, Legal, and Contact belong in the footer, mobile menu, and secondary navigation, not in the seven-slot primary mega menu.
+Supporting links such as Latest News, Legal, Contact, Protocol, Algorithm, and OHI Output Pipeline may appear in secondary navigation, footer links, cards, and contextual page CTAs.
+
+## Node and environment setup
+
+Primary environment file:
+
+```text
+.env.example
+```
+
+Required production variables include:
+
+```text
+OMOS_CANONICAL_HOST
+ONEGODIAN_ORG_URL
+ONEGODIAN_STORE_URL
+ONEGODIAN_APP_URL
+ONEGODIAN_UNIVERSITY_URL
+ONEGODIAN_GALAXY_URL
+ONEGODIAN_CAPITAL_URL
+QUANTUMOHI_URL
+OMOS_API_KEYS
+OMOS_WP_PLUGIN_VERSION
+```
+
+## Manifests and static API fallbacks
+
+Machine-readable setup files:
+
+```text
+config/ecosystem.manifest.json
+public/api/ecosystem
+public/api/tools
+public/api/artifacts
+public/api/docs
+public/api/bridge/status
+```
+
+These files support plugin and dashboard development before all dynamic API controllers are finalized.
 
 ## WordPress plugin bridge
 
@@ -105,6 +153,8 @@ The OMOS plugin used on:
 should:
 
 - consume `/api/manifest`
+- consume `/api/ecosystem`
+- consume `/api/bridge/status`
 - sync route inventories
 - expose OMOS shortcodes
 - render OMOS cards and documentation blocks
@@ -117,9 +167,13 @@ should:
 ```text
 [omos_manifest]
 [omos_runtime_status]
+[omos_ecosystem_cards]
 [omos_bridge_builder]
 [omos_tool_grid]
+[omos_artifact_grid]
 [omos_docs_grid]
+[omos_open_console_button]
+[omos_ohi_pipeline]
 ```
 
 ## Commerce bridge
@@ -145,8 +199,10 @@ OMOS routes explain, document, and route traffic into:
 6. `npm run smoke:pages`
 7. Deploy Node runtime
 8. Confirm `/api/manifest` output
-9. Confirm plugin sync on connected WordPress sites
-10. Confirm app.OneGodian.com connectivity
+9. Confirm `/api/ecosystem` output
+10. Confirm `/api/bridge/status` output
+11. Confirm plugin sync on connected WordPress sites
+12. Confirm app.OneGodian.com connectivity
 
 ## Priority implementation order
 
@@ -156,7 +212,7 @@ OMOS routes explain, document, and route traffic into:
 4. Set Home as the static front page.
 5. Build the seven-link main navigation and 4-column footer.
 6. Connect tool shortcodes to generated pages.
-7. Implement and test `[omos_bridge_builder]`, then connect `/tools/bridge-builder`.
+7. Keep `[omos_bridge_builder]` as planned until runtime implementation is tested.
 8. Connect shop pages to Stripe/WooCommerce products.
 9. Publish first OMOS news, OHI reports, and Council updates.
 10. Add analytics and conversion tracking.
@@ -166,9 +222,11 @@ OMOS routes explain, document, and route traffic into:
 
 Store WXR/XML, shortcodes, import instructions, menu/footer structure, and plugin support files in `/wordpress`.
 
-Current WordPress page drafts:
+Current WordPress page drafts and plugin files:
 
 - `wordpress/pages/bridge-builder-tool-page.md`
+- `wordpress/plugin-architecture/omos-core-tools-production-structure.md`
+- `wordpress/plugin-architecture/PLUGIN_TARGETS_ONEGODIAN_COM_ORG_QUANTUMOHI.md`
 
 ## Documentation assets
 
@@ -177,6 +235,7 @@ Store protocol, runtime, algorithm, timekeeping, agent authority, declaration ge
 Current documentation additions:
 
 - `docs/bridge-builder-protocol.md`
+- `docs/OMOS_NODE_CONTENT_AND_PLUGIN_BRIDGE_PLAN.md`
 
 ## Tool requirements
 
@@ -193,7 +252,7 @@ The WordPress plugin manifest must match the master sitemap. Any new public rout
 1. the sitemap/source-map documentation; and
 2. the WordPress page generator manifest.
 
-For Bridge-Builder, the route `/tools/bridge-builder` and shortcode `[omos_bridge_builder]` should not be treated as operational until the shortcode is implemented, tested, and connected through the plugin manifest.
+For Bridge-Builder, the route `/tools/bridge-builder` and shortcode `[omos_bridge_builder]` should not be treated as operational until the shortcode/API/runtime is implemented, tested, and connected through the plugin manifest.
 
 ## Commercial path
 
