@@ -1,0 +1,20 @@
+{
+  "status": "ok",
+  "source": "static-fallback",
+  "version": "1.0.0",
+  "canonicalControlPlane": "https://app.onegodian.com",
+  "properties": [
+    {"id":"organization","name":"OneGodian.org","url":"https://onegodian.org","role":"Organization / public identity / institutional home","pluginTarget":true},
+    {"id":"store","name":"OneGodian.com","url":"https://onegodian.com","role":"Store platform / commerce plugin","pluginTarget":true},
+    {"id":"university","name":"u.OneGodian.com","url":"https://u.onegodian.com","role":"E-learning / LMS plugin","pluginTarget":false},
+    {"id":"galaxy","name":"galaxy.OneGodian.com","url":"https://galaxy.onegodian.com","role":"Galaxy console / planet navigator / planet-store gateway","pluginTarget":false},
+    {"id":"capital","name":"capital.OneGodian.com","url":"https://capital.onegodian.com","role":"Corporate finance / capital platform plugin","pluginTarget":false},
+    {"id":"omos","name":"OMOS.OneGodian.com","url":"https://omos.onegodian.com","role":"OMOS protocol / specification / alignment system","pluginTarget":true},
+    {"id":"app","name":"app.OneGodian.com","url":"https://app.onegodian.com","role":"Node app / command center / repository-connected control plane","pluginTarget":false},
+    {"id":"quantumohi","name":"QuantumOHI.com","url":"https://quantumohi.com","role":"Quantum-OHI platform / alignment and governance content","pluginTarget":true}
+  ],
+  "pluginUse": {
+    "primaryPlugin": "omos-core-tools",
+    "targets": ["OneGodian.com", "OneGodian.org", "QuantumOHI.com"]
+  }
+}
