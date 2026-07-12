@@ -56,6 +56,7 @@ async function run() {
   assert.ok(Array.isArray(manifest.publicRoutes));
   assert.ok(manifest.publicRoutes.includes("/omos"));
   assert.ok(manifest.publicRoutes.includes("/ohi"));
+  assert.ok(manifest.publicRoutes.includes("/animations"));
 
   const apiManifest = await expectJson("/api/manifest");
   assert.strictEqual(apiManifest.id, "omos-site");
@@ -67,10 +68,10 @@ async function run() {
 
   const stats = await expectJson("/api/stats");
   assert.strictEqual(stats.status, "ok");
-  assert.ok(stats.publicRoutes >= 12);
+  assert.ok(stats.publicRoutes >= 13);
   assert.ok(stats.ecosystemNodes >= 6);
 
-  for (const route of ["/", "/omos", "/protocol", "/algorithm", "/ohi", "/alignment-api", "/tools", "/docs", "/plugin-bridge", "/legal", "/contact", "/dashboard", "/admin"]) {
+  for (const route of ["/", "/omos", "/protocol", "/algorithm", "/ohi", "/alignment-api", "/tools", "/docs", "/plugin-bridge", "/animations", "/legal", "/contact", "/dashboard", "/admin"]) {
     await expectHtml(route);
   }
 
