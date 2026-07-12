@@ -15,7 +15,25 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const OMOS_VERSION = SITE.version || "1.1.0";
 
-const runtimeRoutes = Object.keys(pages);
+const animationsPage = {
+  title: "OMOS Motion Lab",
+  eyebrow: "ANIMATIONS + INTERACTIVE FUNCTIONS",
+  summary: "Interactive motion studies for the OMOS public site, dashboard experience, OHI output pipeline, and WordPress plugin bridge surfaces.",
+  cta: { label: "Open Dashboard", href: "/dashboard" },
+  secondaryCta: { label: "Open Plugin Bridge", href: "/plugin-bridge" },
+  sections: [
+    {
+      title: "Purpose",
+      body: "The Motion Lab turns OMOS from a static documentation site into a living protocol environment with animated architecture, interactive cards, route status panels, and visible synthesis flows."
+    },
+    {
+      title: "Production rule",
+      body: "Motion must support clarity, not distract from it. Every animation should explain architecture, signal readiness, guide navigation, or demonstrate the OHI output process."
+    }
+  ]
+};
+
+const runtimeRoutes = [...Object.keys(pages), "/animations"];
 
 const omosManifest = {
   id: "omos-site",
@@ -32,7 +50,7 @@ const omosManifest = {
   },
   publicRoutes: runtimeRoutes,
   appStructure: {
-    publicAppLayer: ["/", "/omos", "/protocol", "/algorithm", "/ohi", "/alignment-api", "/tools", "/docs", "/plugin-bridge", "/legal", "/contact"],
+    publicAppLayer: ["/", "/omos", "/protocol", "/algorithm", "/ohi", "/alignment-api", "/tools", "/docs", "/plugin-bridge", "/animations", "/legal", "/contact"],
     dashboardLayer: ["/dashboard"],
     adminLayer: ["/admin"],
     apiBridgeLayer: ["/health", "/manifest", "/api/health", "/api/manifest", "/api/tools", "/api/stats", "/process"]
@@ -45,7 +63,8 @@ const omosManifest = {
     apiTools: { method: "GET", path: "/api/tools", authRequired: false },
     apiStats: { method: "GET", path: "/api/stats", authRequired: false },
     process: { method: "POST", path: "/process", authRequired: true, authHeader: "x-omos-key" },
-    dashboard: { method: "GET", path: "/dashboard", authRequired: false }
+    dashboard: { method: "GET", path: "/dashboard", authRequired: false },
+    animations: { method: "GET", path: "/animations", authRequired: false }
   },
   capabilities: ["observe", "distill", "align", "select", "execute", "verify"],
   integrationTargets: [
@@ -137,6 +156,7 @@ app.post("/process", requireApiKey, rateLimit(), (req, res) => {
 });
 
 app.get("/dashboard", (req, res) => res.send(renderDashboard()));
+app.get("/animations", (req, res) => res.send(renderPage("/animations", animationsPage)));
 
 for (const [route, page] of Object.entries(pages)) {
   app.get(route, (req, res) => res.send(renderPage(route, page)));
