@@ -1,0 +1,90 @@
+{
+  "id": "omos-production-platform",
+  "name": "OMOS Production Platform",
+  "canonicalHost": "https://omos.onegodian.com",
+  "operator": "ONEGODIAN, LLC",
+  "founderAuthor": "Gregory Lamar Jones / One Gregory Onegodian™",
+  "statusVocabulary": ["active", "available", "planned", "draft", "archived"],
+  "primaryNavigation": [
+    { "label": "Platform", "path": "/omos" },
+    { "label": "Identity", "path": "/identity" },
+    { "label": "Intelligence", "path": "/intelligence" },
+    { "label": "Workspace", "path": "/workspace" },
+    { "label": "Developers", "path": "/developers" },
+    { "label": "Learn", "path": "/learn" },
+    { "label": "Enterprise", "path": "/enterprise" }
+  ],
+  "persistentAction": { "label": "Open Console", "path": "/dashboard" },
+  "domains": [
+    {
+      "id": "identity-runtime",
+      "name": "Identity Runtime",
+      "status": "planned",
+      "routes": ["/identity", "/identity/belief-mapper", "/identity/declarations", "/identity/certificates", "/identity/records", "/members"]
+    },
+    {
+      "id": "ohi-intelligence-engine",
+      "name": "OHI Intelligence Engine",
+      "status": "available",
+      "routes": ["/intelligence", "/models", "/ohi-output-pipeline", "/intelligence/gcd-synthesis", "/intelligence/verification"]
+    },
+    {
+      "id": "multi-agent-workspace",
+      "name": "Multi-Agent Workspace",
+      "status": "planned",
+      "routes": ["/workspace", "/workspace/projects", "/workspace/workflows", "/workspace/runs", "/workspace/agents"]
+    },
+    {
+      "id": "onegodian-algorithm",
+      "name": "Interactive OneGodian Algorithm",
+      "status": "available",
+      "routes": ["/algorithm", "/algorithm/observe", "/algorithm/distill", "/algorithm/align", "/algorithm/select", "/algorithm/execute", "/algorithm/verify"]
+    },
+    {
+      "id": "developer-center",
+      "name": "Developer Center",
+      "status": "available",
+      "routes": ["/developers", "/developers/api", "/developers/openapi", "/developers/schemas", "/developers/playground", "/developers/webhooks", "/developers/status"]
+    },
+    {
+      "id": "runtime-dashboard",
+      "name": "Runtime Dashboard",
+      "status": "available",
+      "routes": ["/dashboard", "/status", "/registry", "/settings", "/admin"]
+    },
+    {
+      "id": "learning-center",
+      "name": "Learning Center",
+      "status": "planned",
+      "routes": ["/learn", "/learn/omos", "/learn/ohi", "/learn/protocol", "/learn/algorithm", "/learn/developers"]
+    },
+    {
+      "id": "verification-center",
+      "name": "Verification Center",
+      "status": "planned",
+      "routes": ["/verification", "/verification/documents", "/verification/certificates", "/verification/registry"]
+    },
+    {
+      "id": "digital-sanctuary",
+      "name": "Digital Sanctuary",
+      "status": "available",
+      "routes": ["/digital-sanctuary"]
+    },
+    {
+      "id": "commerce-integration",
+      "name": "Commerce Integration",
+      "status": "available",
+      "routes": ["/shop", "/enterprise"]
+    }
+  ],
+  "algorithmSequence": ["observe", "distill", "align", "select", "execute", "verify"],
+  "ecosystemRoles": {
+    "OneGodian.org": "Public explanation, education, organizational and institutional context",
+    "OneGodian.com": "Commerce, products, memberships, courses, downloads, and checkout",
+    "OMOS.OneGodian.com": "Runtime, execution, developer infrastructure, tools, manifests, and documentation",
+    "QuantumOHI.com": "Enterprise technology, consulting, infrastructure, and advanced OHI services",
+    "QRV.Network": "Document, credential, and registry verification",
+    "app.OneGodian.com": "Authenticated command and operations control plane"
+  },
+  "productionRule": "A feature is operational only when it is implemented, documented, repeatable, versioned, and testable."
+}
