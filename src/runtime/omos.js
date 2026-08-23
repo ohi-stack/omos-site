@@ -37,7 +37,7 @@ function OMOSProcess(payload = {}) {
   return {
     requestId,
     runtime: 'omos-runtime',
-    version: '0.1.0',
+    version: process.env.OMOS_VERSION || '1.1.0',
     pipeline: ['observe', 'distill', 'align', 'select', 'execute', 'verify'],
     input,
     observed: {
@@ -53,7 +53,13 @@ function OMOSProcess(payload = {}) {
     output: selected
       ? selected.text
       : input || 'No input or options were provided for OMOS processing.',
-    verified: true,
+    verification: {
+      status: 'partial',
+      factualVerification: 'not_established',
+      humanReviewRequired: true,
+      note: 'Heuristic selection and deterministic processing do not by themselves establish factual truth.'
+    },
+    outputStatus: 'HUMAN_REVIEW_REQUIRED',
     timestampUtc: new Date().toISOString()
   };
 }
