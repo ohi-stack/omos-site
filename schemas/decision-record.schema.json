@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://omos.onegodian.com/schemas/decision-record.schema.json",
+  "title": "OMOS Decision Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["decision_id", "run_id", "runtime_version", "algorithm_version", "ruleset_version", "mode", "input_hash", "models_used", "claims", "evidence_refs", "agreement_zones", "contradictions", "missing_ideas", "novel_insights", "supported_dissent", "alignment_scores", "hard_constraints", "confidence", "human_approval_required", "human_approval_status", "verification_status", "timestamp_utc", "timestamp_local", "timestamp_ot", "output_hash"],
+  "properties": {
+    "decision_id": {"type": "string", "minLength": 1},
+    "run_id": {"type": "string", "minLength": 1},
+    "runtime_version": {"type": "string", "minLength": 1},
+    "algorithm_version": {"type": "string", "minLength": 1},
+    "ruleset_version": {"type": "string", "minLength": 1},
+    "mode": {"type": "string", "enum": ["SIMULATION", "LIVE_PROVIDER", "MIXED"]},
+    "input_hash": {"type": "string", "minLength": 1},
+    "models_used": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "claims": {"type": "array", "items": {"type": "string"}},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "agreement_zones": {"type": "array", "items": {"type": "string"}},
+    "contradictions": {"type": "array", "items": {"type": "string"}},
+    "missing_ideas": {"type": "array", "items": {"type": "string"}},
+    "novel_insights": {"type": "array", "items": {"type": "string"}},
+    "supported_dissent": {"type": "array", "items": {"type": "string"}},
+    "alignment_scores": {"$ref": "alignment-state.schema.json"},
+    "hard_constraints": {"type": "object"},
+    "confidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "overall": {"type": "number", "minimum": 0, "maximum": 1},
+        "evidence_quality": {"type": "number", "minimum": 0, "maximum": 1},
+        "model_agreement": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "recommended_action": {"type": ["string", "null"]},
+    "alternatives": {"type": "array", "items": {"type": "string"}},
+    "human_approval_required": {"type": "boolean"},
+    "human_approval_status": {"type": "string", "enum": ["not_required", "pending", "approved", "rejected", "revision_required"]},
+    "human_reviewer_id": {"type": ["string", "null"]},
+    "human_review_note": {"type": ["string", "null"]},
+    "verification_status": {"type": "string", "enum": ["unverified", "partial", "verified", "failed"]},
+    "timestamp_utc": {"type": "string", "format": "date-time"},
+    "timestamp_local": {"type": "string", "minLength": 1},
+    "timestamp_ot": {"type": "string", "minLength": 1},
+    "output_hash": {"type": "string", "minLength": 1}
+  }
+}
