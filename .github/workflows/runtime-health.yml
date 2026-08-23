@@ -1,0 +1,94 @@
+name: OMOS Runtime Health
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: omos-runtime-health
+  cancel-in-progress: true
+
+jobs:
+  health:
+    name: Check live OMOS runtime
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Probe runtime surfaces
+        id: probe
+        shell: bash
+        run: |
+          set -u
+          BASE="https://omos.onegodian.com"
+          FAILED=0
+          REPORT=""
+
+          check() {
+            local label="$1"
+            local url="$2"
+            local code
+            code=$(curl -L --silent --show-error --output /tmp/body --write-out '%{http_code}' --connect-timeout 10 --max-time 25 "$url" || echo "000")
+            if [[ "$code" =~ ^2|^3 ]]; then
+              REPORT+="- PASS: ${label} (${url}) HTTP ${code}\n"
+            else
+              REPORT+="- FAIL: ${label} (${url}) HTTP ${code}\n"
+              FAILED=1
+            fi
+          }
+
+          check "OMOS home" "$BASE/"
+          check "Manifest" "$BASE/manifest"
+          check "Console" "$BASE/console"
+          check "OHI pipeline" "$BASE/ohi-output-pipeline"
+
+          printf '%b' "$REPORT" | tee runtime-health.txt
+          echo "failed=$FAILED" >> "$GITHUB_OUTPUT"
+
+          if [[ "$FAILED" -ne 0 ]]; then
+            exit 1
+          fi
+
+      - name: Upload probe summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: omos-runtime-health
+          path: runtime-health.txt
+          retention-days: 14
+
+      - name: Create or update outage issue
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '[Runtime Health] OMOS degraded or unavailable';
+            const marker = '<!-- omos-runtime-health -->';
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100
+            });
+            const existing = issues.find(i => i.title === title && !i.pull_request);
+            const body = `${marker}\nAutomated runtime health check failed.\n\nRun: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\nChecked: ${new Date().toISOString()}\n\nReview the workflow artifact for endpoint-level results.`;
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.number,
+                body
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+                labels: []
+              });
+            }
