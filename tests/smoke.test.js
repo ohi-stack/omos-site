@@ -33,6 +33,7 @@ async function checkHtml(path, text) {
   assert.strictEqual(response.statusCode, 200);
   assert.ok(String(response.headers["content-type"] || "").includes("text/html"));
   assert.ok(response.body.includes(text));
+  return response.body;
 }
 
 async function run() {
@@ -44,6 +45,7 @@ async function run() {
 
   const manifest = await checkJson("/manifest", { id: "omos-site", name: "OMOS Runtime" });
   assert.ok(manifest.routes.public.includes("/dashboard"));
+  assert.ok(manifest.routes.public.includes("/ohi-output-pipeline"));
   assert.ok(manifest.wordpressPlugin.compatibleHosts.length >= 1);
   assert.ok(manifest.commerceBridge.primaryStore);
 
@@ -64,12 +66,18 @@ async function run() {
     ["/contact", "Contact"],
     ["/protocol", "Protocol"],
     ["/algorithm", "Algorithm"],
-    ["/digital-sanctuary", "Digital Sanctuary"]
+    ["/digital-sanctuary", "Digital Sanctuary"],
+    ["/ohi-output-pipeline", "Cross-Model Review Cycle"]
   ];
 
   for (const [path, expectedText] of routes) {
     await checkHtml(path, expectedText);
   }
+
+  const pipeline = await checkHtml("/ohi-output-pipeline", "Simulation Mode");
+  assert.ok(pipeline.includes("Run OHI Cycle"));
+  assert.ok(pipeline.includes("Decision Record Preview"));
+  assert.ok(pipeline.includes("No external API calls"));
 
   console.log("OMOS smoke tests passed.");
 }
