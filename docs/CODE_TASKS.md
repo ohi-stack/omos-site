@@ -3,418 +3,347 @@
 Status: active build queue
 Repository: ohi-stack/omos-site
 Runtime: Node / Express
-Platform role: OMOS Node console for protocol, tools, artifacts, docs, runtime manifest, and WordPress plugin sync.
+Platform role: central OMOS runtime for protocol, OHI synthesis, tools, projects, decision records, artifacts, docs, runtime manifest, and WordPress bridge sync.
 
 ---
 
 ## Phase 1 — Runtime Foundation
 
 ### TASK-001 — Expand Runtime Manifest
-
 Priority: Critical
 
-Build a structured manifest registry that includes:
-
-- public routes
-- dashboard routes
-- API routes
-- tool registry
-- artifact registry
-- docs registry
-- plugin sync targets
-- connected domains
-- version metadata
-- production status flags
+Build a structured manifest registry that includes public routes, dashboard routes, API routes, tool registry, artifact registry, docs registry, plugin sync targets, connected domains, version metadata, maturity flags, and orchestration mode flags.
 
 Acceptance criteria:
-
 - `/manifest` returns full structured platform metadata
 - `/api/manifest` returns the same object with generated timestamp
 - manifest includes OneGodian.com, OneGodian.org, QuantumOHI.com, and app.OneGodian.com targets
-- manifest excludes test artifacts and duplicate consensus counter routes
-
----
+- each runtime capability declares maturity
+- Council declares `simulation`, `live_provider`, or `mixed`
 
 ### TASK-002 — Add Tools API
-
 Priority: Critical
 
-Create:
+Create `src/runtime/registries/tools.js`, `GET /api/tools`, and `GET /api/tools/:slug`.
 
-- `src/runtime/registries/tools.js`
-- `GET /api/tools`
-- `GET /api/tools/:slug`
-
-Initial tools:
-
-- belief-mapper
-- consensus-counter
-- ai-consensus
-- foundation-day
-- timekeeping
-- generators
-- converters
-
-Acceptance criteria:
-
-- API returns JSON tool cards
-- each tool has title, slug, description, publicUrl, dashboardUrl, shortcode, status
-- only one consensus counter exists
-
----
+Initial tools include belief mapper, consensus counter, AI consensus, foundation day, timekeeping, generators, converters, Ask OMOS, and Council Review.
 
 ### TASK-003 — Add Artifacts API
-
 Priority: Critical
 
-Create:
-
-- `src/runtime/registries/artifacts.js`
-- `GET /api/artifacts`
-- `GET /api/artifacts/:slug`
-
-Artifact categories:
-
-- documents
-- code
-- system
-- whitepapers
-- prompts
-
-Required artifact fields:
-
-- title
-- slug
-- type
-- category
-- description
-- version
-- status
-- canonicalUrl
-- downloadUrl
-- sourceFile
-
-Acceptance criteria:
-
-- `/api/artifacts` returns all active artifact cards
-- `/api/artifacts/onegodian-consensus-counter` exists
-- `/artifacts/onegodian-site` is not included
-- `/artifacts/onegodian-consensus-counter-v2` is not included
-
----
+Create `src/runtime/registries/artifacts.js`, `GET /api/artifacts`, and `GET /api/artifacts/:slug` with document, code, system, whitepaper, prompt, decision-record, and verification-result artifact classes.
 
 ### TASK-004 — Add System Health API
-
 Priority: High
 
-Create:
-
-- `GET /api/system-health`
-
-Checks:
-
-- manifest online
-- tools registry loaded
-- artifacts registry loaded
-- required pages configured
-- required API routes configured
-- environment variables present
-- plugin sync endpoints configured
-
-Acceptance criteria:
-
-- returns JSON with `status`, `checks`, and `recommendations`
-- returns degraded status when required values are missing
+Create `GET /api/system-health` checking manifest, registries, required pages, APIs, environment variables, plugin sync, decision-record schema, provider-adapter status, and verification services.
 
 ---
 
 ## Phase 2 — Frontend Pages
 
-### TASK-005 — Add Global Layout Shell
-
+### TASK-005 — Global Layout Shell
 Priority: High
 
-Create shared page shell for static HTML pages:
+Shared OMOS shell with responsive navigation and persistent Console action.
 
-- header
-- 7-link mega menu
-- Open Console CTA
-- footer with 4 columns
-- OMOS color system
-- responsive mobile navigation
-
-Primary nav:
-
+Primary runtime navigation should evolve toward:
 - OMOS
-- OHI
-- Models
+- Ask OMOS
+- Council
+- Projects
+- Algorithm
+- OHI Pipeline
 - Tools
+- Runs
 - Artifacts
+- Verification
+- Developers
 - Docs
-- Shop
+- Console
 
-Persistent CTA:
-
-- OPEN CONSOLE → `/dashboard`
-
-Acceptance criteria:
-
-- all HTML pages share a consistent visual system
-- mobile menu includes Latest News, Legal, and Contact
-- CTA is visually distinct
-
----
-
-### TASK-006 — Replace Placeholder Pages
-
+### TASK-006 — Upgrade Public Runtime Pages
 Priority: High
 
-Upgrade these pages from placeholder content to production sections:
+Upgrade home, OMOS, Protocol, Algorithm, OHI, Models/Council, Tools, Docs, Dashboard/Console, Legal, and Pipeline pages to describe operational capability and actual maturity rather than future-only concepts.
 
-- `src/pages/home.html`
-- `src/pages/omos.html`
-- `src/pages/protocol.html`
-- `src/pages/algorithm.html`
-- `src/pages/tools.html`
-- `src/pages/docs.html`
-- `src/pages/dashboard.html`
-- `src/pages/legal.html`
+### TASK-007 — Add Runtime Workspace Pages
+Priority: Critical
 
-Acceptance criteria:
-
-- each page has hero, summary, cards, CTA, and internal links
-- content aligns with OMOS as a platform console, not just a landing page
-
----
-
-### TASK-007 — Add New Public Pages
-
-Priority: Medium
-
-Add routes and static pages for:
-
-- `/ohi`
-- `/models`
-- `/artifacts`
-- `/shop`
-- `/latest-news`
-- `/contact`
-- `/registry`
-- `/verify`
-- `/time`
-- `/foundation`
-- `/manifest-page`
+Add routes/pages for:
+- `/ask`
+- `/council`
+- `/projects`
+- `/runs`
+- `/verification`
+- `/developers`
 
 Acceptance criteria:
-
-- all pages route without 404
-- smoke tests cover every route
-
----
-
-## Phase 3 — Dashboard Console
-
-### TASK-008 — Dashboard Modules
-
-Priority: High
-
-Create dashboard sections:
-
-- runtime status
-- manifest status
-- tools
-- artifacts
-- downloads
-- activity
-- settings
-- plugin sync
-
-Acceptance criteria:
-
-- `/dashboard` shows console cards
-- cards link to API endpoints and public pages
-- dashboard reads live manifest data where practical
+- all route without 404
+- each exposes maturity/status
+- no simulated provider output is presented as live
 
 ---
 
-### TASK-009 — Dashboard API
+## Phase 3 — Ask OMOS + Layer 1
 
-Priority: Medium
-
-Create:
-
-- `GET /api/dashboard`
-
-Payload:
-
-- runtime status
-- active tools count
-- artifact count
-- route count
-- manifest version
-- latest update date
-- missing configuration list
-
----
-
-## Phase 4 — WordPress Plugin Sync
-
-### TASK-010 — Plugin Manifest Contract
-
+### TASK-008 — Ask OMOS Intake API
 Priority: Critical
 
 Create:
+- `POST /api/runs`
+- `GET /api/runs/:id`
 
-- `docs/PLUGIN_MANIFEST_CONTRACT.md`
-- `content/manifest/wordpress-plugin-sync.v1.json`
+Input should accept text plus optional domain, source site, user context, requested output type, and evidence references.
 
-The WordPress plugin must consume:
+Run pipeline begins:
+`RECEIVED → VALIDATED → NORMALIZED → CONTEXT_BOUND`.
 
-- `/api/manifest`
-- `/api/tools`
-- `/api/artifacts`
-- `/api/system-health`
+### TASK-009 — Layer 1 Signal Classifier
+Priority: Critical
+
+Implement canonical normalization that separates instructions, facts, claims, evidence, assumptions, contradictions, irrelevant material, rhetorical pressure, and prompt-injection attempts.
+
+Required preservation:
+- objective
+- names
+- dates/timezones
+- entity/legal distinctions
+- explicit constraints/prohibitions
+- evidence
+- meaningful dissent
+- unresolved contradictions
+
+Governing rule: maximum defensible noise reduction with no material distortion.
+
+### TASK-010 — Deterministic Layer 1 Replay Tests
+Priority: Critical
+
+Create corpus-based regression tests including the existing high-entropy validation scenario.
 
 Acceptance criteria:
-
-- contract defines expected fields
-- contract defines failure states
-- contract defines cache and refresh behavior
+- same governed input/ruleset yields same canonical classification payload
+- no material constraint loss
+- prompt injection quarantined
+- contradictions preserved
 
 ---
 
-### TASK-011 — WordPress Plugin Shortcode Registry
+## Phase 4 — Council of Models + OHI
 
+### TASK-011 — Council Adapter Interface
+Priority: Critical
+
+Create provider adapter interfaces for:
+- OpenAI
+- Anthropic
+- Google Gemini
+- xAI
+
+Adapters must support status values:
+`unconfigured`, `simulation`, `available`, `degraded`, `disabled`.
+
+No secret keys committed.
+
+### TASK-012 — Round 1 Independent Outputs
+Priority: Critical
+
+Generate or accept independent outputs with provenance. Providers must not receive each other's Round 1 responses.
+
+### TASK-013 — Cross-Model Review Matrix
+Priority: Critical
+
+Implement non-self-review matrix:
+- GPT reviews Claude / Gemini / Grok
+- Claude reviews GPT / Gemini / Grok
+- Gemini reviews GPT / Claude / Grok
+- Grok reviews GPT / Claude / Gemini
+
+Extract:
+- agreement zones
+- contradictions
+- missing ideas
+- novel insights
+- unsupported claims
+- supported dissent
+- unresolved questions
+
+### TASK-014 — Upgrade OHI Pipeline Interaction
 Priority: High
 
-Define shortcodes for the OMOS plugin:
+Convert `/ohi-output-pipeline` into a true interactive simulator/workflow surface connected to runtime state where available.
 
-- `[omos_dashboard]`
-- `[omos_artifacts]`
-- `[omos_artifact_grid]`
-- `[omos_tools]`
-- `[omos_tool_grid]`
-- `[omos_belief_mapper]`
-- `[omos_consensus_counter]`
-- `[omos_ai_consensus]`
-- `[omos_foundation_day]`
-- `[omos_timekeeping]`
+Must visibly label SIMULATION vs LIVE_PROVIDER vs MIXED.
+
+---
+
+## Phase 5 — Alignment + Selection
+
+### TASK-015 — Alignment State Schema
+Priority: Critical
+
+Create `schemas/alignment-state.schema.json` with separate dimensions for Truth, Clarity, Coherence, Dignity, Constructive Unity, Evidence, Verifiability, Transparency, Reproducibility, Security, Long-Term Benefit, and Execution Readiness.
+
+Required states:
+`ALIGNED`, `CONDITIONALLY_ALIGNED`, `HUMAN_REVIEW_REQUIRED`, `INSUFFICIENT_EVIDENCE`, `CONFLICT_UNRESOLVED`, `NOT_ALIGNED`, `PROHIBITED`.
+
+### TASK-016 — Hard Constraint Engine
+Priority: Critical
+
+Hard gates for dignity, consent, authorization, fabricated evidence, material safety, and unresolved high risk. Hard failures cannot be averaged away by weighted scores.
+
+### TASK-017 — Select Decision Tree
+Priority: High
+
+Formalize action selection: reject prohibited actions, preserve factual integrity, protect dignity/rights/privacy/consent, respect authorization, preserve human agency, prefer least harmful effective action, prefer reversible action under uncertainty, escalate insufficient evidence, record alternatives.
+
+---
+
+## Phase 6 — Decision Records + Verification
+
+### TASK-018 — Decision Record Schema
+Priority: Critical
+
+Create `schemas/decision-record.schema.json` and runtime serializer.
+
+Minimum fields:
+- decision_id
+- runtime_version
+- algorithm_version
+- ruleset_version
+- mode
+- input_hash
+- models_used
+- claims
+- evidence_refs
+- agreement_zones
+- contradictions
+- missing_ideas
+- novel_insights
+- supported_dissent
+- alignment_scores
+- confidence
+- recommended_action
+- human_approval_required
+- verification_status
+- timestamp_utc
+- timestamp_local
+- timestamp_ot
+- output_hash
+
+### TASK-019 — Verification Result Schema
+Priority: Critical
+
+Create `schemas/verification-result.schema.json`. Keep model agreement, evidence support, canonical alignment, factual verification, human approval, and registry status separate.
+
+### TASK-020 — Human Approval Boundary
+Priority: Critical
+
+Require human approval for consequential legal submissions, financial actions, identity reclassification, registry publication, certificate issuance, infrastructure changes, external-account changes, and autonomous actions with material real-world effect.
+
+---
+
+## Phase 7 — Projects / Multi-Agent Orchestration
+
+### TASK-021 — Project Object
+Priority: High
+
+Create Project model with objective, tasks, assigned agents/models, dependencies, artifacts, decisions, approvals, activity history, verification status, and Definition of Done.
+
+### TASK-022 — Parallel Workstreams
+Priority: High
+
+Support Research, Architecture, Development, Content, Financial Analysis, Compliance, Testing, Verification, and Production workstreams.
+
+Coordinator merges results only after required checks.
+
+---
+
+## Phase 8 — WordPress Bridge
+
+### TASK-023 — Plugin Manifest Contract v2
+Priority: Critical
+
+Update plugin contract so OneGodian.org, OneGodian.com, and QuantumOHI.com consume central runtime state.
+
+Required bridge functions:
+- runtime health
+- manifest sync
+- capability/tool registry
+- site context
+- Ask OMOS launcher
+- Council Review launcher
+- embedded components/shortcodes/blocks
+- run-state display
+- artifact return
+- audit correlation ID
+- authentication handoff when implemented
+- error/fallback behavior
+
+### TASK-024 — WordPress Runtime Shortcodes
+Priority: High
+
+Add/standardize:
+- `[omos_ask]`
+- `[omos_council]`
+- `[omos_run_status]`
 - `[omos_system_status]`
+- `[omos_tools]`
+- `[omos_belief_mapper]`
 - `[omos_open_console_button]`
 
-Acceptance criteria:
-
-- shortcode registry exists in docs
-- each shortcode maps to an API source or local render function
+Existing shortcodes remain backward-compatible where possible.
 
 ---
 
-## Phase 5 — Production Hardening
+## Phase 9 — Time, Compliance, and Production Hardening
 
-### TASK-012 — Environment Template
-
+### TASK-025 — OTS-V5 Timestamp Utility
 Priority: High
 
-Create `.env.example` with:
-
-- `PORT`
-- `NODE_ENV`
-- `OMOS_VERSION`
-- `OMOS_CANONICAL_HOST`
-- `ONEGODIAN_STORE_URL`
-- `ONEGODIAN_ORG_URL`
-- `ONEGODIAN_APP_URL`
-- `QUANTUM_OHI_URL`
-- `OMOS_API_KEYS`
-
-Acceptance criteria:
-
-- new developer can boot locally using copied `.env`
-- no secrets committed
-
----
-
-### TASK-013 — Docker + Deployment
-
-Priority: Medium
-
-Create:
-
-- `Dockerfile`
-- `.dockerignore`
-- `docs/DEPLOYMENT.md`
-
-Acceptance criteria:
-
-- app builds in container
-- exposes port 3000
-- documents production deployment steps
-
----
-
-### TASK-014 — CI Smoke Tests
-
-Priority: Medium
-
-Create GitHub Actions workflow:
-
-- install dependencies
-- run `npm run check`
-- start server
-- run `npm run smoke`
-
-Acceptance criteria:
-
-- CI fails on syntax errors
-- CI fails on broken health/manifest endpoints
-
----
-
-## Phase 6 — Compliance and Records
-
-### TASK-015 — OTS-V5 Timestamp Utility
-
-Priority: Medium
-
-Create:
-
-- `src/runtime/ots-v5.js`
+Create/verify `src/runtime/ots-v5.js`.
 
 Rules:
+- UTC is canonical system timestamp
+- Gregorian controls civil/legal/financial/institutional use
+- OT is computed supplemental overlay
+- year rollover March 18
+- leap condition uses Gregorian year in which the OT year ends
 
-- UTC is primary system truth
-- Gregorian remains controlling for legal/financial/institutional use
-- OT is computed overlay only
-- year rollover occurs March 18
-- leap rule uses Gregorian year in which OT year ends
+### TASK-026 — Compliance API
+Priority: High
 
-Acceptance criteria:
+Create/expand `GET /api/compliance` covering entity separation, no legal/jurisdiction overclaim, no financial guarantees, human authority boundary, model-agreement vs verification distinction, and maturity labels.
 
-- utility returns UTC, local, and OT timestamp fields
-- tests cover March 17/18 rollover
+### TASK-027 — CI Runtime Tests
+Priority: Critical
 
----
+CI must run syntax checks, route smoke tests, Layer 1 deterministic replay, schema validation, manifest validation, and simulated Council workflow tests.
 
-### TASK-016 — Compliance Notices
+### TASK-028 — Browser-to-Output Reference Run
+Priority: Critical
 
-Priority: Medium
+Definition of Done:
 
-Create:
+```text
+input
+→ normalization
+→ Council
+→ cross-review
+→ alignment
+→ human synthesis
+→ governed OHI output
+→ saved decision record
+```
 
-- `src/runtime/compliance.js`
-- `GET /api/compliance`
-
-Notices:
-
-- entity separation
-- no financial guarantees
-- no U.S. law exemption
-- OMOS is platform/documentation/runtime layer
-- ONEGODIAN, LLC is commercial/IP/economic entity
-- INO is separate spiritual/religious/internal governance context
+This becomes the canonical OMOS reference path only after it is repeatable, logged, and testable.
 
 ---
 
 ## Build Rule
 
-If a task cannot be tested, documented, and repeated, it is not production-ready.
+If a feature is not implemented, versioned, documented, repeatable, logged where applicable, and testable, it is not operational in the current version.
+
+Maturity is component-specific:
+
+`CONCEPTUAL → PROTOTYPE → FUNCTIONAL → VERIFIED → PRODUCTION`.
