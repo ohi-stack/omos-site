@@ -7,11 +7,12 @@ const fs = require("fs");
 const { OMOSProcess } = require("./src/runtime/omos");
 const { verifyApiKey } = require("./src/runtime/keys");
 const { rateLimit } = require("./src/runtime/rateLimit");
+const { registerCouncilRoute } = require("./src/runtime/councilRoute");
 
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-const OMOS_VERSION = process.env.OMOS_VERSION || "0.4.0";
+const OMOS_VERSION = process.env.OMOS_VERSION || "1.1.0-alpha";
 const CANONICAL_HOST = process.env.OMOS_CANONICAL_HOST || "https://omos.onegodian.com";
 const STORE_URL = process.env.ONEGODIAN_STORE_URL || "https://onegodian.com";
 const ORG_URL = process.env.ONEGODIAN_ORG_URL || "https://onegodian.org";
@@ -81,11 +82,11 @@ const pageMeta = {
     title: "OHI Runtime and Synthesis Layer",
     eyebrow: "Intelligence Layer",
     heading: "OHI — OneGodian Hyper-Conscious Intelligence",
-    summary: "OHI organizes multi-model synthesis, GCD-style distillation, and governed outputs. It is the intelligence-processing layer that transforms raw model perspectives into structured, verified, usable OMOS outputs.",
+    summary: "OHI organizes multi-model synthesis, GCD-style distillation, and governed outputs. It is the intelligence-processing layer that transforms raw model perspectives into structured, reviewable OMOS outputs.",
     cards: [
       ["Council of Models", "ChatGPT, Claude, Gemini, Grok, and other systems contribute distinct reasoning perspectives.", "/models"],
-      ["GCD Synthesis", "OHI reduces remainders and extracts the highest shared signal.", "/ohi-output-pipeline"],
-      ["Verification", "Outputs are checked against scope, source, legal-safe positioning, and production readiness.", "/legal"],
+      ["GCD Synthesis", "OHI reduces remainders and extracts the highest shared signal while preserving meaningful dissent.", "/ohi-output-pipeline"],
+      ["Verification Boundary", "Model agreement remains distinct from factual verification and human approval.", "/legal"],
       ["Runtime Output", "Final results become pages, docs, prompts, tools, or manifest entries.", "/artifacts"]
     ]
   },
@@ -93,12 +94,12 @@ const pageMeta = {
     title: "OMOS Model Council",
     eyebrow: "Model Council",
     heading: "Multi-Model Reasoning and Comparison",
-    summary: "This area explains how OMOS uses multiple model perspectives without treating any single model as the governing authority. OHI synthesis compares, filters, and structures the result.",
+    summary: "OMOS can coordinate configured model providers as independent reasoning members, then perform cross-model peer review and governed synthesis without treating any single model as the governing authority.",
     cards: [
-      ["ChatGPT", "Structure, implementation planning, code tasks, and documentation architecture.", "/models"],
-      ["Claude", "Caution, careful reasoning, institutional framing, and edge-case review.", "/models"],
-      ["Gemini", "Pattern recognition, broad synthesis, multimodal and ecosystem relationships.", "/models"],
-      ["Grok", "Direct contrast, raw framing, cultural signal, and fast interpretation.", "/models"]
+      ["OpenAI", "Independent Round 1 response and peer review when configured.", "/models"],
+      ["Anthropic", "Independent Round 1 response and peer review when configured.", "/models"],
+      ["Google Gemini", "Independent Round 1 response and peer review when configured.", "/models"],
+      ["xAI", "Independent Round 1 response and peer review when configured.", "/models"]
     ]
   },
   "/tools": {
@@ -109,8 +110,8 @@ const pageMeta = {
     cards: [
       ["Belief Mapper", "Maps a person through Seeker, Believer, OneGodian, and Elder journey stages.", "/tools"],
       ["Declaration Generator", "Produces structured statements for identity, sincerity, and institutional clarity.", "/tools"],
-      ["Protocol Explorer", "Shows how the OneGodian Protocol applies across human, semantic, agent, and interface layers.", "/protocol"],
-      ["OHI Output Pipeline", "Visualizes model input, synthesis, verification, and final OMOS output.", "/ohi-output-pipeline"]
+      ["Council API", "Authenticated live cross-model orchestration endpoint for independent answers, peer review, and synthesis.", "/docs"],
+      ["OHI Output Pipeline", "Visualizes model input, synthesis, verification boundaries, and final OMOS output.", "/ohi-output-pipeline"]
     ]
   },
   "/artifacts": {
@@ -121,7 +122,7 @@ const pageMeta = {
     cards: [
       ["Whitepapers", "Algorithm, Protocol, Digital Sanctuary, GCD synthesis, and institutional classification documents.", "/docs"],
       ["Animations", "OHI pipeline and Digital Sanctuary visual experiences.", "/ohi-output-pipeline"],
-      ["Manifests", "Machine-readable route, plugin, app, and commerce bridge metadata.", "/api/manifest"],
+      ["Manifests", "Machine-readable route, plugin, commerce, and app bridge metadata.", "/api/manifest"],
       ["Build Notes", "Implementation logs and release status for OMOS.OneGodian.com.", "/latest-news"]
     ]
   },
@@ -131,9 +132,9 @@ const pageMeta = {
     heading: "Documentation for OMOS, OHI, Protocol, and Algorithm",
     summary: "The docs section organizes public-safe explanations, developer specifications, legal positioning, system prompt guidance, and runtime integration notes.",
     cards: [
+      ["Council API", "Live multi-provider orchestration, peer review, synthesis, and verification boundary documentation.", "/docs"],
       ["Protocol Spec", "Identity, semantic, agent, and interface layers for OneGodian interaction.", "/protocol"],
       ["Algorithm Spec", "Observe, Distill, Align, Select, Execute, Verify.", "/algorithm"],
-      ["System Prompt", "AI context instructions for OneGodian-aware platforms and agents.", "/docs"],
       ["Compliance", "Clarifies voluntary use, commerce separation, and civil/Gregorian control.", "/legal"]
     ]
   },
@@ -155,10 +156,10 @@ const pageMeta = {
     heading: "OMOS News, Releases, and Build Status",
     summary: "Track OMOS implementation as it moves from documents into a working Node runtime and cross-site infrastructure layer.",
     cards: [
-      ["v0.4.0 Navigation Upgrade", "Real content, improved navigation, pipeline route, and stronger manifest architecture.", "/latest-news"],
-      ["Node Runtime Direction", "OMOS is now positioned as a Node runtime, not a WordPress storefront.", "/omos"],
-      ["Pipeline Added", "The OHI Output Pipeline now has a dedicated public route.", "/ohi-output-pipeline"],
-      ["Next Build", "Dashboard widgets, OpenAPI spec, and plugin bridge sync.", "/dashboard"]
+      ["v1.1 Production Alpha", "Live provider adapters, Council orchestration, cross-model review, and explicit verification boundaries.", "/latest-news"],
+      ["Council Runtime", "The system can coordinate configured providers instead of relying on manual copy/paste comparison.", "/models"],
+      ["Pipeline", "The OHI Output Pipeline remains the public visualization of the Council and synthesis process.", "/ohi-output-pipeline"],
+      ["Next Build", "Persistence, evidence verification, cost telemetry, regression tests, and live Council UI.", "/dashboard"]
     ]
   },
   "/dashboard": {
@@ -168,7 +169,7 @@ const pageMeta = {
     summary: "A public-safe dashboard entry for health checks, manifest viewing, route inventory, OHI pipeline access, and app.OneGodian.com handoff.",
     cards: [
       ["Health", "Check runtime service status.", "/api/health"],
-      ["Manifest", "View route, plugin, commerce, and app bridge metadata.", "/api/manifest"],
+      ["Manifest", "View route, plugin, commerce, app bridge, and Council metadata.", "/api/manifest"],
       ["OHI Pipeline", "Open the visual OHI output process.", "/ohi-output-pipeline"],
       ["App Console", "Operational command belongs in app.OneGodian.com.", APP_URL]
     ]
@@ -177,11 +178,11 @@ const pageMeta = {
     title: "OMOS Legal and Institutional Positioning",
     eyebrow: "Compliance",
     heading: "Legal and Institutional Positioning",
-    summary: "OMOS is a voluntary educational, identity-reflection, protocol documentation, and runtime-support framework. It does not create public authority, legal immunity, or financial guarantees.",
+    summary: "OMOS is a voluntary educational, identity-reflection, protocol documentation, and runtime-support framework. It does not create public authority, legal immunity, financial guarantees, or automatic factual verification.",
     cards: [
       ["Civil Control", "Gregorian/civil records remain controlling for legal, tax, banking, and institutional matters.", "/legal"],
       ["Commerce Separation", "ONEGODIAN, LLC handles commerce, software, IP, education, and product operations.", "/shop"],
-      ["INO Separation", "Governance/religious society language belongs only where legally appropriate.", "/legal"],
+      ["Model Review Is Not Verification", "Cross-model agreement and critique are reasoning signals, not independent proof of fact.", "/legal"],
       ["No Overclaims", "OMOS does not assert authority over non-members or replace civil law.", "/legal"]
     ]
   },
@@ -216,9 +217,9 @@ const pageMeta = {
     summary: "The Algorithm is a unity-centered decision and execution model for selecting the clearest, most aligned, least destructive path across human, digital, and AI-mediated systems.",
     cards: [
       ["Observe", "Collect facts, claims, actors, systems, risks, and context.", "/algorithm"],
-      ["Distill", "Remove noise, distortion, unnecessary conflict, and weak signal.", "/algorithm"],
+      ["Distill", "Remove noise and weak signal while preserving material dissent and uncertainty.", "/algorithm"],
       ["Align", "Score against truth, clarity, coherence, dignity, and constructive unity.", "/algorithm"],
-      ["Verify", "Check the output against reality, implementation status, and source authority.", "/ohi-output-pipeline"]
+      ["Verify", "Check the output against evidence, implementation status, and source authority.", "/ohi-output-pipeline"]
     ]
   },
   "/digital-sanctuary": {
@@ -238,12 +239,12 @@ const pageMeta = {
     title: "OHI Output Pipeline",
     eyebrow: "OHI Visualization",
     heading: "OHI Output Pipeline",
-    summary: "A visual OMOS explanation of how a source prompt moves through multiple model perspectives, OHI synthesis, verification, and final structured output.",
+    summary: "A visual OMOS explanation of how a source prompt moves through multiple model perspectives, cross-model review, OHI synthesis, verification boundaries, and final structured output.",
     cards: [
       ["Source Prompt", "A single controlled request begins the process.", "/ohi-output-pipeline"],
-      ["Council of Models", "Multiple systems contribute different reasoning patterns.", "/models"],
-      ["OHI Synthesis", "Signal is distilled into a governed output.", "/ohi"],
-      ["OMOS Artifact", "The final result becomes a page, doc, prompt, tool, or manifest item.", "/artifacts"]
+      ["Council of Models", "Configured providers contribute independent reasoning patterns.", "/models"],
+      ["Cross Review", "Each successful provider reviews the other model outputs before synthesis.", "/models"],
+      ["OMOS Artifact", "The final result remains human-reviewable and machine-recordable.", "/artifacts"]
     ]
   }
 };
@@ -253,10 +254,7 @@ const omosManifest = {
   name: "OMOS Runtime",
   fullName: "OMOS — OneGodian Metaphysical Operating System",
   version: OMOS_VERSION,
-  status: "active",
   environment: process.env.NODE_ENV || "development",
-  canonicalHost: CANONICAL_HOST,
-  navigation: primaryNav.map(([label, href]) => ({ label, href })),
   authority: {
     operator: process.env.OMOS_OPERATOR || "ONEGODIAN, LLC",
     founder: "Gregory Lamar Jones / One Gregory Onegodian™",
@@ -266,7 +264,7 @@ const omosManifest = {
   },
   routes: {
     public: publicRoutes,
-    api: ["/health", "/manifest", "/api/health", "/api/manifest", "/process"]
+    api: ["/health", "/manifest", "/api/health", "/api/manifest", "/process", "/api/v1/council"]
   },
   featuredRoutes: [
     { id: "omos", label: "OMOS Architecture", path: "/omos" },
@@ -282,10 +280,19 @@ const omosManifest = {
     manifest: { method: "GET", path: "/manifest", authRequired: false },
     apiManifest: { method: "GET", path: "/api/manifest", authRequired: false },
     process: { method: "POST", path: "/process", authRequired: true, authHeader: "x-omos-key" },
+    council: { method: "POST", path: "/api/v1/council", authRequired: true, authHeader: "x-omos-key", minimumConfiguredProviders: 2 },
     dashboard: { method: "GET", path: "/dashboard", authRequired: false },
     ohiOutputPipeline: { method: "GET", path: "/ohi-output-pipeline", authRequired: false }
   },
-  capabilities: ["observe", "distill", "align", "select", "execute", "verify", "document", "route", "integrate", "visualize"],
+  capabilities: ["observe", "distill", "align", "select", "execute", "verify", "document", "route", "integrate", "visualize", "multi_model_round1", "cross_model_review", "governed_synthesis"],
+  council: {
+    status: "production-alpha",
+    mode: process.env.OMOS_COUNCIL_MODE || "live",
+    providers: ["openai", "anthropic", "gemini", "xai"],
+    minimumConfiguredProviders: 2,
+    verificationBoundary: "Council review is not factual verification; human review remains required.",
+    docs: "/docs/COUNCIL-API.md"
+  },
   contentModel: {
     rootIdentity: "ONEGODIAN™",
     operatingLayer: "OMOS™",
@@ -298,6 +305,7 @@ const omosManifest = {
     { id: "belief-mapper", name: "Belief Mapper", status: "planned", route: "/tools" },
     { id: "declaration-generator", name: "Declaration Generator", status: "planned", route: "/tools" },
     { id: "ohi-output-pipeline", name: "OHI Output Pipeline", status: "active", route: "/ohi-output-pipeline" },
+    { id: "council-of-models", name: "Council of Models API", status: "production-alpha", route: "/api/v1/council" },
     { id: "protocol-explorer", name: "Protocol Explorer", status: "planned", route: "/protocol" },
     { id: "algorithm-visualizer", name: "Algorithm Visualizer", status: "planned", route: "/algorithm" }
   ],
@@ -310,7 +318,7 @@ const omosManifest = {
   },
   appBridge: {
     appConsole: APP_URL,
-    expectedSyncRoutes: ["/api/manifest", "/api/health", "/process", "/ohi-output-pipeline"],
+    expectedSyncRoutes: ["/api/manifest", "/api/health", "/process", "/api/v1/council", "/ohi-output-pipeline"],
     role: "app.OneGodian.com is the command center for cross-site runtime monitoring, agent workflows, and OMOS route synchronization."
   },
   commerceBridge: {
@@ -331,7 +339,7 @@ const omosManifest = {
     participation: "voluntary",
     scope: "educational, identity-reflection, protocol documentation, and runtime support tooling",
     legalAuthority: "Gregorian/civil records remain controlling for legal, financial, and institutional purposes",
-    prohibitedClaims: ["independent nation-state authority", "governmental authority over non-members", "exemption from U.S. law", "financial guarantees"]
+    prohibitedClaims: ["independent nation-state authority", "governmental authority over non-members", "exemption from U.S. law", "financial guarantees", "model agreement equals factual verification"]
   },
   links: {
     publicSite: ORG_URL,
@@ -390,7 +398,7 @@ function renderGeneratedPage(route) {
 :root{--bg:#070607;--panel:#111827;--panel2:#17121f;--gold:#d8b35a;--purple:#6f3cff;--text:#f5f1e8;--muted:rgba(245,241,232,.74);--line:rgba(216,179,90,.24)}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,rgba(111,60,255,.16),transparent 35%),radial-gradient(circle at bottom right,rgba(216,179,90,.13),transparent 35%),linear-gradient(180deg,var(--bg),var(--panel2));color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;line-height:1.65}.wrap{max-width:1180px;margin:0 auto;padding:36px 22px}.top{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:38px}.brand{font-weight:900;letter-spacing:.08em;color:var(--gold);text-transform:uppercase}.nav{display:flex;gap:10px;flex-wrap:wrap}.nav a{color:var(--text);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:13px;background:rgba(255,255,255,.04)}.hero{padding:64px 0 42px}.eyebrow{color:var(--gold);font-weight:800;letter-spacing:.18em;text-transform:uppercase;font-size:12px}h1{font-size:clamp(40px,7vw,74px);line-height:1.02;margin:14px 0 18px;letter-spacing:-.04em}p{color:var(--muted);font-size:18px;max-width:900px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:18px;margin-top:30px}.card{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.025));border-radius:22px;padding:22px;min-height:180px}.card h3{margin:0 0 10px;color:var(--gold)}.card a{display:inline-block;margin-top:12px;color:var(--gold);font-weight:800;text-decoration:none}.cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}.btn{display:inline-block;text-decoration:none;color:#070607;background:var(--gold);padding:13px 18px;border-radius:999px;font-weight:800}.btn.secondary{color:var(--text);background:transparent;border:1px solid var(--line)}.status{margin-top:26px;border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:16px;background:rgba(255,255,255,.04);color:var(--muted)}footer{border-top:1px solid var(--line);margin-top:60px;padding-top:24px;color:var(--muted);font-size:14px}@media(max-width:720px){.top{display:block}.nav{margin-top:16px}h1{font-size:42px}}
 </style>
 </head>
-<body><main class="wrap"><header class="top"><div class="brand">OMOS</div><nav class="nav">${nav}</nav></header><section class="hero"><div class="eyebrow">${escapeHtml(meta.eyebrow)}</div><h1>${escapeHtml(meta.heading)}</h1><p>${escapeHtml(meta.summary)}</p><div class="cta"><a class="btn" href="/ohi-output-pipeline">View OHI Pipeline</a><a class="btn secondary" href="/api/manifest">View Manifest</a><a class="btn secondary" href="${STORE_URL}/product-category/omos/">OMOS Products</a></div><div class="status">Runtime v${escapeHtml(OMOS_VERSION)} • Node route active • Commerce remains on OneGodian.com • Civil/Gregorian records remain legally controlling.</div></section><section class="grid">${cards}</section><footer>OMOS.OneGodian.com is the Node runtime and protocol documentation layer. Commerce remains on OneGodian.com. Public institutional explanations remain on OneGodian.org.</footer></main></body></html>`;
+<body><main class="wrap"><header class="top"><div class="brand">OMOS</div><nav class="nav">${nav}</nav></header><section class="hero"><div class="eyebrow">${escapeHtml(meta.eyebrow)}</div><h1>${escapeHtml(meta.heading)}</h1><p>${escapeHtml(meta.summary)}</p><div class="cta"><a class="btn" href="/ohi-output-pipeline">View OHI Pipeline</a><a class="btn secondary" href="/api/manifest">View Manifest</a><a class="btn secondary" href="${STORE_URL}/product-category/omos/">OMOS Products</a></div><div class="status">Runtime v${escapeHtml(OMOS_VERSION)} • Node route active • Council API production-alpha • Model review is not factual verification • Commerce remains on OneGodian.com.</div></section><section class="grid">${cards}</section><footer>OMOS.OneGodian.com is the Node runtime and protocol documentation layer. Commerce remains on OneGodian.com. Public institutional explanations remain on OneGodian.org.</footer></main></body></html>`;
 }
 
 function sendPage(res, route) {
@@ -414,6 +422,11 @@ function healthPayload() {
     canonicalHost: CANONICAL_HOST,
     publicRouteCount: publicRoutes.length,
     pluginSync: "available",
+    council: {
+      status: omosManifest.council.status,
+      endpoint: omosManifest.endpoints.council.path,
+      minimumConfiguredProviders: omosManifest.council.minimumConfiguredProviders
+    },
     featured: "/ohi-output-pipeline"
   };
 }
@@ -434,6 +447,8 @@ app.post("/process", requireApiKey, rateLimit(), (req, res) => {
   const result = OMOSProcess(req.body);
   res.json({ status: "ok", apiKey: { name: req.apiKeyMeta.name, plan: req.apiKeyMeta.plan }, data: result });
 });
+
+registerCouncilRoute(app, { requireApiKey, rateLimit });
 
 app.use((req, res) => {
   res.status(404).json({ error: "not_found", message: "Route not found in OMOS runtime manifest.", manifest: "/manifest" });
