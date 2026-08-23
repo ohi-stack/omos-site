@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://omos.onegodian.com/schemas/alignment-state.schema.json",
+  "title": "OMOS Alignment State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "positive_dimensions", "negative_dimensions", "hard_constraints", "overall_alignment", "confidence"],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["ALIGNED", "CONDITIONALLY_ALIGNED", "HUMAN_REVIEW_REQUIRED", "INSUFFICIENT_EVIDENCE", "CONFLICT_UNRESOLVED", "NOT_ALIGNED", "PROHIBITED"]
+    },
+    "positive_dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["truth", "clarity", "coherence", "dignity", "constructive_unity", "evidence", "verifiability", "transparency", "reproducibility", "security", "long_term_benefit", "execution_readiness"],
+      "properties": {
+        "truth": {"$ref": "#/$defs/score"},
+        "clarity": {"$ref": "#/$defs/score"},
+        "coherence": {"$ref": "#/$defs/score"},
+        "dignity": {"$ref": "#/$defs/score"},
+        "constructive_unity": {"$ref": "#/$defs/score"},
+        "evidence": {"$ref": "#/$defs/score"},
+        "verifiability": {"$ref": "#/$defs/score"},
+        "transparency": {"$ref": "#/$defs/score"},
+        "reproducibility": {"$ref": "#/$defs/score"},
+        "security": {"$ref": "#/$defs/score"},
+        "long_term_benefit": {"$ref": "#/$defs/score"},
+        "execution_readiness": {"$ref": "#/$defs/score"}
+      }
+    },
+    "negative_dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["distortion", "manipulation", "unjustified_fragmentation", "needless_conflict", "unsupported_claims", "hidden_risk", "coercion", "unauthorized_action"],
+      "properties": {
+        "distortion": {"$ref": "#/$defs/score"},
+        "manipulation": {"$ref": "#/$defs/score"},
+        "unjustified_fragmentation": {"$ref": "#/$defs/score"},
+        "needless_conflict": {"$ref": "#/$defs/score"},
+        "unsupported_claims": {"$ref": "#/$defs/score"},
+        "hidden_risk": {"$ref": "#/$defs/score"},
+        "coercion": {"$ref": "#/$defs/score"},
+        "unauthorized_action": {"$ref": "#/$defs/score"}
+      }
+    },
+    "hard_constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dignity", "consent", "authorization", "fabricated_evidence", "material_safety", "unresolved_high_risk"],
+      "properties": {
+        "dignity": {"$ref": "#/$defs/gate"},
+        "consent": {"$ref": "#/$defs/gate"},
+        "authorization": {"$ref": "#/$defs/gate"},
+        "fabricated_evidence": {"$ref": "#/$defs/gate"},
+        "material_safety": {"$ref": "#/$defs/gate"},
+        "unresolved_high_risk": {"$ref": "#/$defs/gate"}
+      }
+    },
+    "overall_alignment": {"$ref": "#/$defs/score"},
+    "confidence": {"$ref": "#/$defs/score"},
+    "notes": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "score": {"type": "number", "minimum": 0, "maximum": 1},
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": {"type": "string", "enum": ["PASS", "FAIL", "REVIEW", "NOT_APPLICABLE"]},
+        "reason": {"type": ["string", "null"]}
+      }
+    }
+  }
+}
