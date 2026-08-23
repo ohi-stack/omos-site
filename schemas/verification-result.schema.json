@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://omos.onegodian.com/schemas/verification-result.schema.json",
+  "title": "OMOS Verification Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["verification_id", "decision_id", "model_agreement", "evidence_support", "canonical_alignment", "factual_verification", "human_approval", "registry_status", "status", "checked_at_utc"],
+  "properties": {
+    "verification_id": {"type": "string", "minLength": 1},
+    "decision_id": {"type": "string", "minLength": 1},
+    "model_agreement": {"type": "number", "minimum": 0, "maximum": 1},
+    "evidence_support": {"type": "number", "minimum": 0, "maximum": 1},
+    "canonical_alignment": {"type": "number", "minimum": 0, "maximum": 1},
+    "factual_verification": {"type": "string", "enum": ["not_checked", "insufficient_evidence", "partial", "verified", "contradicted", "failed"]},
+    "human_approval": {"type": "string", "enum": ["not_required", "pending", "approved", "rejected", "revision_required"]},
+    "registry_status": {"type": "string", "enum": ["not_requested", "planned", "prototype", "implemented", "verified", "production", "failed"]},
+    "status": {"type": "string", "enum": ["UNVERIFIED", "PARTIAL", "VERIFIED", "FAILED", "HUMAN_REVIEW_REQUIRED"]},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "unresolved_claims": {"type": "array", "items": {"type": "string"}},
+    "notes": {"type": "array", "items": {"type": "string"}},
+    "checked_at_utc": {"type": "string", "format": "date-time"}
+  }
+}
