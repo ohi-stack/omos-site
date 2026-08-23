@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://omos.onegodian.com/schemas/decision-record-1.1.json",
+  "title": "OMOS Decision Record v1.1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "decisionId",
+    "runtimeVersion",
+    "algorithmVersion",
+    "rulesetVersion",
+    "maturity",
+    "humanOversight",
+    "intake",
+    "evaluatedOptions",
+    "humanApprovalRequired",
+    "verificationStatus",
+    "output",
+    "outputHash",
+    "timestampUtc"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.1.0" },
+    "decisionId": { "type": "string", "minLength": 1 },
+    "runtimeVersion": { "type": "string" },
+    "algorithmVersion": { "type": "string" },
+    "rulesetVersion": { "type": "string" },
+    "maturity": { "enum": ["conceptual", "prototype", "functional", "verified", "production"] },
+    "humanOversight": { "type": "boolean" },
+    "pipeline": {
+      "type": "array",
+      "items": { "enum": ["observe", "distill", "align", "select", "execute", "verify"] },
+      "minItems": 6,
+      "maxItems": 6
+    },
+    "intake": {
+      "type": "object",
+      "required": ["canonicalInput", "inputHash", "hasInput", "riskFlags", "status"],
+      "properties": {
+        "canonicalInput": { "type": "string" },
+        "inputHash": { "type": "string", "pattern": "^sha256:" },
+        "hasInput": { "type": "boolean" },
+        "riskFlags": { "type": "array", "items": { "type": "string" } },
+        "status": { "enum": ["validated", "human_review_required"] }
+      }
+    },
+    "modelsUsed": { "type": "array", "items": { "type": "string" } },
+    "evaluatedOptions": { "type": "array", "items": { "$ref": "#/$defs/evaluatedOption" } },
+    "contradictions": { "type": "array" },
+    "supportedDissent": { "type": "array" },
+    "evidenceRefs": { "type": "array" },
+    "humanApprovalRequired": { "type": "boolean" },
+    "verificationStatus": {
+      "enum": ["eligible_for_reviewed_execution", "informational_or_human_review", "failed"]
+    },
+    "output": { "type": "string" },
+    "outputHash": { "type": "string", "pattern": "^sha256:" },
+    "timestampUtc": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "evaluatedOption": {
+      "type": "object",
+      "required": ["label", "text", "alignmentScores", "penalties", "hardGates", "failedGates", "overallAlignment", "confidence", "status"],
+      "properties": {
+        "label": { "type": "string" },
+        "text": { "type": "string" },
+        "alignmentScores": { "type": "object", "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 } },
+        "penalties": { "type": "object", "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 } },
+        "hardGates": { "type": "object", "additionalProperties": { "type": "boolean" } },
+        "failedGates": { "type": "array", "items": { "type": "string" } },
+        "overallAlignment": { "type": "number", "minimum": 0, "maximum": 1 },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "status": { "enum": ["aligned", "conditionally_aligned", "human_review_required", "insufficient_evidence", "prohibited"] }
+      }
+    }
+  }
+}
