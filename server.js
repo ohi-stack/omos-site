@@ -5,7 +5,7 @@ const path = require("path");
 const fs = require("fs");
 
 const { OMOSProcess } = require("./src/runtime/omos");
-const { runCouncil } = require("./src/runtime/orchestrator");
+const { runCouncil, getCouncilRun, listCouncilRuns } = require("./src/runtime/orchestrator");
 const { verifyApiKey } = require("./src/runtime/keys");
 const { rateLimit } = require("./src/runtime/rateLimit");
 
@@ -65,27 +65,42 @@ const omosManifest = {
   navigation: primaryNav.map(([label, href]) => ({ label, href })),
   routes: {
     public: publicRoutes,
-    api: ["/health", "/manifest", "/api/health", "/api/manifest", "/process", "/api/v1/council/run", "/api/v1/providers"]
+    api: [
+      "/health", "/manifest", "/api/health", "/api/manifest", "/process",
+      "/api/v1/council/run", "/api/v1/council/runs", "/api/v1/council/runs/:id",
+      "/api/v1/providers"
+    ]
   },
   endpoints: {
     health: { method: "GET", path: "/health", authRequired: false },
     manifest: { method: "GET", path: "/api/manifest", authRequired: false },
     process: { method: "POST", path: "/process", authRequired: true, authHeader: "x-omos-key" },
     councilRun: { method: "POST", path: "/api/v1/council/run", authRequired: true, authHeader: "x-omos-key" },
+    councilRuns: { method: "GET", path: "/api/v1/council/runs", authRequired: true, authHeader: "x-omos-key" },
+    councilRunRecord: { method: "GET", path: "/api/v1/council/runs/:id", authRequired: true, authHeader: "x-omos-key" },
     providers: { method: "GET", path: "/api/v1/providers", authRequired: false }
   },
   orchestration: {
     modes: ["simulation", "hybrid", "live"],
     providers: ["openai", "anthropic", "gemini", "xai"],
+    rounds: ["independent_outputs", "cross_model_review", "human_synthesis"],
+    crossReviewMatrix: "4x4 excluding self-review",
+    signals: ["agreement_zones", "contradictions", "missing_evidence", "novel_insights"],
     humanReviewRequired: true,
     modelAgreementIsNotFactualVerification: true,
-    runRecord: true
+    runRecord: true,
+    runRecordStorage: "in_memory_bounded",
+    durableStorageStatus: "planned"
   },
   wordpressPlugin: {
     compatibleHosts: ALLOWED_PLUGIN_ORIGINS,
-    requiredEndpoints: ["/api/health", "/api/manifest"],
+    requiredEndpoints: ["/api/health", "/api/manifest", "/api/v1/providers"],
     shortcodes: ["[omos_manifest]", "[omos_runtime_status]", "[omos_bridge_builder]", "[omos_tool_grid]", "[omos_docs_grid]", "[omos_ohi_pipeline]"],
     pluginTargets: ["OneGodian.com", "OneGodian.org", "QuantumOHI.com"]
+  },
+  appBridge: {
+    target: APP_URL,
+    recommendedWidgets: ["runtime_health", "provider_status", "recent_council_runs", "run_record", "verification_status"]
   },
   links: { publicSite: ORG_URL, commerceSite: STORE_URL, appConsole: APP_URL, quantumOhi: QUANTUM_OHI_URL, omosSite: CANONICAL_HOST }
 };
@@ -132,7 +147,19 @@ function providerStatus() {
 
 function healthPayload() {
   const providers = providerStatus();
-  return { status: "ok", service: omosManifest.id, version: OMOS_VERSION, environment: omosManifest.environment, canonicalHost: CANONICAL_HOST, orchestration: { providers, liveProviderCount: providers.filter((p) => p.configured).length } };
+  return {
+    status: "ok",
+    service: omosManifest.id,
+    version: OMOS_VERSION,
+    environment: omosManifest.environment,
+    canonicalHost: CANONICAL_HOST,
+    orchestration: {
+      providers,
+      liveProviderCount: providers.filter((p) => p.configured).length,
+      crossModelReview: true,
+      runRecordApi: true
+    }
+  };
 }
 
 app.get(["/health", "/api/health"], (req, res) => res.json(healthPayload()));
@@ -157,9 +184,27 @@ app.post("/api/v1/council/run", requireApiKey, rateLimit(), async (req, res) => 
     });
     res.json({ status: "ok", apiKey: { name: req.apiKeyMeta.name, plan: req.apiKeyMeta.plan }, data });
   } catch (error) {
-    const status = error.message === "prompt_required" ? 400 : 500;
+    const status = error.message === "prompt_required" || error.message === "provider_required" ? 400 : 500;
     res.status(status).json({ error: "council_run_failed", message: error.message });
   }
+});
+
+app.get("/api/v1/council/runs", requireApiKey, (req, res) => {
+  res.json({
+    status: "ok",
+    apiKey: { name: req.apiKeyMeta.name, plan: req.apiKeyMeta.plan },
+    data: listCouncilRuns(req.query.limit)
+  });
+});
+
+app.get("/api/v1/council/runs/:id", requireApiKey, (req, res) => {
+  const record = getCouncilRun(req.params.id);
+  if (!record) return res.status(404).json({ error: "run_not_found", requestId: req.params.id });
+  res.json({
+    status: "ok",
+    apiKey: { name: req.apiKeyMeta.name, plan: req.apiKeyMeta.plan },
+    data: record
+  });
 });
 
 app.use((req, res) => res.status(404).json({ error: "not_found", message: "Route not found in OMOS runtime manifest.", manifest: "/manifest" }));
