@@ -25,6 +25,11 @@
     return String(value ?? '').replace(/[&<>'"]/g, (char) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#039;', '"':'&quot;' }[char]));
   }
 
+  function authHeaders() {
+    const key = apiKey.value.trim() || sessionStorage.getItem('omos_api_key') || '';
+    return key ? { 'x-omos-key': key } : {};
+  }
+
   function renderStages(stages = defaultStages) {
     stageList.innerHTML = stages.map((stage) => `
       <div class="ask-stage" data-status="${escapeHtml(stage.status || 'PENDING')}">
@@ -71,11 +76,12 @@
     $('governed').innerHTML = `
       <p><strong>Summary</strong><br>${escapeHtml(governed.summary || '')}</p>
       <p><strong>Recommendation</strong><br>${escapeHtml(governed.recommendation || '')}</p>
-      <p><strong>Verification state</strong><br>${escapeHtml(governed.verificationState || '')}</p>`;
+      <p><strong>Verification state</strong><br>${escapeHtml(governed.verificationState || '')}</p>
+      <p><strong>Persistence</strong><br>${escapeHtml(record.persistence?.backend || 'unknown')} · ${record.persistence?.durable ? 'durable' : 'not durable'}</p>`;
 
     humanGate.classList.toggle('is-visible', record.currentStage === 6 || record.outputStatus === 'HUMAN_REVIEW_REQUIRED');
     results.classList.add('is-visible');
-    saveHistory(record);
+    saveBrowserHistory(record);
   }
 
   function setLoading(on) {
@@ -90,6 +96,19 @@
 
   function hideError() {
     errorBox.classList.remove('is-visible');
+  }
+
+  async function loadPersistenceStatus() {
+    try {
+      const response = await fetch('/api/v1/persistence');
+      const payload = await response.json();
+      const persistence = payload.persistence || {};
+      $('persistenceStatus').textContent = persistence.durable
+        ? `Decision Records: PostgreSQL durable storage configured${persistence.initialized ? ' and initialized' : ''}.`
+        : 'Decision Records: memory fallback only. Configure DATABASE_URL before claiming restart-safe persistence.';
+    } catch (error) {
+      $('persistenceStatus').textContent = 'Persistence status unavailable.';
+    }
   }
 
   async function runOmos() {
@@ -110,6 +129,8 @@
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.message || payload.error || `Request failed (${response.status})`);
       renderRecord(payload.data);
+      await loadServerHistory();
+      await loadPersistenceStatus();
     } catch (error) {
       showError(error.message || 'OMOS run failed.');
       renderStages(defaultStages.map((s, i) => ({ ...s, status: i === 0 ? 'FAILED' : 'PENDING' })));
@@ -118,7 +139,7 @@
     }
   }
 
-  function saveHistory(record) {
+  function saveBrowserHistory(record) {
     const existing = JSON.parse(localStorage.getItem('omos_ask_history') || '[]');
     const item = {
       requestId: record.requestId,
@@ -130,35 +151,96 @@
     };
     const next = [item, ...existing.filter((x) => x.requestId !== item.requestId)].slice(0, 20);
     localStorage.setItem('omos_ask_history', JSON.stringify(next));
-    renderHistory();
   }
 
-  function renderHistory() {
-    const items = JSON.parse(localStorage.getItem('omos_ask_history') || '[]');
+  function renderHistoryItems(items, source = 'browser') {
     $('historyList').innerHTML = items.length ? items.map((item) => `
-      <div class="ask-history-item"><strong>${escapeHtml(item.requestId)}</strong><br>${escapeHtml(item.mode)} · ${escapeHtml(item.humanDecision || item.outputStatus || '')}<br>${escapeHtml((item.prompt || '').slice(0, 160))}</div>`).join('') : '<div class="ask-history-item">No browser-session runs yet.</div>';
+      <div class="ask-history-item">
+        <strong>${escapeHtml(item.requestId)}</strong><br>
+        ${escapeHtml(item.mode || '')} · ${escapeHtml(item.humanDecision || item.outputStatus || '')}<br>
+        ${item.prompt ? escapeHtml(String(item.prompt).slice(0, 160)) : ''}
+        ${source === 'server' ? `<br><button type="button" data-run-id="${escapeHtml(item.requestId)}">Open Decision Record</button>` : ''}
+      </div>`).join('') : '<div class="ask-history-item">No Decision Records yet.</div>';
+
+    if (source === 'server') {
+      document.querySelectorAll('[data-run-id]').forEach((button) => {
+        button.addEventListener('click', () => openServerRun(button.getAttribute('data-run-id')));
+      });
+    }
   }
 
-  function localDisposition(decision) {
+  function renderBrowserHistory() {
+    const items = JSON.parse(localStorage.getItem('omos_ask_history') || '[]');
+    renderHistoryItems(items, 'browser');
+  }
+
+  async function loadServerHistory() {
+    const key = apiKey.value.trim() || sessionStorage.getItem('omos_api_key') || '';
+    if (!key) return renderBrowserHistory();
+    try {
+      const response = await fetch('/api/v1/council/runs?limit=20', { headers: { 'x-omos-key': key } });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.message || payload.error || 'History request failed');
+      renderHistoryItems(payload.data || [], 'server');
+    } catch (error) {
+      renderBrowserHistory();
+    }
+  }
+
+  async function openServerRun(requestId) {
+    hideError();
+    const key = apiKey.value.trim() || sessionStorage.getItem('omos_api_key') || '';
+    if (!key) return showError('Enter your OMOS API key to reopen a Decision Record.');
+    try {
+      const response = await fetch(`/api/v1/council/runs/${encodeURIComponent(requestId)}`, { headers: { 'x-omos-key': key } });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.message || payload.error || 'Decision Record could not be opened');
+      renderRecord(payload.data);
+      window.scrollTo({ top: results.offsetTop - 20, behavior: 'smooth' });
+    } catch (error) {
+      showError(error.message);
+    }
+  }
+
+  async function serverDisposition(decision) {
     if (!currentRecord) return;
-    currentRecord.humanGate = { decision, comment: $('humanComment').value.trim(), decidedAt: new Date().toISOString(), persistence: 'browser_session_only' };
-    currentRecord.currentStage = 7;
-    currentRecord.outputStatus = decision;
-    currentRecord.stages = (currentRecord.stages || []).map((stage) => {
-      if (stage.id === 6) return { ...stage, status: 'COMPLETE', result: decision };
-      if (stage.id === 7) return { ...stage, status: 'COMPLETE' };
-      return stage;
-    });
-    renderRecord(currentRecord);
-    humanGate.classList.remove('is-visible');
+    hideError();
+    const key = apiKey.value.trim() || sessionStorage.getItem('omos_api_key') || '';
+    if (!key) return showError('A valid OMOS API key is required to record the Human Gate decision.');
+
+    const buttons = [$('approveButton'), $('rejectButton')];
+    buttons.forEach((button) => { button.disabled = true; });
+    try {
+      const response = await fetch(`/api/v1/council/runs/${encodeURIComponent(currentRecord.requestId)}/human-decision`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-omos-key': key },
+        body: JSON.stringify({ decision, comment: $('humanComment').value.trim() })
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.message || payload.error || `Decision failed (${response.status})`);
+      renderRecord(payload.data);
+      humanGate.classList.remove('is-visible');
+      await loadServerHistory();
+      await loadPersistenceStatus();
+    } catch (error) {
+      showError(error.message || 'Human decision could not be persisted.');
+    } finally {
+      buttons.forEach((button) => { button.disabled = false; });
+    }
   }
 
   runButton.addEventListener('click', runOmos);
   clearButton.addEventListener('click', () => { prompt.value = ''; results.classList.remove('is-visible'); hideError(); renderStages(); });
-  $('approveButton').addEventListener('click', () => localDisposition('APPROVED'));
-  $('rejectButton').addEventListener('click', () => localDisposition('REJECTED'));
+  $('approveButton').addEventListener('click', () => serverDisposition('APPROVED'));
+  $('rejectButton').addEventListener('click', () => serverDisposition('REJECTED'));
+  apiKey.addEventListener('change', () => {
+    const key = apiKey.value.trim();
+    if (key) sessionStorage.setItem('omos_api_key', key);
+    loadServerHistory();
+  });
 
   apiKey.value = sessionStorage.getItem('omos_api_key') || '';
   renderStages();
-  renderHistory();
+  loadPersistenceStatus();
+  loadServerHistory();
 })();
