@@ -6,9 +6,11 @@
   "scripts": {
     "start": "node server.js",
     "check": "node --check server.js && node --check src/runtime/orchestrator.js && node --check src/runtime/decisionStore.js",
+    "preflight:production": "node scripts/preflight.js",
     "smoke": "node tests/smoke.test.js",
     "smoke:pages": "node tests/pages.test.js",
     "smoke:security": "node tests/security-smoke.test.js",
+    "smoke:live": "node scripts/live-smoke.js",
     "test:lifecycle": "node tests/workspace.test.js"
   },
   "engines": {
