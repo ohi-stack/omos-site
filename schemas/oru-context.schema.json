@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://omos.onegodian.com/schemas/oru-context.schema.json",
+  "title": "Oru’Valen OMOS Context",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "subject": { "type": "string", "maxLength": 500 },
+    "epistemicClass": {
+      "type": "string",
+      "enum": ["fact", "stated_position", "inference", "prediction"]
+    },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "sourceRefs": {
+      "type": "array",
+      "maxItems": 20,
+      "items": { "type": "string", "maxLength": 1000 }
+    },
+    "currentPriorities": {
+      "type": "array",
+      "maxItems": 20,
+      "items": { "type": "string", "maxLength": 1000 }
+    },
+    "currentConstraints": {
+      "type": "array",
+      "maxItems": 20,
+      "items": { "type": "string", "maxLength": 1000 }
+    },
+    "relevantDecisions": {
+      "type": "array",
+      "maxItems": 20,
+      "items": { "type": "string", "maxLength": 1000 }
+    },
+    "relevantOutcomes": {
+      "type": "array",
+      "maxItems": 20,
+      "items": { "type": "string", "maxLength": 1000 }
+    },
+    "notes": { "type": "string", "maxLength": 4000 }
+  }
+}
