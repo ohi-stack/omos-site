@@ -38,6 +38,22 @@ async function expectShell(path) {
   return response;
 }
 
+async function expectAskWorkspace() {
+  const response = await expectOk("/ask/");
+  const requiredMarkers = [
+    "Ask once.",
+    "INPUT → LAYER 1 → ALIGNMENT → COUNCIL → SYNTHESIS → HUMAN GATE → RECORD",
+    "id=\"stageList\"",
+    "id=\"providerGrid\"",
+    "id=\"councilOutputs\"",
+    "id=\"humanGate\"",
+    "id=\"historyList\"",
+    "/ask-workspace.js"
+  ];
+  for (const marker of requiredMarkers) assert.ok(response.body.includes(marker), `/ask/ missing flagship marker: ${marker}`);
+  return response;
+}
+
 async function run() {
   const publicRoutes = [
     "/", "/omos", "/ohi", "/models", "/tools", "/artifacts", "/docs", "/shop",
@@ -46,19 +62,23 @@ async function run() {
   ];
 
   for (const route of publicRoutes) await expectShell(route);
+  await expectAskWorkspace();
 
-  const apiRoutes = ["/api/health", "/api/manifest", "/api/v1/providers"];
+  const apiRoutes = ["/api/health", "/api/manifest", "/api/v1/providers", "/api/v1/persistence"];
   for (const route of apiRoutes) await expectJson(route);
 
   const manifest = await expectJson("/api/manifest");
   assert.equal(manifest.ui?.sharedHeader, true, "manifest must advertise shared header");
   assert.equal(manifest.ui?.sharedFooter, true, "manifest must advertise shared footer");
   assert.equal(manifest.ui?.megaMenu, true, "manifest must advertise mega menu");
+  assert.ok(manifest.routes?.public?.includes("/ask/"), "manifest must advertise /ask/");
+  assert.deepEqual(manifest.orchestration?.stages, ["ask","layer1","alignment","council_review","governed_synthesis","human_gate","decision_record"], "manifest must preserve canonical governed runtime stages");
 
   await expectOk("/omos-ui.css");
   await expectOk("/omos-ui.js");
+  await expectOk("/ask-workspace.js");
 
-  console.log("OMOS global UI shell and public route tests passed.");
+  console.log("OMOS global UI shell, Ask OMOS workspace, and public route tests passed.");
 }
 
 run().catch((error) => {
