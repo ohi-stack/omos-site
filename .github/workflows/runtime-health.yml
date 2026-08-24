@@ -43,8 +43,10 @@ jobs:
 
           check "OMOS home" "$BASE/"
           check "Manifest" "$BASE/manifest"
-          check "Console" "$BASE/console"
+          check "Operational Workspace" "$BASE/dashboard"
+          check "Ask OMOS" "$BASE/ask/"
           check "OHI pipeline" "$BASE/ohi-output-pipeline"
+          check "Persistence status" "$BASE/api/v1/persistence"
 
           printf '%b' "$REPORT" | tee runtime-health.txt
           echo "failed=$FAILED" >> "$GITHUB_OUTPUT"
