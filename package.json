@@ -5,11 +5,12 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "check": "node --check server.js && node --check src/runtime/orchestrator.js && node --check src/runtime/decisionStore.js",
+    "check": "node --check server.js && node --check src/runtime/orchestrator.js && node --check src/runtime/decisionStore.js && node --check src/runtime/oruValen.js && node --check src/runtime/omos.js",
     "smoke": "node tests/smoke.test.js",
     "smoke:pages": "node tests/pages.test.js",
     "smoke:security": "node tests/security-smoke.test.js",
-    "test:lifecycle": "node tests/workspace.test.js"
+    "test:lifecycle": "node tests/workspace.test.js",
+    "test:oru": "node tests/oruvalen.test.js"
   },
   "engines": {
     "node": ">=20"
