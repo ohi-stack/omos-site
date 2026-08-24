@@ -47,4 +47,26 @@
       }
     }
   });
+
+  // Privacy-safe event bridge. Raw prompts, model outputs, Decision Records,
+  // names, emails, and other user content must never be placed in event payloads.
+  function track(eventName, properties = {}) {
+    const payload = { route: window.location.pathname, ...properties };
+    window.dispatchEvent(new CustomEvent('omos:analytics', { detail: { eventName, properties: payload } }));
+
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', eventName, payload);
+    }
+  }
+
+  document.addEventListener('click', (event) => {
+    const target = event.target.closest('[data-omos-event]');
+    if (!target) return;
+    track(target.dataset.omosEvent, {
+      destination: target.dataset.destination || undefined,
+    });
+  });
+
+  track('omos_page_view');
+  window.OMOSAnalytics = { track };
 })();
