@@ -7,7 +7,9 @@
     "start": "node server.js",
     "check": "node --check server.js",
     "smoke": "node tests/smoke.test.js",
-    "smoke:pages": "node tests/pages.test.js"
+    "smoke:pages": "node tests/pages.test.js",
+    "test:decisions": "node tests/decisionStore.test.js",
+    "test:runtime": "npm run check && npm run test:decisions"
   },
   "engines": {
     "node": ">=20"
