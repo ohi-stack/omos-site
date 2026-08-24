@@ -13,19 +13,19 @@
       <p>Run one difficult question through distillation, alignment, multi-model Council Review, governed synthesis, human approval, and a persistent Decision Record.</p>
     </div>
     <div class="omos-workspace-actions">
-      <a class="omos-btn omos-btn-primary" href="/tools">Ask OMOS</a>
+      <a class="omos-btn omos-btn-primary" href="/ask/">Ask OMOS</a>
       <a class="omos-btn" href="/ohi-output-pipeline">View Pipeline</a>
     </div>
   </section>
 
   <nav class="omos-stage-rail" aria-label="OMOS operational stages">
-    <a href="/tools"><strong>01</strong><span>Ask OMOS</span></a>
-    <a href="/tools"><strong>02</strong><span>Layer 1</span></a>
-    <a href="/algorithm"><strong>03</strong><span>Alignment</span></a>
-    <a href="/models"><strong>04</strong><span>Council Review</span></a>
-    <a href="/ohi-output-pipeline"><strong>05</strong><span>Synthesis</span></a>
-    <a href="#decision-record"><strong>06</strong><span>Decision Record</span></a>
-    <a href="#history"><strong>07</strong><span>History</span></a>
+    <a href="/ask/"><strong>01</strong><span>Ask OMOS</span></a>
+    <a href="/ask/"><strong>02</strong><span>Layer 1</span></a>
+    <a href="/ask/"><strong>03</strong><span>Alignment</span></a>
+    <a href="/ask/"><strong>04</strong><span>Council Review</span></a>
+    <a href="/ask/"><strong>05</strong><span>Synthesis</span></a>
+    <a href="/ask/"><strong>06</strong><span>Human Gate</span></a>
+    <a href="/ask/"><strong>07</strong><span>Decision Record</span></a>
   </nav>
 
   <section class="omos-workspace-grid">
@@ -37,7 +37,7 @@
         <a href="/api/health"><small>Health</small><strong>Check runtime</strong></a>
         <a href="/api/manifest"><small>Manifest</small><strong>Inspect capabilities</strong></a>
         <a href="/api/v1/providers"><small>Providers</small><strong>View adapters</strong></a>
-        <a href="/ohi-output-pipeline"><small>Pipeline</small><strong>Review architecture</strong></a>
+        <a href="/ask/"><small>Ask OMOS</small><strong>Start a governed run</strong></a>
       </div>
     </article>
 
@@ -45,27 +45,27 @@
       <div class="omos-card-head"><span>Council</span><span>4 providers</span></div>
       <h2>Cross-model review</h2>
       <p>Independent outputs are followed by cross-review. Agreement is recorded separately from factual verification.</p>
-      <a class="omos-text-link" href="/models">Open Council →</a>
+      <a class="omos-text-link" href="/ask/">Run Council →</a>
     </article>
 
     <article class="omos-workspace-card">
       <div class="omos-card-head"><span>Governance</span><span>Human review</span></div>
       <h2>Governed synthesis</h2>
       <p>OMOS preserves contradictions, missing evidence, novel insights, uncertainty, and the human approval boundary.</p>
-      <a class="omos-text-link" href="/ohi">Open OHI →</a>
+      <a class="omos-text-link" href="/ask/">Start Run →</a>
     </article>
 
     <article class="omos-workspace-card" id="decision-record">
       <div class="omos-card-head"><span>Decision Record</span><span>Auditable</span></div>
       <h2>Reopen the reasoning trail</h2>
-      <p>Each completed run should retain prompt normalization, provider outputs, reviews, synthesis state, verification state, hashes, timestamps, and final human disposition.</p>
+      <p>Each run retains prompt normalization, provider outputs, reviews, synthesis state, verification state, hashes, timestamps, and human-review state.</p>
       <p class="omos-workspace-note">Durable database persistence remains the production gate; current runtime storage may be bounded by deployment state.</p>
     </article>
 
     <article class="omos-workspace-card" id="history">
       <div class="omos-card-head"><span>History</span><span>Run records</span></div>
       <h2>Decision history</h2>
-      <p>Use authenticated Council run APIs to list and reopen recent records. The public workspace does not expose API keys or operator-only controls.</p>
+      <p>Recent server run records are available through authenticated Council APIs; Ask OMOS also keeps a browser-local run list for immediate workspace continuity.</p>
       <code>GET /api/v1/council/runs</code>
     </article>
   </section>
@@ -82,7 +82,7 @@
       <div><strong>4</strong><span><b>Council Review</b>Collect independent model outputs and cross-model critiques.</span></div>
       <div><strong>5</strong><span><b>Synthesize</b>Produce a governed OHI output without erasing dissent or uncertainty.</span></div>
       <div><strong>6</strong><span><b>Approve / Reject</b>Keep final decision authority with the human operator.</span></div>
-      <div><strong>7</strong><span><b>Record</b>Persist the complete Decision Record for later audit and reopening.</span></div>
+      <div><strong>7</strong><span><b>Record</b>Preserve the Decision Record for later audit and reopening.</span></div>
     </div>
   </section>
 </main>
