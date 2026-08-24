@@ -1,0 +1,64 @@
+name: OMOS Runtime CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Syntax checks
+        run: npm run check
+
+      - name: Lifecycle regression
+        run: npm run test:lifecycle
+
+      - name: Start runtime
+        run: |
+          OMOS_API_KEYS="ci:$(node -e \"const c=require('crypto');process.stdout.write(c.createHash('sha256').update('omos_ci_key').digest('hex'))\"):starter" npm start > /tmp/omos.log 2>&1 &
+          echo $! > /tmp/omos.pid
+          for i in {1..20}; do
+            if curl -fsS http://127.0.0.1:3000/health >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/omos.log
+          exit 1
+
+      - name: Smoke tests
+        env:
+          OMOS_BASE_URL: http://127.0.0.1:3000
+        run: npm run smoke
+
+      - name: Page tests
+        env:
+          OMOS_BASE_URL: http://127.0.0.1:3000
+        run: npm run smoke:pages
+
+      - name: Persistence endpoint
+        run: |
+          curl -fsS http://127.0.0.1:3000/api/v1/persistence | tee /tmp/persistence.json
+          node -e "const p=require('/tmp/persistence.json'); if(!p.persistence || p.persistence.backend!=='memory') process.exit(1)"
+
+      - name: Stop runtime
+        if: always()
+        run: |
+          if [ -f /tmp/omos.pid ]; then kill $(cat /tmp/omos.pid) || true; fi
+          cat /tmp/omos.log || true
