@@ -1,5 +1,13 @@
 const assert = require('assert');
-const { runCouncil, getCouncilRun, distillPrompt, scoreAlignment } = require('../src/runtime/orchestrator');
+const {
+  runCouncil,
+  getCouncilRun,
+  listCouncilRuns,
+  setHumanDecision,
+  distillPrompt,
+  scoreAlignment,
+  getPersistenceStatus
+} = require('../src/runtime/orchestrator');
 
 async function run() {
   const prompt = 'A small organization has limited capital and three possible investments. Which should it prioritize, what evidence is missing, and under what conditions should the recommendation change?';
@@ -16,12 +24,13 @@ async function run() {
 
   const record = await runCouncil({ prompt, mode: 'simulation' });
   assert.ok(record.requestId.startsWith('omos_run_'));
-  assert.strictEqual(record.schemaVersion, '1.2.0');
+  assert.strictEqual(record.schemaVersion, '1.3.0');
   assert.strictEqual(record.mode, 'simulation');
   assert.strictEqual(record.currentStage, 6);
   assert.strictEqual(record.outputStatus, 'HUMAN_REVIEW_REQUIRED');
   assert.strictEqual(record.verificationStatus, 'not_factually_verified');
   assert.strictEqual(record.stages.length, 7);
+  assert.ok(record.persistence);
 
   const expected = [
     'Ask OMOS',
@@ -51,11 +60,31 @@ async function run() {
   assert.strictEqual(record.governedOutput.verificationState, 'NOT_FACTUALLY_VERIFIED');
   assert.strictEqual(record.humanGate.decision, null);
 
-  const stored = getCouncilRun(record.requestId);
+  const stored = await getCouncilRun(record.requestId);
   assert.ok(stored);
   assert.strictEqual(stored.requestId, record.requestId);
 
-  console.log('OMOS workspace lifecycle tests passed.');
+  const approved = await setHumanDecision(record.requestId, 'APPROVED', 'Controlled test approval.', 'workspace-test');
+  assert.ok(approved);
+  assert.strictEqual(approved.currentStage, 7);
+  assert.strictEqual(approved.outputStatus, 'APPROVED');
+  assert.strictEqual(approved.humanGate.decision, 'APPROVED');
+  assert.strictEqual(approved.humanGate.reviewer, 'workspace-test');
+  assert.strictEqual(approved.stages[5].status, 'COMPLETE');
+  assert.strictEqual(approved.stages[6].status, 'COMPLETE');
+  assert.ok(approved.recordHash);
+
+  const reopened = await getCouncilRun(record.requestId);
+  assert.strictEqual(reopened.outputStatus, 'APPROVED');
+  assert.strictEqual(reopened.humanGate.decision, 'APPROVED');
+
+  const history = await listCouncilRuns(20);
+  assert.ok(history.some((item) => item.requestId === record.requestId));
+
+  const persistence = getPersistenceStatus();
+  assert.ok(['memory', 'postgresql'].includes(persistence.backend));
+
+  console.log(`OMOS workspace lifecycle tests passed. persistence=${persistence.backend}`);
 }
 
 run().catch((error) => {
