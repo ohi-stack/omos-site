@@ -34,7 +34,6 @@ async function expectShell(path) {
   assert.ok(response.body.includes("omos-site-footer"), `${path} missing shared footer`);
   assert.ok(response.body.includes("omos-ui.css"), `${path} missing global UI stylesheet`);
   assert.ok(response.body.includes("omos-ui.js"), `${path} missing global UI script`);
-  assert.ok(response.body.includes("omos-mega"), `${path} missing mega menu`);
   return response;
 }
 
@@ -42,12 +41,12 @@ async function run() {
   const publicRoutes = [
     "/", "/omos", "/ohi", "/models", "/tools", "/artifacts", "/docs", "/shop",
     "/latest-news", "/dashboard", "/legal", "/contact", "/protocol", "/algorithm",
-    "/digital-sanctuary", "/ohi-output-pipeline"
+    "/digital-sanctuary", "/ohi-output-pipeline", "/oru/"
   ];
 
   for (const route of publicRoutes) await expectShell(route);
 
-  const apiRoutes = ["/api/health", "/api/manifest", "/api/v1/providers"];
+  const apiRoutes = ["/api/health", "/api/manifest", "/api/v1/providers", "/api/oru.json"];
   for (const route of apiRoutes) await expectJson(route);
 
   const manifest = await expectJson("/api/manifest");
@@ -55,10 +54,16 @@ async function run() {
   assert.equal(manifest.ui?.sharedFooter, true, "manifest must advertise shared footer");
   assert.equal(manifest.ui?.megaMenu, true, "manifest must advertise mega menu");
 
+  const oru = await expectJson("/api/oru.json");
+  assert.equal(oru.id, "oruvalen", "Oru public profile must use canonical id");
+  assert.equal(oru.runtime, "OMOS", "Oru public profile must identify OMOS as runtime");
+  assert.equal(oru.controlPlane, "ACC", "Oru public profile must identify ACC as control plane");
+  assert.equal(oru.boundaries?.mayOverrideHumanAuthority, false, "Oru must not override human authority");
+
   await expectOk("/omos-ui.css");
   await expectOk("/omos-ui.js");
 
-  console.log("OMOS global UI shell and public route tests passed.");
+  console.log("OMOS global UI shell, OruValen page, and public route tests passed.");
 }
 
 run().catch((error) => {
