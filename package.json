@@ -1,13 +1,14 @@
 {
   "name": "omos-site",
-  "version": "1.0.1",
-  "description": "OMOS.OneGodian.com Node website for the OneGodian Metaphysical Operating System.",
+  "version": "1.1.0",
+  "description": "OMOS.OneGodian.com Node runtime for the OneGodian Metaphysical Operating System.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "check": "node --check server.js",
+    "check": "node --check server.js && node --check src/runtime/orchestrator.js && node --check src/runtime/decisionStore.js",
     "smoke": "node tests/smoke.test.js",
-    "smoke:pages": "node tests/pages.test.js"
+    "smoke:pages": "node tests/pages.test.js",
+    "test:lifecycle": "node tests/lifecycle.test.js"
   },
   "engines": {
     "node": ">=20"
@@ -15,6 +16,7 @@
   "dependencies": {
     "compression": "^1.7.4",
     "express": "^4.19.2",
-    "helmet": "^7.1.0"
+    "helmet": "^7.1.0",
+    "pg": "^8.12.0"
   }
 }
