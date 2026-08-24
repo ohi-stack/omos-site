@@ -36,6 +36,43 @@ Use this rule for version discipline:
 
 > If a feature is not implemented, versioned, documented, repeatable, logged where applicable, and testable, it is not operational in the current version.
 
+## OMOS v1.1 architecture
+
+The current architecture separates four responsibilities:
+
+- **OneGodian Protocol™** = definitions, identity rules, interoperability and scope
+- **OneGodian Algorithm™** = evaluation and decision logic
+- **OHI™** = multi-model comparison, critique and synthesis
+- **OMOS™** = runtime, orchestration, persistence, interfaces and audit records
+
+Canonical governed transaction:
+
+```text
+Ask OMOS
+→ Layer 1 Distillation
+→ Alignment Engine
+→ Council Review
+→ Governed OHI Synthesis
+→ Human Decision Gate
+→ Persistent Decision Record
+→ Dashboard History
+```
+
+See:
+
+- `docs/OMOS-ARCHITECTURE-1.1.md`
+- `docs/OMOS-RUNTIME-SPEC-1.1.md`
+- `docs/OMOS-REF-0001.md`
+- `docs/DECISION-RECORD.schema.json`
+
+### Verification boundary
+
+Model agreement is not factual verification. A live or simulated Council may increase model-agreement metrics, identify contradictions, or strengthen a synthesis, but it cannot automatically mark a record as Verified.
+
+### Human authority boundary
+
+For OMOS v1.1, human approval commits the accepted disposition of a run. It does not automatically move money, execute contracts, submit legal filings, issue credentials, publish registry records, or change external infrastructure.
+
 ## Runtime architecture
 
 OMOS.OneGodian.com acts as:
@@ -206,17 +243,22 @@ OMOS routes explain, document, and route traffic into:
 
 ## Priority implementation order
 
-1. Import WXR pages and category taxonomies into WordPress.
-2. Activate the OMOS page generator / core tools plugin.
-3. Run **Tools → OMOS Page Generator** to generate or repair route pages.
-4. Set Home as the static front page.
-5. Build the seven-link main navigation and 4-column footer.
-6. Connect tool shortcodes to generated pages.
-7. Keep `[omos_bridge_builder]` as planned until runtime implementation is tested.
-8. Connect shop pages to Stripe/WooCommerce products.
-9. Publish first OMOS news, OHI reports, and Council updates.
-10. Add analytics and conversion tracking.
-11. Confirm all public claims match implemented/runtime status.
+The runtime priority is now the first complete governed reference transaction:
+
+1. Decision Record persistence contract
+2. Ask OMOS intake
+3. Layer 1 distillation
+4. Alignment Engine
+5. Council adapter contract
+6. Council independent outputs and cross-review
+7. Governed OHI synthesis
+8. Human decision gate
+9. Dashboard History
+10. Regression/replay tests
+
+This milestone is formally defined in `docs/OMOS-REF-0001.md`.
+
+Public WordPress/site work remains important, but no new conceptual subsystem should outrank completing the reference run.
 
 ## WordPress assets
 
@@ -236,6 +278,10 @@ Current documentation additions:
 
 - `docs/bridge-builder-protocol.md`
 - `docs/OMOS_NODE_CONTENT_AND_PLUGIN_BRIDGE_PLAN.md`
+- `docs/OMOS-ARCHITECTURE-1.1.md`
+- `docs/OMOS-RUNTIME-SPEC-1.1.md`
+- `docs/OMOS-REF-0001.md`
+- `docs/DECISION-RECORD.schema.json`
 
 ## Tool requirements
 
