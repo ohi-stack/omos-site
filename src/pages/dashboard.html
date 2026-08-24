@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>OMOS Operational Workspace</title>
-<meta name="description" content="Operational workspace for Ask OMOS, Layer 1 distillation, alignment, Council Review, governed synthesis, Decision Records, and runtime history.">
+<meta name="description" content="Operational workspace for Ask OMOS: Input, Layer 1, Alignment, Council Review, Governed Synthesis, Decision Records, and History.">
 </head>
 <body>
 <main class="omos-workspace">
@@ -10,7 +10,7 @@
     <div>
       <span class="omos-kicker">OMOS UI v2 · Operational Workspace</span>
       <h1>From question to auditable decision.</h1>
-      <p>Run one difficult question through distillation, alignment, multi-model Council Review, governed synthesis, human approval, and a persistent Decision Record.</p>
+      <p>Run one difficult question through governed input, Layer 1 distillation, alignment, multi-model Council Review, synthesis, human authorization, a persistent Decision Record, and retrievable history.</p>
     </div>
     <div class="omos-workspace-actions">
       <a class="omos-btn omos-btn-primary" href="/ask/">Ask OMOS</a>
@@ -18,21 +18,21 @@
     </div>
   </section>
 
-  <nav class="omos-stage-rail" aria-label="OMOS operational stages">
-    <a href="/ask/"><strong>01</strong><span>Ask OMOS</span></a>
+  <nav class="omos-stage-rail" aria-label="OMOS flagship runtime stages">
+    <a href="/ask/"><strong>01</strong><span>Input</span></a>
     <a href="/ask/"><strong>02</strong><span>Layer 1</span></a>
-    <a href="/ask/"><strong>03</strong><span>Alignment</span></a>
-    <a href="/ask/"><strong>04</strong><span>Council Review</span></a>
-    <a href="/ask/"><strong>05</strong><span>Synthesis</span></a>
-    <a href="/ask/"><strong>06</strong><span>Human Gate</span></a>
-    <a href="/ask/"><strong>07</strong><span>Decision Record</span></a>
+    <a href="/ask/"><strong>03</strong><span>Align</span></a>
+    <a href="/ask/"><strong>04</strong><span>Council</span></a>
+    <a href="/ask/"><strong>05</strong><span>Synthesize</span></a>
+    <a href="/ask/"><strong>06</strong><span>Record</span></a>
+    <a href="/ask/"><strong>07</strong><span>History</span></a>
   </nav>
 
   <section class="omos-workspace-grid">
     <article class="omos-workspace-card omos-workspace-card-wide">
       <div class="omos-card-head"><span>Runtime</span><span class="omos-live-dot">Live endpoint</span></div>
       <h2>OMOS Runtime</h2>
-      <p>Health, manifest, provider discovery, Council orchestration, and governed run records are exposed through the shared runtime API.</p>
+      <p>Health, manifest, provider discovery, Council orchestration, governed run records, human disposition, and persistence status are exposed through the shared runtime API.</p>
       <div class="omos-metric-grid">
         <a href="/api/health"><small>Health</small><strong>Check runtime</strong></a>
         <a href="/api/manifest"><small>Manifest</small><strong>Inspect capabilities</strong></a>
@@ -42,47 +42,62 @@
     </article>
 
     <article class="omos-workspace-card">
-      <div class="omos-card-head"><span>Council</span><span>4 providers</span></div>
+      <div class="omos-card-head"><span>Layer 1</span><span>Distillation</span></div>
+      <h2>Preserve signal, isolate noise</h2>
+      <p>OMOS identifies the objective, constraints, ambiguity, evidence and quarantined instructions before model orchestration begins.</p>
+      <a class="omos-text-link" href="/ask/">Test Layer 1 →</a>
+    </article>
+
+    <article class="omos-workspace-card">
+      <div class="omos-card-head"><span>Alignment</span><span>Decision support</span></div>
+      <h2>Inspect alignment state</h2>
+      <p>Truth, clarity, coherence, dignity, constructive unity, evidence support, verifiability and execution readiness remain visible as separate signals.</p>
+      <a class="omos-text-link" href="/ask/">Run Alignment →</a>
+    </article>
+
+    <article class="omos-workspace-card">
+      <div class="omos-card-head"><span>Council</span><span>4 provider interfaces</span></div>
       <h2>Cross-model review</h2>
-      <p>Independent outputs are followed by cross-review. Agreement is recorded separately from factual verification.</p>
+      <p>Independent outputs are followed by cross-review. Agreement, contradiction, missing evidence and novel insight are preserved separately from factual verification.</p>
       <a class="omos-text-link" href="/ask/">Run Council →</a>
     </article>
 
     <article class="omos-workspace-card">
-      <div class="omos-card-head"><span>Governance</span><span>Human review</span></div>
-      <h2>Governed synthesis</h2>
-      <p>OMOS preserves contradictions, missing evidence, novel insights, uncertainty, and the human approval boundary.</p>
+      <div class="omos-card-head"><span>Synthesis</span><span>Human review required</span></div>
+      <h2>Governed OHI synthesis</h2>
+      <p>OMOS prepares a structured result without erasing uncertainty or dissent. Human approval or rejection remains required before final record disposition.</p>
       <a class="omos-text-link" href="/ask/">Start Run →</a>
     </article>
 
     <article class="omos-workspace-card" id="decision-record">
-      <div class="omos-card-head"><span>Decision Record</span><span>Auditable</span></div>
-      <h2>Reopen the reasoning trail</h2>
-      <p>Each run retains prompt normalization, provider outputs, reviews, synthesis state, verification state, hashes, timestamps, and human-review state.</p>
-      <p class="omos-workspace-note">Durable database persistence remains the production gate; current runtime storage may be bounded by deployment state.</p>
+      <div class="omos-card-head"><span>Record</span><span>Auditable</span></div>
+      <h2>Commit the Decision Record</h2>
+      <p>The record retains normalized input, provider outputs, reviews, synthesis state, verification state, hashes, timestamps, persistence metadata, and human disposition.</p>
+      <p class="omos-workspace-note">The human gate is enforced inside the Record transition. Durable restart-safe persistence depends on the production PostgreSQL backend reporting durable=true.</p>
     </article>
 
     <article class="omos-workspace-card" id="history">
       <div class="omos-card-head"><span>History</span><span>Run records</span></div>
-      <h2>Decision history</h2>
-      <p>Recent server run records are available through authenticated Council APIs; Ask OMOS also keeps a browser-local run list for immediate workspace continuity.</p>
+      <h2>Reopen the reasoning trail</h2>
+      <p>Recent server run records can be reopened through the authenticated Council APIs and directly inside Ask OMOS.</p>
       <code>GET /api/v1/council/runs</code>
     </article>
   </section>
 
   <section class="omos-workspace-section">
     <div>
-      <span class="omos-kicker">Production sequence</span>
-      <h2>Operational path</h2>
+      <span class="omos-kicker">Canonical product sequence</span>
+      <h2>INPUT → LAYER 1 → ALIGN → COUNCIL → SYNTHESIZE → RECORD → HISTORY</h2>
+      <p>The visible product rail is intentionally simpler than the internal governance machinery. Human approval/rejection remains mandatory inside the Record transition.</p>
     </div>
     <div class="omos-process-list">
-      <div><strong>1</strong><span><b>Ask OMOS</b>Capture the difficult question and explicit context.</span></div>
-      <div><strong>2</strong><span><b>Distill</b>Extract Meaning Units, ambiguity, claims, and decision parameters.</span></div>
-      <div><strong>3</strong><span><b>Align</b>Evaluate truth confidence, dignity, conflicts, safety, and common ground.</span></div>
-      <div><strong>4</strong><span><b>Council Review</b>Collect independent model outputs and cross-model critiques.</span></div>
-      <div><strong>5</strong><span><b>Synthesize</b>Produce a governed OHI output without erasing dissent or uncertainty.</span></div>
-      <div><strong>6</strong><span><b>Approve / Reject</b>Keep final decision authority with the human operator.</span></div>
-      <div><strong>7</strong><span><b>Record</b>Preserve the Decision Record for later audit and reopening.</span></div>
+      <div><strong>1</strong><span><b>Input</b>Capture the difficult question and explicit context.</span></div>
+      <div><strong>2</strong><span><b>Layer 1</b>Classify objective, constraints, evidence, ambiguity and quarantined instructions.</span></div>
+      <div><strong>3</strong><span><b>Align</b>Evaluate decision-support dimensions and hard gates.</span></div>
+      <div><strong>4</strong><span><b>Council</b>Collect independent outputs and cross-model critiques.</span></div>
+      <div><strong>5</strong><span><b>Synthesize</b>Produce governed OHI output while preserving uncertainty and dissent.</span></div>
+      <div><strong>6</strong><span><b>Record</b>Human approve/reject occurs here, then the Decision Record is committed.</span></div>
+      <div><strong>7</strong><span><b>History</b>Reopen, inspect and audit prior runs.</span></div>
     </div>
   </section>
 </main>
