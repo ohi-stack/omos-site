@@ -1,3 +1,5 @@
+const { buildOruValenContext } = require('./oruValen');
+
 function normalizeText(value) {
   if (typeof value !== 'string') return '';
   return value.trim().replace(/\s+/g, ' ');
@@ -22,6 +24,7 @@ function OMOSProcess(payload = {}) {
   const requestId = payload.requestId || `omos_${Date.now()}`;
   const input = normalizeText(payload.input || payload.prompt || payload.question || '');
   const options = Array.isArray(payload.options) ? payload.options : [];
+  const oruValen = buildOruValenContext(payload.oruValen || payload.context?.oruValen || {});
 
   const evaluatedOptions = options.map((option, index) => ({
     index,
@@ -38,11 +41,25 @@ function OMOSProcess(payload = {}) {
     requestId,
     runtime: 'omos-runtime',
     version: process.env.OMOS_VERSION || '1.1.0',
-    pipeline: ['observe', 'distill', 'align', 'select', 'execute', 'verify'],
+    intelligenceIdentity: 'oruvalen',
+    oruValen,
+    pipeline: [
+      'human_input',
+      'oru_context',
+      'observe',
+      'distill',
+      'align',
+      'select',
+      'human_review',
+      'execute',
+      'verify',
+      'outcome_learning'
+    ],
     input,
     observed: {
       optionCount: evaluatedOptions.length,
-      hasInput: Boolean(input)
+      hasInput: Boolean(input),
+      oruContextAttached: true
     },
     alignmentCriteria: {
       maximize: ['truth', 'clarity', 'coherence', 'dignity', 'constructive_unity'],
@@ -57,7 +74,9 @@ function OMOSProcess(payload = {}) {
       status: 'partial',
       factualVerification: 'not_established',
       humanReviewRequired: true,
-      note: 'Heuristic selection and deterministic processing do not by themselves establish factual truth.'
+      inferenceIsNotFact: true,
+      predictionIsNotAuthority: true,
+      note: 'Oru context supplies continuity and decision support. Heuristic selection and deterministic processing do not by themselves establish factual truth.'
     },
     outputStatus: 'HUMAN_REVIEW_REQUIRED',
     timestampUtc: new Date().toISOString()
