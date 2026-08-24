@@ -1,8 +1,13 @@
 const crypto = require('crypto');
+const {
+  saveRecord,
+  getRecord,
+  listRecords,
+  summary,
+  getPersistenceStatus
+} = require('./decisionStore');
 
 const PROVIDERS = ['openai', 'anthropic', 'gemini', 'xai'];
-const RUN_STORE = new Map();
-const MAX_RUNS = 200;
 
 function hash(value) {
   return `sha256:${crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex')}`;
@@ -174,39 +179,40 @@ function buildGovernedSynthesis(layer1, alignment, signals, outputs) {
   };
 }
 
-function persistRun(record) {
-  RUN_STORE.set(record.requestId, record);
-  while (RUN_STORE.size > MAX_RUNS) RUN_STORE.delete(RUN_STORE.keys().next().value);
+async function getCouncilRun(requestId) {
+  return getRecord(requestId);
 }
 
-function getCouncilRun(requestId) { return RUN_STORE.get(requestId) || null; }
-function listCouncilRuns(limit = 20) {
-  return [...RUN_STORE.values()].slice(-Math.max(1, Math.min(Number(limit) || 20, 100))).reverse().map((record) => ({
-    requestId: record.requestId,
-    mode: record.mode,
-    currentStage: record.currentStage,
-    outputStatus: record.outputStatus,
-    verificationStatus: record.verificationStatus,
-    humanDecision: record.humanGate?.decision || null,
-    startedAt: record.startedAt,
-    completedAt: record.completedAt,
-    liveProviders: record.liveProviders,
-    simulationProviders: record.simulationProviders
-  }));
+async function listCouncilRuns(limit = 20) {
+  const records = await listRecords(limit);
+  return records.map(summary);
 }
 
-function setHumanDecision(requestId, decision, comment = '') {
-  const record = RUN_STORE.get(requestId);
+async function setHumanDecision(requestId, decision, comment = '', reviewer = null) {
+  const record = await getRecord(requestId);
   if (!record) return null;
   const normalized = String(decision || '').toUpperCase();
   if (!['APPROVED', 'REJECTED'].includes(normalized)) throw new Error('invalid_human_decision');
-  record.humanGate = { decision: normalized, comment: String(comment || '').slice(0, 2000), decidedAt: new Date().toISOString() };
+
+  const decidedAt = new Date().toISOString();
+  record.humanGate = {
+    decision: normalized,
+    comment: String(comment || '').slice(0, 2000),
+    reviewer: reviewer || null,
+    decidedAt,
+    persistence: getPersistenceStatus().durable ? 'durable_database' : 'memory_fallback'
+  };
   record.currentStage = 7;
-  record.stages = record.stages.map((stage) => stage.id === 6 ? { ...stage, status: 'COMPLETE', result: normalized } : stage.id === 7 ? { ...stage, status: 'COMPLETE' } : stage);
+  record.stages = record.stages.map((stage) => {
+    if (stage.id === 6) return { ...stage, status: 'COMPLETE', result: normalized, completedAt: decidedAt };
+    if (stage.id === 7) return { ...stage, status: 'COMPLETE', completedAt: decidedAt };
+    return stage;
+  });
   record.outputStatus = normalized;
-  record.completedAt = new Date().toISOString();
+  record.completedAt = decidedAt;
   record.recordHash = hash({ ...record, recordHash: undefined });
-  persistRun(record);
+  record.persistence = getPersistenceStatus();
+  await saveRecord(record);
   return record;
 }
 
@@ -249,7 +255,7 @@ async function runCouncil({ prompt, context = {}, providers = PROVIDERS, mode = 
 
   const record = {
     requestId,
-    schemaVersion: '1.2.0',
+    schemaVersion: '1.3.0',
     runtimeVersion: process.env.OMOS_VERSION || '1.1.0',
     mode: actualMode,
     rawPrompt,
@@ -266,16 +272,27 @@ async function runCouncil({ prompt, context = {}, providers = PROVIDERS, mode = 
     crossModelReview,
     signals,
     governedOutput,
-    humanGate: { decision: null, comment: '', decidedAt: null },
+    humanGate: { decision: null, comment: '', reviewer: null, decidedAt: null },
     humanReviewRequired: true,
     verificationStatus: 'not_factually_verified',
     outputStatus: 'HUMAN_REVIEW_REQUIRED',
+    persistence: getPersistenceStatus(),
     startedAt,
     completedAt: new Date().toISOString()
   };
   record.outputHash = hash({ requestId, layer1, alignment, round1: outputs, crossModelReview, signals, governedOutput });
-  persistRun(record);
+  await saveRecord(record);
+  record.persistence = getPersistenceStatus();
   return record;
 }
 
-module.exports = { runCouncil, getCouncilRun, listCouncilRuns, setHumanDecision, distillPrompt, scoreAlignment, PROVIDERS };
+module.exports = {
+  runCouncil,
+  getCouncilRun,
+  listCouncilRuns,
+  setHumanDecision,
+  distillPrompt,
+  scoreAlignment,
+  getPersistenceStatus,
+  PROVIDERS
+};
