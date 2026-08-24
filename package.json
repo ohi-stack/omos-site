@@ -8,7 +8,7 @@
     "check": "node --check server.js && node --check src/runtime/orchestrator.js && node --check src/runtime/decisionStore.js",
     "smoke": "node tests/smoke.test.js",
     "smoke:pages": "node tests/pages.test.js",
-    "test:lifecycle": "node tests/lifecycle.test.js"
+    "test:lifecycle": "node tests/workspace.test.js"
   },
   "engines": {
     "node": ">=20"
