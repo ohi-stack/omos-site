@@ -3,78 +3,99 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ask OMOS — Operational Workspace</title>
-  <meta name="description" content="Submit a question to OMOS and run it through Layer 1, Alignment, Council Review, Governed Synthesis, Human Review, and durable Decision Record persistence.">
+  <title>Ask OMOS — Governed Intelligence Workspace</title>
+  <meta name="description" content="Run a real problem through the seven-stage OMOS governed intelligence workflow: Input, Layer 1, Alignment, Council, Synthesis, Human Gate, and Decision Record.">
   <link rel="stylesheet" href="/omos-ui.css">
   <style>
-    .ask-shell{max-width:1180px;margin:0 auto;padding:24px 18px 70px}.ask-header{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0}.ask-brand{display:flex;align-items:center;gap:12px;font-weight:900;text-decoration:none}.ask-brand-mark{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(216,179,90,.25),rgba(139,92,246,.18));border:1px solid rgba(216,179,90,.32);color:#f0d98a}.ask-back{font-size:13px;color:#9fb0c3;text-decoration:none}.ask-hero{padding:34px 0 22px}.ask-hero h1{margin:8px 0 12px;font-size:clamp(38px,8vw,72px);line-height:.98}.ask-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr);gap:18px}.ask-card{border:1px solid rgba(255,255,255,.09);border-radius:22px;background:linear-gradient(180deg,rgba(16,25,35,.88),rgba(7,12,19,.9));padding:22px}.ask-card label{display:block;font-size:12px;font-weight:800;color:#f0d98a;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}.ask-card textarea,.ask-card input,.ask-card select{width:100%;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:#05080d;color:white;padding:14px;font:inherit}.ask-card textarea{min-height:220px;resize:vertical}.ask-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.ask-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.ask-actions button{border:0;cursor:pointer}.ask-note{font-size:12px;color:#8193a6;margin-top:12px}.ask-stage-list{display:grid;gap:8px}.ask-stage{display:flex;justify-content:space-between;gap:16px;align-items:center;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px;background:rgba(255,255,255,.02)}.ask-stage-left{display:flex;gap:10px;align-items:center}.ask-stage-num{color:#f0d98a;font-size:11px;font-weight:900}.ask-stage-name{font-size:13px;font-weight:800}.ask-stage-status{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#8193a6}.ask-stage[data-status="COMPLETE"]{border-color:rgba(84,214,139,.25)}.ask-stage[data-status="COMPLETE"] .ask-stage-status{color:#78e5a6}.ask-stage[data-status="RUNNING"]{border-color:rgba(66,198,255,.35)}.ask-stage[data-status="RUNNING"] .ask-stage-status{color:#bdeeff}.ask-stage[data-status="NEEDS_REVIEW"]{border-color:rgba(216,179,90,.35)}.ask-stage[data-status="NEEDS_REVIEW"] .ask-stage-status{color:#f0d98a}.ask-results{margin-top:18px;display:none}.ask-results.is-visible{display:block}.ask-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.ask-result-panel{border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:18px;background:rgba(255,255,255,.02)}.ask-result-panel h3{margin:0 0 10px;font-size:16px}.ask-result-panel pre{white-space:pre-wrap;word-break:break-word;font-size:12px;color:#b9c8d8}.ask-pill{display:inline-flex;border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:6px 9px;font-size:10px;margin:3px;color:#b9c8d8}.ask-error{display:none;margin-top:14px;padding:13px;border-radius:14px;border:1px solid rgba(255,99,99,.25);background:rgba(255,99,99,.07);color:#ffc1c1}.ask-error.is-visible{display:block}.ask-human-gate{margin-top:18px;display:none}.ask-human-gate.is-visible{display:block}.ask-human-actions{display:flex;gap:10px;margin-top:12px}.ask-human-actions button{cursor:pointer}.ask-history{margin-top:26px}.ask-history-item{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:12px;color:#9fb0c3}.ask-history-item strong{color:white}.ask-history-item button{margin-top:7px;border:0;background:transparent;color:#f0d98a;padding:0;cursor:pointer;font:inherit}.ask-loading{opacity:.65;pointer-events:none}.ask-persistence{margin-top:10px;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.08);font-size:11px;color:#9fb0c3;background:rgba(255,255,255,.02)}@media(max-width:840px){.ask-grid{grid-template-columns:1fr}.ask-result-grid{grid-template-columns:1fr}.ask-row{grid-template-columns:1fr}.ask-shell{padding-top:10px}.ask-header{position:sticky;top:0;z-index:20;background:rgba(5,7,11,.9);backdrop-filter:blur(18px)}}
+    :root{--ask-gold:#e2bd62;--ask-cyan:#54d9ff;--ask-green:#64df9d;--ask-red:#ff8686;--ask-purple:#b393ff;--ask-panel:#0b1119;--ask-panel-2:#0f1822;--ask-border:rgba(255,255,255,.09);--ask-muted:#93a4b7}
+    *{box-sizing:border-box}.ask-shell{max-width:1320px;margin:0 auto;padding:20px 22px 88px}.ask-top{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:12px 0 24px}.ask-brand{display:flex;align-items:center;gap:12px;font-weight:900;text-decoration:none;color:#fff}.ask-brand-mark{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(226,189,98,.24),rgba(179,147,255,.16));border:1px solid rgba(226,189,98,.34);color:#f5dc91;box-shadow:0 12px 34px rgba(0,0,0,.25)}.ask-top-actions{display:flex;gap:10px;align-items:center}.ask-top-link{font-size:13px;color:#9fb0c3;text-decoration:none}.ask-hero{padding:42px 0 30px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr);gap:30px;align-items:end}.ask-kicker{font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--ask-gold)}.ask-hero h1{margin:10px 0 14px;font-size:clamp(46px,8vw,88px);line-height:.92;letter-spacing:-.055em}.ask-hero h1 span{background:linear-gradient(90deg,#fff,var(--ask-gold),var(--ask-cyan));-webkit-background-clip:text;background-clip:text;color:transparent}.ask-hero p{margin:0;max-width:850px;color:#b1c0d1;font-size:17px;line-height:1.7}.ask-hero-aside{border:1px solid var(--ask-border);border-radius:22px;padding:18px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.018))}.ask-hero-aside strong{display:block;color:#fff;margin-bottom:6px}.ask-hero-aside p{font-size:13px;line-height:1.55}.ask-status-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.ask-mini-status{border:1px solid var(--ask-border);border-radius:13px;padding:10px;background:rgba(255,255,255,.02)}.ask-mini-status small{display:block;color:#70849a;font-size:9px;text-transform:uppercase;letter-spacing:.08em}.ask-mini-status b{display:block;font-size:12px;margin-top:3px}.ask-main-grid{display:grid;grid-template-columns:minmax(0,1.24fr) minmax(360px,.76fr);gap:18px}.ask-card{border:1px solid var(--ask-border);border-radius:24px;background:linear-gradient(180deg,rgba(15,24,34,.92),rgba(7,12,19,.94));padding:22px;box-shadow:0 18px 55px rgba(0,0,0,.18)}.ask-card-title{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px}.ask-card-title h2{margin:3px 0 0;font-size:20px}.ask-card label{display:block;font-size:10px;font-weight:900;color:var(--ask-gold);letter-spacing:.11em;text-transform:uppercase;margin-bottom:8px}.ask-card textarea,.ask-card input,.ask-card select{width:100%;border:1px solid rgba(255,255,255,.11);border-radius:15px;background:#05080d;color:white;padding:14px;font:inherit;outline:none;transition:border-color .2s,box-shadow .2s}.ask-card textarea:focus,.ask-card input:focus,.ask-card select:focus{border-color:rgba(84,217,255,.42);box-shadow:0 0 0 3px rgba(84,217,255,.06)}.ask-card textarea{min-height:238px;resize:vertical;line-height:1.55}.ask-examples{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 0}.ask-example{border:1px solid var(--ask-border);background:rgba(255,255,255,.025);color:#9fb0c3;border-radius:999px;padding:7px 10px;font-size:10px;cursor:pointer}.ask-example:hover{border-color:rgba(226,189,98,.35);color:#f3d987}.ask-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.ask-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}.ask-actions button{border:0;cursor:pointer}.ask-note{font-size:11px;color:#7f92a7;margin:12px 0 0;line-height:1.5}.ask-alert{margin-top:14px;padding:12px 13px;border-radius:13px;border:1px solid var(--ask-border);font-size:11px;color:#9fb0c3;background:rgba(255,255,255,.02)}.ask-error{display:none;border-color:rgba(255,110,110,.28);background:rgba(255,90,90,.07);color:#ffc0c0}.ask-error.is-visible{display:block}.ask-stage-list{display:grid;gap:8px}.ask-stage{position:relative;display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:11px;align-items:center;border:1px solid var(--ask-border);border-radius:15px;padding:12px;background:rgba(255,255,255,.02);cursor:pointer;transition:.2s}.ask-stage:hover{background:rgba(255,255,255,.035)}.ask-stage-num{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.035);color:#8fa1b3;font-size:10px;font-weight:900}.ask-stage-name{font-size:13px;font-weight:850;color:#edf5ff}.ask-stage-desc{font-size:10px;color:#70849a;margin-top:2px}.ask-stage-status{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#74879a}.ask-stage[data-status="COMPLETE"]{border-color:rgba(100,223,157,.25)}.ask-stage[data-status="COMPLETE"] .ask-stage-num,.ask-stage[data-status="COMPLETE"] .ask-stage-status{color:var(--ask-green)}.ask-stage[data-status="RUNNING"]{border-color:rgba(84,217,255,.42);box-shadow:0 0 0 1px rgba(84,217,255,.05)}.ask-stage[data-status="RUNNING"] .ask-stage-num,.ask-stage[data-status="RUNNING"] .ask-stage-status{color:var(--ask-cyan)}.ask-stage[data-status="NEEDS_REVIEW"]{border-color:rgba(226,189,98,.38)}.ask-stage[data-status="NEEDS_REVIEW"] .ask-stage-num,.ask-stage[data-status="NEEDS_REVIEW"] .ask-stage-status{color:var(--ask-gold)}.ask-stage[data-status="FAILED"]{border-color:rgba(255,134,134,.35)}.ask-stage[data-status="FAILED"] .ask-stage-num,.ask-stage[data-status="FAILED"] .ask-stage-status{color:var(--ask-red)}.ask-stage-detail{margin-top:13px;border-top:1px solid var(--ask-border);padding-top:13px;font-size:11px;color:#91a4b7;line-height:1.55;min-height:56px}.ask-providers{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:15px}.ask-provider{border:1px solid var(--ask-border);border-radius:13px;padding:10px;background:rgba(255,255,255,.02)}.ask-provider span{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:#70849a}.ask-provider strong{display:block;margin-top:3px;font-size:11px}.ask-provider[data-state="live_available"] strong{color:var(--ask-green)}.ask-provider[data-state="simulation_only"] strong{color:var(--ask-gold)}.ask-results{margin-top:20px;display:none}.ask-results.is-visible{display:block}.ask-record-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap}.ask-record-actions{display:flex;gap:8px;flex-wrap:wrap}.ask-record-actions button{font-size:11px}.ask-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:17px}.ask-result-panel{border:1px solid var(--ask-border);border-radius:18px;padding:18px;background:rgba(255,255,255,.02);min-width:0}.ask-result-panel h3{margin:0 0 11px;font-size:15px}.ask-result-panel p{font-size:12px;color:#a6b6c7;line-height:1.6}.ask-result-panel strong{color:#f1f6fc}.ask-pill{display:inline-flex;border:1px solid rgba(255,255,255,.09);border-radius:999px;padding:5px 8px;font-size:9px;margin:2px;color:#aab9c9}.ask-metric{display:grid;grid-template-columns:1fr 52px;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:11px}.ask-bar{grid-column:1/-1;height:4px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:-4px}.ask-bar span{display:block;height:100%;background:linear-gradient(90deg,var(--ask-gold),var(--ask-cyan))}.ask-council-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.ask-model-output{border:1px solid var(--ask-border);border-radius:13px;padding:12px;background:#070b11}.ask-model-output h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.07em}.ask-model-output p{margin:0;font-size:10px;max-height:116px;overflow:auto}.ask-human-gate{margin-top:16px;display:none}.ask-human-gate.is-visible{display:block}.ask-human-actions{display:flex;gap:10px;margin-top:12px}.ask-human-actions button{cursor:pointer}.ask-history{margin-top:22px}.ask-history-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.ask-history-item{border:1px solid var(--ask-border);border-radius:15px;padding:13px;background:rgba(255,255,255,.02);font-size:11px;color:#8fa2b6}.ask-history-item strong{color:#fff}.ask-history-item button{margin-top:8px;border:0;background:transparent;color:var(--ask-gold);padding:0;cursor:pointer;font:inherit;font-weight:800}.ask-loading{cursor:progress}.ask-loading #runButton{opacity:.72}.ask-empty{padding:18px;border:1px dashed var(--ask-border);border-radius:15px;color:#71859a;font-size:12px}.ask-full{grid-column:1/-1}.ask-meta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.ask-meta{border:1px solid var(--ask-border);border-radius:12px;padding:10px}.ask-meta small{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:#6f8398}.ask-meta b{display:block;margin-top:4px;font-size:10px;word-break:break-all}.ask-playback{font-size:10px;color:#71859a;margin-top:9px}.ask-live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ask-cyan);box-shadow:0 0 10px rgba(84,217,255,.7);margin-right:6px}
+    @media(max-width:980px){.ask-hero,.ask-main-grid{grid-template-columns:1fr}.ask-hero-aside{max-width:660px}.ask-history-list{grid-template-columns:1fr}}
+    @media(max-width:720px){.ask-shell{padding:10px 14px 60px}.ask-top{position:sticky;top:0;z-index:30;background:rgba(5,7,11,.92);backdrop-filter:blur(18px)}.ask-top-link.hide-mobile{display:none}.ask-row,.ask-result-grid,.ask-council-grid{grid-template-columns:1fr}.ask-providers{grid-template-columns:1fr 1fr}.ask-meta-grid{grid-template-columns:1fr 1fr}.ask-hero{padding-top:25px}.ask-hero h1{font-size:52px}}
   </style>
 </head>
 <body>
   <div class="ask-shell">
-    <header class="ask-header">
+    <header class="ask-top">
       <a class="ask-brand" href="/"><span class="ask-brand-mark">O</span><span>OMOS.OneGodian.com</span></a>
-      <a class="ask-back" href="/dashboard">← Operational Workspace</a>
+      <div class="ask-top-actions"><a class="ask-top-link hide-mobile" href="/models">Model Council</a><a class="ask-top-link" href="/dashboard">Dashboard →</a></div>
     </header>
 
     <section class="ask-hero">
-      <span class="omos-kicker">OMOS UI v2 · Ask OMOS</span>
-      <h1>Start one governed run.</h1>
-      <p>Submit a difficult question. OMOS creates the run, distills the input, scores alignment, executes Council Review where adapters are available, prepares a governed output, and waits for a server-recorded human disposition.</p>
+      <div>
+        <span class="ask-kicker">OMOS Operational Workspace</span>
+        <h1>Ask once.<br><span>Run the system.</span></h1>
+        <p>Bring OMOS a real problem. The runtime distills the input, evaluates alignment, calls the available Council providers, synthesizes the comparative signal, pauses for human authority, and preserves the transaction as a Decision Record.</p>
+      </div>
+      <aside class="ask-hero-aside">
+        <strong>Seven-stage governed transaction</strong>
+        <p>INPUT → LAYER 1 → ALIGNMENT → COUNCIL → SYNTHESIS → HUMAN GATE → RECORD</p>
+        <div class="ask-status-row">
+          <div class="ask-mini-status"><small>Runtime</small><b id="runtimeStatus">Checking…</b></div>
+          <div class="ask-mini-status"><small>Providers</small><b id="providerCount">Checking…</b></div>
+          <div class="ask-mini-status"><small>Persistence</small><b id="persistenceMini">Checking…</b></div>
+        </div>
+      </aside>
     </section>
 
-    <div class="ask-grid">
+    <div class="ask-main-grid">
       <section class="ask-card">
-        <label for="prompt">Question / Problem</label>
-        <textarea id="prompt" placeholder="Example: A small organization has limited capital and three competing investments. Which should it prioritize, what information is missing, and under what conditions should the recommendation change?"></textarea>
+        <div class="ask-card-title"><div><span class="ask-kicker">01 · Input</span><h2>What are you trying to decide?</h2></div><span class="omos-status-pill">Human Origin</span></div>
+        <label for="prompt">Question / Problem / Decision</label>
+        <textarea id="prompt" placeholder="Describe the problem, the decision you need to make, the constraints that matter, and any evidence OMOS should preserve."></textarea>
+        <div class="ask-examples">
+          <button type="button" class="ask-example" data-example="A small organization has limited capital and three competing investments. Which should it prioritize, what information is missing, and under what conditions should the recommendation change?">Business decision</button>
+          <button type="button" class="ask-example" data-example="Compare these conflicting AI recommendations. Identify what they agree on, where they contradict one another, what evidence is missing, and what decision is defensible right now.">Compare AI answers</button>
+          <button type="button" class="ask-example" data-example="Review this proposed project plan for hidden assumptions, execution risks, unclear dependencies, missing evidence, and the next decision that requires human approval.">Project review</button>
+        </div>
         <div class="ask-row">
-          <div>
-            <label for="mode">Council Mode</label>
-            <select id="mode"><option value="auto">Auto</option><option value="simulation">Simulation</option></select>
-          </div>
-          <div>
-            <label for="apiKey">OMOS API Key</label>
-            <input id="apiKey" type="password" autocomplete="off" placeholder="x-omos-key">
-          </div>
+          <div><label for="mode">Council Mode</label><select id="mode"><option value="auto">Auto — use live adapters when configured</option><option value="simulation">Simulation — no external model calls</option></select></div>
+          <div><label for="apiKey">OMOS API Key</label><input id="apiKey" type="password" autocomplete="off" placeholder="x-omos-key"></div>
         </div>
-        <div class="ask-actions">
-          <button id="runButton" class="omos-btn omos-btn-primary">Run OMOS Cycle</button>
-          <button id="clearButton" class="omos-btn">Clear</button>
-        </div>
-        <p class="ask-note">The API key is kept in this browser session only. Simulation mode never implies live provider execution. Model agreement does not establish factual verification.</p>
-        <div id="persistenceStatus" class="ask-persistence">Checking persistence backend…</div>
-        <div id="errorBox" class="ask-error"></div>
+        <div class="ask-actions"><button id="runButton" class="omos-btn omos-btn-primary">Start Governed Run</button><button id="clearButton" class="omos-btn">Clear Workspace</button></div>
+        <p class="ask-note">The API key is retained only in this browser session. Simulation is explicitly labeled. Council agreement is comparative signal—not factual verification. Consequential execution remains subject to human review.</p>
+        <div id="persistenceStatus" class="ask-alert">Checking persistence backend…</div>
+        <div id="errorBox" class="ask-alert ask-error"></div>
       </section>
 
       <aside class="ask-card">
-        <label>Run Lifecycle</label>
+        <div class="ask-card-title"><div><span class="ask-kicker">Execution Rail</span><h2>Run lifecycle</h2></div><span id="railState" class="omos-status-pill">Ready</span></div>
         <div id="stageList" class="ask-stage-list"></div>
+        <div id="stageDetail" class="ask-stage-detail">Select a stage to inspect its responsibility. After a run completes, OMOS replays the recorded stage states before stopping at the Human Gate.</div>
+        <div id="playbackNote" class="ask-playback"></div>
+        <div class="ask-providers" id="providerGrid"></div>
       </aside>
     </div>
 
     <section id="results" class="ask-results">
       <div class="ask-card">
-        <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><div><span class="omos-kicker">Decision Record</span><h2 id="runId" style="margin:6px 0 0;font-size:24px"></h2></div><div id="modeBadge" class="omos-status-pill"></div></div>
-        <div class="ask-result-grid">
-          <article class="ask-result-panel"><h3>Layer 1</h3><div id="layer1"></div></article>
-          <article class="ask-result-panel"><h3>Alignment</h3><div id="alignment"></div></article>
-          <article class="ask-result-panel"><h3>Council Signals</h3><div id="signals"></div></article>
-          <article class="ask-result-panel"><h3>Governed Output</h3><div id="governed"></div></article>
+        <div class="ask-record-head">
+          <div><span class="ask-kicker">Governed Run</span><h2 id="runId" style="margin:5px 0 0;font-size:24px"></h2></div>
+          <div class="ask-record-actions"><span id="modeBadge" class="omos-status-pill"></span><button id="copyIdButton" class="omos-btn">Copy ID</button><button id="exportButton" class="omos-btn">Export JSON</button></div>
         </div>
+        <div id="recordMeta" class="ask-meta-grid"></div>
+
+        <div class="ask-result-grid">
+          <article class="ask-result-panel"><h3>Layer 1 · Distillation</h3><div id="layer1"></div></article>
+          <article class="ask-result-panel"><h3>Alignment Engine</h3><div id="alignment"></div></article>
+          <article class="ask-result-panel ask-full"><h3>Council · Independent Outputs</h3><div id="councilOutputs" class="ask-council-grid"></div></article>
+          <article class="ask-result-panel"><h3>Council Signals</h3><div id="signals"></div></article>
+          <article class="ask-result-panel"><h3>Governed Synthesis</h3><div id="governed"></div></article>
+        </div>
+
         <section id="humanGate" class="ask-human-gate ask-result-panel">
-          <h3>Human Gate</h3>
-          <p>Approve or reject the governed output. The disposition is written back to the OMOS Decision Record through the authenticated runtime API. If PostgreSQL is configured, the record survives runtime restart/redeployment.</p>
-          <textarea id="humanComment" placeholder="Optional review comment" style="width:100%;min-height:90px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:#05080d;color:white;padding:12px"></textarea>
-          <div class="ask-human-actions"><button id="approveButton" class="omos-btn omos-btn-primary">Approve</button><button id="rejectButton" class="omos-btn">Reject</button></div>
+          <span class="ask-kicker">06 · Human Gate</span>
+          <h3 style="margin-top:6px">Human authority required</h3>
+          <p>Approve or reject the governed output. This is a server-recorded disposition. Approval does not convert an unverified factual claim into verified truth; it records the authorized human decision on this OMOS run.</p>
+          <textarea id="humanComment" placeholder="Optional reviewer comment" style="width:100%;min-height:92px;border:1px solid rgba(255,255,255,.1);border-radius:13px;background:#05080d;color:white;padding:12px"></textarea>
+          <div class="ask-human-actions"><button id="approveButton" class="omos-btn omos-btn-primary">Approve Decision Record</button><button id="rejectButton" class="omos-btn">Reject</button></div>
         </section>
       </div>
     </section>
 
     <section class="ask-history ask-card">
-      <span class="omos-kicker">Decision Records</span>
-      <h2 style="margin:6px 0 12px">Recent Ask OMOS runs</h2>
-      <p class="ask-note">Authenticated history reads from the runtime persistence layer. Browser history is used only when no API key is available.</p>
-      <div id="historyList"></div>
+      <div class="ask-card-title"><div><span class="ask-kicker">07 · Record</span><h2>Dashboard History</h2></div><a href="/dashboard" class="ask-top-link">Open full dashboard →</a></div>
+      <p class="ask-note" style="margin-top:-6px;margin-bottom:14px">Authenticated history is read from the OMOS persistence layer. Browser history is a fallback only when authenticated server history is unavailable.</p>
+      <div id="historyList" class="ask-history-list"></div>
     </section>
   </div>
   <script src="/ask-workspace.js" defer></script>
