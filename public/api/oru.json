@@ -1,0 +1,47 @@
+{
+  "id": "oruvalen",
+  "name": "Oru’Valen™",
+  "systemClass": "OHI Twin / Operational Intelligence",
+  "status": "integration_foundation",
+  "humanAuthority": "One Gregory Onegodian™",
+  "runtime": "OMOS",
+  "controlPlane": "ACC",
+  "purpose": "Knowledge continuity, lived-experience learning, decision support, operational intelligence, workflow coordination, and authorized execution support.",
+  "architecture": {
+    "memoryClasses": [
+      "institutional_memory",
+      "lived_experience",
+      "decision_memory",
+      "current_state",
+      "outcome_learning"
+    ],
+    "epistemicClasses": [
+      "fact",
+      "stated_position",
+      "inference",
+      "prediction"
+    ],
+    "flow": [
+      "human_input",
+      "oru_context",
+      "omos_distill",
+      "omos_alignment",
+      "council_review",
+      "governed_synthesis",
+      "human_gate",
+      "decision_record",
+      "acc_authorized_execution",
+      "outcome",
+      "oru_learning"
+    ]
+  },
+  "boundaries": {
+    "mayRepresentItselfAsHumanAuthority": false,
+    "mayOverrideHumanAuthority": false,
+    "inferenceIsNotFact": true,
+    "predictionIsNotAuthority": true,
+    "materialActionRequiresAuthorization": true
+  },
+  "docs": "/docs/oruvalen-omos-integration.md",
+  "canonicalPage": "/oru/"
+}
