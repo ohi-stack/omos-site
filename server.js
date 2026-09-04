@@ -19,7 +19,7 @@ const APP_URL = process.env.ONEGODIAN_APP_URL || "https://app.onegodian.com";
 const QUANTUM_OHI_URL = process.env.QUANTUM_OHI_URL || "https://quantumohi.com";
 const ALLOWED_PLUGIN_ORIGINS = (process.env.OMOS_PLUGIN_ALLOWED_ORIGINS || `${STORE_URL},${ORG_URL},${QUANTUM_OHI_URL}`).split(",").map((x) => x.trim()).filter(Boolean);
 
-const publicRoutes = ["/","/omos","/ohi","/models","/tools","/artifacts","/docs","/shop","/latest-news","/dashboard","/legal","/contact","/protocol","/algorithm","/digital-sanctuary","/ohi-output-pipeline"];
+const publicRoutes = ["/","/omos","/ohi","/models","/tools","/artifacts","/docs","/shop","/latest-news","/dashboard","/legal","/contact","/protocol","/algorithm","/digital-sanctuary","/ohi-output-pipeline","/ollm","/developers","/pricing"];
 
 const pageMeta = {
   "/": ["OMOS — OneGodian Metaphysical Operating System","OMOS.OneGodian.com","OneGodian Metaphysical Operating System™","Operational intelligence, governed multi-model synthesis, runtime tools, and cross-site infrastructure for the OneGodian ecosystem.","home.html"],
@@ -38,27 +38,54 @@ const pageMeta = {
   "/protocol": ["The OneGodian Protocol™","Protocol","The OneGodian Protocol™","Identity, semantic, agent, and interface guidance for OneGodian-controlled deployments and integrations.","protocol.html"],
   "/algorithm": ["The OneGodian Algorithm™","Algorithm","The OneGodian Algorithm™","Observe → Distill → Align → Select → Execute → Verify.","algorithm.html"],
   "/digital-sanctuary": ["The OneGodian Digital Sanctuary","Experience","The Digital Sanctuary Experience","Immersive, motion-led presentation of OneGodian identity and OMOS architecture.","digital-sanctuary.html"],
-  "/ohi-output-pipeline": ["OHI Output Pipeline","Council Runtime","OHI Cross-Model Review Pipeline","Human Question → independent model outputs → cross-review → signals → human synthesis → governed output.","ohi-output-pipeline.html"]
+  "/ohi-output-pipeline": ["OHI Output Pipeline","Council Runtime","OHI Cross-Model Review Pipeline","Human Question → independent model outputs → cross-review → signals → human synthesis → governed output.","ohi-output-pipeline.html"],
+  "/ollm": ["OneGodian LLM","OLLM","OneGodian LLM (OLLM)","The model and intelligence layer designed to work inside OMOS alongside external provider models, governed by the OneGodian Protocol, Algorithm, and OHI synthesis architecture.",null],
+  "/developers": ["OMOS Developer Hub","Developers","Build on OMOS","Developer documentation, APIs, runtime manifests, model connections, health surfaces, and integration contracts for OMOS-compatible systems.",null],
+  "/pricing": ["OMOS Pricing","Pricing","Choose the OMOS experience that fits your work","Start with Ask OMOS, then move into governed decision review, Council workflows, professional subscriptions, business usage, or implementation support as those commercial capabilities are activated.",null]
 };
 
 const megaMenu = [
-  { label: "Platform", groups: [
-    ["Core", [["What is OMOS?","/omos"],["Framework","/protocol"],["Algorithm","/algorithm"],["Digital Sanctuary","/digital-sanctuary"]]],
-    ["Intelligence", [["OHI","/ohi"],["Council of Models","/models"],["Output Pipeline","/ohi-output-pipeline"],["Runtime Dashboard","/dashboard"]]],
-    ["Execution", [["Ask OMOS","/ask/"],["Tools","/tools"],["Artifacts","/artifacts"],["Manifest","/api/manifest"]]],
-    ["Access", [["Operational Workspace","/dashboard"],["App Console",APP_URL],["OneGodian.org",ORG_URL],["Commerce",STORE_URL]]]
+  { label: "OMOS", groups: [
+    ["Start Here", [["What Is OMOS?","/omos"],["How It Works","/algorithm"],["Digital Sanctuary","/digital-sanctuary"],["Build Notes","/latest-news"]]],
+    ["Foundation", [["OneGodian Protocol™","/protocol"],["OneGodian Algorithm™","/algorithm"],["OHI™","/ohi"],["Architecture","/omos"]]],
+    ["Runtime Cycle", [["Observe","/algorithm"],["Distill","/algorithm"],["Align","/algorithm"],["Verify","/algorithm"]]],
+    ["Evidence", [["Artifacts","/artifacts"],["Documentation","/docs"],["Runtime Manifest","/api/manifest"],["Legal & Compliance","/legal"]]]
   ]},
-  { label: "Build", groups: [
-    ["Developer", [["Documentation","/docs"],["Runtime Manifest","/api/manifest"],["Health","/api/health"],["Providers","/api/v1/providers"]]],
-    ["Council", [["Ask OMOS","/ask/"],["Models","/models"],["Pipeline","/ohi-output-pipeline"],["Recent Runs","/dashboard"]]],
-    ["Standards", [["Protocol","/protocol"],["Algorithm","/algorithm"],["Compliance","/legal"],["Persistence","/api/v1/persistence"]]],
-    ["Ecosystem", [["App",APP_URL],["Public Site",ORG_URL],["Commerce",STORE_URL],["Enterprise",QUANTUM_OHI_URL]]]
+  { label: "Workspace", groups: [
+    ["Ask", [["Ask OMOS","/ask/"],["Operational Workspace","/dashboard"],["Recent Runs","/dashboard"],["Runtime Health","/api/health"]]],
+    ["Decisions", [["Decision Review","/ask/"],["Compare Options","/ask/"],["Decision Records","/dashboard"],["Decision History","/dashboard"]]],
+    ["Documents", [["Document Review","/ask/"],["Artifacts","/artifacts"],["Saved Results","/dashboard"],["Review History","/dashboard"]]],
+    ["Account", [["Dashboard","/dashboard"],["App Console",APP_URL],["Shop","/shop"],["Contact","/contact"]]]
   ]},
-  { label: "Resources", groups: [
-    ["Learn", [["Docs","/docs"],["Algorithm","/algorithm"],["Protocol","/protocol"],["OHI","/ohi"]]],
-    ["Explore", [["Ask OMOS","/ask/"],["Tools","/tools"],["Artifacts","/artifacts"],["Sanctuary","/digital-sanctuary"]]],
-    ["Operational", [["Dashboard","/dashboard"],["Manifest","/api/manifest"],["Health","/api/health"],["Providers","/api/v1/providers"]]],
-    ["Support", [["Contact","/contact"],["Legal","/legal"],["Shop","/shop"],["OneGodian.org",ORG_URL]]]
+  { label: "Council", groups: [
+    ["Council", [["AI Council","/models"],["Council Workspace","/dashboard"],["Run Council","/ask/"],["Output Pipeline","/ohi-output-pipeline"]]],
+    ["Models", [["OpenAI","/models"],["Anthropic Claude","/models"],["Google Gemini","/models"],["xAI Grok","/models"]]],
+    ["Review", [["Independent Outputs","/ohi-output-pipeline"],["Cross-Model Review","/ohi-output-pipeline"],["Contradictions","/ohi-output-pipeline"],["Supported Dissent","/ohi-output-pipeline"]]],
+    ["Status", [["Provider Status","/api/v1/providers"],["Recent Runs","/dashboard"],["Persistence","/api/v1/persistence"],["OHI","/ohi"]]]
+  ]},
+  { label: "OLLM", groups: [
+    ["OneGodian LLM", [["OLLM Overview","/ollm"],["Model Role","/ollm"],["OMOS Integration","/ollm"],["Evaluation Path","/ollm"]]],
+    ["Model Gateway", [["Provider Council","/models"],["Provider Status","/api/v1/providers"],["OHI Synthesis","/ohi"],["Runtime Manifest","/api/manifest"]]],
+    ["Knowledge", [["Protocol","/protocol"],["Algorithm","/algorithm"],["Artifacts","/artifacts"],["Documentation","/docs"]]],
+    ["Developer Access", [["Developer Hub","/developers"],["API Manifest","/api/manifest"],["Health","/api/health"],["Contact","/contact"]]]
+  ]},
+  { label: "Tools", groups: [
+    ["Reasoning", [["Layer 1 / Distillation","/tools"],["Alignment Engine","/tools"],["Output Pipeline","/ohi-output-pipeline"],["Ask OMOS","/ask/"]]],
+    ["Identity", [["Belief Mapper","/tools"],["Digital Sanctuary","/digital-sanctuary"],["Protocol Explorer","/protocol"],["Algorithm Explorer","/algorithm"]]],
+    ["Verification", [["Runtime Health","/api/health"],["Persistence","/api/v1/persistence"],["Manifest","/api/manifest"],["Artifacts","/artifacts"]]],
+    ["All Tools", [["Tools Hub","/tools"],["Dashboard","/dashboard"],["Documentation","/docs"],["Council","/models"]]]
+  ]},
+  { label: "Developers", groups: [
+    ["Build", [["Developer Hub","/developers"],["Documentation","/docs"],["Runtime Manifest","/api/manifest"],["API Health","/api/health"]]],
+    ["Connections", [["Model Connectors","/api/v1/providers"],["WordPress Bridge","/docs"],["App Bridge",APP_URL],["Enterprise Bridge",QUANTUM_OHI_URL]]],
+    ["Runtime", [["Providers","/api/v1/providers"],["Persistence","/api/v1/persistence"],["Dashboard","/dashboard"],["Build Notes","/latest-news"]]],
+    ["Standards", [["Protocol","/protocol"],["Algorithm","/algorithm"],["OHI","/ohi"],["Legal & Compliance","/legal"]]]
+  ]},
+  { label: "Pricing", groups: [
+    ["Start", [["Pricing Overview","/pricing"],["Ask OMOS","/ask/"],["Shop","/shop"],["Contact","/contact"]]],
+    ["Individual", [["Free / Limited","/pricing"],["Decision Review","/pricing"],["Document Review","/pricing"],["OMOS Pro","/pricing"]]],
+    ["Advanced", [["OMOS Council","/pricing"],["OMOS Business","/pricing"],["Implementation","/pricing"],["Enterprise",QUANTUM_OHI_URL]]],
+    ["Commerce", [["OneGodian.com",STORE_URL],["Products","/shop"],["Billing Console",APP_URL],["Legal","/legal"]]]
   ]}
 ];
 
@@ -117,7 +144,7 @@ app.use(express.static(path.join(__dirname, "public")));
 function requireApiKey(req,res,next){const meta=verifyApiKey(req.headers["x-omos-key"]);if(!meta)return res.status(401).json({error:"unauthorized",message:"A valid x-omos-key header is required."});req.apiKeyMeta=meta;next();}
 function escapeHtml(value){return String(value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#039;");}
 function megaHtml(item,index){const groups=item.groups.map(([title,links])=>`<div class="omos-mega-group"><div class="omos-mega-title">${escapeHtml(title)}</div>${links.map(([label,href])=>`<a href="${escapeHtml(href)}">${escapeHtml(label)}</a>`).join("")}</div>`).join("");return `<div class="omos-nav-item"><button class="omos-nav-button" aria-expanded="false" aria-controls="mega-${index}">${escapeHtml(item.label)} <span>⌄</span></button><div class="omos-mega" id="mega-${index}">${groups}</div></div>`;}
-function shellHeader(){return `<header class="omos-site-header"><div class="omos-header-inner"><a class="omos-brand" href="/"><span class="omos-brand-mark">O</span><span class="omos-brand-text"><small>Operational Intelligence</small><strong>OMOS.OneGodian.com</strong></span></a><nav class="omos-nav" aria-label="Primary navigation">${megaMenu.map(megaHtml).join("")}<a class="omos-nav-link" href="/docs">Docs</a></nav><div class="omos-header-actions"><a class="omos-btn" href="/api/health">Runtime</a><a class="omos-btn omos-btn-primary" href="/ask/">Ask OMOS</a><button class="omos-menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button></div></div></header>`;}
+function shellHeader(){return `<header class="omos-site-header"><div class="omos-header-inner"><a class="omos-brand" href="/"><span class="omos-brand-mark">O</span><span class="omos-brand-text"><small>Operational Intelligence</small><strong>OMOS.OneGodian.com</strong></span></a><nav class="omos-nav" aria-label="Primary navigation">${megaMenu.map(megaHtml).join("")}</nav><div class="omos-header-actions"><a class="omos-btn" href="/api/health">Runtime</a><a class="omos-btn" href="${APP_URL}">Sign In</a><a class="omos-btn omos-btn-primary" href="/ask/">Ask OMOS</a><button class="omos-menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button></div></div></header>`;}
 function shellFooter(){return `<footer class="omos-site-footer"><div class="omos-footer-inner"><div class="omos-footer-grid"><div class="omos-footer-brand"><div class="omos-brand"><span class="omos-brand-mark">O</span><span class="omos-brand-text"><small>OneGodian</small><strong>OMOS Runtime</strong></span></div><p>Operational intelligence, multi-model orchestration, documentation, and controlled execution infrastructure. Functional components remain subject to documented maturity limits and human review.</p></div><div class="omos-footer-col"><h4>Platform</h4><a href="/omos">OMOS</a><a href="/ohi">OHI</a><a href="/algorithm">Algorithm</a><a href="/protocol">Protocol</a></div><div class="omos-footer-col"><h4>Runtime</h4><a href="/ask/">Ask OMOS</a><a href="/dashboard">Dashboard</a><a href="/api/health">Health</a><a href="/api/manifest">Manifest</a></div><div class="omos-footer-col"><h4>Resources</h4><a href="/docs">Documentation</a><a href="/tools">Tools</a><a href="/artifacts">Artifacts</a><a href="/latest-news">Build Notes</a></div><div class="omos-footer-col"><h4>Ecosystem</h4><a href="${ORG_URL}">OneGodian.org</a><a href="${STORE_URL}">OneGodian.com</a><a href="${APP_URL}">App.OneGodian.com</a><a href="${QUANTUM_OHI_URL}">QuantumOHI.com</a></div></div><div class="omos-footer-bottom"><span>OMOS Runtime ${OMOS_VERSION} · Component maturity: Functional where implemented</span><span><a href="/legal">Legal</a> · <a href="/contact">Contact</a></span></div></div></footer>`;}
 function pageTopper(route){const meta=pageMeta[route]||pageMeta["/"];return `<div class="omos-page-topper"><div class="omos-breadcrumbs">OMOS / ${escapeHtml(meta[1])}</div><div class="omos-status-pill">Functional Runtime</div></div>`;}
 function applyGlobalShell(html,route){let out=String(html||"");if(!/<html/i.test(out))out=`<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>${out}</body></html>`;if(!out.includes('/omos-ui.css'))out=out.replace(/<\/head>/i,'<link rel="stylesheet" href="/omos-ui.css"></head>');out=out.replace(/<body([^>]*)>/i,`<body$1 class="omos-shell-active"><div class="omos-global-content">${shellHeader()}${pageTopper(route)}`);out=out.replace(/<\/body>/i,`${shellFooter()}</div><script src="/omos-ui.js" defer></script></body>`);return out;}
