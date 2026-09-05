@@ -4,7 +4,8 @@ const {
   getRecord,
   listRecords,
   summary,
-  getPersistenceStatus
+  getPersistenceStatus,
+  verifyAuditChain
 } = require('./decisionStore');
 
 const PROVIDERS = ['openai', 'anthropic', 'gemini', 'xai'];
@@ -179,26 +180,46 @@ function buildGovernedSynthesis(layer1, alignment, signals, outputs) {
   };
 }
 
-async function getCouncilRun(requestId) {
-  return getRecord(requestId);
+function requireOwnerId(ownerId) {
+  const value = String(ownerId || '').trim();
+  if (!value) throw new Error('owner_required');
+  return value;
 }
 
-async function listCouncilRuns(limit = 20) {
-  const records = await listRecords(limit);
+function assertHumanGateTransition(record) {
+  if (record.currentStage !== 6) throw new Error('invalid_stage_transition');
+  const humanStage = record.stages.find((stage) => stage.id === 6);
+  const recordStage = record.stages.find((stage) => stage.id === 7);
+  if (!humanStage || humanStage.status !== 'NEEDS_REVIEW' || !recordStage || recordStage.status !== 'PENDING') {
+    throw new Error('invalid_stage_transition');
+  }
+  for (const stage of record.stages.filter((stage) => stage.id < 6)) {
+    if (stage.status !== 'COMPLETE') throw new Error('invalid_stage_transition');
+  }
+}
+
+async function getCouncilRun(requestId, ownerId) {
+  return getRecord(requestId, requireOwnerId(ownerId));
+}
+
+async function listCouncilRuns(limit = 20, ownerId) {
+  const records = await listRecords(limit, requireOwnerId(ownerId));
   return records.map(summary);
 }
 
-async function setHumanDecision(requestId, decision, comment = '', reviewer = null) {
-  const record = await getRecord(requestId);
+async function setHumanDecision(requestId, decision, comment = '', reviewer = null, ownerId) {
+  const owner = requireOwnerId(ownerId);
+  const record = await getRecord(requestId, owner);
   if (!record) return null;
   const normalized = String(decision || '').toUpperCase();
   if (!['APPROVED', 'REJECTED'].includes(normalized)) throw new Error('invalid_human_decision');
+  assertHumanGateTransition(record);
 
   const decidedAt = new Date().toISOString();
   record.humanGate = {
     decision: normalized,
     comment: String(comment || '').slice(0, 2000),
-    reviewer: reviewer || null,
+    reviewer: reviewer || owner,
     decidedAt,
     persistence: getPersistenceStatus().durable ? 'durable_database' : 'memory_fallback'
   };
@@ -210,15 +231,15 @@ async function setHumanDecision(requestId, decision, comment = '', reviewer = nu
   });
   record.outputStatus = normalized;
   record.completedAt = decidedAt;
-  record.recordHash = hash({ ...record, recordHash: undefined });
   record.persistence = getPersistenceStatus();
-  await saveRecord(record);
+  await saveRecord(record, owner);
   return record;
 }
 
-async function runCouncil({ prompt, context = {}, providers = PROVIDERS, mode = 'auto' } = {}) {
+async function runCouncil({ prompt, context = {}, providers = PROVIDERS, mode = 'auto', owner } = {}) {
   const rawPrompt = String(prompt || '').trim();
   if (!rawPrompt) throw new Error('prompt_required');
+  const ownerId = requireOwnerId(owner?.ownerId || owner);
   const requestId = `omos_run_${Date.now()}_${crypto.randomBytes(3).toString('hex')}`;
   const startedAt = new Date().toISOString();
   const selectedProviders = providers.filter((name) => PROVIDERS.includes(name));
@@ -255,7 +276,9 @@ async function runCouncil({ prompt, context = {}, providers = PROVIDERS, mode = 
 
   const record = {
     requestId,
-    schemaVersion: '1.3.0',
+    ownerId,
+    ownerLabel: owner?.name || null,
+    schemaVersion: '1.4.0',
     runtimeVersion: process.env.OMOS_VERSION || '1.1.0',
     mode: actualMode,
     rawPrompt,
@@ -281,9 +304,13 @@ async function runCouncil({ prompt, context = {}, providers = PROVIDERS, mode = 
     completedAt: new Date().toISOString()
   };
   record.outputHash = hash({ requestId, layer1, alignment, round1: outputs, crossModelReview, signals, governedOutput });
-  await saveRecord(record);
+  await saveRecord(record, ownerId);
   record.persistence = getPersistenceStatus();
   return record;
+}
+
+async function verifyCouncilAuditChain(requestId, ownerId) {
+  return verifyAuditChain(requestId, requireOwnerId(ownerId));
 }
 
 module.exports = {
@@ -291,6 +318,7 @@ module.exports = {
   getCouncilRun,
   listCouncilRuns,
   setHumanDecision,
+  verifyCouncilAuditChain,
   distillPrompt,
   scoreAlignment,
   getPersistenceStatus,
