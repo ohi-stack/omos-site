@@ -38,7 +38,10 @@ async function checkHtml(path, text) {
 async function run() {
   const health = await checkJson("/health", { status: "ok", service: "omos-site" });
   assert.ok(health.version);
-  assert.ok(health.publicRouteCount >= 10);
+  assert.ok(health.persistence);
+  assert.ok(["memory", "postgresql"].includes(health.persistence.backend));
+  assert.ok(health.orchestration);
+  assert.ok(Array.isArray(health.orchestration.providers));
 
   await checkJson("/api/health", { status: "ok", service: "omos-site" });
 
