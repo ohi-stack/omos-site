@@ -2,9 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://omos.onegodian.com/</loc></url>
   <url><loc>https://omos.onegodian.com/omos</loc></url>
+  <url><loc>https://omos.onegodian.com/workspace</loc></url>
+  <url><loc>https://omos.onegodian.com/council</loc></url>
+  <url><loc>https://omos.onegodian.com/ollm</loc></url>
+  <url><loc>https://omos.onegodian.com/tools</loc></url>
+  <url><loc>https://omos.onegodian.com/developers</loc></url>
+  <url><loc>https://omos.onegodian.com/pricing</loc></url>
   <url><loc>https://omos.onegodian.com/ohi</loc></url>
   <url><loc>https://omos.onegodian.com/models</loc></url>
-  <url><loc>https://omos.onegodian.com/tools</loc></url>
   <url><loc>https://omos.onegodian.com/artifacts</loc></url>
   <url><loc>https://omos.onegodian.com/docs</loc></url>
   <url><loc>https://omos.onegodian.com/shop</loc></url>
