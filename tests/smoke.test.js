@@ -3,9 +3,14 @@ const assert = require("assert");
 
 const BASE_URL = process.env.OMOS_BASE_URL || "http://localhost:3000";
 
-function request(path, parseJson = true) {
+function request(path, parseJson = true, redirects = 0) {
   return new Promise((resolve, reject) => {
-    http.get(`${BASE_URL}${path}`, (res) => {
+    const target = new URL(path, BASE_URL);
+    http.get(target, (res) => {
+      if ([301, 302, 307, 308].includes(res.statusCode) && res.headers.location && redirects < 5) {
+        res.resume();
+        return resolve(request(new URL(res.headers.location, target).pathname, parseJson, redirects + 1));
+      }
       let data = "";
       res.on("data", (chunk) => { data += chunk; });
       res.on("end", () => {
