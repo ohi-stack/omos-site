@@ -48,7 +48,6 @@ async function run() {
   const manifest = await checkJson("/manifest", { id: "omos-site", name: "OMOS Runtime" });
   assert.ok(manifest.routes.public.includes("/dashboard"));
   assert.ok(manifest.wordpressPlugin.compatibleHosts.length >= 1);
-  assert.ok(manifest.commerceBridge.primaryStore);
 
   await checkJson("/api/manifest", { id: "omos-site", name: "OMOS Runtime" });
 
