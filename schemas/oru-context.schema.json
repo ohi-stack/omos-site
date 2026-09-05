@@ -1,10 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://omos.onegodian.com/schemas/oru-context.schema.json",
-  "title": "Oru’Valen OMOS Context",
+  "title": "Oru’Valen OMOS Context Input",
   "type": "object",
   "additionalProperties": false,
   "properties": {
+    "contextVersion": { "type": "string", "const": "1.1.0" },
     "subject": { "type": "string", "maxLength": 500 },
     "epistemicClass": {
       "type": "string",
@@ -36,6 +37,42 @@
       "maxItems": 20,
       "items": { "type": "string", "maxLength": 1000 }
     },
-    "notes": { "type": "string", "maxLength": 4000 }
+    "notes": { "type": "string", "maxLength": 4000 },
+    "items": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["memoryClass", "content"],
+        "properties": {
+          "id": { "type": "string", "maxLength": 160 },
+          "memoryClass": {
+            "type": "string",
+            "enum": ["institutional_memory", "lived_experience", "decision_memory", "current_state", "outcome_learning"]
+          },
+          "epistemicClass": {
+            "type": ["string", "null"],
+            "enum": ["fact", "stated_position", "inference", "prediction", null]
+          },
+          "content": { "type": "string", "minLength": 1, "maxLength": 4000 },
+          "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+          "providerUse": { "type": "boolean", "default": false },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "ref": { "type": ["string", "null"], "maxLength": 1000 },
+              "uri": { "type": ["string", "null"], "maxLength": 1000 },
+              "status": {
+                "type": "string",
+                "const": "caller_supplied_unverified"
+              },
+              "observedAtUtc": { "type": ["string", "null"], "format": "date-time" }
+            }
+          }
+        }
+      }
+    }
   }
 }

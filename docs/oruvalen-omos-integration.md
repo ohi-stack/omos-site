@@ -138,13 +138,17 @@ Implemented in this integration foundation:
 - JSON Schema for context payloads;
 - public Oru’Valen architecture page;
 - public machine-readable Oru profile.
+- versioned caller-supplied Oru context snapshots in Council Decision Records;
+- deterministic snapshot and provider-projection hashes;
+- explicit per-item provider-disclosure control;
+- persisted maturity flags that keep retrieval, ACC handoff, outcome ingestion, and the complete loop marked incomplete.
 
 Not yet represented as complete until separately wired, tested, and verified:
 
 - automatic retrieval from lived-experience storage;
 - automatic retrieval from institutional-memory stores;
-- automatic injection into every Council run;
-- Oru context hashing inside durable Decision Records;
+- automatic injection of approved-source memory into every Council run;
+- approved-source Oru context snapshots inside durable Decision Records;
 - ACC execution bridge;
 - outcome ingestion back into Oru memory;
 - authenticated current-state editing UI.

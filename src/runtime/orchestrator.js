@@ -6,6 +6,7 @@ const {
   summary,
   getPersistenceStatus
 } = require('./decisionStore');
+const { buildOruValenContext } = require('./oruValen');
 
 const PROVIDERS = ['openai', 'anthropic', 'gemini', 'xai'];
 
@@ -223,6 +224,14 @@ async function runCouncil({ prompt, context = {}, providers = PROVIDERS, mode = 
   const startedAt = new Date().toISOString();
   const selectedProviders = providers.filter((name) => PROVIDERS.includes(name));
   if (!selectedProviders.length) throw new Error('provider_required');
+  const requestContext = context && typeof context === 'object' ? context : {};
+  const oruContext = buildOruValenContext(requestContext.oruValen || {});
+  const providerContext = { ...requestContext };
+  if (oruContext.status === 'attached') {
+    providerContext.oruValen = oruContext.providerProjection;
+  } else {
+    delete providerContext.oruValen;
+  }
 
   const stages = [
     { id: 1, key: 'ask', label: 'Ask OMOS', status: 'COMPLETE', startedAt },
@@ -234,18 +243,18 @@ async function runCouncil({ prompt, context = {}, providers = PROVIDERS, mode = 
     { id: 7, key: 'record', label: 'Decision Record', status: 'PENDING' }
   ];
 
-  const layer1 = distillPrompt(rawPrompt, context);
+  const layer1 = distillPrompt(rawPrompt, providerContext);
   stages[1] = { ...stages[1], status: 'COMPLETE', completedAt: new Date().toISOString() };
   stages[2] = { ...stages[2], status: 'RUNNING' };
   const alignment = scoreAlignment(layer1);
   stages[2] = { ...stages[2], status: 'COMPLETE', completedAt: new Date().toISOString() };
   stages[3] = { ...stages[3], status: 'RUNNING' };
 
-  const outputs = await Promise.all(selectedProviders.map(async (name) => mode === 'simulation' ? simulatedProvider(name, layer1.canonicalInput, 'round1') : runAdapter(name, layer1.canonicalInput, context, 'round1')));
+  const outputs = await Promise.all(selectedProviders.map(async (name) => mode === 'simulation' ? simulatedProvider(name, layer1.canonicalInput, 'round1') : runAdapter(name, layer1.canonicalInput, providerContext, 'round1')));
   const liveProviders = outputs.filter((item) => !item.simulated).map((item) => item.provider);
   const simulationProviders = outputs.filter((item) => item.simulated).map((item) => item.provider);
   const actualMode = liveProviders.length && simulationProviders.length ? 'hybrid' : liveProviders.length ? 'live' : 'simulation';
-  const crossModelReview = await runCrossReview(outputs, mode === 'simulation' ? 'simulation' : 'auto', { ...context, requestId, canonicalPrompt: layer1.canonicalInput });
+  const crossModelReview = await runCrossReview(outputs, mode === 'simulation' ? 'simulation' : 'auto', { ...providerContext, requestId, canonicalPrompt: layer1.canonicalInput });
   const signals = extractSignals(outputs, crossModelReview);
   stages[3] = { ...stages[3], status: 'COMPLETE', completedAt: new Date().toISOString() };
   stages[4] = { ...stages[4], status: 'RUNNING' };
@@ -255,12 +264,14 @@ async function runCouncil({ prompt, context = {}, providers = PROVIDERS, mode = 
 
   const record = {
     requestId,
-    schemaVersion: '1.3.0',
+    schemaVersion: '1.4.0',
     runtimeVersion: process.env.OMOS_VERSION || '1.1.0',
     mode: actualMode,
     rawPrompt,
     canonicalPrompt: layer1.canonicalInput,
     inputHash: hash(rawPrompt),
+    oruContext,
+    contextHash: oruContext.snapshotHash,
     providersRequested: selectedProviders,
     liveProviders,
     simulationProviders,
@@ -280,7 +291,17 @@ async function runCouncil({ prompt, context = {}, providers = PROVIDERS, mode = 
     startedAt,
     completedAt: new Date().toISOString()
   };
-  record.outputHash = hash({ requestId, layer1, alignment, round1: outputs, crossModelReview, signals, governedOutput });
+  record.outputHash = hash({
+    requestId,
+    contextHash: oruContext.snapshotHash,
+    providerProjectionHash: oruContext.providerProjectionHash,
+    layer1,
+    alignment,
+    round1: outputs,
+    crossModelReview,
+    signals,
+    governedOutput
+  });
   await saveRecord(record);
   record.persistence = getPersistenceStatus();
   return record;

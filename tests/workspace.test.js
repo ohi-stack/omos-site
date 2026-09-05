@@ -8,6 +8,7 @@ const {
   scoreAlignment,
   getPersistenceStatus
 } = require('../src/runtime/orchestrator');
+const { verifyOruValenContext } = require('../src/runtime/oruValen');
 
 async function run() {
   const prompt = 'A small organization has limited capital and three possible investments. Which should it prioritize, what evidence is missing, and under what conditions should the recommendation change?';
@@ -22,15 +23,45 @@ async function run() {
   assert.ok(alignment.overallScore >= 0 && alignment.overallScore <= 1);
   assert.ok(alignment.state);
 
-  const record = await runCouncil({ prompt, mode: 'simulation' });
+  const submittedContext = {
+    subject: 'Council snapshot test',
+    items: [
+      {
+        id: 'decision_1',
+        memoryClass: 'decision_memory',
+        epistemicClass: 'stated_position',
+        content: 'Persist context before action.',
+        source: { ref: 'test:decision_1', status: 'caller_supplied_unverified' },
+        providerUse: true
+      },
+      {
+        id: 'private_1',
+        memoryClass: 'lived_experience',
+        content: 'Do not disclose this item.',
+        providerUse: false
+      }
+    ]
+  };
+  const record = await runCouncil({ prompt, context: { oruValen: submittedContext }, mode: 'simulation' });
+  submittedContext.items[0].content = 'Mutated after the run.';
   assert.ok(record.requestId.startsWith('omos_run_'));
-  assert.strictEqual(record.schemaVersion, '1.3.0');
+  assert.strictEqual(record.schemaVersion, '1.4.0');
   assert.strictEqual(record.mode, 'simulation');
   assert.strictEqual(record.currentStage, 6);
   assert.strictEqual(record.outputStatus, 'HUMAN_REVIEW_REQUIRED');
   assert.strictEqual(record.verificationStatus, 'not_factually_verified');
   assert.strictEqual(record.stages.length, 7);
   assert.ok(record.persistence);
+  assert.equal(record.oruContext.status, 'attached');
+  assert.equal(record.oruContext.snapshot.items[0].content, 'Persist context before action.');
+  assert.equal(record.oruContext.providerProjection.items.length, 1);
+  assert.ok(!JSON.stringify(record.oruContext.providerProjection).includes('Do not disclose this item.'));
+  assert.equal(record.contextHash, record.oruContext.snapshotHash);
+  assert.equal(verifyOruValenContext(record.oruContext), true);
+  assert.equal(record.oruContext.capabilities.approvedSourceRetrieval, false);
+  assert.equal(record.oruContext.capabilities.accHandoff, false);
+  assert.equal(record.oruContext.capabilities.outcomeIngestion, false);
+  assert.equal(record.oruContext.capabilities.digitalTwinLoopComplete, false);
 
   const expected = [
     'Ask OMOS',
@@ -63,6 +94,8 @@ async function run() {
   const stored = await getCouncilRun(record.requestId);
   assert.ok(stored);
   assert.strictEqual(stored.requestId, record.requestId);
+  assert.equal(stored.oruContext.snapshotHash, record.oruContext.snapshotHash);
+  assert.equal(verifyOruValenContext(stored.oruContext), true);
 
   const approved = await setHumanDecision(record.requestId, 'APPROVED', 'Controlled test approval.', 'workspace-test');
   assert.ok(approved);

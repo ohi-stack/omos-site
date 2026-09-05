@@ -59,7 +59,8 @@ function OMOSProcess(payload = {}) {
     observed: {
       optionCount: evaluatedOptions.length,
       hasInput: Boolean(input),
-      oruContextAttached: true
+      oruContextAttached: oruValen.status === 'attached',
+      oruContextStatus: oruValen.status
     },
     alignmentCriteria: {
       maximize: ['truth', 'clarity', 'coherence', 'dignity', 'constructive_unity'],

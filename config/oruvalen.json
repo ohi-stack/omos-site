@@ -27,6 +27,13 @@
     "mayRepresentItselfAsHumanAuthority": false,
     "highRiskActionsRequireExplicitApproval": true
   },
+  "capabilities": {
+    "callerSuppliedContextSnapshot": true,
+    "approvedSourceRetrieval": false,
+    "accHandoff": false,
+    "outcomeIngestion": false,
+    "digitalTwinLoopComplete": false
+  },
   "architectureFlow": [
     "human_input",
     "oru_context",

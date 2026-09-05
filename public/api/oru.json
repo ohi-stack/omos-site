@@ -42,6 +42,13 @@
     "predictionIsNotAuthority": true,
     "materialActionRequiresAuthorization": true
   },
+  "capabilities": {
+    "callerSuppliedContextSnapshot": true,
+    "approvedSourceRetrieval": false,
+    "accHandoff": false,
+    "outcomeIngestion": false,
+    "digitalTwinLoopComplete": false
+  },
   "docs": "/docs/oruvalen-omos-integration.md",
   "canonicalPage": "/oru/"
 }
