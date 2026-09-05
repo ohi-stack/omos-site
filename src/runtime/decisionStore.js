@@ -52,12 +52,24 @@ function canonicalRecord(record) {
   return copy;
 }
 
+function canonicalize(value) {
+  if (Array.isArray(value)) return value.map(canonicalize);
+  if (value && typeof value === 'object') {
+    return Object.keys(value).sort().reduce((out, key) => {
+      out[key] = canonicalize(value[key]);
+      return out;
+    }, {});
+  }
+  return value;
+}
+
 function calculateRecordHash(record, revision, previousRecordHash) {
-  return `sha256:${crypto.createHash('sha256').update(JSON.stringify({
+  const payload = canonicalize({
     revision,
     previousRecordHash: previousRecordHash || null,
     record: canonicalRecord(record)
-  })).digest('hex')}`;
+  });
+  return `sha256:${crypto.createHash('sha256').update(JSON.stringify(payload)).digest('hex')}`;
 }
 
 async function applyMigrations(db) {
@@ -167,6 +179,7 @@ async function saveRecord(record, ownerId) {
   const db = getPool();
   await db.query('BEGIN');
   try {
+    await db.query('SELECT pg_advisory_xact_lock(hashtext($1))', [record.requestId]);
     const current = await db.query(
       'SELECT owner_id, revision, record_hash FROM omos_decision_records WHERE request_id = $1 FOR UPDATE',
       [record.requestId]
