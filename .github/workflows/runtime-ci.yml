@@ -30,6 +30,9 @@ jobs:
       - name: Lifecycle regression
         run: npm run test:lifecycle
 
+      - name: Oru context regression
+        run: npm run test:oru
+
       - name: Start runtime
         run: |
           OMOS_API_KEYS="ci:$(node -e \"const c=require('crypto');process.stdout.write(c.createHash('sha256').update('omos_ci_key').digest('hex'))\"):starter" npm start > /tmp/omos.log 2>&1 &
