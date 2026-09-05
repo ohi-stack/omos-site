@@ -3,6 +3,26 @@
   const toggle = document.querySelector('.omos-menu-toggle');
   const items = [...document.querySelectorAll('.omos-nav-item')];
 
+  // Official OMOS brand lockup. The global shell is server-rendered, so replace
+  // the legacy letter-mark/text lockup at runtime without duplicating header
+  // markup across every route.
+  const brandStyle = document.createElement('style');
+  brandStyle.textContent = `
+    .omos-brand{min-width:0}
+    .omos-brand-logo{display:block;width:210px;max-width:100%;height:auto;max-height:66px;object-fit:contain;object-position:left center;filter:drop-shadow(0 0 14px rgba(216,179,90,.13))}
+    .omos-footer-brand .omos-brand-logo{width:250px;max-height:84px}
+    @media(max-width:1280px){.omos-brand-logo{width:176px}.omos-footer-brand .omos-brand-logo{width:230px}}
+    @media(max-width:680px){.omos-brand-logo{width:148px;max-height:52px}.omos-footer-brand .omos-brand-logo{width:220px;max-height:76px}}
+  `;
+  document.head.appendChild(brandStyle);
+
+  document.querySelectorAll('.omos-brand').forEach((brand) => {
+    const isLink = brand.tagName === 'A';
+    brand.innerHTML = '<img class="omos-brand-logo" src="/omos-logo.svg" alt="OMOS — OneGodian Metaphysical Operating System">';
+    brand.setAttribute('aria-label', 'OMOS — OneGodian Metaphysical Operating System');
+    if (isLink) brand.setAttribute('title', 'OMOS — OneGodian Metaphysical Operating System');
+  });
+
   function closeAll(except) {
     items.forEach((item) => {
       if (item !== except) {
