@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://omos.onegodian.com/schemas/engineering-record.schema.json",
+  "title": "OMOS Engineering Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "issue_id",
+    "assigned_agents",
+    "pr_number",
+    "reviewing_agents",
+    "test_results",
+    "approved_by",
+    "merged_sha",
+    "deployed_sha",
+    "deployment_timestamp_utc",
+    "target_environment",
+    "verification_result",
+    "rollback_reference",
+    "final_status"
+  ],
+  "properties": {
+    "issue_id": { "type": "string", "minLength": 1 },
+    "assigned_agents": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "pr_number": { "type": "string", "minLength": 1 },
+    "reviewing_agents": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "test_results": { "type": "string", "enum": ["passed", "failed", "pending"] },
+    "approved_by": { "type": "string", "minLength": 1 },
+    "merged_sha": { "type": "string", "minLength": 1 },
+    "deployed_sha": { "type": "string", "minLength": 1 },
+    "deployment_timestamp_utc": { "type": "string", "format": "date-time" },
+    "target_environment": { "type": "string", "enum": ["production", "staging", "testing", "development"] },
+    "verification_result": { "type": "string", "enum": ["verified", "failed", "pending_proof"] },
+    "rollback_reference": { "type": ["string", "null"] },
+    "final_status": { "type": "string", "enum": ["deployed", "rolled_back", "failed", "completed"] },
+    "notes": { "type": ["string", "null"] }
+  }
+}

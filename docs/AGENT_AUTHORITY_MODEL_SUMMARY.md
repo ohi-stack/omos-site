@@ -73,6 +73,9 @@ Every authorization attempt should create a decision record containing:
 - approvalStatus
 - timestampUtc
 
+## Related Standards
+- [OMOS Engineering Council Lifecycle](OMOS_ENGINEERING_COUNCIL_LIFECYCLE.md)
+
 ## Production Position
 
 This model should be described as a governance specification and execution policy framework, not as a claim of autonomous unrestricted authority.

@@ -4,6 +4,8 @@
   "description": "OMOS.OneGodian.com Node runtime for the OneGodian Metaphysical Operating System.",
   "main": "server.js",
   "scripts": {
+    "dev": "node server.js",
+    "build": "echo 'Build complete'",
     "start": "node server.js",
     "check": "node --check server.js && node --check src/runtime/orchestrator.js && node --check src/runtime/decisionStore.js",
     "preflight:production": "node scripts/preflight.js",

@@ -1,0 +1,6 @@
+{
+  "name": "OMOS",
+  "description": "OneGodian Metaphysical Operating System runtime, documentation, orchestration, and identity framework layer",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

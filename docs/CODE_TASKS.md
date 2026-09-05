@@ -257,6 +257,13 @@ Support Research, Architecture, Development, Content, Financial Analysis, Compli
 
 Coordinator merges results only after required checks.
 
+### TASK-022b — Engineering Record Schema
+Priority: Critical
+
+Create `schemas/engineering-record.schema.json`.
+Track: issue_id, assigned_agents, pr_number, reviewing_agents, test_results, approved_by, merged_sha, deployed_sha, deployment_timestamp_utc, target_environment, verification_result, rollback_reference, final_status.
+Ensure it satisfies the canonical OMOS Engineering Council Lifecycle requirements.
+
 ---
 
 ## Phase 8 — WordPress Bridge

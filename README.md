@@ -1,339 +1,267 @@
 # OMOS Site
 
-Public site, runtime, orchestration, and documentation repository for **OMOS — OneGodian Metaphysical Operating System**.
+Public site and documentation repository for **OMOS — OneGodian Metaphysical Operating System**.
 
 Canonical site target: `https://omos.onegodian.com`
 
 ## Purpose
 
-OMOS is the operational intelligence and systems-architecture layer that organizes governed input, Layer 1 distillation, the OneGodian Algorithm™, OHI multi-model synthesis, model/data/action connections, human authorization, Decision Records, history, public documentation, and connected OneGodian platform bridges.
+This repo holds the public-facing OMOS site plan, documentation map, WordPress import assets, protocol references, tool-page requirements, plugin page-generation logic, runtime manifests, environment files, static API fallbacks, and production deployment notes for building OMOS.OneGodian.com.
 
-The current product objective is straightforward:
+OMOS is positioned as the operating layer where OneGodian identity, OHI synthesis, model pages, protocol documents, tools, post categories, shop pathways, and developer-facing assets are organized into a usable public platform.
 
-> **Turn a difficult question into an auditable decision.**
+## Current repository status
 
-The repository therefore serves both the public OMOS site and the runtime contracts required to move from explanation to repeatable execution.
+This repository is a hybrid documentation + lightweight Node runtime + WordPress support repository.
 
-## Version discipline
+The Node layer currently provides:
+
+- `/health`
+- `/api/health`
+- `/manifest`
+- `/api/manifest`
+- `/api/ecosystem`
+- `/api/tools`
+- `/api/artifacts`
+- `/api/docs`
+- `/api/bridge/status`
+- `/process`
+- `/dashboard`
+
+Some API extension routes are currently provided as static fallback JSON under `/public/api/` until the dynamic runtime controller is expanded.
+
+The WordPress layer contains the OMOS page generator / core tools architecture used to create and repair the public page structure and to support plugin deployment on OneGodian.com, OneGodian.org, and QuantumOHI.com.
+
+Use this rule for version discipline:
 
 > If a feature is not implemented, versioned, documented, repeatable, logged where applicable, and testable, it is not operational in the current version.
 
-Component maturity uses:
-
-`CONCEPTUAL → PROTOTYPE → FUNCTIONAL → VERIFIED → PRODUCTION`
-
-**Functional** means available for controlled validation with known limitations. Functional status does not authorize blanket Production claims or autonomous consequential execution.
-
-## Responsibility separation
-
-The canonical architecture separates the major systems:
-
-- **OneGodian Protocol™** — definitions, identity rules, scope, interoperability, and behavioral constraints.
-- **OneGodian Algorithm™** — evaluation, scoring, selection, decision logic, and the six-stage operating model.
-- **OHI™** — multi-model comparison, critique, cross-review, synthesis, and preservation of meaningful dissent.
-- **OMOS™** — runtime, orchestration, persistence, interfaces, connectors, audit records, and operational controls.
-- **OLLM** — first-class local/model intelligence provider that may participate through the OMOS Model Gateway.
-- **WordPress bridge** — distributed client/synchronization layer for OneGodian.org, OneGodian.com, and QuantumOHI.com.
-
-## Canonical operating cycle
-
-The OneGodian Algorithm provides the underlying process:
-
-```text
-Observe
-→ Distill
-→ Align
-→ Select
-→ Execute
-→ Verify
-```
-
-The current OMOS product-facing runtime rail is:
-
-```text
-INPUT
-→ LAYER 1
-→ ALIGN
-→ COUNCIL
-→ SYNTHESIZE
-→ RECORD
-→ HISTORY
-```
-
-Human approval/rejection remains a governed control inside the Record transition where required.
-
-## Current runtime responsibilities
+## Runtime architecture
 
 OMOS.OneGodian.com acts as:
 
-- the canonical OMOS runtime node;
-- the public protocol/documentation layer;
-- the flagship **Ask OMOS** workspace;
-- the Council of Models orchestration surface;
-- the Alignment Engine host;
-- the persistent Decision Record and history layer;
-- the manifest provider for plugins and dashboards;
-- the synchronization target for WordPress OMOS integrations;
-- the model/data/action/environment connection gateway;
-- the bridge layer into other authorized OneGodian systems.
-
-## Core end-to-end milestone
-
-### OMOS-REF-0001 — First Governed End-to-End Reference Run
-
-OMOS becomes operationally meaningful when one difficult question can travel through the complete governed cycle and its resulting Decision Record can later be reopened and audited:
-
-```text
-Human Question
-→ Ask OMOS
-→ Layer 1 Distillation
-→ Alignment
-→ Council Review
-→ Governed OHI Synthesis
-→ Human Decision Gate
-→ Persistent Decision Record
-→ Dashboard History
-```
-
-The reference run is not PASS until durable persistence, restart survival, and history retrieval are proven for the deployed environment.
+- the canonical OMOS runtime node
+- the public protocol/documentation layer
+- the manifest provider for plugins and dashboards
+- the synchronization target for WordPress OMOS integrations
+- the bridge layer into app.OneGodian.com
 
 ## Source documents integrated
 
-This repository maps or references the following source materials:
+This repo maps the following source materials into implementation-ready documentation:
 
 - OHI Runtime technical specification
 - OTS-V5 corrected timekeeping standard
 - OneGodian Algorithm whitepaper
 - OneGodian AI System Prompt
-- OneGodian Protocol / Algorithm unified framework
 - OneGodian Frequency Standard
-- OHI Output Pipeline animation
+- OHI Output Pipeline HTML animation
 - Agent Authority Model
 - Founder and origin statement
-- Belief Mapper specification
-- GCD model-synthesis architecture
-- Digital Sanctuary framework
-- institutional/domain-separation guidance
 - OMOS WordPress/WXR assets
 - OMOS Core Tools / Page Generator plugin assets
 - Bridge-Builder Protocol specification
+- Bridge-Builder Tool specification and WordPress page draft
+- OMOS Node Content and Plugin Bridge Plan
 - OneGodian ecosystem manifest
 
-## Primary information architecture
-
-The customer-first navigation standard is documented in `docs/OMOS-MEGA-MENU-V2.md`.
-
-Primary sections:
-
-1. **OMOS**
-2. **WORKSPACE**
-3. **COUNCIL**
-4. **OLLM**
-5. **TOOLS**
-6. **DEVELOPERS**
-7. **PRICING**
-
-Persistent header actions:
-
-- Runtime status
-- Sign In
-- **ASK OMOS**
-
-Representative routes include:
+## Master site architecture
 
 ```text
 /
-/ask
-/dashboard
-/decision-review
-/document-review
-/council-of-models
+/omos
+/ohi
 /models
-/connections
-/belief-mapper
 /tools
+/tools/bridge-builder
 /artifacts
 /docs
-/protocol
-/algorithm
-/ohi
-/ohi-output-pipeline
-/digital-sanctuary
-/pricing
 /shop
+/latest-news
+/dashboard
+/admin
 /legal
 /contact
+/protocol
+/algorithm
+/digital-sanctuary
+/ohi-output-pipeline
 ```
 
-A route must not be presented as a live product merely because it appears in the sitemap or menu specification.
+## Primary mega menu
 
-## Model Gateway
+The public mega menu should use these seven primary links:
 
-The initial model connections are:
+1. OMOS
+2. OHI
+3. Models
+4. Tools
+5. Artifacts
+6. Docs
+7. Shop
 
-- OpenAI
-- Anthropic
-- Google Gemini
-- xAI
-- OLLM / local models
+`Open Console` should remain a persistent CTA that links to `/dashboard` or the app control plane.
 
-Every provider should sit behind one stable OMOS Model Connector Interface. Provider secrets stay server-side and must never be committed or rendered in the browser.
+Supporting links such as Latest News, Legal, Contact, Protocol, Algorithm, and OHI Output Pipeline may appear in secondary navigation, footer links, cards, and contextual page CTAs.
 
-The Council distinguishes:
+## Node and environment setup
 
-- requested providers;
-- available providers;
-- failed/degraded providers;
-- simulation vs live mode;
-- independent outputs;
-- cross-reviews;
-- agreement zones;
-- contradictions;
-- missing information;
-- novel insights;
-- supported dissent;
-- evidence/verification state.
-
-**Model agreement is not factual verification.**
-
-## Connection & Adaptation Layer
-
-OMOS supports four connection classes:
-
-- **Model Connections** — OpenAI, Anthropic, Gemini, xAI, OLLM
-- **Data Connections** — GitHub, Drive, WordPress, databases, knowledge systems
-- **Action Connections** — GitHub, WordPress, Stripe, email, calendars, deployment systems
-- **Environment Connections** — Unreal Engine, Blender, 3D, robots, IoT, XR/simulation
-
-See `docs/OMOS-CONNECTION-ADAPTATION-LAYER.md`.
-
-## Engineering Council
-
-Canonical governed software workflow:
+Primary environment file:
 
 ```text
-GitHub Issue
-→ Task Classification
-→ Agent Assignment
-→ Agent Work
-→ PR
-→ Cross-Agent Review
-→ Tests / CI
-→ OMOS Review
-→ Human Approval
-→ Merge
-→ Deployment Proof
+.env.example
 ```
 
-See `docs/OMOS-ENGINEERING-COUNCIL.md`.
-
-## Compliance Test Suite
-
-`docs/OMOS-COMPLIANCE-TEST-SUITE-1.0.md` defines the draft OMOS-CTS-1.0 conformance framework covering:
-
-- schema validation;
-- pipeline sequencing;
-- Layer 1;
-- alignment logic;
-- prompt enforcement;
-- API behavior;
-- Council review;
-- human gate integrity;
-- Decision Record persistence;
-- replay/idempotency;
-- verification integrity;
-- robotics safety where applicable.
-
-Test states are `PASS`, `FAIL`, `WARN`, and `NOT_APPLICABLE`.
-
-## Belief Mapper
-
-The Belief Mapper is an OMOS identity product built around seven mapping dimensions and the voluntary journey stages:
-
-`Seeker → Believer → OneGodian → Elder`
-
-The result must explain the basis for the mapping and must not be presented as an objective scientific measurement of spirituality, morality, divine favor, legal identity, or human worth.
-
-See `docs/OMOS-BELIEF-MAPPER-PRODUCT-SPEC.md`.
-
-## OLLM
-
-OLLM is a first-class intelligence provider inside the OMOS Model Gateway, not a separate orchestration architecture.
-
-See `docs/OMOS-OLLM-INTEGRATION.md`.
-
-## Commerce
-
-The commercial principle is outcome-first:
-
-> Consumers should pay OMOS to get a better outcome, not merely to read about the architecture.
-
-Canonical customer path:
+Required production variables include:
 
 ```text
-Visitor
-→ Ask OMOS Free
-→ Paid Review / Council / Plan
-→ Verified Checkout
-→ OMOS Entitlement
-→ Governed Run
-→ Decision Record
-→ Dashboard History
+OMOS_CANONICAL_HOST
+ONEGODIAN_ORG_URL
+ONEGODIAN_STORE_URL
+ONEGODIAN_APP_URL
+ONEGODIAN_UNIVERSITY_URL
+ONEGODIAN_GALAXY_URL
+ONEGODIAN_CAPITAL_URL
+QUANTUMOHI_URL
+OMOS_API_KEYS
+OMOS_WP_PLUGIN_VERSION
 ```
 
-The server-side verified payment event is the payment authority; a browser success redirect alone must never unlock paid capability.
+## Manifests and static API fallbacks
 
-See:
+Machine-readable setup files:
 
-- `docs/COMMERCE-ENTITLEMENT-SPEC.md`
-- `docs/OMOS-PRODUCT-STRATEGY.md`
+```text
+config/ecosystem.manifest.json
+public/api/ecosystem
+public/api/tools
+public/api/artifacts
+public/api/docs
+public/api/bridge/status
+```
 
-## Time governance
-
-For system-of-record timestamps:
-
-- UTC = canonical system timestamp;
-- Gregorian date/time = controlling civil/legal reference;
-- Onegodian Time™ = derived supplemental representation under OTS-V5.
-
-OT is never the sole primary storage timestamp for civil, legal, banking, tax, or government records.
+These files support plugin and dashboard development before all dynamic API controllers are finalized.
 
 ## WordPress plugin bridge
 
-The OMOS plugin used on OneGodian.org, OneGodian.com, and QuantumOHI.com should function as a client of the central OMOS runtime, not as three separate OMOS implementations.
+The OMOS plugin used on:
 
-Expected responsibilities include:
+- OneGodian.com
+- OneGodian.org
+- QuantumOHI.com
 
-- consume manifest/status endpoints;
-- sync route inventories;
-- expose approved OMOS shortcodes/components;
-- render documentation/tool cards;
-- launch OMOS workspace actions;
-- preserve canonical OMOS routes;
-- surface commerce pathways without duplicating runtime logic.
+should:
 
-## Production safety boundary
+- consume `/api/manifest`
+- consume `/api/ecosystem`
+- consume `/api/bridge/status`
+- sync route inventories
+- expose OMOS shortcodes
+- render OMOS cards and documentation blocks
+- provide dashboard launch links
+- connect WooCommerce OMOS products
+- preserve canonical OMOS routes
 
-OMOS must remain public-safe and commercially disciplined:
+### Expected plugin shortcodes
 
-- ONEGODIAN, LLC is the commercial/IP/software layer;
-- INO governance/religious-society language must not be casually merged into LLC product claims;
-- internal identifiers do not replace government-issued identity;
-- alignment scores are internal evaluation metrics, not objective moral/spiritual measurements;
-- Council agreement is not truth verification;
-- provider credentials remain server-side;
-- consequential write actions require the configured authorization policy;
-- claims of compatibility, Verified, or Production status must be scoped to the tested component/version/environment.
+```text
+[omos_manifest]
+[omos_runtime_status]
+[omos_ecosystem_cards]
+[omos_bridge_builder]
+[omos_tool_grid]
+[omos_artifact_grid]
+[omos_docs_grid]
+[omos_open_console_button]
+[omos_ohi_pipeline]
+```
 
-## Immediate implementation order
+## Commerce bridge
 
-1. Prove durable production persistence.
-2. Complete OMOS-REF-0001 end to end.
-3. Finish model connection health/control UI.
-4. Make Dashboard History searchable and reopenable.
-5. Automate OMOS-CTS regression/conformance tests.
-6. Implement commerce checkout, webhook verification, entitlements, and run authorization.
-7. Complete the first paid customer journey.
-8. Expand data/action/environment connectors.
-9. Integrate OLLM as a first-class provider.
-10. Expand Projects and multi-agent orchestration after the reference run is repeatable.
+Commercial checkout remains on OneGodian.com.
+
+OMOS routes explain, document, and route traffic into:
+
+- WooCommerce products
+- PDF guides
+- protocol kits
+- developer downloads
+- courses
+- memberships
+
+## Deployment checklist
+
+1. Copy `.env.example` to `.env`
+2. Configure runtime keys
+3. `npm install`
+4. `npm run check`
+5. `npm run smoke`
+6. `npm run smoke:pages`
+7. Deploy Node runtime
+8. Confirm `/api/manifest` output
+9. Confirm `/api/ecosystem` output
+10. Confirm `/api/bridge/status` output
+11. Confirm plugin sync on connected WordPress sites
+12. Confirm app.OneGodian.com connectivity
+
+## Priority implementation order
+
+1. Import WXR pages and category taxonomies into WordPress.
+2. Activate the OMOS page generator / core tools plugin.
+3. Run **Tools → OMOS Page Generator** to generate or repair route pages.
+4. Set Home as the static front page.
+5. Build the seven-link main navigation and 4-column footer.
+6. Connect tool shortcodes to generated pages.
+7. Keep `[omos_bridge_builder]` as planned until runtime implementation is tested.
+8. Connect shop pages to Stripe/WooCommerce products.
+9. Publish first OMOS news, OHI reports, and Council updates.
+10. Add analytics and conversion tracking.
+11. Confirm all public claims match implemented/runtime status.
+
+## WordPress assets
+
+Store WXR/XML, shortcodes, import instructions, menu/footer structure, and plugin support files in `/wordpress`.
+
+Current WordPress page drafts and plugin files:
+
+- `wordpress/pages/bridge-builder-tool-page.md`
+- `wordpress/plugin-architecture/omos-core-tools-production-structure.md`
+- `wordpress/plugin-architecture/PLUGIN_TARGETS_ONEGODIAN_COM_ORG_QUANTUMOHI.md`
+
+## Documentation assets
+
+Store protocol, runtime, algorithm, timekeeping, agent authority, declaration generator, and founder references in `/docs`.
+
+Current documentation additions:
+
+- `docs/bridge-builder-protocol.md`
+- `docs/OMOS_NODE_CONTENT_AND_PLUGIN_BRIDGE_PLAN.md`
+
+## Tool requirements
+
+Store interactive tool specs in `/tools`.
+
+Current tool specs:
+
+- `tools/bridge-builder-tool-spec.md`
+
+## Plugin sync rule
+
+The WordPress plugin manifest must match the master sitemap. Any new public route, tool route, product pathway, or documentation route should be added to both:
+
+1. the sitemap/source-map documentation; and
+2. the WordPress page generator manifest.
+
+For Bridge-Builder, the route `/tools/bridge-builder` and shortcode `[omos_bridge_builder]` should not be treated as operational until the shortcode/API/runtime is implemented, tested, and connected through the plugin manifest.
+
+## Commercial path
+
+The immediate commercial objective is to turn OMOS from documentation into a customer path:
+
+```text
+Understand OMOS → Use a tool → Get product/download → Join/member → Follow updates
+```
+
+## Production note
+
+The OMOS site should be public-safe and commercially disciplined. ONEGODIAN, LLC should be described as the commercial/IP/software entity. Governance language belongs only where legally appropriate and should not be mixed into LLC product pages without clarification.
