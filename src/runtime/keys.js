@@ -6,6 +6,10 @@ function hashApiKey(apiKey) {
   return crypto.createHash("sha256").update(apiKey).digest("hex");
 }
 
+function ownerIdFromHash(hash) {
+  return `key_${String(hash || "").slice(0, 24)}`;
+}
+
 function parseKeyStore() {
   const raw = process.env.OMOS_API_KEYS || "";
 
@@ -15,7 +19,7 @@ function parseKeyStore() {
     .filter(Boolean)
     .map((entry) => {
       const [name, hash, plan = "starter"] = entry.split(":");
-      return { name, hash, plan };
+      return { name, hash, plan, ownerId: ownerIdFromHash(hash) };
     });
 }
 
@@ -37,5 +41,6 @@ module.exports = {
   KEY_PREFIX,
   generateApiKey,
   hashApiKey,
+  ownerIdFromHash,
   verifyApiKey
 };
