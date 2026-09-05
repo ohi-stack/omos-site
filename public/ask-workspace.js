@@ -35,7 +35,7 @@
 
   function renderStages(stages = null, selectedId = null) {
     const normalized = normalizedStages(stages);
-    stageList.innerHTML = normalized.map((stage) => `
+    const completed = normalized.filter(s => s.status === "COMPLETED" || s.status === "SKIPPED").length; const progress = (completed / normalized.length) * 100; const pBar = document.getElementById("railProgress"); if (pBar) pBar.style.width = `${progress}%`; stageList.innerHTML = normalized.map((stage) => `
       <div class="ask-stage" data-stage-id="${stage.id}" data-status="${escapeHtml(stage.status)}">
         <span class="ask-stage-num">0${stage.id}</span>
         <div><div class="ask-stage-name">${escapeHtml(stage.label)}</div><div class="ask-stage-desc">${escapeHtml(stage.desc)}</div></div>
@@ -318,6 +318,18 @@
     anchor.click();
     anchor.remove();
     URL.revokeObjectURL(url);
+  function exportPdf() {
+    if (!currentRecord) return showError('Run OMOS or open a Decision Record before exporting.');
+    const element = document.getElementById('results');
+    const opt = {
+      margin: 0.5,
+      filename: `${currentRecord.requestId}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
+  }
   }
 
   async function copyRunId() {
@@ -332,7 +344,7 @@
   });
   $('approveButton').addEventListener('click', () => serverDisposition('APPROVED'));
   $('rejectButton').addEventListener('click', () => serverDisposition('REJECTED'));
-  $('exportButton').addEventListener('click', exportRecord);
+  $('exportButton').addEventListener('click', exportRecord); $('exportPdfButton').addEventListener('click', exportPdf);
   $('copyIdButton').addEventListener('click', copyRunId);
   document.querySelectorAll('[data-example]').forEach((button) => button.addEventListener('click', () => { prompt.value = button.getAttribute('data-example') || ''; prompt.focus(); }));
   apiKey.addEventListener('change', () => { const key = apiKey.value.trim(); if (key) sessionStorage.setItem('omos_api_key', key); loadServerHistory(); });

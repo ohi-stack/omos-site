@@ -1,47 +1,2257 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>OMOS — OneGodian Metaphysical Operating System</title>
-</head>
-<body>
-<main class="omos-workspace">
-  <div class="omos-workspace-hero" style="flex-direction: column; align-items: center; text-align: center; padding: 80px 24px;">
-    <span class="omos-kicker">OneGodian Metaphysical Operating System</span>
-    <h1 style="font-size: clamp(48px, 8vw, 88px);">OMOS</h1>
-    <p style="text-align: center; margin: 0 auto;">The public runtime, documentation, orchestration, and identity framework layer for the evolving OneGodian ecosystem.</p>
-    <div class="omos-workspace-actions" style="justify-content: center; margin-top: 32px;">
-      <a class="omos-btn omos-btn-primary" href="/ask/">Ask OMOS Workspace</a>
-      <a class="omos-btn" href="/manifest">View Manifest</a>
-      <a class="omos-btn" href="/dashboard">System Dashboard</a>
-    </div>
-  </div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="preload"
+      as="image"
+      href="/omos-logo-gold.png"
+      fetchpriority="high"
+    />
+    <link
+      rel="stylesheet"
+      href="/omos-home.css"
+      data-rsc-css-href="/omos-home.css"
+      data-precedence="vite-rsc/importer-resources"
+    />
+    <link
+      rel="modulepreload"
+      href="/assets/layout-segment-context-Dv38cr9-.js"
+      crossorigin=""
+    />
+    <link
+      rel="modulepreload"
+      href="/assets/rolldown-runtime-S-ySWqyJ.js"
+      crossorigin=""
+    />
+    <link
+      rel="modulepreload"
+      href="/assets/framework-CXnKph_e.js"
+      crossorigin=""
+    />
+    <title>
+      OMOS Production Evidence | OneGodian Management &amp; Operating System
+    </title>
+    <meta
+      name="description"
+      content="Review the repository-backed OMOS 1.1.0 capabilities, current maturity classifications, evidence sources, and open production deployment gates."
+    />
+    <link rel="shortcut icon" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.svg" />
+    <meta name="codex-preview" content="development" />
+    
+    
+    <link
+      rel="preload"
+      href="https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-8ac0455e797f/geist-ff2310f5.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-8ac0455e797f/geist-875ccdd4.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-8ac0455e797f/geist-52306abf.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-8ac0455e797f/geist-001175b1.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-8ac0455e797f/geist-98bbbccb.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-f6b33328.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-44e03052.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-0638449e.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-971fb274.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-44745446.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-013b2f2f.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <style data-vinext-fonts>
+      /* cyrillic-ext */
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-8ac0455e797f/geist-ff2310f5.woff2)
+          format("woff2");
+        unicode-range:
+          U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+          U+FE2E-FE2F;
+      }
+      /* cyrillic */
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-8ac0455e797f/geist-875ccdd4.woff2)
+          format("woff2");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      /* vietnamese */
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-8ac0455e797f/geist-52306abf.woff2)
+          format("woff2");
+        unicode-range:
+          U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1,
+          U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329,
+          U+1EA0-1EF9, U+20AB;
+      }
+      /* latin-ext */
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-8ac0455e797f/geist-001175b1.woff2)
+          format("woff2");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      /* latin */
+      @font-face {
+        font-family: "Geist";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-8ac0455e797f/geist-98bbbccb.woff2)
+          format("woff2");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
 
-  <section class="omos-workspace-section" style="border: 0; background: transparent; padding: 40px 0;">
-    <div class="omos-workspace-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
-      <div class="omos-workspace-card">
-        <div class="omos-card-head">Identity</div>
-        <h2>Architecture</h2>
-        <p style="font-size: 14px; color: var(--omos-muted);">Founder-authored identity architecture designed for human and AI-era continuity.</p>
-      </div>
-      <div class="omos-workspace-card">
-        <div class="omos-card-head">Protocol</div>
-        <h2>Standards</h2>
-        <p style="font-size: 14px; color: var(--omos-muted);">Alignment and interaction standards for systems, agents, and orchestration environments.</p>
-      </div>
-      <div class="omos-workspace-card">
-        <div class="omos-card-head">Algorithm</div>
-        <h2>Synthesis</h2>
-        <p style="font-size: 14px; color: var(--omos-muted);">Structured synthesis pipeline using observe, distill, align, select, execute, and verify phases.</p>
-      </div>
-      <div class="omos-workspace-card">
-        <div class="omos-card-head">Infrastructure</div>
-        <h2>Runtime</h2>
-        <p style="font-size: 14px; color: var(--omos-muted);">Documentation, runtime tooling, APIs, plugins, memberships, and deployment systems.</p>
-      </div>
-    </div>
-  </section>
-</main>
-</body>
+      .__font_geist_0tvmz3h {
+        font-family: "Geist", sans-serif;
+      }
+
+      .__variable_geist_0tvmz3h {
+        --font-geist-sans: "Geist", sans-serif;
+      }
+
+      /* cyrillic-ext */
+      @font-face {
+        font-family: "Geist Mono";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-f6b33328.woff2)
+          format("woff2");
+        unicode-range:
+          U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+          U+FE2E-FE2F;
+      }
+      /* cyrillic */
+      @font-face {
+        font-family: "Geist Mono";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-44e03052.woff2)
+          format("woff2");
+        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+      }
+      /* symbols2 */
+      @font-face {
+        font-family: "Geist Mono";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-0638449e.woff2)
+          format("woff2");
+        unicode-range:
+          U+2000-2001, U+2004-2008, U+200A, U+23B8-23BD, U+2500-259F;
+      }
+      /* vietnamese */
+      @font-face {
+        font-family: "Geist Mono";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-971fb274.woff2)
+          format("woff2");
+        unicode-range:
+          U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1,
+          U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329,
+          U+1EA0-1EF9, U+20AB;
+      }
+      /* latin-ext */
+      @font-face {
+        font-family: "Geist Mono";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-44745446.woff2)
+          format("woff2");
+        unicode-range:
+          U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+          U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+          U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      /* latin */
+      @font-face {
+        font-family: "Geist Mono";
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url(https://onegodian-omos.onegodian.chatgpt.site/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-013b2f2f.woff2)
+          format("woff2");
+        unicode-range:
+          U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+
+      .__font_geist_mono_1diim1n {
+        font-family: "Geist Mono", sans-serif;
+      }
+
+      .__variable_geist_mono_1diim1n {
+        --font-geist-mono: "Geist Mono", sans-serif;
+      }
+    </style>
+  </head>
+  <body
+    class="__variable_geist_0tvmz3h __variable_geist_mono_1diim1n antialiased"
+  >
+    <main>
+      <div class="ambient ambient-one"></div>
+      <div class="ambient ambient-two"></div>
+      <header class="site-header">
+        <a class="brand" href="#top" aria-label="OMOS home"
+          ><img
+            class="brand-logo"
+            src="/omos-logo-gold.png"
+            alt="OMOS — OneGodian Metaphysical Operating System"
+            width="2048"
+            height="682"
+            fetchpriority="high" /></a
+        ><button
+          class="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="primary-navigation"
+        >
+          <span></span><span></span>
+        </button>
+        <nav
+          id="primary-navigation"
+          class="primary-nav"
+          aria-label="Primary navigation"
+        >
+          <div class="nav-groups">
+            <details class="nav-group">
+              <summary>OMOS</summary>
+              <div class="mega-panel">
+                <span class="mega-label">OMOS</span>
+                <div class="mega-links">
+                  <a href="#top">Overview<span aria-hidden="true">↗</span></a
+                  ><a href="#production"
+                    >Production status<span aria-hidden="true">↗</span></a
+                  ><a href="#architecture"
+                    >Architecture<span aria-hidden="true">↗</span></a
+                  ><a href="#algorithm"
+                    >Algorithm<span aria-hidden="true">↗</span></a
+                  ><a href="#standards"
+                    >Standards<span aria-hidden="true">↗</span></a
+                  >
+                </div>
+              </div>
+            </details>
+            <details class="nav-group">
+              <summary>Workspace</summary>
+              <div class="mega-panel">
+                <span class="mega-label">Workspace</span>
+                <div class="mega-links">
+                  <a href="#pipeline"
+                    >Ask OMOS<span aria-hidden="true">↗</span></a
+                  ><a href="#pipeline"
+                    >Layer 1<span aria-hidden="true">↗</span></a
+                  ><a href="#algorithm"
+                    >Align<span aria-hidden="true">↗</span></a
+                  ><a href="#pipeline"
+                    >Council<span aria-hidden="true">↗</span></a
+                  ><a href="#pipeline"
+                    >Synthesize<span aria-hidden="true">↗</span></a
+                  ><a href="#record">Record<span aria-hidden="true">↗</span></a
+                  ><a href="#record"
+                    >History<span aria-hidden="true">↗</span></a
+                  >
+                </div>
+              </div>
+            </details>
+            <details class="nav-group">
+              <summary>Council</summary>
+              <div class="mega-panel">
+                <span class="mega-label">Council</span>
+                <div class="mega-links">
+                  <a href="#pipeline"
+                    >Council workspace<span aria-hidden="true">↗</span></a
+                  ><a href="#engineering-council"
+                    >Engineering Council<span aria-hidden="true">↗</span></a
+                  ><a href="#engineering-council"
+                    >Review rules<span aria-hidden="true">↗</span></a
+                  ><a href="#record"
+                    >Human approval gate<span aria-hidden="true">↗</span></a
+                  >
+                </div>
+              </div>
+            </details>
+            <details class="nav-group">
+              <summary>OLLM</summary>
+              <div class="mega-panel">
+                <span class="mega-label">OLLM</span>
+                <div class="mega-links">
+                  <a href="#pipeline"
+                    >Model council<span aria-hidden="true">↗</span></a
+                  ><a href="#pipeline"
+                    >Independent outputs<span aria-hidden="true">↗</span></a
+                  ><a href="#pipeline"
+                    >Cross-model review<span aria-hidden="true">↗</span></a
+                  ><a href="#pipeline"
+                    >O-H-I output<span aria-hidden="true">↗</span></a
+                  ><a href="#environment"
+                    >Runtime environment<span aria-hidden="true">↗</span></a
+                  >
+                </div>
+              </div>
+            </details>
+            <details class="nav-group">
+              <summary>Tools</summary>
+              <div class="mega-panel">
+                <span class="mega-label">Tools</span>
+                <div class="mega-links">
+                  <a href="#algorithm"
+                    >Algorithm lab<span aria-hidden="true">↗</span></a
+                  ><a href="#record"
+                    >Decision review<span aria-hidden="true">↗</span></a
+                  ><a href="#products"
+                    >Timekeeping tools<span aria-hidden="true">↗</span></a
+                  ><a href="#products"
+                    >Developer kit<span aria-hidden="true">↗</span></a
+                  >
+                </div>
+              </div>
+            </details>
+            <details class="nav-group">
+              <summary>Developers</summary>
+              <div class="mega-panel">
+                <span class="mega-label">Developers</span>
+                <div class="mega-links">
+                  <a href="#architecture"
+                    >System architecture<span aria-hidden="true">↗</span></a
+                  ><a href="#environment"
+                    >Environment contract<span aria-hidden="true">↗</span></a
+                  ><a href="#engineering-council"
+                    >Engineering workflow<span aria-hidden="true">↗</span></a
+                  ><a href="#library"
+                    >Documents<span aria-hidden="true">↗</span></a
+                  ><a
+                    href="https://github.com/ohi-stack/omos-site"
+                    target="_blank"
+                    rel="noreferrer"
+                    >GitHub repository<span aria-hidden="true">↗</span></a
+                  >
+                </div>
+              </div>
+            </details>
+            <details class="nav-group">
+              <summary>Pricing</summary>
+              <div class="mega-panel">
+                <span class="mega-label">Pricing</span>
+                <div class="mega-links">
+                  <a href="#products"
+                    >Product catalog<span aria-hidden="true">↗</span></a
+                  ><a href="#products"
+                    >Developer Kit<span aria-hidden="true">↗</span></a
+                  ><a href="#products"
+                    >Prompt systems<span aria-hidden="true">↗</span></a
+                  ><a href="#products"
+                    >Tools &amp; standards<span aria-hidden="true">↗</span></a
+                  >
+                </div>
+              </div>
+            </details>
+          </div>
+          <div class="nav-actions">
+            <a href="#production">Runtime</a
+            ><a href="https://omos.onegodian.com/dashboard/">Sign In</a
+            ><a class="nav-cta" href="#pipeline">ASK OMOS</a>
+          </div>
+        </nav>
+      </header>
+      <section class="hero" id="top">
+        <div class="eyebrow">
+          <span class="live-dot"></span>Repository audit • September 4, 2026 •
+          Human-governed
+        </div>
+        <h1>
+          Built in the repo.<br />Separated from hype.<br /><span
+            >Ready for the production gate.</span
+          >
+        </h1>
+        <p class="hero-copy">
+          OMOS 1.1.0 is implemented as a functional governed-intelligence
+          runtime in the canonical repository. This page now distinguishes
+          repository-tested capabilities from the separate work required to
+          verify the canonical production deployment.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#production"
+            >Review production evidence <span aria-hidden="true">↘</span></a
+          ><a
+            class="button button-quiet"
+            href="https://github.com/ohi-stack/omos-site"
+            target="_blank"
+            rel="noreferrer"
+            >Open canonical repository ↗</a
+          >
+        </div>
+        <div class="hero-formula" aria-label="OMOS model synthesis formula">
+          <div class="formula-model formula-cyan">
+            <b>GPT</b><span>structure</span>
+          </div>
+          <i>+</i>
+          <div class="formula-model formula-violet">
+            <b>Claude</b><span>nuance</span>
+          </div>
+          <i>+</i>
+          <div class="formula-model formula-blue">
+            <b>Gemini</b><span>breadth</span>
+          </div>
+          <i>+</i>
+          <div class="formula-model formula-gold">
+            <b>Grok</b><span>contrast</span>
+          </div>
+          <i class="formula-arrow">→</i>
+          <div class="formula-result">
+            <span class="result-orbit"></span><b>OHI</b
+            ><span>governed synthesis</span>
+          </div>
+        </div>
+        <div class="trust-strip">
+          <div>
+            <strong>Repository 1.1.0</strong
+            ><span>Functional candidate build</span>
+          </div>
+          <div>
+            <strong>Lifecycle test passed</strong
+            ><span>Simulation path + Human Gate</span>
+          </div>
+          <div>
+            <strong>Live host 1.0.1 observed</strong
+            ><span>Deployment upgrade still required</span>
+          </div>
+        </div>
+      </section>
+      <section class="section production-section" id="production">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">Production evidence register</p>
+            <h2>What is ready—and what is not.</h2>
+          </div>
+          <p>
+            The canonical source is <strong>ohi-stack/omos-site</strong>. Its
+            current package version is 1.1.0. The separate AI Studio repository
+            currently provides synchronization and provenance records; it is not
+            counted as independent runtime proof.
+          </p>
+        </div>
+        <div class="release-split">
+          <article class="release-snapshot">
+            <div class="snapshot-head">
+              <div>
+                <span class="panel-label">Current evidence snapshot</span>
+                <h3>Repository-ready. Production verification pending.</h3>
+              </div>
+              <span class="snapshot-version">v1.1.0</span>
+            </div>
+            <div class="snapshot-grid">
+              <div>
+                <span>Source state</span><strong>Functional</strong
+                ><small>Core lifecycle test passed</small>
+              </div>
+              <div>
+                <span>Canonical host</span><strong>v1.0.1 observed</strong
+                ><small>Not yet verified on 1.1.0</small>
+              </div>
+              <div>
+                <span>Durable records</span><strong>Implemented</strong
+                ><small>Production database gate open</small>
+              </div>
+              <div>
+                <span>Human authority</span><strong>Enforced</strong
+                ><small>Approval does not equal truth</small>
+              </div>
+            </div>
+            <p>
+              “Production” applies component by component. A committed feature,
+              passing local test, or public route is not a completed production
+              deployment until the intended revision is running and its live
+              verification gates pass.
+            </p>
+          </article>
+          <aside class="repo-ledger">
+            <span class="panel-label">Evidence sources</span
+            ><a
+              href="https://github.com/ohi-stack/omos-site"
+              target="_blank"
+              rel="noreferrer"
+              ><span>Canonical runtime</span><strong>ohi-stack/omos-site</strong
+              ><small>Code, routes, APIs, tests, docs, plugin assets</small></a
+            >
+            <div>
+              <span>Development mirror</span><strong>OMOS AI Studio</strong
+              ><small
+                >Sync workflow + provenance register; not runtime proof</small
+              >
+            </div>
+            <a
+              href="https://omos.onegodian.com"
+              target="_blank"
+              rel="noreferrer"
+              ><span>Canonical host</span><strong>omos.onegodian.com</strong
+              ><small
+                >Must be smoke-verified after the 1.1.0 deployment</small
+              ></a
+            >
+          </aside>
+        </div>
+        <div class="evidence-grid">
+          <article class="evidence-card">
+            <div class="evidence-head">
+              <span>Ask OMOS workspace</span
+              ><b class="status-badge functional">Functional</b>
+            </div>
+            <p>
+              Seven-stage flow implemented: Ask OMOS, Layer 1, Alignment,
+              Council Review, Governed Synthesis, Human Gate, and Decision
+              Record.
+            </p>
+            <small
+              >Live provider execution depends on configured production
+              credentials.</small
+            >
+          </article>
+          <article class="evidence-card">
+            <div class="evidence-head">
+              <span>Layer 1 + Alignment</span
+              ><b class="status-badge verified">Repository verified</b>
+            </div>
+            <p>
+              Deterministic signal classification and dimension-based alignment
+              scoring are implemented and covered by the lifecycle test.
+            </p>
+            <small
+              >Scores remain decision-support signals, not factual
+              verification.</small
+            >
+          </article>
+          <article class="evidence-card">
+            <div class="evidence-head">
+              <span>Council orchestration</span
+              ><b class="status-badge functional">Functional</b>
+            </div>
+            <p>
+              OpenAI, Anthropic, Gemini, and xAI adapters, independent outputs,
+              no-self cross-review, and explicit simulation/hybrid/live modes
+              are implemented.
+            </p>
+            <small
+              >Current provider configuration on the production host has not
+              been independently verified.</small
+            >
+          </article>
+          <article class="evidence-card">
+            <div class="evidence-head">
+              <span>Human Gate + records</span
+              ><b class="status-badge verified">Repository verified</b>
+            </div>
+            <p>
+              Approve/reject disposition, run retrieval, hashes, timestamps,
+              provider provenance, and stage history pass the repository
+              lifecycle test.
+            </p>
+            <small
+              >Human approval records a disposition; it does not make a claim
+              factually true.</small
+            >
+          </article>
+          <article class="evidence-card">
+            <div class="evidence-head">
+              <span>Persistent storage</span
+              ><b class="status-badge gated">Implemented / gated</b>
+            </div>
+            <p>
+              PostgreSQL storage, schema initialization, migration, run history,
+              and a public persistence-status endpoint are implemented.
+            </p>
+            <small
+              >Production requires DATABASE_URL and a restart-survival
+              verification. Memory fallback is not durable.</small
+            >
+          </article>
+          <article class="evidence-card">
+            <div class="evidence-head">
+              <span>WordPress + ecosystem bridge</span
+              ><b class="status-badge planned">Staged</b>
+            </div>
+            <p>
+              Plugin assets, manifests, shortcodes, target maps, and integration
+              documentation exist in the canonical repository.
+            </p>
+            <small
+              >The bridge is not operational until installed, configured, and
+              tested on each target property.</small
+            >
+          </article>
+        </div>
+        <div class="gate-panel">
+          <div>
+            <p class="panel-label">Production gates still open</p>
+            <h3>Promotion requires live proof.</h3>
+            <p>
+              These are the remaining gates before OMOS 1.1.0 can be described
+              as verified on the canonical production host.
+            </p>
+          </div>
+          <ol>
+            <li>
+              <span>01</span>Deploy repository version 1.1.0 to the canonical
+              OMOS host
+            </li>
+            <li>
+              <span>02</span>Pass the production preflight with non-placeholder
+              secrets
+            </li>
+            <li>
+              <span>03</span>Verify PostgreSQL persistence survives a restart or
+              redeployment
+            </li>
+            <li>
+              <span>04</span>Run canonical live smoke tests for health,
+              manifest, providers, pages, and security
+            </li>
+            <li>
+              <span>05</span>Confirm every live provider is labeled from actual
+              runtime configuration
+            </li>
+            <li>
+              <span>06</span>Install and test the WordPress bridge separately on
+              each approved target
+            </li>
+          </ol>
+        </div>
+      </section>
+      <section class="section pipeline-section" id="pipeline">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">Interface demonstration</p>
+            <h2>See the governed workflow without implying a live run.</h2>
+          </div>
+          <p>
+            This Sites demonstration remains intentionally local and simulated.
+            The canonical OMOS repository contains the functional API-backed
+            workspace; this visual explains the method without claiming that it
+            contacted any external model provider.
+          </p>
+        </div>
+        <div class="pipeline-console">
+          <div class="console-topbar">
+            <div class="console-lights" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+            <span>OMOS / OHI OUTPUT PIPELINE</span
+            ><span class="console-version">v1.1 repository model</span>
+          </div>
+          <div class="pipeline-grid">
+            <div class="prompt-panel">
+              <p class="panel-label">01 / Human question</p>
+              <h3>What is the clearest path from idea to verified action?</h3>
+              <div class="prompt-meta">
+                <span>Same prompt</span><span>Four independent outputs</span
+                ><span>Human-defined criteria</span>
+              </div>
+              <button class="button button-primary run-button" type="button">
+                Run synthesis
+              </button>
+            </div>
+            <div class="models-panel">
+              <p class="panel-label">02 / Independent model lanes</p>
+              <div class="model-grid">
+                <article
+                  class="model-card cyan active"
+                  style="transition-delay: 0ms"
+                >
+                  <div class="model-card-head">
+                    <span class="model-glyph">C</span>
+                    <div>
+                      <h4>ChatGPT</h4>
+                      <p>Structure &amp; synthesis</p>
+                    </div>
+                    <span class="status-light"></span>
+                  </div>
+                  <p class="model-output">
+                    Frames the issue, organizes the evidence, and identifies a
+                    practical response structure.
+                  </p>
+                  <div class="signal-line">
+                    <span style="width: 62%"></span>
+                  </div>
+                </article>
+                <article
+                  class="model-card violet active"
+                  style="transition-delay: 80ms"
+                >
+                  <div class="model-card-head">
+                    <span class="model-glyph">C</span>
+                    <div>
+                      <h4>Claude</h4>
+                      <p>Nuance &amp; constraints</p>
+                    </div>
+                    <span class="status-light"></span>
+                  </div>
+                  <p class="model-output">
+                    Tests assumptions, preserves important qualifications, and
+                    strengthens the reasoning chain.
+                  </p>
+                  <div class="signal-line">
+                    <span style="width: 62%"></span>
+                  </div>
+                </article>
+                <article
+                  class="model-card blue active"
+                  style="transition-delay: 160ms"
+                >
+                  <div class="model-card-head">
+                    <span class="model-glyph">G</span>
+                    <div>
+                      <h4>Gemini</h4>
+                      <p>Breadth &amp; comparison</p>
+                    </div>
+                    <span class="status-light"></span>
+                  </div>
+                  <p class="model-output">
+                    Adds alternative interpretations, broader context, and
+                    useful comparative patterns.
+                  </p>
+                  <div class="signal-line">
+                    <span style="width: 62%"></span>
+                  </div>
+                </article>
+                <article
+                  class="model-card gold active"
+                  style="transition-delay: 240ms"
+                >
+                  <div class="model-card-head">
+                    <span class="model-glyph">G</span>
+                    <div>
+                      <h4>Grok</h4>
+                      <p>Contrast &amp; directness</p>
+                    </div>
+                    <span class="status-light"></span>
+                  </div>
+                  <p class="model-output">
+                    Surfaces tension points, challenges weak framing, and tests
+                    whether the answer is clear.
+                  </p>
+                  <div class="signal-line">
+                    <span style="width: 62%"></span>
+                  </div>
+                </article>
+              </div>
+            </div>
+            <div class="synthesis-panel">
+              <p class="panel-label">03 / Governed synthesis</p>
+              <ol class="stage-list">
+                <li class="current"><span>1</span>Independent answers</li>
+                <li class=""><span>2</span>Cross-model review</li>
+                <li class=""><span>3</span>Agreement mapping</li>
+                <li class=""><span>4</span>Human synthesis</li>
+                <li class=""><span>5</span>OHI output</li>
+              </ol>
+              <div class="progress-track" aria-label="Pipeline progress">
+                <span style="width: 20%"></span>
+              </div>
+              <div class="output-card">
+                <span class="output-label">OHI_OUTPUT / 001</span
+                ><strong>Recommended path</strong>
+                <p>
+                  Preserve the shared facts, state unresolved contradictions,
+                  select the most coherent next action, and require human
+                  verification before execution.
+                </p>
+                <div class="output-tags">
+                  <span>clear</span><span>scoped</span><span>auditable</span
+                  ><span>human-approved</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section architecture-section" id="architecture">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">OMOS architecture</p>
+            <h2>From recognition to governed behavior.</h2>
+          </div>
+          <p>
+            OMOS is a system of connected layers—not a single chatbot or
+            interface. The four-layer structure separates identity,
+            personalization, community support, and machine behavior so each can
+            be reviewed and versioned independently.
+          </p>
+        </div>
+        <div class="architecture-stack">
+          <article class="architecture-row">
+            <div class="layer-index">L1</div>
+            <div class="layer-title">
+              <span>Recognition &amp; classification</span>
+              <h3>
+                Protocol<!-- -->
+                Layer
+              </h3>
+            </div>
+            <p>
+              Defines how the OneGodian framework is described, recognized, and
+              represented across software, institutional, and public contexts.
+            </p>
+            <div class="layer-route" aria-hidden="true">
+              <span>01</span><i></i>
+            </div>
+          </article>
+          <article class="architecture-row">
+            <div class="layer-index">L2</div>
+            <div class="layer-title">
+              <span>Belief mapping &amp; personalization</span>
+              <h3>
+                Experience<!-- -->
+                Layer
+              </h3>
+            </div>
+            <p>
+              Maps user context and journey stage so content, tools, and
+              guidance can be presented at an appropriate level without
+              coercion.
+            </p>
+            <div class="layer-route" aria-hidden="true">
+              <span>02</span><i></i>
+            </div>
+          </article>
+          <article class="architecture-row">
+            <div class="layer-index">L3</div>
+            <div class="layer-title">
+              <span>Connection &amp; governance support</span>
+              <h3>
+                Community<!-- -->
+                Layer
+              </h3>
+            </div>
+            <p>
+              Structures values-based connection, records, community health
+              signals, and human-led decision support.
+            </p>
+            <div class="layer-route" aria-hidden="true">
+              <span>03</span><i></i>
+            </div>
+          </article>
+          <article class="architecture-row">
+            <div class="layer-index">L4</div>
+            <div class="layer-title">
+              <span>System behavior &amp; authority</span>
+              <h3>
+                Orientation<!-- -->
+                Layer
+              </h3>
+            </div>
+            <p>
+              Sets behavioral boundaries for models, agents, interfaces, and
+              workflows while preserving final human control.
+            </p>
+            <div class="layer-route" aria-hidden="true">
+              <span>04</span><i></i>
+            </div>
+          </article>
+        </div>
+        <div class="authority-band">
+          <div class="authority-orbit" aria-hidden="true">
+            <span></span><b>H</b>
+          </div>
+          <div>
+            <p class="kicker">Authority rule</p>
+            <h3>Intelligent systems may advise. Human authority decides.</h3>
+          </div>
+          <p>
+            Every OMOS workflow should identify the responsible person, the
+            action boundary, the approval threshold, and the record retained
+            after execution.
+          </p>
+        </div>
+      </section>
+      <section class="section algorithm-section" id="algorithm">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">The OneGodian Algorithm™</p>
+            <h2>Coherence before execution.</h2>
+          </div>
+          <p>
+            The Algorithm is a six-stage interpretive and execution framework:
+            observe the full context, reduce noise, evaluate alignment, select
+            the strongest path, act within authority, and verify against
+            reality.
+          </p>
+        </div>
+        <div class="algorithm-lab">
+          <div
+            class="algorithm-rail"
+            role="tablist"
+            aria-label="Algorithm stages"
+          >
+            <button
+              aria-selected="true"
+              class="selected"
+              role="tab"
+              type="button"
+            >
+              <span>01</span>Observe</button
+            ><button aria-selected="false" class="" role="tab" type="button">
+              <span>02</span>Distill</button
+            ><button aria-selected="false" class="" role="tab" type="button">
+              <span>03</span>Align</button
+            ><button aria-selected="false" class="" role="tab" type="button">
+              <span>04</span>Select</button
+            ><button aria-selected="false" class="" role="tab" type="button">
+              <span>05</span>Execute</button
+            ><button aria-selected="false" class="" role="tab" type="button">
+              <span>06</span>Verify
+            </button>
+          </div>
+          <div class="algorithm-focus" role="tabpanel">
+            <span class="focus-number">01</span>
+            <p class="panel-label">Current decision stage</p>
+            <h3>Observe</h3>
+            <p>
+              Collect facts, claims, intentions, risks, actors, system
+              conditions, and relevant context.
+            </p>
+            <blockquote>“<!-- -->What is actually present?<!-- -->”</blockquote>
+            <div class="algorithm-controls">
+              <button type="button" disabled="">← Previous</button
+              ><button type="button">Next stage →</button>
+            </div>
+          </div>
+          <div class="score-panel">
+            <div class="score-head">
+              <div>
+                <p class="panel-label">Alignment lab</p>
+                <h3>Candidate path score</h3>
+              </div>
+              <div class="score-gauge" style="--score: 266.40000000000003deg">
+                <strong>74</strong><span>/ 100</span>
+              </div>
+            </div>
+            <label class="score-control"
+              ><span>truth<b>86</b></span
+              ><input type="range" min="0" max="100" value="86" /></label
+            ><label class="score-control"
+              ><span>clarity<b>74</b></span
+              ><input type="range" min="0" max="100" value="74" /></label
+            ><label class="score-control"
+              ><span>coherence<b>81</b></span
+              ><input type="range" min="0" max="100" value="81" /></label
+            ><label class="score-control"
+              ><span>dignity<b>92</b></span
+              ><input type="range" min="0" max="100" value="92" /></label
+            ><label class="score-control"
+              ><span>unity<b>79</b></span
+              ><input type="range" min="0" max="100" value="79" /></label
+            ><label class="score-control"
+              ><span>distortion<b>18</b></span
+              ><input type="range" min="0" max="100" value="18" /></label
+            ><label class="score-control"
+              ><span>fragmentation<b>24</b></span
+              ><input type="range" min="0" max="100" value="24"
+            /></label>
+            <p class="score-note">
+              Demonstration only. Production scoring requires documented
+              weights, test cases, and a defined approval policy.
+            </p>
+          </div>
+        </div>
+        <div class="equation-panel">
+          <span>Alignment score</span
+          ><strong
+            >Truth + Clarity + Coherence + Dignity + Constructive Unity</strong
+          ><i>minus</i
+          ><strong>Distortion + Fragmentation + Needless Conflict</strong>
+        </div>
+      </section>
+      <section class="section standards-section" id="standards">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">System standards</p>
+            <h2>Defined rules. Visible limits.</h2>
+          </div>
+          <p>
+            OMOS standards are stated with their operational scope. Internal
+            systems remain voluntary and supplemental; civil, financial, and
+            institutional requirements continue to control where applicable.
+          </p>
+        </div>
+        <div class="standards-grid">
+          <article class="time-card">
+            <div class="standard-card-head">
+              <span>OTS</span>
+              <div>
+                <p class="panel-label">OTS-V5 converter</p>
+                <h3>Dual-date governance</h3>
+              </div>
+              <b>Validated</b>
+            </div>
+            <div class="date-converter">
+              <label
+                >Gregorian date<input
+                  type="date"
+                  min="2025-03-18"
+                  max="2125-03-17"
+                  value="2026-07-28"
+                /><span class="date-presets"
+                  ><button type="button">Epoch</button
+                  ><button type="button">Year 0001</button
+                  ><button type="button">Current</button></span
+                ></label
+              >
+              <div class="date-output">
+                <span>The Third Day™</span><strong>Ahsténha</strong>
+                <h4>Freedom 13, 0001 OT</h4>
+                <p>
+                  Gregorian sync:
+                  <!-- -->2026-07-28
+                </p>
+              </div>
+            </div>
+            <div class="validation-stats">
+              <div><strong>36,524</strong><span>validated dates</span></div>
+              <div><strong>100</strong><span>full OT years</span></div>
+              <div>
+                <strong>2025–2125</strong><span>validation window</span>
+              </div>
+            </div>
+            <p class="legal-note">
+              OTS-V5 stores UTC/Gregorian time as the canonical system record.
+              OneGodian Time is a deterministic supplemental display layer.
+            </p>
+          </article>
+          <div class="standard-side">
+            <article class="frequency-card">
+              <div class="frequency-wave" aria-hidden="true">
+                <i style="height: 18px"></i
+                ><i style="height: 45.66689305681262px"></i
+                ><i style="height: 61.02604250715392px"></i
+                ><i style="height: 57.244860641948705px"></i
+                ><i style="height: 36.00542346556876px"></i
+                ><i style="height: 29.243808489180594px"></i
+                ><i style="height: 53.491180937662584px"></i
+                ><i style="height: 61.95013961757822px"></i
+                ><i style="height: 50.85767816618374px"></i
+                ><i style="height: 25.148328669466785px"></i
+                ><i style="height: 39.74098745009879px"></i
+                ><i style="height: 58.958726109273px"></i
+                ><i style="height: 59.95578858462527px"></i
+                ><i style="height: 42.288627084899446px"></i
+                ><i style="height: 22.183440990359962px"></i
+                ><i style="height: 48.794486254115924px"></i
+                ><i style="height: 61.70646380794204px"></i
+                ><i style="height: 55.17542152614514px"></i
+                ><i style="height: 32.10672336565088px"></i
+                ><i style="height: 33.237415045952424px"></i
+                ><i style="height: 55.80311985368586px"></i
+                ><i style="height: 61.55193431784298px"></i
+                ><i style="height: 47.92647209508816px"></i
+                ><i style="height: 20.98808222136px"></i
+                ><i style="height: 43.27956966165975px"></i
+                ><i style="height: 60.3014896427005px"></i
+                ><i style="height: 58.505398955717965px"></i
+                ><i style="height: 38.6902967374766px"></i
+                ><i style="height: 26.328978383871622px"></i
+                ><i style="height: 51.64306947020614px"></i
+                ><i style="height: 61.99088760627745px"></i
+                ><i style="height: 52.769158682353186px"></i>
+              </div>
+              <p class="panel-label">OneGodian Frequency Standard™</p>
+              <h3>432 <span>Hz</span></h3>
+              <p>Unity • Source • Grounding • Alignment</p>
+              <small
+                >Defined as a creative, design, and branding standard—not
+                presented as a universal scientific constant.</small
+              >
+            </article>
+            <article class="version-card">
+              <p class="panel-label">Operational discipline</p>
+              <h3>Versioned or it does not exist.</h3>
+              <ul>
+                <li><span>01</span> Named version and effective date</li>
+                <li><span>02</span> Source and authority of record</li>
+                <li><span>03</span> Defined inputs, outputs, and limits</li>
+                <li><span>04</span> Test evidence and correction history</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="section record-section" id="record">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">Founder &amp; record of development</p>
+            <h2>Built through documented continuity.</h2>
+          </div>
+          <p>
+            Gregory Lamar Jones is the founder and author of the ONEGODIAN
+            framework. The record below separates the earlier identity and
+            institutional phases from the later technical systems architecture.
+          </p>
+        </div>
+        <div class="record-layout">
+          <div class="founder-card">
+            <span class="founder-monogram">GLJ</span>
+            <p class="panel-label">Founder of record</p>
+            <h3>Gregory Lamar Jones</h3>
+            <p>
+              Founder and author of the ONEGODIAN framework; founder and
+              managing member of ONEGODIAN, LLC; later architect of the
+              OneGodian Algorithm™, OHI™, and OMOS.
+            </p>
+            <div class="founder-tags">
+              <span>Authorship</span><span>Systems architecture</span
+              ><span>Human authority</span>
+            </div>
+          </div>
+          <ol class="timeline">
+            <li>
+              <span>2009</span>
+              <div>
+                <h3>Foundational authorship</h3>
+                <p>
+                  The ONEGODIAN name, written work, and framework enter the
+                  founder’s documented authorship history.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span>2013</span>
+              <div>
+                <h3>Copyright registration record</h3>
+                <p>
+                  U.S. Copyright Registration No. TXu 1-845-540 is recorded for
+                  the registered ONEGODIAN text and artwork.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span>2017–2020</span>
+              <div>
+                <h3>Institutional and community phase</h3>
+                <p>
+                  The Indigenous Nation of Onegodia is established as a
+                  spiritual, religious, and community body; its constitution is
+                  adopted in 2020. Jones’s earlier leadership role was Chief.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span>2018</span>
+              <div>
+                <h3>Commercial entity formed</h3>
+                <p>
+                  ONEGODIAN, LLC is formed in Connecticut on April 11, 2018, as
+                  the private commercial, IP, software, publishing, and economic
+                  entity.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span>2025</span>
+              <div>
+                <h3>Systems formalization</h3>
+                <p>
+                  OHI, Quantum-OHI, OneGodian Time, registries, verification
+                  models, and related operating concepts are organized into a
+                  broader systems architecture.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span>2026</span>
+              <div>
+                <h3>Algorithm and OMOS publication phase</h3>
+                <p>
+                  The OneGodian Algorithm white paper, system prompt, OTS-V5,
+                  protocol structure, validation workbook, and OMOS public
+                  platform are consolidated as versioned works.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+      <section class="section environment-section" id="environment">
+        <div class="section-heading environment-heading">
+          <div>
+            <p class="kicker">OMOS deployment contract</p>
+            <h2>
+              Hostinger is partially configured—not yet production-aligned.
+            </h2>
+          </div>
+          <p>
+            OMOS Decision Records require durable PostgreSQL in production.
+            If<code> DATABASE_URL </code> is blank or missing, OMOS falls back
+            to non-durable memory storage.
+          </p>
+        </div>
+        <div class="environment-status">
+          <div>
+            <span class="status-dot"></span
+            ><strong>Production alignment required</strong>
+          </div>
+          <p>
+            PostgreSQL durability is the release gate • never paste unmasked
+            secrets into chat or source control
+          </p>
+        </div>
+        <div class="critical-path-panel">
+          <div>
+            <span>Critical path before restart</span
+            ><strong>Complete these four variables in order.</strong>
+          </div>
+          <ol>
+            <li><span>01</span><code>OMOS_API_KEYS</code></li>
+            <li><span>02</span><code>DATABASE_URL</code></li>
+            <li><span>03</span><code>OMOS_DB_SSL</code></li>
+            <li><span>04</span><code>OMOS_DB_POOL_MAX</code></li>
+          </ol>
+        </div>
+        <div class="environment-layout">
+          <div class="environment-register">
+            <div class="env-register-head">
+              <span>Variable</span><span>Purpose</span><span>Exposure</span>
+            </div>
+            <div class="env-register-row">
+              <code>NODE_ENV</code>
+              <p>Set to production</p>
+              <span class="exposure exposure-config">Required</span>
+            </div>
+            <div class="env-register-row">
+              <code>PORT</code>
+              <p>Use 3000 unless Hostinger injects its own port</p>
+              <span class="exposure exposure-config">Verify</span>
+            </div>
+            <div class="env-register-row">
+              <code>OMOS_VERSION</code>
+              <p>Set to 1.1.0</p>
+              <span class="exposure exposure-config">Required</span>
+            </div>
+            <div class="env-register-row">
+              <code>OMOS_CANONICAL_HOST</code>
+              <p>https://omos.onegodian.com</p>
+              <span class="exposure exposure-public">Required</span>
+            </div>
+            <div class="env-register-row">
+              <code>OMOS_API_KEYS</code>
+              <p>Add a strong private production key</p>
+              <span class="exposure exposure-secret">Critical secret</span>
+            </div>
+            <div class="env-register-row">
+              <code>DATABASE_URL</code>
+              <p>Add the production PostgreSQL connection string</p>
+              <span class="exposure exposure-secret">Critical secret</span>
+            </div>
+            <div class="env-register-row">
+              <code>OMOS_DB_SSL</code>
+              <p>Normally true for hosted PostgreSQL</p>
+              <span class="exposure exposure-config">Required</span>
+            </div>
+            <div class="env-register-row">
+              <code>OMOS_DB_POOL_MAX</code>
+              <p>Set production pool maximum to 5</p>
+              <span class="exposure exposure-config">Required</span>
+            </div>
+            <div class="env-register-row">
+              <code>OPENAI_API_KEY</code>
+              <p>Keep the existing OpenAI production secret</p>
+              <span class="exposure exposure-secret">Present secret</span>
+            </div>
+            <div class="env-register-row">
+              <code>OPENAI_MODEL</code>
+              <p>Add gpt-5, as currently expected by the repository</p>
+              <span class="exposure exposure-config">Required</span>
+            </div>
+            <div class="env-register-row">
+              <code>ANTHROPIC_API_KEY</code>
+              <p>Add only if Claude Council is going live</p>
+              <span class="exposure exposure-secret">Conditional</span>
+            </div>
+            <div class="env-register-row">
+              <code>ANTHROPIC_MODEL</code>
+              <p>Set with the Claude provider configuration</p>
+              <span class="exposure exposure-config">Conditional</span>
+            </div>
+            <div class="env-register-row">
+              <code>GEMINI_API_KEY</code>
+              <p>Add only if Gemini Council is going live</p>
+              <span class="exposure exposure-secret">Conditional</span>
+            </div>
+            <div class="env-register-row">
+              <code>GEMINI_MODEL</code>
+              <p>Set with the Gemini provider configuration</p>
+              <span class="exposure exposure-config">Conditional</span>
+            </div>
+            <div class="env-register-row">
+              <code>XAI_API_KEY</code>
+              <p>Add only if Grok Council is going live</p>
+              <span class="exposure exposure-secret">Conditional</span>
+            </div>
+            <div class="env-register-row">
+              <code>XAI_MODEL</code>
+              <p>Set with the Grok provider configuration</p>
+              <span class="exposure exposure-config">Conditional</span>
+            </div>
+            <div class="env-register-row">
+              <code>ONEGODIAN_ORG_URL</code>
+              <p>https://onegodian.org</p>
+              <span class="exposure exposure-public">Required</span>
+            </div>
+            <div class="env-register-row">
+              <code>ONEGODIAN_STORE_URL</code>
+              <p>https://onegodian.com</p>
+              <span class="exposure exposure-public">Required</span>
+            </div>
+            <div class="env-register-row">
+              <code>ONEGODIAN_APP_URL</code>
+              <p>https://app.onegodian.com</p>
+              <span class="exposure exposure-public">Required</span>
+            </div>
+            <div class="env-register-row">
+              <code>ACC_API_URL</code>
+              <p>Keep the existing value after confirming it is correct</p>
+              <span class="exposure exposure-config">Verify</span>
+            </div>
+            <div class="env-register-row">
+              <code>ACC_API_KEY</code>
+              <p>Keep the existing ACC authentication secret</p>
+              <span class="exposure exposure-secret">Present secret</span>
+            </div>
+            <div class="env-register-row">
+              <code>QUANTUMOHI_URL</code>
+              <p>Add this exact key with https://quantumohi.com</p>
+              <span class="exposure exposure-public">Required</span>
+            </div>
+          </div>
+          <aside class="secret-boundary">
+            <p class="panel-label">Server-only boundary</p>
+            <h3>Keep every credential private and runtime-only.</h3>
+            <div class="secret-list">
+              <code>OMOS_API_KEYS</code><code>DATABASE_URL</code
+              ><code>OPENAI_API_KEY</code><code>ANTHROPIC_API_KEY</code
+              ><code>GEMINI_API_KEY</code><code>XAI_API_KEY</code
+              ><code>ACC_API_KEY</code>
+            </div>
+            <div class="vite-warning">
+              <span>Masked values only</span>
+              <p>
+                Do not place API keys or the PostgreSQL connection string in
+                chat, GitHub, frontend code, or screenshots without masking
+                them.
+              </p>
+            </div>
+          </aside>
+        </div>
+        <div class="environment-notes">
+          <article class="naming-warning">
+            <span>Exact key required</span>
+            <h3>
+              <code>QUANTUMOHI_URL</code>, not <code>QUANTUM_OHI_URL</code>
+            </h3>
+            <p>
+              The underscored spelling does not match the current repository
+              contract. Add the canonical key rather than assuming the existing
+              variable is read.
+            </p>
+          </article>
+          <article>
+            <span>Preserve deployment integrations</span>
+            <h3>Do not delete environment-specific variables.</h3>
+            <div class="retained-variable-list">
+              <code>OMOS_REST_BASE_URL</code><code>ODIN_REGISTRY_URL</code
+              ><code>OMOS_OPERATOR</code><code>LOG_LEVEL</code
+              ><code>ENABLE_COMPRESSION</code><code>ENABLE_HELMET</code
+              ><code>APP_SYNC_ENABLED</code><code>APP_SYNC_ENDPOINT</code
+              ><code>HEALTHCHECK_ROUTE</code><code>MANIFEST_ROUTE</code>
+            </div>
+            <p>
+              A blank <code>MANIFEST_ROUTE</code> is not a production blocker
+              unless another Hostinger component consumes it; the OMOS server
+              already owns its manifest endpoint.
+            </p>
+          </article>
+        </div>
+        <div
+          class="environment-architecture"
+          aria-label="OMOS environment architecture"
+        >
+          <div class="env-node public-node">
+            <span>Hostinger</span><strong>Runtime configuration</strong
+            ><code>masked production values</code>
+          </div>
+          <i aria-hidden="true">→</i>
+          <div class="env-node api-node">
+            <span>Protected layer</span><strong>OMOS API</strong
+            ><code>authenticated server runtime</code>
+          </div>
+          <i aria-hidden="true">→</i>
+          <div class="service-stack">
+            <span>OpenAI</span><span>Claude</span><span>Gemini</span
+            ><span>Grok / ACC</span><span>PostgreSQL</span>
+          </div>
+        </div>
+        <div class="environment-rule persistence-gate">
+          <span>Deployment proof</span
+          ><strong
+            ><code>/api/v1/persistence</code> must report PostgreSQL and durable
+            storage.</strong
+          >
+          <p>
+            After Hostinger saves the variables and OMOS is redeployed, verify
+            <code>backend: &quot;postgresql&quot;</code> and
+            <code>durable: true</code>. Until both pass, production is not
+            restart-safe for Decision Records.
+          </p>
+        </div>
+      </section>
+      <section class="section council-section" id="engineering-council">
+        <div class="section-heading council-heading">
+          <div>
+            <p class="kicker">Canonical engineering governance</p>
+            <h2>Every transition must leave evidence.</h2>
+          </div>
+          <p>
+            The OMOS Engineering Council coordinates parallel agent work while
+            keeping authorship, independent review, verification, and final
+            human authority as separate responsibilities.
+          </p>
+        </div>
+        <div class="canonical-council-lock">
+          <div>
+            <span>Canonical lifecycle • Version 1.0 • September 5, 2026</span
+            ><strong
+              >GitHub Issue → Task Classification → Agent Assignment → Agent
+              Work → PR → Cross-Agent Review → Tests / CI → OMOS Review → Human
+              Approval → Merge → Deployment Proof</strong
+            >
+          </div>
+          <p>
+            Each transition is evidence-gated. Work advances only when the
+            required artifact exists, the responsible reviewer is independent,
+            and the designated human authority has approved consequential
+            changes.
+          </p>
+        </div>
+        <div
+          class="council-flow"
+          aria-label="OMOS Engineering Council lifecycle"
+        >
+          <div class="flow-stage">
+            <span>01</span><strong>GitHub Issue</strong
+            ><i aria-hidden="true">→</i>
+          </div>
+          <div class="flow-stage">
+            <span>02</span><strong>Task Classification</strong
+            ><i aria-hidden="true">→</i>
+          </div>
+          <div class="flow-stage">
+            <span>03</span><strong>Agent Assignment</strong
+            ><i aria-hidden="true">→</i>
+          </div>
+          <div class="flow-stage">
+            <span>04</span><strong>Agent Work</strong
+            ><i aria-hidden="true">→</i>
+          </div>
+          <div class="flow-stage">
+            <span>05</span><strong>Pull Request</strong
+            ><i aria-hidden="true">→</i>
+          </div>
+          <div class="flow-stage">
+            <span>06</span><strong>Cross-Agent Review</strong
+            ><i aria-hidden="true">→</i>
+          </div>
+          <div class="flow-stage">
+            <span>07</span><strong>Tests / CI</strong
+            ><i aria-hidden="true">→</i>
+          </div>
+          <div class="flow-stage">
+            <span>08</span><strong>OMOS Review</strong
+            ><i aria-hidden="true">→</i>
+          </div>
+          <div class="flow-stage">
+            <span>09</span><strong>Human Approval</strong
+            ><i aria-hidden="true">→</i>
+          </div>
+          <div class="flow-stage">
+            <span>10</span><strong>Merge</strong><i aria-hidden="true">→</i>
+          </div>
+          <div class="flow-stage">
+            <span>11</span><strong>Deployment Proof</strong>
+          </div>
+          <div class="flow-stage flow-record">
+            <span>12</span><strong>Engineering Record</strong>
+          </div>
+        </div>
+        <div class="council-grid">
+          <div class="gate-register">
+            <div class="register-head">
+              <span>Stage</span><span>Required artifact or gate</span>
+            </div>
+            <div class="register-row">
+              <div><span>01</span><strong>GitHub Issue</strong></div>
+              <p>
+                Problem statement, acceptance criteria, affected repositories,
+                and priority
+              </p>
+            </div>
+            <div class="register-row">
+              <div><span>02</span><strong>Task Classification</strong></div>
+              <p>
+                Bug, feature, security, infrastructure, documentation, research,
+                or release
+              </p>
+            </div>
+            <div class="register-row">
+              <div><span>03</span><strong>Agent Assignment</strong></div>
+              <p>
+                Named agent, bounded scope, permissions, branch, and expected
+                deliverable
+              </p>
+            </div>
+            <div class="register-row">
+              <div><span>04</span><strong>Agent Work</strong></div>
+              <p>Commits, implementation notes, and tests added</p>
+            </div>
+            <div class="register-row">
+              <div><span>05</span><strong>Pull Request</strong></div>
+              <p>Diff, linked issue, risk statement, and test evidence</p>
+            </div>
+            <div class="register-row">
+              <div><span>06</span><strong>Cross-Agent Review</strong></div>
+              <p>
+                Independent review by an agent that did not author the change
+              </p>
+            </div>
+            <div class="register-row">
+              <div><span>07</span><strong>Tests / CI</strong></div>
+              <p>Required suites green; failures block progression</p>
+            </div>
+            <div class="register-row">
+              <div><span>08</span><strong>OMOS Review</strong></div>
+              <p>
+                Architecture, security, compliance, provenance, and maturity
+                checks
+              </p>
+            </div>
+            <div class="register-row">
+              <div><span>09</span><strong>Human Approval</strong></div>
+              <p>Explicit authorization by the designated human authority</p>
+            </div>
+            <div class="register-row">
+              <div><span>10</span><strong>Merge</strong></div>
+              <p>Protected-branch merge with a traceable commit SHA</p>
+            </div>
+            <div class="register-row">
+              <div><span>11</span><strong>Deployment Proof</strong></div>
+              <p>
+                Deployed SHA, health checks, smoke tests, and behavior or
+                persistence proof
+              </p>
+            </div>
+          </div>
+          <aside class="council-rules">
+            <p class="panel-label">Four absolute rules</p>
+            <article>
+              <span>I</span>
+              <div>
+                <h3>Independent review</h3>
+                <p>
+                  No agent reviews its own work as the final reviewer.
+                  Cross-agent review must remain independent.
+                </p>
+              </div>
+            </article>
+            <article>
+              <span>II</span>
+              <div>
+                <h3>CI is necessary, not sufficient</h3>
+                <p>
+                  Tests prove defined behavior; they do not independently prove
+                  architectural correctness or deployment safety.
+                </p>
+              </div>
+            </article>
+            <article>
+              <span>III</span>
+              <div>
+                <h3>Consequential changes do not auto-merge</h3>
+                <p>
+                  Explicit human approval remains the final authorization
+                  boundary before protected-branch merge.
+                </p>
+              </div>
+            </article>
+            <article>
+              <span>IV</span>
+              <div>
+                <h3>Merge is not completion</h3>
+                <p>
+                  Work closes only after production evidence proves the intended
+                  revision is running and acceptance criteria pass.
+                </p>
+              </div>
+            </article>
+          </aside>
+        </div>
+        <div class="engineering-record">
+          <div class="record-intro">
+            <p class="panel-label">Engineering Record</p>
+            <h3>Trace the change from proposal to production proof.</h3>
+            <p>
+              The record shows who proposed the change, who built it, who
+              challenged it, what passed, who authorized it, what deployed, and
+              whether production proved it worked.
+            </p>
+          </div>
+          <div class="record-fields">
+            <span><b>01</b>Issue ID</span><span><b>02</b>Assigned agents</span
+            ><span><b>03</b>Pull request</span
+            ><span><b>04</b>Independent reviewers</span
+            ><span><b>05</b>Test results</span
+            ><span><b>06</b>Approved-by identity</span
+            ><span><b>07</b>Merged SHA</span><span><b>08</b>Deployed SHA</span
+            ><span><b>09</b>Deployment timestamp</span
+            ><span><b>10</b>Environment</span
+            ><span><b>11</b>Verification result</span
+            ><span><b>12</b>Rollback reference</span
+            ><span><b>13</b>Final status</span>
+          </div>
+        </div>
+        <div class="authority-lock">
+          <span>Final authorization boundary</span
+          ><strong
+            >Human approval → protected merge → verified deployment</strong
+          >
+          <p>
+            OMOS may coordinate the work. It does not bypass the designated
+            human authority. This evidence chain is required before autonomous
+            coding-agent orchestration is permitted at scale.
+          </p>
+        </div>
+      </section>
+      <section class="section product-section" id="products">
+        <div class="section-heading product-heading">
+          <div>
+            <p class="kicker">OMOS product collection</p>
+            <h2>One system. Four artifact families.</h2>
+          </div>
+          <p>
+            The collection uses one controlled visual language: obsidian and
+            deep navy, metallic gold identity, cyan intelligence effects, and
+            precise archival labeling. Each product remains distinct while
+            visibly belonging to OMOS.
+          </p>
+        </div>
+        <div class="collection-rule" aria-label="OMOS product visual system">
+          <span>Obsidian foundation</span><i>→</i><span>Gold artifact</span
+          ><i>→</i><span>Cyan intelligence</span><i>→</i
+          ><span>Technical label</span>
+        </div>
+        <div
+          class="family-filters"
+          role="group"
+          aria-label="Filter product families"
+        >
+          <button
+            class="family-filter active"
+            type="button"
+            aria-pressed="true"
+          >
+            All products<!-- -->
+            <span>18</span></button
+          ><button class="family-filter" type="button" aria-pressed="false">
+            Identity<!-- -->
+            <span>4</span></button
+          ><button class="family-filter" type="button" aria-pressed="false">
+            Knowledge<!-- -->
+            <span>5</span></button
+          ><button class="family-filter" type="button" aria-pressed="false">
+            Intelligence<!-- -->
+            <span>5</span></button
+          ><button class="family-filter" type="button" aria-pressed="false">
+            Tools &amp; standards<!-- -->
+            <span>4</span>
+          </button>
+        </div>
+        <div class="product-grid">
+          <article class="product-card family-identity">
+            <div class="product-visual" aria-hidden="true">
+              <span class="product-orbit"></span
+              ><span class="product-glyph">ID</span><small>ID-01</small>
+            </div>
+            <div class="product-body">
+              <div class="product-meta"><span>identity</span><b>ID-01</b></div>
+              <h3>OneGodian Declaration Card™</h3>
+              <p class="product-edition">Digital edition</p>
+              <p>Your identity, formally expressed.</p>
+              <button
+                type="button"
+                class="product-action"
+                aria-label="View OneGodian Declaration Card™ details"
+              >
+                View artifact <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </article>
+          <article class="product-card family-identity">
+            <div class="product-visual" aria-hidden="true">
+              <span class="product-orbit"></span
+              ><span class="product-glyph">ID</span><small>ID-02</small>
+            </div>
+            <div class="product-body">
+              <div class="product-meta"><span>identity</span><b>ID-02</b></div>
+              <h3>OneGodian Declaration Card™</h3>
+              <p class="product-edition">Printed edition</p>
+              <p>A physical expression of OneGodian identity.</p>
+              <button
+                type="button"
+                class="product-action"
+                aria-label="View OneGodian Declaration Card™ details"
+              >
+                View artifact <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </article>
+          <article class="product-card family-identity">
+            <div class="product-visual" aria-hidden="true">
+              <span class="product-orbit"></span
+              ><span class="product-glyph">OS</span><small>ID-03</small>
+            </div>
+            <div class="product-body">
+              <div class="product-meta"><span>identity</span><b>ID-03</b></div>
+              <h3>Obsidian Seal™</h3>
+              <p class="product-edition">Standard PNG</p>
+              <p>A digital mark of identity and alignment.</p>
+              <button
+                type="button"
+                class="product-action"
+                aria-label="View Obsidian Seal™ details"
+              >
+                View artifact <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </article>
+          <article class="product-card family-identity">
+            <div class="product-visual" aria-hidden="true">
+              <span class="product-orbit"></span
+              ><span class="product-glyph">OS</span><small>ID-04</small>
+            </div>
+            <div class="product-body">
+              <div class="product-meta"><span>identity</span><b>ID-04</b></div>
+              <h3>Obsidian Seal™</h3>
+              <p class="product-edition">Animated digital asset</p>
+              <p>The identity mark in motion.</p>
+              <button
+                type="button"
+                class="product-action"
+                aria-label="View Obsidian Seal™ details"
+              >
+                View artifact <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </article>
+          <article class="product-card family-knowledge">
+            <div class="product-visual" aria-hidden="true">
+              <span class="product-orbit"></span
+              ><span class="product-glyph">432</span><small>KN-01</small>
+            </div>
+            <div class="product-body">
+              <div class="product-meta"><span>knowledge</span><b>KN-01</b></div>
+              <h3>OneGodian Frequency Standard™</h3>
+              <p class="product-edition">Reference PDF</p>
+              <p>A documented standard, not merely an audio track.</p>
+              <button
+                type="button"
+                class="product-action"
+                aria-label="View OneGodian Frequency Standard™ details"
+              >
+                View artifact <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </article>
+          <article class="product-card family-knowledge">
+            <div class="product-visual" aria-hidden="true">
+              <span class="product-orbit"></span
+              ><span class="product-glyph">06</span><small>KN-02</small>
+            </div>
+            <div class="product-body">
+              <div class="product-meta"><span>knowledge</span><b>KN-02</b></div>
+              <h3>The OneGodian Algorithm™</h3>
+              <p class="product-edition">White paper • Version 1.0</p>
+              <p>The foundational intelligence specification.</p>
+              <button
+                type="button"
+                class="product-action"
+                aria-label="View The OneGodian Algorithm™ details"
+              >
+                View artifact <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </article>
+          <article class="product-card family-knowledge">
+            <div class="product-visual" aria-hidden="true">
+              <span class="product-orbit"></span
+              ><span class="product-glyph">P+A</span><small>KN-03</small>
+            </div>
+            <div class="product-body">
+              <div class="product-meta"><span>knowledge</span><b>KN-03</b></div>
+              <h3>Protocol™ and Algorithm™</h3>
+              <p class="product-edition">Unified framework</p>
+              <p>The architecture that connects the system.</p>
+              <button
+                type="button"
+                class="product-action"
+                aria-label="View Protocol™ and Algorithm™ details"
+              >
+                View artifact <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </article>
+          <article class="product-card family-knowledge">
+            <div class="product-visual" aria-hidden="true">
+              <span class="product-orbit"></span
+              ><span class="product-glyph">4×</span><small>KN-04</small>
+            </div>
+            <div class="product-body">
+              <div class="product-meta"><span>knowledge</span><b>KN-04</b></div>
+              <h3>AI Interpretations of OneGodian™</h3>
+              <p class="product-edition">Multi-model analysis</p>
+              <p>Multiple AI perspectives examined together.</p>
+              <button
+                type="button"
+                class="product-action"
+                aria-label="View AI Interpretations of OneGodian™ details"
+              >
+                View artifact <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </article>
+          <article class="product-card family-knowledge">
+            <div class="product-visual" aria-hidden="true">
+              <span class="product-orbit"></span
+              ><span class="product-glyph">αβ</span><small>KN-05</small>
+            </div>
+            <div class="product-body">
+              <div class="product-meta"><span>knowledge</span><b>KN-05</b></div>
+              <h3>Gen Alpha &amp; Gen Beta Strategy</h3>
+              <p class="product-edition">Marketing strategy</p>
+              <p>The ecosystem designed for an AI-native generation.</p>
+              <button
+                type="button"
+                class="product-action"
+                aria-label="View Gen Alpha &amp; Gen Beta Strategy details"
+              >
+                View artifact <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </article>
+          <article class="product-card family-intelligence">
+            <div class="product-visual" aria-hidden="true">
+              <span class="product-orbit"></span
+              ><span class="product-glyph">AP</span><small>IN-01</small>
+            </div>
+            <div class="product-body">
+              <div class="product-meta">
+                <span>intelligence</span><b>IN-01</b>
+              </div>
+              <h3>OneGodian Alignment Prompt™</h3>
+              <p class="product-edition">Reusable prompt • Version 1.0</p>
+              <p>A reusable intelligence-alignment tool.</p>
+              <button
+                type="button"
+                class="product-action"
+                aria-label="View OneGodian Alignment Prompt™ details"
+              >
+                View artifact <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </article>
+          <article class="product-card family-intelligence">
+            <div class="product-visual" aria-hidden="true">
+              <span class="product-orbit"></span
+              ><span class="product-glyph">&gt;_</span><small>IN-02</small>
+            </div>
+            <div class="product-body">
+              <div class="product-meta">
+                <span>intelligence</span><b>IN-02</b>
+              </div>
+              <h3>OneGodian AI System Prompt™</h3>
+              <p class="product-edition">System prompt • Version 1.0</p>
+              <p>The instruction layer for intelligent systems.</p>
+              <button
+                type="button"
+                class="product-action"
+                aria-label="View OneGodian AI System Prompt™ details"
+              >
+                View artifact <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </article>
+          <article class="product-card family-intelligence">
+            <div class="product-visual" aria-hidden="true">
+              <span class="product-orbit"></span
+              ><span class="product-glyph">4P</span><small>IN-03</small>
+            </div>
+            <div class="product-body">
+              <div class="product-meta">
+                <span>intelligence</span><b>IN-03</b>
+              </div>
+              <h3>Belief Mapper™</h3>
+              <p class="product-edition">Journey mapping tool</p>
+              <p>Understand where you are in your journey.</p>
+              <button
+                type="button"
+                class="product-action"
+                aria-label="View Belief Mapper™ details"
+              >
+                View artifact <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </article>
+          <article class="product-card family-intelligence">
+            <div class="product-visual" aria-hidden="true">
+              <span class="product-orbit"></span
+              ><span class="product-glyph">DR</span><small>IN-04</small>
+            </div>
+            <div class="product-body">
+              <div class="product-meta">
+                <span>intelligence</span><b>IN-04</b>
+              </div>
+              <h3>OMOS Decision Review™</h3>
+              <p class="product-edition">Auditable decision tool</p>
+              <p>Turn complexity into a reviewable decision.</p>
+              <button
+                type="button"
+                class="product-action"
+                aria-label="View OMOS Decision Review™ details"
+              >
+                View artifact <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </article>
+          <article class="product-card family-intelligence">
+            <div class="product-visual" aria-hidden="true">
+              <span class="product-orbit"></span
+              ><span class="product-glyph">4M</span><small>IN-05</small>
+            </div>
+            <div class="product-body">
+              <div class="product-meta">
+                <span>intelligence</span><b>IN-05</b>
+              </div>
+              <h3>OMOS AI Council™</h3>
+              <p class="product-edition">Governed multi-model review</p>
+              <p>Multiple models. One governed review.</p>
+              <button
+                type="button"
+                class="product-action"
+                aria-label="View OMOS AI Council™ details"
+              >
+                View artifact <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </article>
+          <article class="product-card family-tools">
+            <div class="product-visual" aria-hidden="true">
+              <span class="product-orbit"></span
+              ><span class="product-glyph">432</span><small>TS-01</small>
+            </div>
+            <div class="product-body">
+              <div class="product-meta"><span>tools</span><b>TS-01</b></div>
+              <h3>OneGodian Frequency Standard™</h3>
+              <p class="product-edition">432 Hz audio reference</p>
+              <p>The OneGodian harmonic reference.</p>
+              <button
+                type="button"
+                class="product-action"
+                aria-label="View OneGodian Frequency Standard™ details"
+              >
+                View artifact <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </article>
+          <article class="product-card family-tools">
+            <div class="product-visual" aria-hidden="true">
+              <span class="product-orbit"></span
+              ><span class="product-glyph">OT</span><small>TS-02</small>
+            </div>
+            <div class="product-body">
+              <div class="product-meta"><span>tools</span><b>TS-02</b></div>
+              <h3>OneGodian Timekeeping System™</h3>
+              <p class="product-edition">OTS-V5</p>
+              <p>A structured alternative timekeeping framework.</p>
+              <button
+                type="button"
+                class="product-action"
+                aria-label="View OneGodian Timekeeping System™ details"
+              >
+                View artifact <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </article>
+          <article class="product-card family-tools">
+            <div class="product-visual" aria-hidden="true">
+              <span class="product-orbit"></span
+              ><span class="product-glyph">G↔O</span><small>TS-03</small>
+            </div>
+            <div class="product-body">
+              <div class="product-meta"><span>tools</span><b>TS-03</b></div>
+              <h3>OneGodian Time™ Converter</h3>
+              <p class="product-edition">Digital conversion interface</p>
+              <p>Convert between time systems instantly.</p>
+              <button
+                type="button"
+                class="product-action"
+                aria-label="View OneGodian Time™ Converter details"
+              >
+                View artifact <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </article>
+          <article class="product-card family-tools">
+            <div class="product-visual" aria-hidden="true">
+              <span class="product-orbit"></span
+              ><span class="product-glyph">{ }</span><small>TS-04</small>
+            </div>
+            <div class="product-body">
+              <div class="product-meta"><span>tools</span><b>TS-04</b></div>
+              <h3>OMOS Developer Kit™</h3>
+              <p class="product-edition">API • schemas • SDK</p>
+              <p>Build with the OMOS architecture.</p>
+              <button
+                type="button"
+                class="product-action"
+                aria-label="View OMOS Developer Kit™ details"
+              >
+                View artifact <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </article>
+        </div>
+        <div class="catalog-note">
+          <span>Catalog direction</span>
+          <p>
+            Final commerce thumbnails should use premium 3D product renders,
+            restrained environments, one dominant OMOS mark, and short labels
+            that remain readable at storefront scale.
+          </p>
+        </div>
+      </section>
+      <section class="section library-section" id="library">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">Source document room</p>
+            <h2>Read the system at the source.</h2>
+          </div>
+          <p>
+            These documents form the supplied source set for this site. They are
+            presented as founder-authored materials and should be evaluated
+            according to their stated version, scope, and supporting record.
+          </p>
+        </div>
+        <div class="document-grid">
+          <a
+            class="document-card"
+            href="/library/onegodian-algorithm-whitepaper.pdf"
+            target="_blank"
+            rel="noreferrer"
+            ><span>ALG-01</span>
+            <h3>OneGodian Algorithm White Paper</h3>
+            <p>Version 1.0 • 23 pages</p>
+            <b>Open PDF ↗</b></a
+          ><a
+            class="document-card"
+            href="/library/ots-v5-corrected-edition.pdf"
+            target="_blank"
+            rel="noreferrer"
+            ><span>OTS-05</span>
+            <h3>OTS-V5 Corrected Edition</h3>
+            <p>Dual dating &amp; governance • 23 pages</p>
+            <b>Open PDF ↗</b></a
+          ><a
+            class="document-card"
+            href="/library/protocol-and-algorithm-framework.pdf"
+            target="_blank"
+            rel="noreferrer"
+            ><span>PRT-01</span>
+            <h3>Protocol &amp; Algorithm Framework</h3>
+            <p>Unified architecture • 7 pages</p>
+            <b>Open PDF ↗</b></a
+          ><a
+            class="document-card"
+            href="/library/onegodian-system-prompt.pdf"
+            target="_blank"
+            rel="noreferrer"
+            ><span>SYS-01</span>
+            <h3>OneGodian AI System Prompt</h3>
+            <p>Version 1.0 • 11 pages</p>
+            <b>Open PDF ↗</b></a
+          ><a
+            class="document-card"
+            href="/library/432hz-frequency-standard.pdf"
+            target="_blank"
+            rel="noreferrer"
+            ><span>FRQ-01</span>
+            <h3>432 Hz Frequency Standard</h3>
+            <p>Design standard • 3 pages</p>
+            <b>Open PDF ↗</b></a
+          ><a
+            class="document-card"
+            href="/library/founder-author-statement.pdf"
+            target="_blank"
+            rel="noreferrer"
+            ><span>REC-01</span>
+            <h3>Founder &amp; Author Statement</h3>
+            <p>Authorship summary • 1 page</p>
+            <b>Open PDF ↗</b></a
+          >
+        </div>
+      </section>
+      <section class="section final-cta">
+        <div>
+          <p class="kicker">OMOS / repository release 1.1.0</p>
+          <h2>Move the verified source to the verified host.</h2>
+          <p>
+            The next milestone is deployment evidence: run the production
+            preflight, restart the canonical runtime on 1.1.0, verify durable
+            PostgreSQL records, and pass the live health, manifest, provider,
+            page, and security checks.
+          </p>
+        </div>
+        <div class="release-card">
+          <span>Component status</span
+          ><strong>Functional source / live verification pending</strong>
+          <ul>
+            <li>✓ Seven-stage runtime</li>
+            <li>✓ Provider adapters</li>
+            <li>✓ Human Gate + records</li>
+            <li>✓ Lifecycle regression test</li>
+            <li>○ Production 1.1.0 deploy</li>
+            <li>○ Live persistence proof</li>
+          </ul>
+          <a class="button button-primary" href="#production"
+            >Review release gates ↑</a
+          >
+        </div>
+      </section>
+      <footer>
+        <div class="footer-brand">
+          <img
+            class="footer-logo"
+            src="/omos-logo-gold.png"
+            alt="OMOS — OneGodian Metaphysical Operating System"
+            width="2048"
+            height="682"
+          />
+        </div>
+        <div class="footer-links">
+          <a href="#production">Production status</a
+          ><a href="#architecture">Architecture</a
+          ><a href="#algorithm">Algorithm</a><a href="#standards">Standards</a
+          ><a href="#environment">Environment</a><a href="#products">Products</a
+          ><a href="#record">Record</a
+          ><a href="#engineering-council">Engineering Council</a
+          ><a href="#library">Documents</a>
+        </div>
+        <p class="footer-legal">
+          OMOS and the OneGodian Algorithm are founder-authored private
+          frameworks. Nothing on this site confers governmental authority,
+          immunity, professional advice, or control over nonparticipants.
+          Copyright registration protects registrable expression according to
+          applicable law; it does not by itself establish exclusive rights in an
+          idea, belief, method, or single word. © 2009–2026 Gregory Lamar Jones
+          / ONEGODIAN, LLC.
+        </p>
+      </footer>
+    </main><script>document.addEventListener("DOMContentLoaded",()=>{
+const t=document.querySelector(".menu-toggle"),n=document.getElementById("primary-navigation");if(t&&n)t.addEventListener("click",()=>{
+const e=t.getAttribute("aria-expanded")==="true";t.setAttribute("aria-expanded",!e);n.classList.toggle("is-open");});
+});</script></body>
 </html>
+
+
+

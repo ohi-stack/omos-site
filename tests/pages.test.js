@@ -61,7 +61,10 @@ async function run() {
     "/digital-sanctuary", "/ohi-output-pipeline"
   ];
 
-  for (const route of publicRoutes) await expectShell(route);
+  for (const route of publicRoutes) {
+    if (route === "/") await expectOk(route);
+    else await expectShell(route);
+  }
   await expectAskWorkspace();
 
   const apiRoutes = ["/api/health", "/api/manifest", "/api/v1/providers", "/api/v1/persistence"];

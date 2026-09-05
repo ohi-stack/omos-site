@@ -1,1 +1,244 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin Boundary — OMOS</title><style>body{background:#071018;color:#fff;font-family:Arial,sans-serif;margin:0;padding:40px}.card{background:#0f1720;border:1px solid #2b3b4d;border-radius:16px;padding:24px;max-width:960px;margin:auto}</style></head><body><div class="card"><h1>Public Admin Boundary</h1><p>The OMOS public runtime is not the privileged operator console. ACC execution controls, policy mutation, deployment controls, audit mutation, adapters, and internal command systems belong in separate protected infrastructure.</p></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OMOS Control Plane</title>
+  <style>
+    body { background: #07090c; color: #e1e7ef; font-family: ui-sans-serif, system-ui, sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
+    aside { width: 260px; background: #0c1117; border-right: 1px solid #1e293b; padding: 24px; display: flex; flex-direction: column; gap: 24px; }
+    main { flex: 1; padding: 32px; overflow-y: auto; }
+    h1, h2, h3 { margin: 0; color: #f8fafc; }
+    .brand { font-size: 14px; font-weight: 800; letter-spacing: 0.1em; color: #94a3b8; text-transform: uppercase; }
+    .nav-btn { display: block; width: 100%; text-align: left; background: none; border: none; color: #94a3b8; padding: 10px 14px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+    .nav-btn:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
+    .nav-btn.active { background: rgba(66, 198, 255, 0.1); color: #42c6ff; }
+    .card { background: #111827; border: 1px solid #1e293b; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+    .input-group { display: flex; gap: 12px; margin-top: 16px; }
+    input[type="password"], input[type="text"] { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 14px; outline: none; }
+    input:focus { border-color: #42c6ff; }
+    button.primary { background: #42c6ff; color: #0f172a; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+    button.primary:hover { background: #38bdf8; }
+    button.danger { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+    table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #1e293b; }
+    th { color: #94a3b8; font-weight: 500; }
+    .pill { display: inline-block; padding: 4px 8px; border-radius: 99px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .pill.success { background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.2); }
+    .pill.warning { background: rgba(234, 179, 8, 0.1); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.2); }
+    .pill.error { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
+    #auth-view { max-width: 400px; margin: 100px auto; }
+    .hidden { display: none !important; }
+    
+    .run-card { border: 1px solid #1e293b; padding: 16px; border-radius: 8px; margin-bottom: 12px; background: #0b0f19; }
+    .run-meta { display: flex; justify-content: space-between; font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
+    .run-prompt { font-size: 14px; margin-bottom: 12px; }
+    pre { background: #0f172a; padding: 16px; border-radius: 8px; overflow: auto; font-size: 12px; color: #cbd5e1; border: 1px solid #1e293b; }
+  </style>
+</head>
+<body>
+
+  <!-- Auth View -->
+  <div id="auth-view" class="card">
+    <div style="text-align: center; margin-bottom: 24px;">
+      <div class="brand" style="margin-bottom: 8px;">OMOS</div>
+      <h2>Control Plane</h2>
+    </div>
+    <p style="font-size: 14px; color: #94a3b8; text-align: center;">Enter your operational API key to continue.</p>
+    <form id="auth-form" class="input-group" style="flex-direction: column;">
+      <input type="password" id="api-key-input" placeholder="x-omos-key..." required>
+      <button type="submit" class="primary">Authenticate</button>
+    </form>
+  </div>
+
+  <!-- Dashboard View -->
+  <div id="app-view" class="hidden" style="display: flex; width: 100%;">
+    <aside>
+      <div>
+        <div class="brand" style="margin-bottom: 4px;">OMOS</div>
+        <div style="font-size: 11px; color: #64748b;">Operator Console</div>
+      </div>
+      <nav style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
+        <button class="nav-btn active" data-view="health-view">System Health</button>
+        <button class="nav-btn" data-view="runs-view">Council Runs</button>
+      </nav>
+      <div style="font-size: 12px; color: #64748b;">
+        <div id="auth-status" style="margin-bottom: 12px; word-break: break-all;"></div>
+        <button id="logout-btn" class="danger" style="width: 100%;">Disconnect</button>
+      </div>
+    </aside>
+
+    <main>
+      <div id="health-view" class="view-section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <h2>System Health</h2>
+          <button id="refresh-health" class="primary" style="padding: 8px 16px; font-size: 12px;">Refresh</button>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+          <div class="card">
+            <h3 style="margin-bottom: 16px; font-size: 16px;">Core Runtime</h3>
+            <table id="health-table">
+              <tbody>
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom: 16px; font-size: 16px;">Providers</h3>
+            <table id="providers-table">
+              <tbody>
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="card">
+          <h3 style="margin-bottom: 16px; font-size: 16px;">Raw Manifest</h3>
+          <pre id="raw-manifest"></pre>
+        </div>
+      </div>
+
+      <div id="runs-view" class="view-section hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <h2>Council Runs</h2>
+          <button id="refresh-runs" class="primary" style="padding: 8px 16px; font-size: 12px;">Refresh</button>
+        </div>
+        <div id="runs-container">
+          <div style="color: #94a3b8; font-size: 14px;">Loading runs...</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    let apiKey = localStorage.getItem('omos_admin_key');
+    const authView = document.getElementById('auth-view');
+    const appView = document.getElementById('app-view');
+    const authForm = document.getElementById('auth-form');
+    const keyInput = document.getElementById('api-key-input');
+    
+    // Setup Navigation
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden'));
+        document.getElementById(e.target.dataset.view).classList.remove('hidden');
+      });
+    });
+
+    async function apiRequest(endpoint, options = {}) {
+      const headers = { 'Content-Type': 'application/json' };
+      if (apiKey) headers['x-omos-key'] = apiKey;
+      
+      const res = await fetch(endpoint, { ...options, headers });
+      if (res.status === 401) {
+        logout();
+        throw new Error('Unauthorized');
+      }
+      return res.json();
+    }
+
+    function showApp() {
+      authView.classList.add('hidden');
+      appView.classList.remove('hidden');
+      document.getElementById('auth-status').innerText = `Key Hash: ${apiKey.substring(0,6)}...`;
+      loadHealth();
+      loadRuns();
+    }
+
+    function logout() {
+      apiKey = null;
+      localStorage.removeItem('omos_admin_key');
+      authView.classList.remove('hidden');
+      appView.classList.add('hidden');
+      keyInput.value = '';
+    }
+
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      apiKey = keyInput.value.trim();
+      if (apiKey) {
+        localStorage.setItem('omos_admin_key', apiKey);
+        showApp();
+      }
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', logout);
+    document.getElementById('refresh-health').addEventListener('click', loadHealth);
+    document.getElementById('refresh-runs').addEventListener('click', loadRuns);
+
+    async function loadHealth() {
+      try {
+        const data = await apiRequest('/api/health');
+        
+        // Runtime
+        document.getElementById('health-table').innerHTML = `
+          <tr><td>Version</td><td>${data.version}</td></tr>
+          <tr><td>Environment</td><td>${data.environment}</td></tr>
+          <tr><td>Persistence</td><td><span class="pill ${data.persistence.backend === 'memory' ? 'warning' : 'success'}">${data.persistence.backend}</span></td></tr>
+          <tr><td>Live Providers</td><td>${data.orchestration.liveProviderCount} / ${data.orchestration.providers.length}</td></tr>
+        `;
+        
+        // Providers
+        document.getElementById('providers-table').innerHTML = data.orchestration.providers.map(p => `
+          <tr>
+            <td style="text-transform: capitalize;">${p.provider}</td>
+            <td><span class="pill ${p.configured ? 'success' : 'error'}">${p.status}</span></td>
+          </tr>
+        `).join('');
+        
+        document.getElementById('raw-manifest').textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function loadRuns() {
+      const container = document.getElementById('runs-container');
+      try {
+        const res = await apiRequest('/api/v1/council/runs');
+        const runs = res.data || [];
+        
+        if (runs.length === 0) {
+          container.innerHTML = `<div class="card" style="text-align: center; color: #94a3b8;">No council runs found.</div>`;
+          return;
+        }
+
+        container.innerHTML = runs.map(run => `
+          <div class="run-card">
+            <div class="run-meta">
+              <span>ID: ${run.id}</span>
+              <span>Status: <span class="pill ${run.status === 'completed' ? 'success' : 'warning'}">${run.status}</span></span>
+            </div>
+            <div class="run-prompt"><strong>Prompt:</strong> ${run.prompt}</div>
+            <div style="font-size: 12px; color: #94a3b8; display: flex; justify-content: space-between; align-items: center; margin-top: 12px; border-top: 1px solid #1e293b; padding-top: 12px;">
+              <span>Timestamp: ${new Date(run.timestampUtc).toLocaleString()}</span>
+              ${run.status === 'pending_human' ? `<button onclick="approveRun('${run.id}')" class="primary" style="padding: 4px 10px; font-size: 11px;">Approve</button>` : `<span>Decision: ${run.humanDecision || 'N/A'}</span>`}
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        console.error(e);
+        container.innerHTML = `<div style="color: #ef4444;">Failed to load runs. Check API key.</div>`;
+      }
+    }
+    
+    window.approveRun = async (id) => {
+      try {
+        await apiRequest(`/api/v1/council/runs/${id}/human-decision`, {
+          method: 'POST',
+          body: JSON.stringify({ decision: 'APPROVED', comment: 'Approved via Admin Panel' })
+        });
+        loadRuns();
+      } catch (e) {
+        alert('Failed to approve run');
+      }
+    };
+
+    if (apiKey) showApp();
+  </script>
+</body>
+</html>

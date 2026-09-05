@@ -59,6 +59,7 @@
 
       <aside class="ask-card">
         <div class="ask-card-title"><div><span class="ask-kicker">Execution Rail</span><h2>Run lifecycle</h2></div><span id="railState" class="omos-status-pill">Ready</span></div>
+        <div class="ask-progress-container" style="background: rgba(255,255,255,0.05); height: 6px; border-radius: 3px; margin: 12px 0; overflow: hidden;"><div id="railProgress" style="height: 100%; width: 0%; background: #42c6ff; transition: width 0.3s ease;"></div></div>
         <div id="stageList" class="ask-stage-list"></div>
         <div id="stageDetail" class="ask-stage-detail">Select a stage to inspect its responsibility. After a run completes, OMOS replays the recorded stage states before stopping at the Human Gate.</div>
         <div id="playbackNote" class="ask-playback"></div>
@@ -70,7 +71,7 @@
       <div class="ask-card">
         <div class="ask-record-head">
           <div><span class="ask-kicker">Governed Run</span><h2 id="runId" style="margin:5px 0 0;font-size:24px"></h2></div>
-          <div class="ask-record-actions"><span id="modeBadge" class="omos-status-pill"></span><button id="copyIdButton" class="omos-btn">Copy ID</button><button id="exportButton" class="omos-btn">Export JSON</button></div>
+          <div class="ask-record-actions"><span id="modeBadge" class="omos-status-pill"></span><button id="copyIdButton" class="omos-btn">Copy ID</button><button id="exportButton" class="omos-btn">Export JSON</button><button id="exportPdfButton" class="omos-btn">Export PDF</button></div>
         </div>
         <div id="recordMeta" class="ask-meta-grid"></div>
 
@@ -98,6 +99,6 @@
       <div id="historyList" class="ask-history-list"></div>
     </section>
   </div>
-  <script src="/ask-workspace.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script><script src="/ask-workspace.js" defer></script>
 </body>
 </html>
