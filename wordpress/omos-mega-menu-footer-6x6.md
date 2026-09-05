@@ -4,6 +4,46 @@ Version: 2026-05-04
 Site target: https://omos.onegodian.com
 Purpose: Production menu/footer specification for WordPress implementation.
 
+## Current Sites Header — v2.0
+
+Effective date: 2026-09-05  
+Site project: `onegodian-omos`  
+Canonical public target: https://omos.onegodian.com
+
+This section records the current Sites frontend navigation and takes precedence over the older WordPress navigation notes below when implementing shared public-site chrome.
+
+### Primary navigation
+
+`OMOS | Workspace | Council | OLLM | Tools | Developers | Pricing`
+
+Persistent actions:
+
+`Runtime | Sign In | ASK OMOS`
+
+Workspace sequence:
+
+`Ask OMOS → Layer 1 → Align → Council → Synthesize → Record → History`
+
+### Current section mapping
+
+- OMOS: overview, production status, architecture, algorithm, and standards.
+- Workspace: Ask OMOS, Layer 1, alignment, council review, synthesis, decision record, and history.
+- Council: council workspace, Engineering Council, review rules, and the human approval gate.
+- OLLM: model council, independent outputs, cross-model review, O-H-I output, and runtime environment.
+- Tools: algorithm lab, decision review, timekeeping tools, and Developer Kit.
+- Developers: system architecture, environment contract, engineering workflow, documents, and the GitHub repository.
+- Pricing: product catalog, Developer Kit, prompt systems, and tools and standards.
+
+### Brand asset parity
+
+- Header and footer use the same founder-supplied gold OMOS logo.
+- Repository asset: `public/omos-logo-gold.webp`.
+- Source artwork: 2048 × 682 RGBA PNG with transparent background.
+- Source SHA-256: `285d6712f109fc90b544182465c230e7bdcd56494dff5f4bd443ad8b8998123f`.
+- Preserve the full aspect ratio; do not crop, stretch, recolor, or place the mark on an opaque rectangle.
+
+---
+
 ## Build Order
 
 1. Main navigation
