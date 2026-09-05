@@ -12,20 +12,33 @@ async function childWrite() {
     schemaVersion: 'restart-verification-1.0',
     runtimeVersion: process.env.OMOS_VERSION || '1.1.0',
     mode: 'verification',
-    currentStage: 7,
+    currentStage: 6,
     stages: [
       { id: 1, key: 'write', label: 'Write Probe', status: 'COMPLETE', startedAt: now, completedAt: now },
-      { id: 7, key: 'record', label: 'Decision Record', status: 'COMPLETE', completedAt: now }
+      { id: 6, key: 'human_gate', label: 'Human Gate', status: 'NEEDS_REVIEW' },
+      { id: 7, key: 'record', label: 'Decision Record', status: 'PENDING' }
     ],
-    humanGate: { decision: 'APPROVED', reviewer: 'restart-verifier', decidedAt: now },
+    humanGate: { decision: null, reviewer: null, decidedAt: null },
     verificationStatus: 'persistence_probe',
-    outputStatus: 'APPROVED',
+    outputStatus: 'HUMAN_REVIEW_REQUIRED',
     startedAt: now,
     completedAt: now
   };
   await saveRecord(record, ownerId);
+  const firstHash = record.recordHash;
+
+  const decidedAt = new Date().toISOString();
+  record.currentStage = 7;
+  record.stages[1] = { ...record.stages[1], status: 'COMPLETE', result: 'APPROVED', completedAt: decidedAt };
+  record.stages[2] = { ...record.stages[2], status: 'COMPLETE', completedAt: decidedAt };
+  record.humanGate = { decision: 'APPROVED', reviewer: 'restart-verifier', decidedAt };
+  record.outputStatus = 'APPROVED';
+  record.completedAt = decidedAt;
+  await saveRecord(record, ownerId);
+  const secondHash = record.recordHash;
+
   await closeStore();
-  process.stdout.write(JSON.stringify({ requestId, ownerId, recordHash: record.recordHash }));
+  process.stdout.write(JSON.stringify({ requestId, ownerId, firstHash, recordHash: secondHash, revision: record.revision }));
 }
 
 async function childRead() {
@@ -37,10 +50,12 @@ async function childRead() {
   const record = await getRecord(requestId, ownerId);
   if (!record) throw new Error('restart_probe_record_missing');
   if (record.recordHash !== expectedHash) throw new Error('restart_probe_hash_mismatch');
+  if (record.revision !== 2) throw new Error(`restart_probe_revision_mismatch:${record.revision}`);
   const chain = await verifyAuditChain(requestId, ownerId);
   if (!chain.valid) throw new Error(`restart_probe_chain_invalid:${chain.reason}`);
+  if (chain.revisions !== 2) throw new Error(`restart_probe_chain_length:${chain.revisions}`);
   await closeStore();
-  process.stdout.write(JSON.stringify({ requestId, recordHash: record.recordHash, chain }));
+  process.stdout.write(JSON.stringify({ requestId, recordHash: record.recordHash, revision: record.revision, chain }));
 }
 
 function runChild(phase, env = {}) {
