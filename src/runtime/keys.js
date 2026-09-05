@@ -1,9 +1,15 @@
 const crypto = require("crypto");
+const { AsyncLocalStorage } = require("async_hooks");
 
 const KEY_PREFIX = "omos_live_";
+const ownerContext = new AsyncLocalStorage();
 
 function hashApiKey(apiKey) {
   return crypto.createHash("sha256").update(apiKey).digest("hex");
+}
+
+function ownerIdFromHash(hash) {
+  return `key_${String(hash || "").slice(0, 24)}`;
 }
 
 function parseKeyStore() {
@@ -15,7 +21,7 @@ function parseKeyStore() {
     .filter(Boolean)
     .map((entry) => {
       const [name, hash, plan = "starter"] = entry.split(":");
-      return { name, hash, plan };
+      return { name, hash, plan, ownerId: ownerIdFromHash(hash) };
     });
 }
 
@@ -30,12 +36,25 @@ function verifyApiKey(apiKey) {
 
   const keyHash = hashApiKey(apiKey);
   const keys = parseKeyStore();
-  return keys.find((key) => key.hash === keyHash) || null;
+  const matched = keys.find((key) => key.hash === keyHash) || null;
+  if (matched) ownerContext.enterWith(matched);
+  return matched;
+}
+
+function getCurrentOwner() {
+  return ownerContext.getStore() || null;
+}
+
+function runAsOwner(owner, fn) {
+  return ownerContext.run(owner, fn);
 }
 
 module.exports = {
   KEY_PREFIX,
   generateApiKey,
   hashApiKey,
-  verifyApiKey
+  ownerIdFromHash,
+  verifyApiKey,
+  getCurrentOwner,
+  runAsOwner
 };

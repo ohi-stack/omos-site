@@ -11,7 +11,26 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: omos
+          POSTGRES_PASSWORD: omos_ci
+          POSTGRES_DB: omos_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U omos -d omos_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://omos:omos_ci@127.0.0.1:5432/omos_ci
+      OMOS_DB_SSL: 'false'
+      OMOS_TEST_KEY_A: omos_ci_owner_a
+      OMOS_TEST_KEY_B: omos_ci_owner_b
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,7 +39,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: npm
 
       - name: Install dependencies
         run: npm install
@@ -29,11 +47,29 @@ jobs:
         run: npm run check
 
       - name: Lifecycle regression
+        env:
+          DATABASE_URL: ''
+          NODE_ENV: test
+          OMOS_REQUIRE_DURABLE_DB: 'false'
         run: npm run test:lifecycle
 
-      - name: Start runtime
+      - name: P0 Decision Record hardening
+        env:
+          DATABASE_URL: ''
+          NODE_ENV: test
+          OMOS_REQUIRE_DURABLE_DB: 'false'
+        run: npm run test:decision-record
+
+      - name: PostgreSQL migration and cross-process restart verification
+        env:
+          OMOS_REQUIRE_DURABLE_DB: 'true'
+        run: npm run verify:persistence:restart
+
+      - name: Start runtime with durable PostgreSQL
         run: |
-          OMOS_API_KEYS="ci:$(node -e \"const c=require('crypto');process.stdout.write(c.createHash('sha256').update('omos_ci_key').digest('hex'))\"):starter" npm start > /tmp/omos.log 2>&1 &
+          HASH_A=$(node -e "const c=require('crypto');process.stdout.write(c.createHash('sha256').update(process.env.OMOS_TEST_KEY_A).digest('hex'))")
+          HASH_B=$(node -e "const c=require('crypto');process.stdout.write(c.createHash('sha256').update(process.env.OMOS_TEST_KEY_B).digest('hex'))")
+          OMOS_REQUIRE_DURABLE_DB=true OMOS_API_KEYS="owner-a:${HASH_A}:starter,owner-b:${HASH_B}:starter" npm start > /tmp/omos.log 2>&1 &
           echo $! > /tmp/omos.pid
           for i in {1..20}; do
             if curl -fsS http://127.0.0.1:3000/health >/dev/null; then exit 0; fi
@@ -52,10 +88,15 @@ jobs:
           OMOS_BASE_URL: http://127.0.0.1:3000
         run: npm run smoke:pages
 
+      - name: Authenticated Decision Record ownership
+        env:
+          OMOS_BASE_URL: http://127.0.0.1:3000
+        run: npm run test:record-ownership-api
+
       - name: Persistence endpoint
         run: |
           curl -fsS http://127.0.0.1:3000/api/v1/persistence | tee /tmp/persistence.json
-          node -e "const p=require('/tmp/persistence.json'); if(!p.persistence || p.persistence.backend!=='memory') process.exit(1)"
+          node -e "const p=require('/tmp/persistence.json'); if(!p.persistence || p.persistence.backend!=='postgresql' || p.persistence.durable!==true) process.exit(1)"
 
       - name: Stop runtime
         if: always()

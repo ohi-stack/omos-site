@@ -5,13 +5,16 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "check": "node --check server.js && node --check src/runtime/orchestrator.js && node --check src/runtime/decisionStore.js",
+    "check": "node --check server.js && node --check src/runtime/orchestrator.js && node --check src/runtime/decisionStore.js && node --check src/runtime/keys.js",
     "preflight:production": "node scripts/preflight.js",
     "smoke": "node tests/smoke.test.js",
     "smoke:pages": "node tests/pages.test.js",
     "smoke:security": "node tests/security-smoke.test.js",
     "smoke:live": "node scripts/live-smoke.js",
-    "test:lifecycle": "node tests/workspace.test.js"
+    "test:lifecycle": "node tests/workspace.test.js",
+    "test:decision-record": "node tests/decision-record-hardening.test.js",
+    "test:record-ownership-api": "node tests/record-api-ownership.test.js",
+    "verify:persistence:restart": "node scripts/verify-decision-restart.js"
   },
   "engines": {
     "node": ">=20"
