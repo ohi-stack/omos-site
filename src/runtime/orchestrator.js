@@ -181,7 +181,8 @@ function buildGovernedSynthesis(layer1, alignment, signals, outputs) {
 }
 
 function requireOwnerId(ownerId) {
-  const value = String(ownerId || '').trim();
+  const current = require('./keys').getCurrentOwner();
+  const value = String(ownerId || current?.ownerId || '').trim();
   if (!value) throw new Error('owner_required');
   return value;
 }
@@ -239,6 +240,7 @@ async function setHumanDecision(requestId, decision, comment = '', reviewer = nu
 async function runCouncil({ prompt, context = {}, providers = PROVIDERS, mode = 'auto', owner } = {}) {
   const rawPrompt = String(prompt || '').trim();
   if (!rawPrompt) throw new Error('prompt_required');
+  const current = require('./keys').getCurrentOwner();
   const ownerId = requireOwnerId(owner?.ownerId || owner);
   const requestId = `omos_run_${Date.now()}_${crypto.randomBytes(3).toString('hex')}`;
   const startedAt = new Date().toISOString();
@@ -277,7 +279,7 @@ async function runCouncil({ prompt, context = {}, providers = PROVIDERS, mode = 
   const record = {
     requestId,
     ownerId,
-    ownerLabel: owner?.name || null,
+    ownerLabel: owner?.name || current?.name || null,
     schemaVersion: '1.4.0',
     runtimeVersion: process.env.OMOS_VERSION || '1.1.0',
     mode: actualMode,
