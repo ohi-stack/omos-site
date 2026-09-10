@@ -19,21 +19,25 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Probe runtime surfaces
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Probe runtime surfaces and production evidence
         id: probe
         shell: bash
         run: |
           set -u
           BASE="https://omos.onegodian.com"
+          EXPECTED_VERSION=$(node -p "require('./package.json').version")
           FAILED=0
           REPORT=""
 
-          check() {
+          check_http() {
             local label="$1"
             local url="$2"
             local code
-            code=$(curl -L --silent --show-error --output /tmp/body --write-out '%{http_code}' --connect-timeout 10 --max-time 25 "$url" || echo "000")
-            if [[ "$code" =~ ^2|^3 ]]; then
+            code=$(curl -L --silent --show-error --output /tmp/omos-probe-body --write-out '%{http_code}' --connect-timeout 10 --max-time 25 "$url" || echo "000")
+            if [[ "$code" =~ ^[23] ]]; then
               REPORT+="- PASS: ${label} (${url}) HTTP ${code}\n"
             else
               REPORT+="- FAIL: ${label} (${url}) HTTP ${code}\n"
@@ -41,13 +45,46 @@ jobs:
             fi
           }
 
-          check "OMOS home" "$BASE/"
-          check "Manifest" "$BASE/manifest"
-          check "Operational Workspace" "$BASE/dashboard"
-          check "Ask OMOS" "$BASE/ask/"
-          check "OHI pipeline" "$BASE/ohi-output-pipeline"
-          check "Persistence status" "$BASE/api/v1/persistence"
+          check_http "OMOS home" "$BASE/"
+          check_http "Manifest" "$BASE/manifest"
+          check_http "Operational Workspace" "$BASE/dashboard"
+          check_http "Ask OMOS" "$BASE/ask/"
+          check_http "OHI pipeline" "$BASE/ohi-output-pipeline"
+          check_http "Persistence status" "$BASE/api/v1/persistence"
 
+          MANIFEST_JSON=$(curl -L --silent --show-error --fail --connect-timeout 10 --max-time 25 "$BASE/manifest" || echo '{}')
+          PERSISTENCE_JSON=$(curl -L --silent --show-error --fail --connect-timeout 10 --max-time 25 "$BASE/api/v1/persistence" || echo '{}')
+
+          semantic_result=$(EXPECTED_VERSION="$EXPECTED_VERSION" MANIFEST_JSON="$MANIFEST_JSON" PERSISTENCE_JSON="$PERSISTENCE_JSON" node <<'NODE'
+          function safeParse(raw) {
+            try { return JSON.parse(raw || '{}'); } catch (_) { return {}; }
+          }
+          const manifest = safeParse(process.env.MANIFEST_JSON);
+          const persistence = safeParse(process.env.PERSISTENCE_JSON);
+          const expected = process.env.EXPECTED_VERSION;
+          const checks = [
+            ['manifest version', manifest.version === expected, `expected=${expected} actual=${manifest.version ?? 'missing'}`],
+            ['production environment', manifest.environment === 'production', `actual=${manifest.environment ?? 'missing'}`],
+            ['PostgreSQL backend', persistence.backend === 'postgresql', `actual=${persistence.backend ?? 'missing'}`],
+            ['durable persistence', persistence.durable === true, `actual=${String(persistence.durable)}`],
+            ['persistence initialized', persistence.initialized === true, `actual=${String(persistence.initialized)}`],
+            ['persistence error clear', persistence.error == null, `actual=${persistence.error == null ? 'null' : persistence.error}`]
+          ];
+          for (const [label, ok, detail] of checks) {
+            console.log(`${ok ? 'PASS' : 'FAIL'}|${label}|${detail}`);
+          }
+NODE
+          )
+
+          while IFS='|' read -r state label detail; do
+            [[ -z "$state" ]] && continue
+            REPORT+="- ${state}: ${label} (${detail})\n"
+            if [[ "$state" == "FAIL" ]]; then
+              FAILED=1
+            fi
+          done <<< "$semantic_result"
+
+          REPORT+="\nExpected repository version: ${EXPECTED_VERSION}\n"
           printf '%b' "$REPORT" | tee runtime-health.txt
           echo "failed=$FAILED" >> "$GITHUB_OUTPUT"
 
@@ -63,12 +100,12 @@ jobs:
           path: runtime-health.txt
           retention-days: 14
 
-      - name: Create or update outage issue
+      - name: Create or update production-evidence issue
         if: failure()
         uses: actions/github-script@v7
         with:
           script: |
-            const title = '[Runtime Health] OMOS degraded or unavailable';
+            const title = '[Runtime Health] OMOS production evidence gate failing';
             const marker = '<!-- omos-runtime-health -->';
             const { data: issues } = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
@@ -77,7 +114,7 @@ jobs:
               per_page: 100
             });
             const existing = issues.find(i => i.title === title && !i.pull_request);
-            const body = `${marker}\nAutomated runtime health check failed.\n\nRun: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\nChecked: ${new Date().toISOString()}\n\nReview the workflow artifact for endpoint-level results.`;
+            const body = `${marker}\nThe automated live OMOS production-evidence check failed. The site may still be reachable; this gate also validates runtime version, production environment, and durable PostgreSQL state.\n\nRun: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\nChecked: ${new Date().toISOString()}\n\nReview the workflow artifact for endpoint-level and semantic results. OMOS must not be represented as PRODUCTION_VERIFIED while this gate is failing.`;
             if (existing) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
