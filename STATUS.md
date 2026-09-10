@@ -1,175 +1,136 @@
 # OMOS Repository Status Report
 
-Date: 2026-08-23
+Date: 2026-09-10
 Repository: `ohi-stack/omos-site`
 Canonical runtime: `https://omos.onegodian.com`
+Runtime target: `1.1.0`
+Current maturity: **Functional — Production Certification In Progress**
 
-## Current State
+## Executive Status
 
-OMOS is now a **live functional node runtime** and public systems-architecture platform for the OneGodian Algorithm™, OHI™, and the OneGodian Protocol™.
+OMOS is a live Node/Express operating-intelligence runtime and public operational workspace for the OneGodian Protocol™, OneGodian Algorithm™, and OHI™. The repository now contains the governed runtime path, Layer 1 distillation, Alignment Engine, Council interfaces, cross-model review, Governed Synthesis, server-side Human Gate, Decision Records, PostgreSQL persistence, ownership isolation, revision/hash chaining, restart-verification tooling, public workspace routes, runtime health checks, and exact deployment-provenance tooling.
 
-The repository is no longer documentation-first only. It contains the public runtime, documentation, tools, pipeline visualization, console surfaces, WordPress bridge assets, tests, and supporting implementation files for the live OMOS node.
+The repository portion of P0 Decision Record persistence hardening is complete on `main`. PR #27 was merged as `d97b8344ebc644ef63cd994a1db9adfbbd61edf3`, superseding PR #25. PR #29 subsequently added exact deployed-SHA and semantic live-verification machinery and was merged as `e6b3fcb45dae7517525e3e2265f6b97ddf891f78`.
 
-## Canonical Architectural Separation
+**OMOS-REF-0001 is not yet certified PASS.** Repository CI and live endpoint reachability are necessary evidence, but certification still requires deployment-source parity on the canonical Hostinger runtime, initialized durable PostgreSQL, one governed Decision Record, server-side Human Gate disposition, restart/redeploy, and reopening the same record with its audit chain intact.
 
-```text
-OneGodian Protocol™ = rules, definitions, identity semantics, and interoperability
-OneGodian Algorithm™ = evaluation and decision logic
-OHI™ = multi-model intelligence, comparison, critique, and synthesis
-OMOS™ = runtime, orchestration, execution environment, records, and interfaces
-OMOS WordPress Plugin = distributed bridge into connected OneGodian sites
-```
+Certification remains tracked in Issue #28.
 
-The OneGodian Algorithm retains its four canonical governance layers:
-
-1. Protocol Layer
-2. Experience Layer
-3. Community Layer
-4. Orientation Layer
-
-OMOS implements the operational decision cycle beneath those layers:
+## Canonical Architecture
 
 ```text
-Observe → Distill → Align → Select → Execute → Verify
+OneGodian Protocol™ = definitions, identity rules, scope, and interoperability
+OneGodian Algorithm™ = Observe → Distill → Align → Select → Execute → Verify
+OHI™ = multi-model comparison, critique, disagreement preservation, and synthesis
+OMOS™ = runtime, orchestration, persistence, interfaces, and Decision Records
+OLLM = first-class OneGodian model/intelligence provider inside the OMOS Model Gateway
+ACC™ = operational command/execution control plane for agents and approved actions
 ```
 
-## Live Capability Standard
-
-The current OMOS runtime is intended to support the following capability chain:
+## Canonical Product Flow
 
 ```text
-Human Input
-→ Intake
-→ Signal Classification / Noise Reduction
-→ Canonical Normalization
-→ Model or Agent Routing
-→ Independent Outputs
-→ Cross-Model Review
-→ Agreement / Contradiction / Missing-Idea / Novel-Insight Mapping
-→ OneGodian Alignment Evaluation
-→ Human Synthesis / Authorization
-→ Governed OHI Output
-→ Decision Record / Audit Trail
+INPUT → LAYER 1 → ALIGN → COUNCIL → SYNTHESIZE → RECORD → HISTORY
 ```
 
-## Runtime Responsibilities
+The Human Decision Gate remains mandatory inside the Record transition for governed runs. Model agreement is comparative evidence; it is not factual verification.
 
-### 1. Ask OMOS
-Receive questions, documents, projects, technical requirements, institutional requests, and high-entropy prompts. Preserve material facts, names, dates, constraints, prohibitions, evidence, uncertainty, and unresolved conflicts while removing non-material noise.
+## Current Defensible Component Status
 
-### 2. Council of Models
-Support independent model outputs and structured cross-review. Current public architecture names GPT, Claude, Gemini, and Grok as Council nodes. Simulation and live orchestration must always be distinguished in the UI.
+| Area | Status | Evidence boundary |
+|---|---|---|
+| Node/Express runtime | Functional | Runtime source and routes are on `main`. |
+| Ask OMOS workspace | Functional | `/ask/` is part of the runtime and health probes. |
+| Layer 1 distillation | Functional | Deterministic signal classification is implemented. |
+| Alignment Engine | Functional | Dimension scoring, hard gates, and explicit verification boundaries exist. |
+| Council orchestration | Functional / provider-dependent | Provider adapters exist; live state depends on production credentials and connector health. |
+| Cross-model review | Functional / provider-dependent | Council review execution exists when providers are available. |
+| Governed Synthesis | Functional | Agreement, contradiction, missing-evidence, and human-review fields are produced. |
+| Human Gate | Functional | Authenticated APPROVED / REJECTED mutation is implemented. |
+| Decision Records | Functional | Complete run state is persistable and reopenable by owner in repository tests. |
+| PostgreSQL persistence | Repository-verified | Durable production contract, migrations, and CI are merged; canonical-host DB state still needs live proof. |
+| Ownership isolation | Repository-verified | API-key owner scoping is implemented and tested. |
+| Revision/hash audit chain | Repository-verified | Append-only revisions and SHA-256 chaining are implemented and tested. |
+| Restart verification tooling | Repository-verified | Cross-process PostgreSQL restart verification is part of P0 CI. |
+| Dashboard History | Functional | History/reopen API and workspace integration exist. |
+| Exact build provenance | Repository-verified | `/build.json` and `OMOS_BUILD_SHA` support are merged. |
+| Semantic live verification | Repository-verified | Current workflow can compare version, exact SHA, persistence, providers, and public surfaces. |
+| Live public host | Reachable | Scheduled health checks reach the canonical host; exact current-main deployment parity is still pending. |
+| Factual evidence verification | Not complete | Model agreement remains separate from independently verified evidence. |
+| Commerce entitlement runtime | Specification / implementation target | First paid end-to-end transaction is not certified. |
+| OLLM native provider | Architecture / development | Production runtime is not certified. |
+| ACC execution handoff | Architecture / development | End-to-end execution evidence remains future work. |
 
-### 3. Alignment Engine
-Evaluate candidate outputs across separate dimensions rather than using one opaque score. Initial dimensions:
+## Repository Hardening Completed on 2026-09-10
 
-- Truth
-- Clarity
-- Coherence
-- Dignity
-- Constructive Unity
-- Evidence
-- Verifiability
-- Confidence
-- Execution Readiness
+Merged P0 persistence work includes:
 
-Recommended runtime states:
+- PostgreSQL required for production Decision Records;
+- idempotent migrations;
+- ownership/audit-chain migration;
+- append-only Decision Record revisions;
+- SHA-256 record chaining;
+- API-key owner isolation;
+- ordered Human Gate → Decision Record transitions;
+- PostgreSQL cross-process restart verification;
+- production preflight DB/migration enforcement;
+- PostgreSQL-backed CI;
+- ownership, lifecycle, persistence, and audit regression gates.
 
-```text
-ALIGNED
-CONDITIONALLY_ALIGNED
-HUMAN_REVIEW_REQUIRED
-INSUFFICIENT_EVIDENCE
-CONFLICT_UNRESOLVED
-NOT_ALIGNED
-PROHIBITED
-```
+Merged production-evidence work includes:
 
-### 4. Project Orchestration
-Decompose projects into coordinated workstreams such as Research, Architecture, Development, Content, Compliance, Testing, Verification, and Production. OMOS coordinates dependencies and preserves human authorization for consequential actions.
+- runtime-generated `/build.json`;
+- exact deployed Git SHA provenance;
+- `OMOS_BUILD_SHA` support for hosts that strip `.git` metadata;
+- semantic live verification of runtime version, exact SHA, PostgreSQL durability/initialization, provider status, and required public surfaces;
+- retained GitHub Actions production-evidence artifacts;
+- automated production-alignment issue handling.
 
-### 5. Governed OHI Output
-OMOS must not merely average model answers. It should compare, classify, preserve dissent, evaluate evidence, apply alignment rules, synthesize, and assign verification status.
+Repository CI is code/readiness evidence. It is not a substitute for live-host certification.
 
-### 6. Decision Records
-Every consequential run should be capable of producing an auditable machine-readable record containing input/output hashes, runtime and algorithm versions, models used, evidence references, contradictions, supported dissent, scores, confidence, approval requirements, and verification state.
+## Live Production Boundary — September 10, 2026
 
-### 7. WordPress Bridge
-The OMOS plugin installed on connected OneGodian properties should act as a runtime client/bridge rather than a duplicate OMOS implementation. Required bridge responsibilities include runtime health, manifest sync, tool registry, site context, embedded components, Ask OMOS/Council launchers, run status, and artifact return.
+The canonical public host is reachable. Current public evidence still identifies the live runtime as the older `1.0.1` deployment while the repository target is `1.1.0` and current `main` contains the production hardening and provenance controls.
 
-## Connected Ecosystem Role
+Therefore the live runtime must not yet be represented as aligned with current `main` or as Production-certified.
 
-```text
-                   OMOS.OneGodian.com
-                         │
-                  Central Runtime/API
-                         │
-       ┌─────────────────┼──────────────────┐
-       │                 │                  │
-OneGodian.org      OneGodian.com       QuantumOHI.com
-Public/Education   Commerce            Enterprise/Tech
-       │                 │                  │
-       └──────── OMOS WordPress Bridge ─────┘
-```
+The production environment must expose the exact deployed SHA through `/build.json`. If Hostinger strips `.git` metadata, set `OMOS_BUILD_SHA` to the exact approved commit deployed to the application.
 
-The connected sites retain separate public purposes. OMOS provides shared operational intelligence and runtime services.
+## OMOS-REF-0001 Remaining Certification Gates
 
-## Operational Version Rule
+1. Deploy the approved current `main` revision to the canonical Hostinger Node environment.
+2. Confirm `/build.json` identifies the exact deployed Git SHA.
+3. Configure the real production PostgreSQL `DATABASE_URL` and required SSL/pool settings.
+4. Run migrations and `npm run preflight:production` successfully.
+5. Confirm `/api/v1/persistence` reports `backend: postgresql`, `durable: true`, `initialized: true`, and no error.
+6. Execute one canonical governed Ask OMOS/Council run and record its Decision ID.
+7. Confirm Layer 1 → Alignment → Council → Governed Synthesis completes with structured records.
+8. Submit the server-side Human Gate disposition.
+9. Reopen the Decision Record from Dashboard History before restart.
+10. Restart/redeploy the Node runtime.
+11. Reopen the exact same Decision ID and verify disposition, ownership, revision history, and SHA-256 chain remain intact.
+12. Attach source SHA, runtime timestamp, Decision ID, record hash, persistence backend, and workflow evidence to Issue #28.
 
-> If a feature is not implemented, versioned, documented, repeatable, logged where applicable, and testable, it is not operational in the current version.
+Only then may OMOS-REF-0001 be marked **PASS** and the tested runtime configuration advance from Functional/Verified to Production.
 
-This rule applies component-by-component. A live website does not make every proposed OMOS capability Production.
+## Next Engineering Order After OMOS-REF-0001
 
-## Current Maturity Classification
+1. Normalize Council contribution provenance: contribution ID, role, connector identity, input/output hashes, timestamps, request ID, and provenance state.
+2. Add external evidence verification so governed synthesis distinguishes reasoned convergence from verified state.
+3. Complete provider health, retry, circuit-breaker, latency, token/cost, and failure telemetry.
+4. Rebase and verify the native GPT-6 Astra connector through the governed Council path before production activation.
+5. Complete ACC handoff and Engineering Record linkage for approved execution.
+6. Complete the first verified checkout → entitlement → governed run → Decision Record → History transaction.
+7. Advance OLLM and OneGodian MCP implementation after the core reference transaction is stable.
 
-Maturity scale:
+## Production Rule
+
+> **If it is not fully operational, documented, and repeatable, it does not exist in the current version.**
+
+Maturity remains component-based:
 
 ```text
 CONCEPTUAL → PROTOTYPE → FUNCTIONAL → VERIFIED → PRODUCTION
 ```
 
-**Functional** means available for controlled validation with known limitations.
-
-| Area | Current defensible status | Notes |
-|---|---|---|
-| Live OMOS Node | Functional | Public node/runtime is live. |
-| Public documentation | Functional | Protocol, Algorithm, OHI, tools, routes, and architecture are exposed. |
-| Runtime navigation | Functional | Public runtime entrypoints are available. |
-| Manifest architecture | Functional | Runtime manifest is part of the node architecture. |
-| OHI pipeline visualization | Functional / Prototype interaction | Architecture is visible; interaction maturity may vary by route. |
-| Layer 1 signal classification | Functional under controlled validation | Human oversight required. |
-| Alignment model | Specification / implementation stage | Must remain dimension-based and testable. |
-| Council orchestration | Prototype / implementation target | Simulation and live providers must be labeled distinctly. |
-| Cross-model review | Architecture defined / implementation target | Review matrix defined. |
-| Multi-agent project workspace | Development target | Project orchestration architecture defined. |
-| Decision records | Development target | Canonical schema required. |
-| Automated verification | Development target | Factual verification is separate from model agreement. |
-| QR-V / OBP-1 publication | Integration target | Do not claim production unless separately implemented and tested. |
-| Autonomous consequential execution | Restricted | Human authorization required. |
-
-## Time and Audit Standard
-
-Where OMOS creates formal records, UTC is the canonical system timestamp. OneGodian Time™ is derived and supplemental under OTS-V5. Gregorian time remains controlling for civil, legal, banking, tax, contract, and institutional use.
-
-## Governance / Legal Discipline
-
-- ONEGODIAN, LLC remains the commercial, IP, software, education, publishing, licensing, and product entity.
-- Indigenous Nation of Onegodia remains separate for its actual religious-society, spiritual, community, and internal-governance functions.
-- OMOS must not imply government authority, financial-institution status, or legal jurisdiction beyond the actual authority of the relevant entity.
-- Model agreement is not factual proof.
-- Deterministic execution is not guaranteed truth.
-- Human approval remains required for consequential legal, financial, identity, infrastructure, registry, or external-system actions.
-
-## Immediate Production Priorities
-
-1. Complete one browser-to-output OMOS run:
-   `input → normalization → Council → cross-review → alignment → human synthesis → OHI output → decision record`.
-2. Add executable decision-record and verification schemas.
-3. Add deterministic replay and regression tests for Layer 1 and scoring.
-4. Implement Council adapters with explicit simulation/live modes.
-5. Expand the WordPress bridge contract across OneGodian.org, OneGodian.com, and QuantumOHI.com.
-6. Build Projects / Runs / Artifacts / Verification as first-class runtime objects.
-
-## Current Definitive Description
-
-**OMOS™ is the central runtime and operating environment for the OneGodian Algorithm™, OHI™, and the OneGodian Protocol™. It receives and normalizes human requests, coordinates models and agents, evaluates competing outputs, applies alignment and verification controls, preserves human authority, produces governed outputs and auditable records, and distributes those capabilities across the OneGodian digital ecosystem through the OMOS plugin and API.**
+**Current defensible OMOS system status: Functional, with substantial repository-level verification and production certification still pending OMOS-REF-0001.**
