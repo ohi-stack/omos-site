@@ -2,134 +2,57 @@
   "site": {
     "name": "OMOS — OneGodian Metaphysical Operating System",
     "canonical_domain": "https://omos.onegodian.com",
-    "status": "node-public-site-scaffold",
-    "version": "0.2.0-content-map"
+    "status": "functional",
+    "version": "1.1.0-content-map",
+    "updated": "2026-09-10",
+    "public_proposition": "Make Better Decisions With AI.",
+    "maturity_rule": "Conceptual → Prototype → Functional → Verified → Production; deployed behavior must be proven separately from repository implementation."
   },
   "primary_navigation": [
     { "label": "OMOS", "href": "/omos" },
-    { "label": "OHI", "href": "/ohi" },
-    { "label": "Models", "href": "/models" },
+    { "label": "Workspace", "href": "/workspace" },
+    { "label": "Council", "href": "/council" },
+    { "label": "OLLM", "href": "/ollm" },
     { "label": "Tools", "href": "/tools" },
-    { "label": "Artifacts", "href": "/artifacts" },
-    { "label": "Docs", "href": "/docs" },
-    { "label": "Shop", "href": "/shop" }
+    { "label": "Developers", "href": "/developers" },
+    { "label": "Pricing", "href": "/pricing" }
   ],
-  "cta": { "label": "Open Console", "href": "/dashboard" },
+  "persistent_actions": [
+    { "label": "Runtime", "href": "/api/health" },
+    { "label": "Sign In", "href": "/dashboard" },
+    { "label": "Ask OMOS", "href": "/ask/" }
+  ],
+  "canonical_workflow": ["ask", "layer1", "alignment", "council_review", "governed_synthesis", "human_gate", "decision_record", "history"],
   "routes": [
-    {
-      "path": "/",
-      "title": "OMOS — OneGodian Metaphysical Operating System",
-      "template": "home",
-      "purpose": "Public homepage explaining OMOS as the protocol/specification and alignment layer for OneGodian digital systems."
-    },
-    {
-      "path": "/omos",
-      "title": "What Is OMOS?",
-      "template": "pillar",
-      "purpose": "Define OMOS as the operating layer connecting OneGodian identity, OHI synthesis, protocol logic, tools, and documentation."
-    },
-    {
-      "path": "/ohi",
-      "title": "OHI Synthesis Layer",
-      "template": "pillar",
-      "purpose": "Explain OneGodian Hyper-Conscious Intelligence as the governed synthesis and output discipline layer."
-    },
-    {
-      "path": "/models",
-      "title": "Model Synthesis & GCD Logic",
-      "template": "pillar",
-      "purpose": "Explain multi-model reasoning, remainder filtering, and highest-coherence synthesis."
-    },
-    {
-      "path": "/tools",
-      "title": "OMOS Tools",
-      "template": "index",
-      "purpose": "List interactive tools including Bridge Builder, Belief Mapper, Declaration Generator, and future protocol tools."
-    },
-    {
-      "path": "/tools/bridge-builder",
-      "title": "Bridge Builder Tool",
-      "template": "tool",
-      "shortcode": "[omos_bridge_builder]",
-      "purpose": "Tool page for mapping differences into common ground and constructive alignment language."
-    },
-    {
-      "path": "/tools/belief-mapper",
-      "title": "Belief Mapper Lite",
-      "template": "tool",
-      "shortcode": "[omos_belief_mapper]",
-      "purpose": "Interactive entry point for identity recognition and educational guidance."
-    },
-    {
-      "path": "/artifacts",
-      "title": "Artifacts",
-      "template": "index",
-      "purpose": "Display official documents, prompts, protocol records, animations, and downloadable files."
-    },
-    {
-      "path": "/docs",
-      "title": "Documentation",
-      "template": "docs-index",
-      "purpose": "Developer and institutional documentation for OMOS, Protocol, Algorithm, OHI, OTS, and plugin integration."
-    },
-    {
-      "path": "/docs/protocol",
-      "title": "OneGodian Protocol Specification",
-      "template": "doc",
-      "purpose": "Protocol documentation for identity, semantic, agent, and interface layers."
-    },
-    {
-      "path": "/docs/algorithm",
-      "title": "OneGodian Algorithm Specification",
-      "template": "doc",
-      "purpose": "Algorithm documentation for Observe, Distill, Align, Select, Execute, and Verify."
-    },
-    {
-      "path": "/docs/ots-v5",
-      "title": "OTS-V5 Timekeeping Standard",
-      "template": "doc",
-      "purpose": "Dual-date and timestamp governance rules for OMOS records."
-    },
-    {
-      "path": "/shop",
-      "title": "OMOS Shop Pathways",
-      "template": "shop-index",
-      "purpose": "Send users to approved OneGodian.com products, digital downloads, prompts, courses, and kits."
-    },
-    {
-      "path": "/dashboard",
-      "title": "OMOS Console Preview",
-      "template": "dashboard",
-      "purpose": "Read-only public console preview for status, routes, docs, and tool readiness."
-    },
-    {
-      "path": "/legal",
-      "title": "Legal & Classification Notice",
-      "template": "legal",
-      "purpose": "Clarify that OMOS is a framework and documentation system, not a church, government, securities offering, or compulsory authority."
-    },
-    {
-      "path": "/contact",
-      "title": "Contact",
-      "template": "contact",
-      "purpose": "Contact and support page for OMOS inquiries."
-    }
+    { "path": "/", "purpose": "Customer entry, platform explanation, evidence status, architecture, product pathways, and build maturity." },
+    { "path": "/omos", "purpose": "OMOS operating model, architecture, Algorithm, O-H-I, standards, and maturity." },
+    { "path": "/workspace", "purpose": "Customer-facing Ask → Distill → Align → Council → Synthesize → Human Gate → Record → History workflow." },
+    { "path": "/council", "purpose": "Independent model outputs, cross-model review, signal mapping, governed synthesis, degraded-state rules, and human review." },
+    { "path": "/ollm", "purpose": "OneGodian LLM architecture and first-class future OMOS provider contract; runtime participation remains capability-gated." },
+    { "path": "/models", "purpose": "Model connector control center for OpenAI/GPT-6 Astra, Anthropic, Gemini, xAI, and future OLLM health/provenance." },
+    { "path": "/tools", "purpose": "Layer 1, Alignment, Identity, Verification, Intelligence, and developer/runtime tools." },
+    { "path": "/belief-mapper", "purpose": "Seven-dimensional belief-reflection and journey-stage product specification with privacy and maturity boundaries." },
+    { "path": "/developers", "purpose": "APIs, connection architecture, MCP status, Engineering Council, risk classes, and runtime interfaces." },
+    { "path": "/reference-run", "purpose": "OMOS-REF-0001 nine-gate production-proof standard." },
+    { "path": "/pricing", "purpose": "Outcome-based launch pricing and capability-gated entitlement boundaries." },
+    { "path": "/shop", "purpose": "Products/services presentation and OneGodian.com commerce bridge." },
+    { "path": "/ohi", "purpose": "O-H-I multi-model comparison, synthesis, and human-reviewed output layer." },
+    { "path": "/ohi-output-pipeline", "purpose": "Cross-model review pipeline and synthesis explanation." },
+    { "path": "/protocol", "purpose": "OneGodian Protocol™ identity, semantic, agent, and interface guidance." },
+    { "path": "/algorithm", "purpose": "OneGodian Algorithm™ Observe → Distill → Align → Select → Execute → Verify." },
+    { "path": "/artifacts", "purpose": "Architecture, evidence, standards, media, and specialized research including ODIN-SCI-0004." },
+    { "path": "/docs", "purpose": "Documentation center for capability, production proof, engineering, connectors, commerce, OTS-V5, and research." },
+    { "path": "/dashboard", "purpose": "Runtime health, provider state, Council runs, Decision Record history, and verification surfaces." },
+    { "path": "/latest-news", "purpose": "Build notes, releases, implementation milestones, and current status." },
+    { "path": "/digital-sanctuary", "purpose": "Immersive OneGodian/OMOS conceptual experience." },
+    { "path": "/legal", "purpose": "Public-safe legal, institutional, and professional-advice boundaries." },
+    { "path": "/contact", "purpose": "Contact, support, implementation, and ecosystem routing." },
+    { "path": "/ask/", "purpose": "Flagship operational Ask OMOS workspace." }
   ],
   "external_platform_targets": [
-    {
-      "domain": "https://onegodian.com",
-      "role": "store and commerce platform",
-      "plugin_use": "OMOS product cards, document downloads, shop pathways, and shortcodes"
-    },
-    {
-      "domain": "https://onegodian.org",
-      "role": "organization / public identity / institutional home",
-      "plugin_use": "public explainer pages, educational embeds, belief mapper entry points, and documentation links"
-    },
-    {
-      "domain": "https://quantumohi.com",
-      "role": "Quantum-OHI and governance hub",
-      "plugin_use": "OHI synthesis, protocol diagrams, AI alignment docs, and runtime status embeds"
-    }
+    { "domain": "https://onegodian.com", "role": "private commerce, product checkout, and commercial OneGodian platform" },
+    { "domain": "https://onegodian.org", "role": "public identity, civil/cultural/educational and institutional introduction" },
+    { "domain": "https://app.onegodian.com", "role": "application/console surface" },
+    { "domain": "https://quantumohi.com", "role": "advanced O-H-I / enterprise governance and infrastructure layer" }
   ]
 }
