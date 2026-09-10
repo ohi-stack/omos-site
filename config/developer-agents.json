@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "registryId": "OMOS-DEV-AGENTS-0001",
+  "updatedAtUtc": "2026-09-10T22:17:00Z",
+  "status": "defined_not_fully_bound",
+  "purpose": "Canonical machine-readable registry for AI-assisted OMOS software engineering roles and their authority boundaries.",
+  "governingRules": {
+    "noDirectPushToMainByDeveloperAgents": true,
+    "leastPrivilege": true,
+    "separationOfDuties": true,
+    "writerCannotBeSoleCertifier": true,
+    "humanApprovalRequiredBeforeProductionMergeOrDeployment": true,
+    "productionProofRequiredAfterDeployment": true,
+    "secretsServerSideOnly": true,
+    "engineeringLifecycle": ["issue","classify","assign","implement","pull_request","independent_review","tests_ci_security","omos_review","human_approval","merge","deploy","deployment_proof","engineering_record"]
+  },
+  "agents": [
+    {"agentId":"OMOS-DEV-COORD-0001","name":"OMOS Engineering Coordinator","class":"orchestrator","provider":"OMOS","status":"defined","capabilities":["task_classification","agent_selection","dependency_tracking","evidence_collection","engineering_record"],"allowedActions":["prepare_work","coordinate_agents","collect_evidence","recommend_release_state"],"blockedActions":["self_certify_production","bypass_human_gate","move_funds","manage_secrets"],"reviewRequired":true,"deploymentAuthority":"none"},
+    {"agentId":"OMOS-DEV-CODEX-0001","name":"Codex Developer Agent","class":"implementation","provider":"OpenAI","status":"defined_binding_external","capabilities":["code_implementation","refactoring","api_work","schema_work","tests","repository_changes"],"allowedActions":["work_on_scoped_branch","open_pull_request","add_tests","update_documentation"],"blockedActions":["direct_push_main","sole_release_approval","production_secret_access_by_default","unapproved_production_deploy"],"reviewRequired":true,"deploymentAuthority":"none"},
+    {"agentId":"OMOS-DEV-GITHUB-0001","name":"GitHub Engineering Agent","class":"repository","provider":"GitHub","status":"defined_binding_pending_verification","capabilities":["issue_workflow","branch_workflow","pull_request_workflow","ci_triage","repository_review"],"allowedActions":["prepare_repository_work","open_pull_request","analyze_ci","propose_remediation"],"blockedActions":["bypass_required_review","self_certify_production","unapproved_production_deploy"],"reviewRequired":true,"deploymentAuthority":"none"},
+    {"agentId":"OMOS-DEV-ANTIGRAVITY-0001","name":"Antigravity Developer Agent","class":"application_implementation","provider":"Google","status":"defined_binding_external","capabilities":["application_development","frontend","integration_work","runtime_work","tests"],"allowedActions":["work_on_scoped_branch","open_pull_request","update_frontend","add_tests"],"blockedActions":["direct_push_main","sole_release_approval","production_secret_access_by_default","unapproved_production_deploy"],"reviewRequired":true,"deploymentAuthority":"none"},
+    {"agentId":"OMOS-DEV-ARCH-0001","name":"Architecture Agent","class":"architecture","provider":"provider_neutral","status":"defined","capabilities":["architecture_review","interface_design","adr_drafting","boundary_enforcement"],"allowedActions":["propose_architecture","review_interfaces","draft_adr"],"blockedActions":["approve_own_implementation","production_deploy"],"reviewRequired":false,"deploymentAuthority":"none"},
+    {"agentId":"OMOS-DEV-QA-0001","name":"QA and Test Agent","class":"verification","provider":"provider_neutral","status":"defined","capabilities":["unit_tests","integration_tests","regression_tests","replay_tests","failure_reproduction"],"allowedActions":["add_tests","run_tests","report_failures","block_release_on_failed_gate"],"blockedActions":["waive_failed_tests_without_human_approval","production_deploy"],"reviewRequired":false,"deploymentAuthority":"none"},
+    {"agentId":"OMOS-DEV-REVIEW-0001","name":"Independent Review Agent","class":"review","provider":"provider_neutral","status":"defined","capabilities":["code_review","architecture_review","risk_review","change_scope_review"],"allowedActions":["approve_for_next_gate","request_changes","identify_regressions"],"blockedActions":["modify_code_and_solely_approve_same_change","production_deploy"],"reviewRequired":false,"deploymentAuthority":"none"},
+    {"agentId":"OMOS-DEV-SEC-0001","name":"Security Agent","class":"security","provider":"provider_neutral","status":"defined","capabilities":["secret_scan","auth_review","dependency_review","permission_review","attack_surface_review"],"allowedActions":["block_release","request_remediation","verify_security_controls"],"blockedActions":["read_unscoped_production_secrets","weaken_controls_without_human_approval"],"reviewRequired":false,"deploymentAuthority":"block_only"},
+    {"agentId":"OMOS-DEV-DEPLOY-0001","name":"Deployment Agent","class":"deployment","provider":"provider_neutral","status":"defined_binding_pending","capabilities":["staging_deploy","smoke_test","health_check","deployment_evidence","rollback_verification"],"allowedActions":["deploy_staging","collect_production_evidence","verify_deployed_sha"],"blockedActions":["production_deploy_without_human_approval","change_production_secrets_without_authorization"],"reviewRequired":true,"deploymentAuthority":"controlled_only"},
+    {"agentId":"OMOS-DEV-DOCS-0001","name":"Documentation Agent","class":"documentation","provider":"provider_neutral","status":"defined","capabilities":["readme","api_docs","architecture_docs","changelog","runbook","status_docs"],"allowedActions":["prepare_documentation_changes","maintain_release_evidence","document_known_limitations"],"blockedActions":["mark_unverified_feature_production","erase_known_limitations"],"reviewRequired":true,"deploymentAuthority":"none"}
+  ]
+}
