@@ -64,6 +64,17 @@ This repo maps the following source materials into implementation-ready document
 - Bridge-Builder Tool specification and WordPress page draft
 - OMOS Node Content and Plugin Bridge Plan
 - OneGodian ecosystem manifest
+- ODIN-SCI-0004 — OneGodian Particle Science™ research standard
+
+## Science registry additions
+
+The repository now includes:
+
+```text
+docs/ODIN-SCI-0004-ONEGODIAN-PARTICLE-SCIENCE.md
+```
+
+This record classifies OneGodian Particle Science™ as a theoretical/research-development discipline, preserves the historical `OELA-0007-PARTICLES` cross-reference, and separates established physics, OneGodian theoretical models, and metaphysical interpretation.
 
 ## Master site architecture
 
@@ -206,62 +217,13 @@ OMOS routes explain, document, and route traffic into:
 
 ## Priority implementation order
 
-1. Import WXR pages and category taxonomies into WordPress.
-2. Activate the OMOS page generator / core tools plugin.
-3. Run **Tools → OMOS Page Generator** to generate or repair route pages.
-4. Set Home as the static front page.
-5. Build the seven-link main navigation and 4-column footer.
-6. Connect tool shortcodes to generated pages.
-7. Keep `[omos_bridge_builder]` as planned until runtime implementation is tested.
-8. Connect shop pages to Stripe/WooCommerce products.
-9. Publish first OMOS news, OHI reports, and Council updates.
-10. Add analytics and conversion tracking.
-11. Confirm all public claims match implemented/runtime status.
-
-## WordPress assets
-
-Store WXR/XML, shortcodes, import instructions, menu/footer structure, and plugin support files in `/wordpress`.
-
-Current WordPress page drafts and plugin files:
-
-- `wordpress/pages/bridge-builder-tool-page.md`
-- `wordpress/plugin-architecture/omos-core-tools-production-structure.md`
-- `wordpress/plugin-architecture/PLUGIN_TARGETS_ONEGODIAN_COM_ORG_QUANTUMOHI.md`
-
-## Documentation assets
-
-Store protocol, runtime, algorithm, timekeeping, agent authority, declaration generator, and founder references in `/docs`.
-
-Current documentation additions:
-
-- `docs/bridge-builder-protocol.md`
-- `docs/OMOS_NODE_CONTENT_AND_PLUGIN_BRIDGE_PLAN.md`
-
-## Tool requirements
-
-Store interactive tool specs in `/tools`.
-
-Current tool specs:
-
-- `tools/bridge-builder-tool-spec.md`
-
-## Plugin sync rule
-
-The WordPress plugin manifest must match the master sitemap. Any new public route, tool route, product pathway, or documentation route should be added to both:
-
-1. the sitemap/source-map documentation; and
-2. the WordPress page generator manifest.
-
-For Bridge-Builder, the route `/tools/bridge-builder` and shortcode `[omos_bridge_builder]` should not be treated as operational until the shortcode/API/runtime is implemented, tested, and connected through the plugin manifest.
-
-## Commercial path
-
-The immediate commercial objective is to turn OMOS from documentation into a customer path:
-
-```text
-Understand OMOS → Use a tool → Get product/download → Join/member → Follow updates
-```
-
-## Production note
-
-The OMOS site should be public-safe and commercially disciplined. ONEGODIAN, LLC should be described as the commercial/IP/software entity. Governance language belongs only where legally appropriate and should not be mixed into LLC product pages without clarification.
+1. Complete `OMOS-REF-0001` production deployment proof against `omos.onegodian.com`.
+2. Deploy the current `main` revision containing production persistence hardening.
+3. Verify PostgreSQL durability, restart survival, owner isolation, and Decision Record reopening.
+4. Verify live provider configuration for OpenAI, Anthropic, Gemini, and xAI.
+5. Reconcile or close superseded open pull requests after confirming their changes are already represented on `main`.
+6. Install and test the OMOS WordPress bridge separately on each approved target.
+7. Publish and expose science/standards records, beginning with ODIN-SCI-0004.
+8. Connect commerce entitlements to governed OMOS runs.
+9. Add analytics and conversion tracking.
+10. Confirm all public claims match implemented/runtime status.
