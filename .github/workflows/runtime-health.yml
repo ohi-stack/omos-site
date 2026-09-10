@@ -15,61 +15,44 @@ concurrency:
 
 jobs:
   health:
-    name: Check live OMOS runtime
+    name: Verify canonical OMOS production evidence
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 6
     steps:
-      - name: Probe runtime surfaces
-        id: probe
+      - name: Checkout canonical main revision
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Verify live version, build SHA, persistence, providers, and public surfaces
+        id: evidence
         shell: bash
+        env:
+          OMOS_BASE_URL: https://omos.onegodian.com
+          OMOS_EXPECTED_VERSION: 1.1.0
+          OMOS_EXPECTED_SHA: ${{ github.sha }}
         run: |
-          set -u
-          BASE="https://omos.onegodian.com"
-          FAILED=0
-          REPORT=""
+          set -o pipefail
+          node scripts/live-smoke.js 2>&1 | tee runtime-health.txt
 
-          check() {
-            local label="$1"
-            local url="$2"
-            local code
-            code=$(curl -L --silent --show-error --output /tmp/body --write-out '%{http_code}' --connect-timeout 10 --max-time 25 "$url" || echo "000")
-            if [[ "$code" =~ ^2|^3 ]]; then
-              REPORT+="- PASS: ${label} (${url}) HTTP ${code}\n"
-            else
-              REPORT+="- FAIL: ${label} (${url}) HTTP ${code}\n"
-              FAILED=1
-            fi
-          }
-
-          check "OMOS home" "$BASE/"
-          check "Manifest" "$BASE/manifest"
-          check "Operational Workspace" "$BASE/dashboard"
-          check "Ask OMOS" "$BASE/ask/"
-          check "OHI pipeline" "$BASE/ohi-output-pipeline"
-          check "Persistence status" "$BASE/api/v1/persistence"
-
-          printf '%b' "$REPORT" | tee runtime-health.txt
-          echo "failed=$FAILED" >> "$GITHUB_OUTPUT"
-
-          if [[ "$FAILED" -ne 0 ]]; then
-            exit 1
-          fi
-
-      - name: Upload probe summary
+      - name: Upload production evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: omos-runtime-health
+          name: omos-runtime-production-evidence-${{ github.sha }}
           path: runtime-health.txt
-          retention-days: 14
+          retention-days: 30
 
-      - name: Create or update outage issue
+      - name: Record production alignment failure
         if: failure()
         uses: actions/github-script@v7
         with:
           script: |
-            const title = '[Runtime Health] OMOS degraded or unavailable';
-            const marker = '<!-- omos-runtime-health -->';
+            const title = '[Production Evidence] OMOS canonical host not aligned with main';
+            const marker = '<!-- omos-production-alignment -->';
             const { data: issues } = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -77,20 +60,54 @@ jobs:
               per_page: 100
             });
             const existing = issues.find(i => i.title === title && !i.pull_request);
-            const body = `${marker}\nAutomated runtime health check failed.\n\nRun: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\nChecked: ${new Date().toISOString()}\n\nReview the workflow artifact for endpoint-level results.`;
-            if (existing) {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: existing.number,
-                body
-              });
-            } else {
+            if (!existing) {
+              const body = `${marker}\nThe canonical host did not satisfy the exact production-evidence gate for the current main revision.\n\nExpected main SHA: \`${context.sha}\`\nExpected runtime version: \`1.1.0\`\nCanonical host: https://omos.onegodian.com\nWorkflow run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n\nThe gate checks runtime version, runtime-resolved build SHA, initialized durable PostgreSQL, provider-status payload, and required public surfaces. See Issue #28 for the OMOS-REF-0001 certification checklist.`;
               await github.rest.issues.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 title,
-                body,
-                labels: []
+                body
               });
+            }
+
+      - name: Record verified production alignment
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '[Production Evidence] OMOS canonical host not aligned with main';
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100
+            });
+            const mismatch = issues.find(i => i.title === title && !i.pull_request);
+            if (mismatch) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: mismatch.number,
+                state: 'closed'
+              });
+            }
+
+            const marker = `<!-- omos-production-evidence:${context.sha} -->`;
+            try {
+              const { data: comments } = await github.rest.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: 28,
+                per_page: 100
+              });
+              if (!comments.some(comment => comment.body && comment.body.includes(marker))) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: 28,
+                  body: `${marker}\n### Automated production evidence candidate\n\nThe canonical host passed the exact runtime-alignment gate for main SHA \`${context.sha}\`.\n\nVerified by this workflow run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n\nAutomated checks passed for runtime version, runtime-resolved build SHA, initialized durable PostgreSQL, provider-status payload, and required public surfaces. Restart-survival of a specific governed Decision Record remains a separate certification gate unless independently evidenced.`
+                });
+              }
+            } catch (error) {
+              core.warning(`Could not record Issue #28 evidence: ${error.message}`);
             }
