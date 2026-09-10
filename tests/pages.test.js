@@ -38,6 +38,15 @@ async function expectShell(path) {
   return response;
 }
 
+async function expectHomeNavigation() {
+  const response = await expectOk("/");
+  const expectedSummaries = ["OMOS", "Workspace", "Models", "Tools", "Developers", "Resources", "Shop"];
+  for (const label of expectedSummaries) {
+    assert.ok(response.body.includes(`<summary>${label}</summary>`), `/ missing canonical mega-menu item: ${label}`);
+  }
+  return response;
+}
+
 async function expectAskWorkspace() {
   const response = await expectOk("/ask/");
   const requiredMarkers = [
@@ -65,6 +74,7 @@ async function run() {
     if (route === "/") await expectOk(route);
     else await expectShell(route);
   }
+  await expectHomeNavigation();
   await expectAskWorkspace();
 
   const apiRoutes = ["/api/health", "/api/manifest", "/api/v1/providers", "/api/v1/persistence"];
@@ -74,6 +84,7 @@ async function run() {
   assert.equal(manifest.ui?.sharedHeader, true, "manifest must advertise shared header");
   assert.equal(manifest.ui?.sharedFooter, true, "manifest must advertise shared footer");
   assert.equal(manifest.ui?.megaMenu, true, "manifest must advertise mega menu");
+  assert.deepEqual(manifest.navigation?.map((item) => item.label), ["OMOS","Workspace","Models","Tools","Developers","Resources","Shop"], "manifest must expose the canonical seven-item mega menu");
   assert.ok(manifest.routes?.public?.includes("/ask/"), "manifest must advertise /ask/");
   assert.deepEqual(manifest.orchestration?.stages, ["ask","layer1","alignment","council_review","governed_synthesis","human_gate","decision_record"], "manifest must preserve canonical governed runtime stages");
 
@@ -81,7 +92,7 @@ async function run() {
   await expectOk("/omos-ui.js");
   await expectOk("/ask-workspace.js");
 
-  console.log("OMOS global UI shell, Ask OMOS workspace, and public route tests passed.");
+  console.log("OMOS global UI shell, canonical mega menu, Ask OMOS workspace, and public route tests passed.");
 }
 
 run().catch((error) => {
