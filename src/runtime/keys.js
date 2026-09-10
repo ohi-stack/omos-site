@@ -1,29 +1,45 @@
 const crypto = require("crypto");
+const { AsyncLocalStorage } = require("async_hooks");
 
 const KEY_PREFIX = "omos_live_";
+const ownerContext = new AsyncLocalStorage();
 
 function hashApiKey(apiKey) {
   return crypto.createHash("sha256").update(apiKey).digest("hex");
 }
 
+function ownerIdFromHash(hash) {
+  return `key_${String(hash || "").slice(0, 24)}`;
+}
+
 function parseKeyStore() {
   const raw = process.env.OMOS_API_KEYS || "";
-
   const parsed = raw
     .split(",")
     .map((entry) => entry.trim())
     .filter(Boolean)
     .map((entry) => {
       const [name, hash, plan = "starter"] = entry.split(":");
-      return { name, hash, plan };
+      return { name, hash, plan, ownerId: ownerIdFromHash(hash) };
     });
 
-  if (parsed.length === 0) {
+  if (parsed.length === 0 && process.env.NODE_ENV !== "production") {
     return [
-      { name: "default-dev", hash: hashApiKey("x-omos-key"), plan: "developer" },
-      { name: "dev-key", hash: hashApiKey("omos-dev-key"), plan: "developer" }
+      {
+        name: "default-dev",
+        hash: hashApiKey("x-omos-key"),
+        plan: "developer",
+        ownerId: ownerIdFromHash(hashApiKey("x-omos-key"))
+      },
+      {
+        name: "dev-key",
+        hash: hashApiKey("omos-dev-key"),
+        plan: "developer",
+        ownerId: ownerIdFromHash(hashApiKey("omos-dev-key"))
+      }
     ];
   }
+
   return parsed;
 }
 
@@ -38,19 +54,41 @@ function verifyApiKey(apiKey) {
 
   const keyHash = hashApiKey(apiKey);
   const keys = parseKeyStore();
-  const found = keys.find((key) => key.hash === keyHash);
-  if (found) return found;
-
-  // In development without configured keys, allow non-empty string keys
-  if (!process.env.OMOS_API_KEYS && apiKey.trim().length > 0) {
-    return { name: "dev-operator", hash: keyHash, plan: "developer" };
+  const found = keys.find((key) => key.hash === keyHash) || null;
+  if (found) {
+    ownerContext.enterWith(found);
+    return found;
   }
+
+  // Preserve permissive local development behavior while keeping production strict.
+  if (!process.env.OMOS_API_KEYS && process.env.NODE_ENV !== "production" && apiKey.trim().length > 0) {
+    const devOwner = {
+      name: "dev-operator",
+      hash: keyHash,
+      plan: "developer",
+      ownerId: ownerIdFromHash(keyHash)
+    };
+    ownerContext.enterWith(devOwner);
+    return devOwner;
+  }
+
   return null;
+}
+
+function getCurrentOwner() {
+  return ownerContext.getStore() || null;
+}
+
+function runAsOwner(owner, fn) {
+  return ownerContext.run(owner, fn);
 }
 
 module.exports = {
   KEY_PREFIX,
   generateApiKey,
   hashApiKey,
-  verifyApiKey
+  ownerIdFromHash,
+  verifyApiKey,
+  getCurrentOwner,
+  runAsOwner
 };

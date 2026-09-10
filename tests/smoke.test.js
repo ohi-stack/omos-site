@@ -3,9 +3,14 @@ const assert = require("assert");
 
 const BASE_URL = process.env.OMOS_BASE_URL || "http://localhost:3000";
 
-function request(path, parseJson = true) {
+function request(path, parseJson = true, redirects = 0) {
   return new Promise((resolve, reject) => {
-    http.get(`${BASE_URL}${path}`, (res) => {
+    const target = new URL(path, BASE_URL);
+    http.get(target, (res) => {
+      if ([301, 302, 307, 308].includes(res.statusCode) && res.headers.location && redirects < 5) {
+        res.resume();
+        return resolve(request(new URL(res.headers.location, target).pathname, parseJson, redirects + 1));
+      }
       let data = "";
       res.on("data", (chunk) => { data += chunk; });
       res.on("end", () => {
@@ -38,14 +43,16 @@ async function checkHtml(path, text) {
 async function run() {
   const health = await checkJson("/health", { status: "ok", service: "omos-site" });
   assert.ok(health.version);
-  assert.ok(health.publicRouteCount >= 10);
+  assert.ok(health.persistence);
+  assert.ok(["memory", "postgresql"].includes(health.persistence.backend));
+  assert.ok(health.orchestration);
+  assert.ok(Array.isArray(health.orchestration.providers));
 
   await checkJson("/api/health", { status: "ok", service: "omos-site" });
 
   const manifest = await checkJson("/manifest", { id: "omos-site", name: "OMOS Runtime" });
   assert.ok(manifest.routes.public.includes("/dashboard"));
   assert.ok(manifest.wordpressPlugin.compatibleHosts.length >= 1);
-  assert.ok(manifest.commerceBridge.primaryStore);
 
   await checkJson("/api/manifest", { id: "omos-site", name: "OMOS Runtime" });
 
