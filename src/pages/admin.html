@@ -3,242 +3,290 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OMOS Control Plane</title>
+  <meta name="robots" content="noindex,nofollow">
+  <title>OMOS Admin Dashboard — Control Plane</title>
   <style>
-    body { background: #07090c; color: #e1e7ef; font-family: ui-sans-serif, system-ui, sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
-    aside { width: 260px; background: #0c1117; border-right: 1px solid #1e293b; padding: 24px; display: flex; flex-direction: column; gap: 24px; }
-    main { flex: 1; padding: 32px; overflow-y: auto; }
-    h1, h2, h3 { margin: 0; color: #f8fafc; }
-    .brand { font-size: 14px; font-weight: 800; letter-spacing: 0.1em; color: #94a3b8; text-transform: uppercase; }
-    .nav-btn { display: block; width: 100%; text-align: left; background: none; border: none; color: #94a3b8; padding: 10px 14px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; }
-    .nav-btn:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
-    .nav-btn.active { background: rgba(66, 198, 255, 0.1); color: #42c6ff; }
-    .card { background: #111827; border: 1px solid #1e293b; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
-    .input-group { display: flex; gap: 12px; margin-top: 16px; }
-    input[type="password"], input[type="text"] { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 14px; outline: none; }
-    input:focus { border-color: #42c6ff; }
-    button.primary { background: #42c6ff; color: #0f172a; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; }
-    button.primary:hover { background: #38bdf8; }
-    button.danger { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
-    table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #1e293b; }
-    th { color: #94a3b8; font-weight: 500; }
-    .pill { display: inline-block; padding: 4px 8px; border-radius: 99px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
-    .pill.success { background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.2); }
-    .pill.warning { background: rgba(234, 179, 8, 0.1); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.2); }
-    .pill.error { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
-    #auth-view { max-width: 400px; margin: 100px auto; }
-    .hidden { display: none !important; }
-    
-    .run-card { border: 1px solid #1e293b; padding: 16px; border-radius: 8px; margin-bottom: 12px; background: #0b0f19; }
-    .run-meta { display: flex; justify-content: space-between; font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
-    .run-prompt { font-size: 14px; margin-bottom: 12px; }
-    pre { background: #0f172a; padding: 16px; border-radius: 8px; overflow: auto; font-size: 12px; color: #cbd5e1; border: 1px solid #1e293b; }
+    :root{
+      --bg:#05080c;--panel:#0c1118;--panel2:#111923;--line:#223044;--line2:#2d3f58;
+      --text:#eef5fb;--muted:#93a4b8;--cyan:#42c6ff;--gold:#e4c16a;--green:#5ee39a;
+      --yellow:#f4cc62;--red:#ff7b7b;--purple:#a98bff;--shadow:0 22px 60px rgba(0,0,0,.34);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;background:radial-gradient(circle at 12% 0%,rgba(66,198,255,.08),transparent 28%),radial-gradient(circle at 90% 10%,rgba(169,139,255,.07),transparent 25%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    a{color:inherit}
+    .hidden{display:none!important}
+    .auth-shell{min-height:100vh;display:grid;place-items:center;padding:24px}
+    .auth-card{width:min(460px,100%);padding:34px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,rgba(17,25,35,.96),rgba(9,14,20,.96));box-shadow:var(--shadow)}
+    .eyebrow{font-size:11px;font-weight:850;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+    h1,h2,h3,p{margin-top:0}
+    h1{font-size:34px;line-height:1.05;margin:8px 0 12px}
+    h2{font-size:24px}
+    h3{font-size:15px}
+    .muted{color:var(--muted)}
+    .auth-form{display:grid;gap:12px;margin-top:22px}
+    input,select,textarea{width:100%;border:1px solid var(--line2);background:#08101a;color:var(--text);border-radius:10px;padding:11px 12px;outline:none}
+    input:focus,select:focus,textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(66,198,255,.08)}
+    .btn{border:1px solid var(--line2);background:#111b27;color:var(--text);padding:10px 14px;border-radius:10px;font-weight:750}
+    .btn:hover{border-color:#46617f}
+    .btn.primary{background:var(--cyan);border-color:var(--cyan);color:#04111a}
+    .btn.approve{background:rgba(94,227,154,.10);border-color:rgba(94,227,154,.3);color:var(--green)}
+    .btn.reject{background:rgba(255,123,123,.09);border-color:rgba(255,123,123,.28);color:var(--red)}
+    .btn.small{padding:7px 10px;font-size:12px}
+    .error-box{margin-top:12px;padding:11px 12px;border:1px solid rgba(255,123,123,.3);border-radius:10px;background:rgba(255,123,123,.07);color:#ffc0c0;font-size:13px}
+    .app{min-height:100vh;display:grid;grid-template-columns:270px minmax(0,1fr)}
+    aside{position:sticky;top:0;height:100vh;padding:24px 18px;border-right:1px solid var(--line);background:rgba(7,12,18,.95);backdrop-filter:blur(16px);display:flex;flex-direction:column}
+    .brand{padding:4px 8px 22px}
+    .brand strong{display:block;font-size:18px;letter-spacing:.04em}
+    .brand span{font-size:11px;color:var(--muted)}
+    nav{display:grid;gap:7px}
+    .nav-btn{width:100%;border:0;background:transparent;color:var(--muted);text-align:left;padding:11px 12px;border-radius:10px;font-weight:720}
+    .nav-btn:hover{background:rgba(255,255,255,.035);color:var(--text)}
+    .nav-btn.active{background:rgba(66,198,255,.10);color:var(--cyan);box-shadow:inset 0 0 0 1px rgba(66,198,255,.15)}
+    .side-bottom{margin-top:auto;padding:18px 8px 2px;border-top:1px solid var(--line)}
+    .side-links{display:grid;gap:7px;margin-bottom:14px;font-size:12px;color:var(--muted)}
+    .side-links a{text-decoration:none}.side-links a:hover{color:var(--cyan)}
+    main{min-width:0;padding:28px 32px 56px}
+    .topbar{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:24px}
+    .top-actions{display:flex;gap:9px;flex-wrap:wrap}
+    .status-line{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:12px;margin-top:7px}
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--yellow);box-shadow:0 0 12px currentColor}
+    .dot.good{background:var(--green)}.dot.bad{background:var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
+    .metric,.card{border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(17,25,35,.92),rgba(10,15,22,.92));box-shadow:0 14px 35px rgba(0,0,0,.18)}
+    .metric{padding:18px}.metric-label{color:var(--muted);font-size:12px;font-weight:700}.metric-value{font-size:26px;font-weight:850;margin-top:8px}.metric-note{font-size:11px;color:var(--muted);margin-top:5px}
+    .card{padding:20px;margin-bottom:16px}
+    .card-head{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:14px}
+    .split{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:16px}
+    .pill{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:850;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line2)}
+    .pill.success{color:var(--green);border-color:rgba(94,227,154,.28);background:rgba(94,227,154,.08)}
+    .pill.warning{color:var(--yellow);border-color:rgba(244,204,98,.28);background:rgba(244,204,98,.08)}
+    .pill.error{color:var(--red);border-color:rgba(255,123,123,.28);background:rgba(255,123,123,.08)}
+    .pill.info{color:var(--cyan);border-color:rgba(66,198,255,.28);background:rgba(66,198,255,.08)}
+    table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}th{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800}tr:last-child td{border-bottom:0}
+    .toolbar{display:grid;grid-template-columns:minmax(200px,1fr) 180px auto;gap:10px;margin-bottom:14px}
+    .runs{display:grid;gap:10px}.run{border:1px solid var(--line);border-radius:13px;background:#09111a;padding:15px}.run-top{display:flex;justify-content:space-between;gap:14px}.run-id{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--cyan);font-size:11px}.run-prompt{margin:10px 0;color:#d9e5ef;line-height:1.5}.run-meta{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:11px}.run-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px;padding-top:12px;border-top:1px solid var(--line)}
+    pre{margin:0;max-height:440px;overflow:auto;padding:15px;border:1px solid var(--line);border-radius:12px;background:#07101a;color:#cbd9e5;font-size:11px;white-space:pre-wrap;word-break:break-word}
+    .provider-list{display:grid;gap:8px}.provider{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 12px;border:1px solid var(--line);border-radius:11px;background:#09111a}.provider-name{text-transform:capitalize;font-weight:750}
+    .empty{padding:32px 18px;text-align:center;color:var(--muted);border:1px dashed var(--line2);border-radius:13px}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:grid;place-items:center;padding:20px;z-index:30}.modal-card{width:min(880px,100%);max-height:88vh;overflow:auto;border:1px solid var(--line2);border-radius:18px;background:#0a1119;padding:22px;box-shadow:var(--shadow)}
+    .modal-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:14px}.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}textarea{min-height:90px;resize:vertical}
+    @media(max-width:1050px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.split{grid-template-columns:1fr}}
+    @media(max-width:780px){.app{grid-template-columns:1fr}aside{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)}nav{grid-template-columns:repeat(2,minmax(0,1fr))}.side-bottom{margin-top:18px}main{padding:22px 16px 44px}.topbar{flex-direction:column}.toolbar{grid-template-columns:1fr}.review-grid{grid-template-columns:1fr}}
+    @media(max-width:520px){.grid{grid-template-columns:1fr}nav{grid-template-columns:1fr}.run-top{flex-direction:column}}
   </style>
 </head>
 <body>
-
-  <!-- Auth View -->
-  <div id="auth-view" class="card">
-    <div style="text-align: center; margin-bottom: 24px;">
-      <div class="brand" style="margin-bottom: 8px;">OMOS</div>
-      <h2>Control Plane</h2>
+  <section id="auth-view" class="auth-shell">
+    <div class="auth-card">
+      <div class="eyebrow">OMOS • Restricted Administration</div>
+      <h1>Admin Dashboard</h1>
+      <p class="muted">Authenticate with an authorized OMOS operational API key. The key is kept only for this browser session.</p>
+      <form id="auth-form" class="auth-form">
+        <input id="api-key-input" type="password" autocomplete="current-password" placeholder="OMOS API key" required>
+        <button class="btn primary" type="submit">Open Control Plane</button>
+      </form>
+      <div id="auth-error" class="error-box hidden"></div>
     </div>
-    <p style="font-size: 14px; color: #94a3b8; text-align: center;">Enter your operational API key to continue.</p>
-    <form id="auth-form" class="input-group" style="flex-direction: column;">
-      <input type="password" id="api-key-input" placeholder="x-omos-key..." required>
-      <button type="submit" class="primary">Authenticate</button>
-    </form>
-  </div>
+  </section>
 
-  <!-- Dashboard View -->
-  <div id="app-view" class="hidden" style="display: flex; width: 100%;">
+  <section id="app-view" class="app hidden">
     <aside>
-      <div>
-        <div class="brand" style="margin-bottom: 4px;">OMOS</div>
-        <div style="font-size: 11px; color: #64748b;">Operator Console</div>
-      </div>
-      <nav style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
-        <button class="nav-btn active" data-view="health-view">System Health</button>
-        <button class="nav-btn" data-view="runs-view">Council Runs</button>
+      <div class="brand"><div class="eyebrow">OMOS</div><strong>Admin Control Plane</strong><span>Runtime administration and governed review</span></div>
+      <nav>
+        <button class="nav-btn active" data-view="overview-view">Overview</button>
+        <button class="nav-btn" data-view="records-view">Decision Records</button>
+        <button class="nav-btn" data-view="providers-view">Providers & Persistence</button>
+        <button class="nav-btn" data-view="system-view">System Manifest</button>
       </nav>
-      <div style="font-size: 12px; color: #64748b;">
-        <div id="auth-status" style="margin-bottom: 12px; word-break: break-all;"></div>
-        <button id="logout-btn" class="danger" style="width: 100%;">Disconnect</button>
+      <div class="side-bottom">
+        <div class="side-links">
+          <a href="/dashboard">Open User Dashboard →</a>
+          <a href="/ask/">Open Ask OMOS →</a>
+          <a href="/api/health" target="_blank" rel="noopener">Health JSON →</a>
+        </div>
+        <button id="logout-btn" class="btn reject" style="width:100%">End Admin Session</button>
       </div>
     </aside>
 
     <main>
-      <div id="health-view" class="view-section">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-          <h2>System Health</h2>
-          <button id="refresh-health" class="primary" style="padding: 8px 16px; font-size: 12px;">Refresh</button>
+      <div class="topbar">
+        <div>
+          <div class="eyebrow">Administrative Operations</div>
+          <h2 style="margin:5px 0 0">OMOS Runtime Administration</h2>
+          <div class="status-line"><span id="runtime-dot" class="dot"></span><span id="runtime-line">Checking runtime…</span></div>
         </div>
-        
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-          <div class="card">
-            <h3 style="margin-bottom: 16px; font-size: 16px;">Core Runtime</h3>
-            <table id="health-table">
-              <tbody>
-                <!-- Populated via JS -->
-              </tbody>
-            </table>
-          </div>
-          <div class="card">
-            <h3 style="margin-bottom: 16px; font-size: 16px;">Providers</h3>
-            <table id="providers-table">
-              <tbody>
-                <!-- Populated via JS -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-        
-        <div class="card">
-          <h3 style="margin-bottom: 16px; font-size: 16px;">Raw Manifest</h3>
-          <pre id="raw-manifest"></pre>
-        </div>
+        <div class="top-actions"><button id="refresh-all" class="btn primary">Refresh Dashboard</button></div>
       </div>
 
-      <div id="runs-view" class="view-section hidden">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-          <h2>Council Runs</h2>
-          <button id="refresh-runs" class="primary" style="padding: 8px 16px; font-size: 12px;">Refresh</button>
+      <section id="overview-view" class="view-section">
+        <div class="grid">
+          <div class="metric"><div class="metric-label">Runtime</div><div id="metric-runtime" class="metric-value">—</div><div id="metric-runtime-note" class="metric-note">Loading</div></div>
+          <div class="metric"><div class="metric-label">Persistence</div><div id="metric-persistence" class="metric-value">—</div><div id="metric-persistence-note" class="metric-note">Loading</div></div>
+          <div class="metric"><div class="metric-label">Live Providers</div><div id="metric-providers" class="metric-value">—</div><div id="metric-providers-note" class="metric-note">Loading</div></div>
+          <div class="metric"><div class="metric-label">Human Review Queue</div><div id="metric-review" class="metric-value">—</div><div id="metric-runs-note" class="metric-note">Loading</div></div>
         </div>
-        <div id="runs-container">
-          <div style="color: #94a3b8; font-size: 14px;">Loading runs...</div>
+        <div class="split">
+          <div class="card">
+            <div class="card-head"><div><h3>Recent Decision Records</h3><div class="muted" style="font-size:12px;margin-top:4px">Latest governed Council runs and disposition state.</div></div><button class="btn small" data-go="records-view">View All</button></div>
+            <div id="recent-runs" class="runs"><div class="empty">Loading records…</div></div>
+          </div>
+          <div>
+            <div class="card">
+              <div class="card-head"><h3>Provider Availability</h3><span id="provider-summary-pill" class="pill info">Loading</span></div>
+              <div id="overview-providers" class="provider-list"></div>
+            </div>
+            <div class="card">
+              <div class="card-head"><h3>Persistence Gate</h3><span id="persistence-pill" class="pill warning">Checking</span></div>
+              <table><tbody id="persistence-summary"></tbody></table>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <section id="records-view" class="view-section hidden">
+        <div class="card">
+          <div class="card-head"><div><h3>Decision Records & Council Runs</h3><div class="muted" style="font-size:12px;margin-top:4px">Search, inspect, approve, or reject records awaiting human authorization.</div></div><button id="refresh-runs" class="btn small">Refresh Records</button></div>
+          <div class="toolbar">
+            <input id="run-search" type="text" placeholder="Search by ID or prompt…">
+            <select id="run-filter"><option value="all">All statuses</option><option value="pending_human">Needs review</option><option value="completed">Completed</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select>
+            <div id="record-count" class="pill info" style="align-self:center;justify-self:end">0 records</div>
+          </div>
+          <div id="runs-container" class="runs"><div class="empty">Loading records…</div></div>
+        </div>
+      </section>
+
+      <section id="providers-view" class="view-section hidden">
+        <div class="split">
+          <div class="card"><div class="card-head"><div><h3>Model Providers</h3><div class="muted" style="font-size:12px;margin-top:4px">Configured provider adapters available to OMOS Council orchestration.</div></div><button id="refresh-providers" class="btn small">Refresh</button></div><div id="providers-detail" class="provider-list"></div></div>
+          <div class="card"><div class="card-head"><div><h3>Decision Store</h3><div class="muted" style="font-size:12px;margin-top:4px">Production should report a durable PostgreSQL backend before persistence is certified.</div></div></div><table><tbody id="persistence-detail"></tbody></table></div>
+        </div>
+      </section>
+
+      <section id="system-view" class="view-section hidden">
+        <div class="card"><div class="card-head"><div><h3>Runtime Manifest & Health Payload</h3><div class="muted" style="font-size:12px;margin-top:4px">Read-only operational evidence. Secrets are not displayed.</div></div><button id="refresh-system" class="btn small">Refresh</button></div><pre id="raw-manifest">Loading…</pre></div>
+      </section>
     </main>
+  </section>
+
+  <div id="record-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <div class="modal-head"><div><div class="eyebrow">Decision Record</div><h3 id="modal-title" style="margin-top:5px">Record Detail</h3></div><button id="close-modal" class="btn small">Close</button></div>
+      <pre id="modal-json"></pre>
+      <div id="review-controls" class="hidden">
+        <div class="review-grid"><div><label class="muted" style="font-size:12px">Reviewer comment</label><textarea id="review-comment" placeholder="Document the approval or rejection rationale."></textarea></div><div style="display:flex;gap:8px;align-items:flex-end;justify-content:flex-end"><button id="reject-record" class="btn reject">Reject</button><button id="approve-record" class="btn approve">Approve</button></div></div>
+      </div>
+    </div>
   </div>
 
   <script>
-    let apiKey = localStorage.getItem('omos_admin_key');
-    const authView = document.getElementById('auth-view');
-    const appView = document.getElementById('app-view');
-    const authForm = document.getElementById('auth-form');
-    const keyInput = document.getElementById('api-key-input');
-    
-    // Setup Navigation
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
-        document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden'));
-        document.getElementById(e.target.dataset.view).classList.remove('hidden');
-      });
-    });
+    let apiKey = sessionStorage.getItem('omos_admin_key') || '';
+    let state = { health:null, providers:[], persistence:null, runs:[], activeRecord:null };
 
-    async function apiRequest(endpoint, options = {}) {
-      const headers = { 'Content-Type': 'application/json' };
-      if (apiKey) headers['x-omos-key'] = apiKey;
-      
-      const res = await fetch(endpoint, { ...options, headers });
-      if (res.status === 401) {
-        logout();
-        throw new Error('Unauthorized');
-      }
-      return res.json();
+    const $ = (id) => document.getElementById(id);
+    const authView = $('auth-view');
+    const appView = $('app-view');
+
+    function escapeHtml(value){return String(value ?? '').replace(/[&<>'"]/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+    function statusClass(value){const s=String(value||'').toLowerCase();if(s.includes('approved')||s.includes('complete')||s.includes('live')||s==='ok'||s==='postgresql')return'success';if(s.includes('reject')||s.includes('error')||s.includes('fail'))return'error';return'warning';}
+    function displayStatus(run){return run.humanDecision || run.status || 'unknown';}
+    function promptText(run){return run.prompt || run.rawInput || run.input || run.question || run.canonicalInput || 'No prompt summary available.';}
+    function runId(run){return run.id || run.requestId || run.decisionId || 'unknown';}
+    function timestamp(run){const value=run.timestampUtc || run.updatedAt || run.createdAt || run.timestamps?.utc;return value ? new Date(value).toLocaleString() : '—';}
+
+    async function apiRequest(endpoint,options={}){
+      const headers = {...(options.headers||{}),'Content-Type':'application/json'};
+      if(apiKey) headers['x-omos-key']=apiKey;
+      const res = await fetch(endpoint,{...options,headers});
+      let data={};try{data=await res.json();}catch(_){data={};}
+      if(res.status===401||res.status===403){logout();throw new Error('Unauthorized OMOS API key');}
+      if(!res.ok) throw new Error(data.message||data.error||`Request failed (${res.status})`);
+      return data;
     }
 
-    function showApp() {
-      authView.classList.add('hidden');
-      appView.classList.remove('hidden');
-      document.getElementById('auth-status').innerText = `Key Hash: ${apiKey.substring(0,6)}...`;
-      loadHealth();
-      loadRuns();
+    async function authenticate(key){
+      apiKey=key.trim();
+      if(!apiKey) throw new Error('API key is required.');
+      await apiRequest('/api/v1/council/runs?limit=1');
+      sessionStorage.setItem('omos_admin_key',apiKey);
+      authView.classList.add('hidden');appView.classList.remove('hidden');
+      await refreshAll();
     }
 
-    function logout() {
-      apiKey = null;
-      localStorage.removeItem('omos_admin_key');
-      authView.classList.remove('hidden');
-      appView.classList.add('hidden');
-      keyInput.value = '';
+    function logout(){apiKey='';sessionStorage.removeItem('omos_admin_key');appView.classList.add('hidden');authView.classList.remove('hidden');$('api-key-input').value='';}
+
+    async function loadHealth(){
+      state.health=await apiRequest('/api/health');
+      const h=state.health;
+      $('metric-runtime').textContent=h.status==='ok'?'Online':'Check';
+      $('metric-runtime-note').textContent=`v${h.version||'—'} • ${h.environment||'unknown'}`;
+      $('runtime-line').textContent=`${h.service||'OMOS'} v${h.version||'—'} • ${h.environment||'unknown'}`;
+      $('runtime-dot').className=`dot ${h.status==='ok'?'good':'bad'}`;
+      $('raw-manifest').textContent=JSON.stringify(h,null,2);
     }
 
-    authForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      apiKey = keyInput.value.trim();
-      if (apiKey) {
-        localStorage.setItem('omos_admin_key', apiKey);
-        showApp();
-      }
-    });
-
-    document.getElementById('logout-btn').addEventListener('click', logout);
-    document.getElementById('refresh-health').addEventListener('click', loadHealth);
-    document.getElementById('refresh-runs').addEventListener('click', loadRuns);
-
-    async function loadHealth() {
-      try {
-        const data = await apiRequest('/api/health');
-        
-        // Runtime
-        document.getElementById('health-table').innerHTML = `
-          <tr><td>Version</td><td>${data.version}</td></tr>
-          <tr><td>Environment</td><td>${data.environment}</td></tr>
-          <tr><td>Persistence</td><td><span class="pill ${data.persistence.backend === 'memory' ? 'warning' : 'success'}">${data.persistence.backend}</span></td></tr>
-          <tr><td>Live Providers</td><td>${data.orchestration.liveProviderCount} / ${data.orchestration.providers.length}</td></tr>
-        `;
-        
-        // Providers
-        document.getElementById('providers-table').innerHTML = data.orchestration.providers.map(p => `
-          <tr>
-            <td style="text-transform: capitalize;">${p.provider}</td>
-            <td><span class="pill ${p.configured ? 'success' : 'error'}">${p.status}</span></td>
-          </tr>
-        `).join('');
-        
-        document.getElementById('raw-manifest').textContent = JSON.stringify(data, null, 2);
-      } catch (e) {
-        console.error(e);
-      }
+    async function loadProviders(){
+      const res=await apiRequest('/api/v1/providers');state.providers=res.providers||[];
+      const live=state.providers.filter(p=>p.configured).length,total=state.providers.length;
+      $('metric-providers').textContent=`${live}/${total}`;$('metric-providers-note').textContent='configured model adapters';
+      $('provider-summary-pill').textContent=`${live} live of ${total}`;$('provider-summary-pill').className=`pill ${live===total&&total?'success':'warning'}`;
+      const html=state.providers.map(p=>`<div class="provider"><div><div class="provider-name">${escapeHtml(p.provider)}</div><div class="muted" style="font-size:11px">${escapeHtml(p.configured?'Configured for live use':'Simulation / unavailable')}</div></div><span class="pill ${p.configured?'success':'warning'}">${escapeHtml(p.status||'unknown')}</span></div>`).join('')||'<div class="empty">No provider adapters reported.</div>';
+      $('overview-providers').innerHTML=html;$('providers-detail').innerHTML=html;
     }
 
-    async function loadRuns() {
-      const container = document.getElementById('runs-container');
-      try {
-        const res = await apiRequest('/api/v1/council/runs');
-        const runs = res.data || [];
-        
-        if (runs.length === 0) {
-          container.innerHTML = `<div class="card" style="text-align: center; color: #94a3b8;">No council runs found.</div>`;
-          return;
-        }
-
-        container.innerHTML = runs.map(run => `
-          <div class="run-card">
-            <div class="run-meta">
-              <span>ID: ${run.id}</span>
-              <span>Status: <span class="pill ${run.status === 'completed' ? 'success' : 'warning'}">${run.status}</span></span>
-            </div>
-            <div class="run-prompt"><strong>Prompt:</strong> ${run.prompt}</div>
-            <div style="font-size: 12px; color: #94a3b8; display: flex; justify-content: space-between; align-items: center; margin-top: 12px; border-top: 1px solid #1e293b; padding-top: 12px;">
-              <span>Timestamp: ${new Date(run.timestampUtc).toLocaleString()}</span>
-              ${run.status === 'pending_human' ? `<button onclick="approveRun('${run.id}')" class="primary" style="padding: 4px 10px; font-size: 11px;">Approve</button>` : `<span>Decision: ${run.humanDecision || 'N/A'}</span>`}
-            </div>
-          </div>
-        `).join('');
-      } catch (e) {
-        console.error(e);
-        container.innerHTML = `<div style="color: #ef4444;">Failed to load runs. Check API key.</div>`;
-      }
+    async function loadPersistence(){
+      const res=await apiRequest('/api/v1/persistence');state.persistence=res.persistence||{};const p=state.persistence;
+      $('metric-persistence').textContent=p.backend||'Unknown';$('metric-persistence-note').textContent=p.durable?'durable Decision Records':'not certified durable';
+      $('persistence-pill').textContent=p.durable?'Durable':'Not Durable';$('persistence-pill').className=`pill ${p.durable?'success':'warning'}`;
+      const rows=`<tr><td>Backend</td><td><span class="pill ${statusClass(p.backend)}">${escapeHtml(p.backend||'unknown')}</span></td></tr><tr><td>Durable</td><td>${p.durable?'Yes':'No'}</td></tr><tr><td>Environment</td><td>${escapeHtml(state.health?.environment||'—')}</td></tr>`;
+      $('persistence-summary').innerHTML=rows;$('persistence-detail').innerHTML=rows;
     }
-    
-    window.approveRun = async (id) => {
-      try {
-        await apiRequest(`/api/v1/council/runs/${id}/human-decision`, {
-          method: 'POST',
-          body: JSON.stringify({ decision: 'APPROVED', comment: 'Approved via Admin Panel' })
-        });
-        loadRuns();
-      } catch (e) {
-        alert('Failed to approve run');
-      }
-    };
 
-    if (apiKey) showApp();
+    async function loadRuns(){
+      const res=await apiRequest('/api/v1/council/runs?limit=100');state.runs=res.data||[];
+      const pending=state.runs.filter(r=>String(r.status||'').toLowerCase()==='pending_human'||String(r.humanDecision||'').toUpperCase()==='PENDING').length;
+      $('metric-review').textContent=String(pending);$('metric-runs-note').textContent=`${state.runs.length} recent records loaded`;
+      renderRuns();renderRecent();
+    }
+
+    function runCard(run,compact=false){
+      const id=runId(run),status=displayStatus(run),prompt=promptText(run);
+      return `<article class="run"><div class="run-top"><span class="run-id">${escapeHtml(id)}</span><span class="pill ${statusClass(status)}">${escapeHtml(status)}</span></div><div class="run-prompt">${escapeHtml(prompt).slice(0,compact?240:700)}</div><div class="run-meta"><span>${escapeHtml(timestamp(run))}</span>${run.mode?`<span>Mode: ${escapeHtml(run.mode)}</span>`:''}${run.recordHash?`<span>Hash: ${escapeHtml(String(run.recordHash).slice(0,12))}…</span>`:''}</div><div class="run-actions"><button class="btn small" onclick="openRecord('${escapeHtml(id)}')">Inspect Record</button>${String(run.status||'').toLowerCase()==='pending_human'?`<button class="btn approve small" onclick="openReview('${escapeHtml(id)}','APPROVED')">Approve</button><button class="btn reject small" onclick="openReview('${escapeHtml(id)}','REJECTED')">Reject</button>`:''}</div></article>`;
+    }
+
+    function renderRecent(){const list=state.runs.slice(0,5);$('recent-runs').innerHTML=list.length?list.map(r=>runCard(r,true)).join(''):'<div class="empty">No Decision Records found.</div>';}
+    function renderRuns(){
+      const q=$('run-search').value.trim().toLowerCase(),filter=$('run-filter').value;
+      const list=state.runs.filter(r=>{const status=String(displayStatus(r)).toLowerCase();const matchesFilter=filter==='all'||status.includes(filter.replace('_',' '))||String(r.status||'').toLowerCase()===filter;const hay=`${runId(r)} ${promptText(r)} ${status}`.toLowerCase();return matchesFilter&&(!q||hay.includes(q));});
+      $('record-count').textContent=`${list.length} record${list.length===1?'':'s'}`;$('runs-container').innerHTML=list.length?list.map(r=>runCard(r)).join(''):'<div class="empty">No records match the current filters.</div>';
+    }
+
+    async function fetchRecord(id){const res=await apiRequest(`/api/v1/council/runs/${encodeURIComponent(id)}`);return res.data;}
+    async function openRecord(id){try{const record=await fetchRecord(id);state.activeRecord=record;$('modal-title').textContent=runId(record);$('modal-json').textContent=JSON.stringify(record,null,2);$('review-controls').classList.toggle('hidden',String(record.status||'').toLowerCase()!=='pending_human');$('review-comment').value='';$('record-modal').classList.remove('hidden');}catch(e){alert(e.message);}}
+    async function openReview(id,decision){await openRecord(id);$('review-comment').dataset.decision=decision;}
+    function closeModal(){$('record-modal').classList.add('hidden');state.activeRecord=null;}
+
+    async function submitDecision(decision){
+      if(!state.activeRecord)return;const id=runId(state.activeRecord);const comment=$('review-comment').value.trim()||`${decision==='APPROVED'?'Approved':'Rejected'} via OMOS Admin Dashboard`;
+      if(!confirm(`${decision==='APPROVED'?'Approve':'Reject'} Decision Record ${id}?`))return;
+      try{await apiRequest(`/api/v1/council/runs/${encodeURIComponent(id)}/human-decision`,{method:'POST',body:JSON.stringify({decision,comment})});closeModal();await loadRuns();}catch(e){alert(e.message);}
+    }
+
+    async function refreshAll(){
+      $('refresh-all').disabled=true;
+      try{await Promise.all([loadHealth(),loadProviders(),loadRuns()]);await loadPersistence();}
+      catch(e){console.error(e);$('runtime-line').textContent=e.message;$('runtime-dot').className='dot bad';}
+      finally{$('refresh-all').disabled=false;}
+    }
+
+    document.querySelectorAll('.nav-btn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.view-section').forEach(v=>v.classList.add('hidden'));$(btn.dataset.view).classList.remove('hidden');}));
+    document.querySelectorAll('[data-go]').forEach(btn=>btn.addEventListener('click',()=>document.querySelector(`.nav-btn[data-view="${btn.dataset.go}"]`).click()));
+    $('auth-form').addEventListener('submit',async e=>{e.preventDefault();$('auth-error').classList.add('hidden');try{await authenticate($('api-key-input').value);}catch(err){logout();$('auth-error').textContent=err.message;$('auth-error').classList.remove('hidden');}});
+    $('logout-btn').addEventListener('click',logout);$('refresh-all').addEventListener('click',refreshAll);$('refresh-runs').addEventListener('click',loadRuns);$('refresh-providers').addEventListener('click',loadProviders);$('refresh-system').addEventListener('click',loadHealth);$('run-search').addEventListener('input',renderRuns);$('run-filter').addEventListener('change',renderRuns);$('close-modal').addEventListener('click',closeModal);$('record-modal').addEventListener('click',e=>{if(e.target===$('record-modal'))closeModal();});$('approve-record').addEventListener('click',()=>submitDecision('APPROVED'));$('reject-record').addEventListener('click',()=>submitDecision('REJECTED'));
+    window.openRecord=openRecord;window.openReview=openReview;
+
+    if(apiKey){authenticate(apiKey).catch(()=>logout());}
   </script>
 </body>
 </html>
