@@ -58,7 +58,6 @@ function mapBeliefs(input = {}) {
   const community = clean(answers.community);
   const relationship = clean(answers.relationship);
   const purpose = clean(answers.purpose);
-  const tenureYears = Number(answers.tenureYears || answers.tenure_years || 0);
   const contributes = boolish(answers.contributes) || /lead|guide|teach|elder|mentor|serve/.test(community);
   const participates = boolish(answers.participates) || /member|participat|community|onegodian/.test(`${identity} ${community}`);
   const explicitAlly = /ally|supporter|friend|observer/.test(identity);
@@ -71,9 +70,9 @@ function mapBeliefs(input = {}) {
   let stage = STAGES.SEEKER;
   const reasons = [];
 
-  if (explicitElder && explicitOneGodian && contributes && tenureYears >= 1) {
+  if (explicitElder && explicitOneGodian && contributes) {
     stage = STAGES.ELDER;
-    reasons.push("You explicitly identify as a OneGodian Elder.", "You indicated sustained participation and contribution or guidance.");
+    reasons.push("You explicitly identify as a OneGodian Elder.", "You indicated contribution, guidance, teaching, mentoring, or service.");
   } else if (explicitOneGodian && participates) {
     stage = STAGES.ONEGODIAN;
     reasons.push("You explicitly self-identify as OneGodian.", "You indicated participation in the OneGodian ecosystem or community.");
