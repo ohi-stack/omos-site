@@ -1,0 +1,31 @@
+/* OMOS Mega Menu v2.1 — customer-first six-column navigation */
+.omos-mega{
+  width:min(1320px,calc(100vw - 48px));
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:12px;
+  padding:22px;
+}
+.omos-mega-group{
+  min-width:0;
+  padding:10px;
+  border-radius:14px;
+}
+.omos-mega-group:hover{
+  background:rgba(255,255,255,.025);
+}
+.omos-mega-title{
+  margin-bottom:10px;
+}
+.omos-mega a{
+  padding:8px 9px;
+  line-height:1.35;
+}
+@media(max-width:1380px) and (min-width:1121px){
+  .omos-mega{width:min(1080px,calc(100vw - 36px));grid-template-columns:repeat(3,minmax(0,1fr));}
+}
+@media(max-width:1120px){
+  .omos-nav.is-mobile-open .omos-mega{grid-template-columns:repeat(2,minmax(0,1fr));width:100%;}
+}
+@media(max-width:680px){
+  .omos-nav.is-mobile-open .omos-mega{grid-template-columns:1fr!important;}
+}
