@@ -1,0 +1,1 @@
+This branch is documentation/specification only. It does not claim the Council runtime already emits the normalized provenance envelope. Runtime implementation and tests are follow-up work after OMOS-REF-0001 production proof.
