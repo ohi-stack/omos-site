@@ -46,6 +46,13 @@ jobs:
       - name: Syntax checks
         run: npm run check
 
+      - name: GPT-6 Astra adapter contract
+        env:
+          DATABASE_URL: ''
+          NODE_ENV: test
+          OMOS_REQUIRE_DURABLE_DB: 'false'
+        run: npm run test:openai-astra
+
       - name: Lifecycle regression
         env:
           DATABASE_URL: ''

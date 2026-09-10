@@ -7,7 +7,7 @@
     "dev": "node server.js",
     "build": "echo 'Build complete'",
     "start": "node scripts/write-build-metadata.js && node server.js",
-    "check": "node --check server.js && node --check src/runtime/orchestrator.js && node --check src/runtime/decisionStore.js && node --check src/runtime/keys.js && node --check scripts/write-build-metadata.js && node --check scripts/live-smoke.js",
+    "check": "node --check server.js && node --check src/runtime/orchestrator.js && node --check src/runtime/decisionStore.js && node --check src/runtime/keys.js && node --check src/adapters/openai.js && node --check scripts/write-build-metadata.js && node --check scripts/live-smoke.js",
     "preflight:production": "node scripts/preflight.js",
     "smoke": "node tests/smoke.test.js",
     "smoke:pages": "node tests/pages.test.js",
@@ -16,6 +16,7 @@
     "test:lifecycle": "node tests/workspace.test.js",
     "test:decision-record": "node tests/decision-record-hardening.test.js",
     "test:record-ownership-api": "node tests/record-api-ownership.test.js",
+    "test:openai-astra": "node tests/openai-astra-adapter.test.js",
     "verify:persistence:restart": "node scripts/verify-decision-restart.js"
   },
   "engines": {
