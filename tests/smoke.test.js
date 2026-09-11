@@ -35,9 +35,9 @@ async function checkJson(path, expected) {
 
 async function checkHtml(path, text) {
   const response = await request(path, false);
-  assert.strictEqual(response.statusCode, 200);
-  assert.ok(String(response.headers["content-type"] || "").includes("text/html"));
-  assert.ok(response.body.includes(text));
+  assert.strictEqual(response.statusCode, 200, `${path} returned ${response.statusCode}`);
+  assert.ok(String(response.headers["content-type"] || "").includes("text/html"), `${path} did not return HTML`);
+  assert.ok(response.body.includes(text), `${path} missing canonical marker: ${text}`);
 }
 
 async function run() {
@@ -52,20 +52,26 @@ async function run() {
 
   const manifest = await checkJson("/manifest", { id: "omos-site", name: "OMOS Runtime" });
   assert.ok(manifest.routes.public.includes("/dashboard"));
+  assert.ok(manifest.routes.public.includes("/workspace"));
+  assert.ok(manifest.routes.public.includes("/tools/belief-mapper"));
   assert.ok(manifest.wordpressPlugin.compatibleHosts.length >= 1);
 
   await checkJson("/api/manifest", { id: "omos-site", name: "OMOS Runtime" });
 
   const routes = [
     ["/", "OMOS"],
-    ["/omos", "OMOS"],
-    ["/ohi", "OHI"],
-    ["/models", "Model"],
-    ["/tools", "Tools"],
-    ["/artifacts", "Artifacts"],
-    ["/docs", "Docs"],
-    ["/shop", "Shop"],
-    ["/latest-news", "News"],
+    ["/omos", "One runtime for governed AI-assisted decisions"],
+    ["/workspace", "Ask. Review. Decide. Reopen."],
+    ["/council", "Compare perspectives without manufacturing consensus."],
+    ["/ollm", "OneGodian LLM"],
+    ["/ohi", "O-H-I"],
+    ["/models", "Model Connectors Control Center"],
+    ["/tools", "Tools that turn complexity into structured work."],
+    ["/developers", "Build against the runtime, not assumptions."],
+    ["/artifacts", "OMOS Canon & Artifact Library"],
+    ["/docs", "OMOS Documentation"],
+    ["/shop", "Products & Services"],
+    ["/latest-news", "Build Notes"],
     ["/dashboard", "Dashboard"],
     ["/legal", "Legal"],
     ["/contact", "Contact"],
