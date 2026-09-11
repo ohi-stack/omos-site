@@ -1,158 +1,208 @@
-# OMOS.OneGodian.com Sitemap
+# OMOS.OneGodian.com Sitemap — September 10, 2026
 
-Updated: June 13, 2026  
 Repository: `ohi-stack/omos-site`  
-Purpose: Define the public page structure for OMOS.OneGodian.com, including the core runtime routes, model council pages, tool pages, product bridges, and compliance paths.
+Canonical runtime: `https://omos.onegodian.com`  
+Status: current public information architecture; component maturity remains explicit
 
----
+## Public navigation
 
-## 1. Core Runtime Pages
+Primary areas:
 
-| Page | Route | Purpose | Status |
-|---|---:|---|---|
-| Home | `/` | Main OMOS runtime homepage and navigation entry. | Active |
-| OMOS Architecture | `/omos` | Explains OMOS as the operating layer for OneGodian intelligence architecture. | Active |
-| OHI Runtime | `/ohi` | Explains OHI synthesis, GCD-style distillation, and governed outputs. | Active |
-| Model Council | `/models` | Overview of ChatGPT, Claude, Gemini, and Grok as comparative model perspectives. | Active |
-| Tools | `/tools` | Tool hub for Belief Mapper, Declaration Generator, Protocol Explorer, and pipeline tools. | Active |
-| Artifacts | `/artifacts` | Source materials, whitepapers, manifests, WXR files, animations, and institutional records. | Active |
-| Documentation | `/docs` | Documentation center for Protocol, Algorithm, System Prompt, and compliance notes. | Active |
-| Shop Bridge | `/shop` | Routes product interest to OneGodian.com commerce. | Active |
-| Latest News | `/latest-news` | Build notes, release updates, and implementation logs. | Active |
-| Dashboard | `/dashboard` | Runtime status, manifest links, and app.OneGodian.com handoff. | Active |
-| Legal | `/legal` | Compliance, civil-control, and institutional positioning notices. | Active |
-| Contact | `/contact` | Ecosystem links and contact routing. | Active |
+`OMOS | Workspace | Council | OLLM | Tools | Developers | Pricing`
 
----
+Persistent actions:
 
-## 2. Protocol, Algorithm, and Sanctuary Pages
+`Runtime | Sign In / Workspace | Ask OMOS`
 
-| Page | Route | Purpose | Status |
-|---|---:|---|---|
-| The OneGodian Protocol™ | `/protocol` | Optional identity, semantic, agent, and interface framework. | Active |
-| The OneGodian Algorithm™ | `/algorithm` | Observe, Distill, Align, Select, Execute, Verify model. | Active |
-| Digital Sanctuary | `/digital-sanctuary` | Immersive public-facing experience for identity and OMOS architecture. | Active |
-| OHI Output Pipeline | `/ohi-output-pipeline` | Visual multi-model workflow and synthesis explanation. | Active |
+The public site should optimize for the customer proposition **Make Better Decisions With AI** while retaining technical documentation, research, standards, provenance, and implementation evidence behind clear secondary pathways.
 
----
+## Canonical customer/runtime flow
 
-## 3. Model Council Pages
+`INPUT → LAYER 1 → ALIGN → COUNCIL → SYNTHESIZE → RECORD → HISTORY`
 
-These pages should exist as distinct pages, not only as cards on `/models`.
+The Human Gate remains required inside the governed Record transition. External consequential execution remains separately authorized.
 
-| Page | Route | Role | Status |
-|---|---:|---|---|
-| ChatGPT OMOS Homepage | `/models/chatgpt` | Structure, implementation planning, code tasks, documentation architecture. | Planned |
-| Claude OMOS Homepage | `/models/claude` | Consciousness, institutional caution, careful reasoning, edge-case review. | Planned |
-| Gemini OMOS Homepage | `/models/gemini` | Pattern recognition, broad synthesis, multimodal and ecosystem relationships. | Content Ready / Route Pending |
-| Grok OMOS Homepage | `/models/grok` | Raw perspective, direct contrast, cultural signal, fast interpretation. | Planned |
+## Core public routes
 
-### Model Council Rule
-
-No external model is the authority of record. ChatGPT, Claude, Gemini, and Grok are treated as comparative reasoning inputs. OMOS/OHI synthesis compares, filters, verifies, and normalizes outputs before they become public artifacts.
-
----
-
-## 4. Tool Pages
-
-| Tool | Route | Purpose | Status |
-|---|---:|---|---|
-| Belief Mapper | `/tools/belief-mapper` | Maps users through Seeker, Believer, OneGodian, and Elder stages. | Planned |
-| Declaration Generator | `/tools/declaration-generator` | Generates structured identity and sincerity declarations. | Planned |
-| Protocol Explorer | `/tools/protocol-explorer` | Shows how the Protocol applies across human, semantic, agent, and interface layers. | Planned |
-| Algorithm Visualizer | `/tools/algorithm-visualizer` | Visualizes Observe, Distill, Align, Select, Execute, Verify. | Planned |
-| OHI Output Pipeline Tool | `/tools/ohi-output-pipeline` | Tool-path version of the active pipeline visualization. | Planned Alias |
-| Time Converter | `/tools/time-converter` | Converts Gregorian and OneGodian Time display formats. | Planned |
-| Obsidian Seal Generator | `/tools/obsidian-seal-generator` | Generates or configures OneGodian identity seal visuals. | Planned |
-| Gemini Pattern Explorer | `/tools/gemini-pattern-explorer` | Explores recurring patterns across OMOS documents, routes, and system layers. | Planned |
-
----
-
-## 5. Documentation Pages
-
-| Page | Route | Purpose | Status |
-|---|---:|---|---|
-| Protocol Specification | `/docs/protocol-spec` | Full Protocol specification. | Planned |
-| Algorithm Specification | `/docs/algorithm-spec` | Full Algorithm specification. | Planned |
-| System Prompt | `/docs/system-prompt` | OneGodian-aware AI system prompt documentation. | Planned |
-| Developer Guide | `/docs/developer-guide` | Developer implementation guidance for OMOS integrations. | Planned |
-| API Manifest Guide | `/docs/api-manifest` | Explains `/api/manifest` and runtime data. | Planned |
-| Compliance Guide | `/docs/compliance` | Public-safe legal and institutional positioning. | Planned |
-| Version History | `/docs/version-history` | Release notes and version control. | Planned |
-
----
-
-## 6. Product and Commerce Bridge Pages
-
-OMOS explains and routes products. Checkout remains on OneGodian.com through WooCommerce/Stripe.
-
-| Product Page | Route | Commerce Target | Status |
-|---|---:|---|---|
-| OMOS Product Hub | `/shop` | `https://onegodian.com/product-category/omos/` | Active Bridge |
-| Algorithm Whitepaper | `/shop/algorithm-whitepaper` | OneGodian.com product page | Planned |
-| Protocol Kit | `/shop/protocol-kit` | OneGodian.com product page | Planned |
-| System Prompt Pack | `/shop/system-prompt-pack` | OneGodian.com product page | Planned |
-| Developer Kit | `/shop/developer-kit` | OneGodian.com product page | Planned |
-| Declaration Card | `/shop/declaration-card` | OneGodian.com product page | Planned |
-| Obsidian Seal | `/shop/obsidian-seal` | OneGodian.com product page | Planned |
-
----
-
-## 7. API and Runtime Endpoints
-
-| Endpoint | Method | Purpose | Auth |
-|---|---:|---|---|
-| `/health` | GET | Runtime health check. | No |
-| `/api/health` | GET | Runtime health check for plugin/app clients. | No |
-| `/manifest` | GET | Runtime manifest. | No |
-| `/api/manifest` | GET | Runtime manifest for app/plugin consumers. | No |
-| `/process` | POST | OMOS process execution endpoint. | Yes: `x-omos-key` |
-
----
-
-## 8. Ecosystem Links
-
-| Platform | URL | Role |
+| Route | Purpose | Current repository posture |
 |---|---|---|
-| OneGodian.org | `https://onegodian.org` | Public explanation, education, historical and institutional content. |
-| OneGodian.com | `https://onegodian.com` | Commerce, products, memberships, checkout, digital downloads. |
-| u.OneGodian.com | `https://u.onegodian.com` | Education, courses, certifications, training. |
-| app.OneGodian.com | `https://app.onegodian.com` | Command center, dashboards, registries, operational tools. |
-| QuantumOHI.com | `https://quantumohi.com` | Enterprise-facing systems and technology positioning. |
-| QRV.Network | `https://qrv.network` | Verification, credentials, certificates, trust-layer infrastructure. |
-| OMOS.OneGodian.com | `https://omos.onegodian.com` | Operating system, protocol documentation, model council, runtime node. |
+| `/` | Customer entry, platform explanation, evidence status and product pathways | Active |
+| `/omos` | OMOS architecture, component separation and connector boundaries | Active |
+| `/workspace` | User-oriented operating workspace entry point | Active |
+| `/council` | Multi-model Council explanation and launch path | Active |
+| `/ollm` | OLLM relationship, provider/product architecture and maturity boundary | Active, capability-gated |
+| `/tools` | Distill, Alignment, Council, Belief Mapper and runtime tools | Active |
+| `/belief-mapper` | Belief Mapper product specification | Active specification route |
+| `/developers` | APIs, Model Gateway, connector architecture and Engineering Council | Active |
+| `/reference-run` | OMOS-REF-0001 production-proof standard | Active |
+| `/pricing` | Capability-gated product and plan ladder | Active |
+| `/ohi` | O-H-I multi-model review and governed synthesis | Active |
+| `/models` | Model Connectors Control Center for OpenAI, Anthropic, Gemini, xAI and future OLLM | Active UI; live health remains runtime-dependent |
+| `/artifacts` | Specifications, schemas, evidence, research and implementation records | Active |
+| `/docs` | Documentation and implementation boundaries | Active |
+| `/shop` | Product/services presentation and OneGodian.com checkout bridge | Active |
+| `/latest-news` | Current build, release and production-certification status | Active |
+| `/dashboard` | Governed run workspace, Human Gate, Decision Records and history | Active |
+| `/legal` | Entity, authority, evidence, timekeeping and professional-advice boundaries | Active |
+| `/contact` | Product, implementation, developer, commerce and ecosystem routing | Active |
+| `/protocol` | OneGodian Protocol public specification | Active |
+| `/algorithm` | OneGodian Algorithm public explanation | Active |
+| `/digital-sanctuary` | Specialized immersive/identity experience | Active specialized route |
+| `/ohi-output-pipeline` | O-H-I / Council pipeline visualization | Active |
+| `/ask/` | Flagship governed Ask OMOS execution surface | Active |
 
----
+## Runtime/API surfaces
 
-## 9. Implementation Priority
+Current runtime contract includes:
 
-### Phase 1 — Immediate
+- `GET /health`
+- `GET /api/health`
+- `GET /manifest`
+- `GET /api/manifest`
+- `GET /api/v1/providers`
+- `GET /api/v1/persistence`
+- `POST /process` — authenticated
+- `POST /api/v1/council/run` — authenticated
+- `GET /api/v1/council/runs` — authenticated
+- `GET /api/v1/council/runs/:id` — authenticated
+- `POST /api/v1/council/runs/:id/human-decision` — authenticated
 
-1. Add `/models/gemini` route and serve `src/pages/gemini-omos-homepage.html`.
-2. Update `/models` cards so each model links to its own route.
-3. Add model page content files for ChatGPT, Claude, and Grok.
-4. Add `/sitemap` or `/docs/sitemap` route.
+## Model Gateway
 
-### Phase 2 — Tool Expansion
+First-class provider interfaces:
 
-1. Add `/tools/belief-mapper`.
-2. Add `/tools/declaration-generator`.
-3. Add `/tools/gemini-pattern-explorer`.
-4. Add `/tools/time-converter`.
+- OpenAI / GPT, including the current native GPT-6 Astra connector contract where deployed and authorized
+- Anthropic / Claude
+- Google / Gemini
+- xAI / Grok
+- OLLM — future first-class OneGodian provider after runtime/evaluation gates pass
 
-### Phase 3 — Documentation Expansion
+Target provider-health vocabulary:
 
-1. Add `/docs/protocol-spec`.
-2. Add `/docs/algorithm-spec`.
-3. Add `/docs/system-prompt`.
-4. Add `/docs/compliance`.
+`CONNECTED | NOT_CONFIGURED | DEGRADED | UNAVAILABLE`
 
----
+Council execution states:
 
-## 10. Compliance Notes
+`LIVE | HYBRID | DEGRADED | SIMULATION`
 
-- OMOS pages must not claim governmental authority, legal immunity, or authority over non-members.
-- ONEGODIAN, LLC handles commerce, software, IP, education, and product operations.
-- INO language belongs only where legally appropriate for body politic / religious society contexts.
-- Gemini, ChatGPT, Claude, and Grok pages must not imply endorsement, certification, governance, or legal validation by the companies or model providers.
-- Gregorian/civil records remain controlling for legal, financial, tax, banking, and institutional matters.
+Provider configuration must remain distinct from a successful live request. Connection tests, retries/backoff, circuit breakers, latency, usage/cost telemetry, and sanitized error normalization are operational hardening concerns.
+
+## Data / Action / Environment Gateway
+
+Approved connector classes should include, as separately authorized and implemented:
+
+- GitHub — code/repository source of record
+- Google Drive — document source material
+- WordPress — published content and distributed OMOS bridge surfaces
+- Stripe / OneGodian.com commerce — products, subscriptions and payment state
+- PostgreSQL / Supabase-compatible infrastructure — runtime/Decision Record persistence where selected
+- QRV.Network — verification/credential records where separately activated
+- OneGodian APIs — approved ecosystem synchronization
+- ACC — separately authorized execution control plane
+
+Every connector should retain source identity, authentication/permissions, sync direction, object type, external ID, OMOS ID, timestamps, provenance, conflict policy, health, last sync, and audit events. Synchronization does not establish truth or authority.
+
+## Tool inventory
+
+### Functional / provider-dependent surfaces
+
+- Ask OMOS
+- OMOS Distill / Layer 1
+- Alignment Engine
+- Compare AI Perspectives / Council
+- Governed Synthesis
+- Decision Record
+- Dashboard History
+- Runtime / Manifest / Persistence inspection
+
+### Specification / rollout / planned surfaces
+
+- Belief Mapper™ — specification route exists; full classification/runtime remains privacy/schema/capability gated
+- Bridge Builder — specification exists; runtime activation remains gated
+- Declaration Generator — planned; no automatic legal effect
+- Protocol Explorer — planned
+- Algorithm Visualizer — planned
+- OTS-V5 Time Converter — planned
+
+## Documentation domains
+
+The live documentation center should surface:
+
+- OneGodian Protocol™
+- OneGodian Algorithm™
+- O-H-I™
+- OMOS Runtime 1.1
+- OMOS-REF-0001
+- Model Connector Standard
+- Decision Record and persistence contracts
+- Alignment and verification schemas
+- OTS-V5 timekeeping rules
+- WordPress bridge and ecosystem integration
+- production evidence and deployment provenance
+- OneGodian Science™ claim/evidence discipline
+- OLLM integration and maturity
+- Oru’Valen / OMOS / ACC authority separation
+
+## Product and commerce pathways
+
+Customer-facing product ladder remains capability-gated and provisional until corresponding entitlements are operational:
+
+- OMOS Free — $0
+- OMOS Decision Report — $9–$19/run
+- AI Answer Compare — $9/run
+- OMOS Personal — $12/month
+- OMOS Pro — $29/month
+- OMOS Team — $79/month
+- OMOS Business — from $199/month
+- OMOS API — usage-based after entitlement activation
+- OMOS Implementation — from $1,500 scoped service
+
+Checkout authority remains OneGodian.com. OMOS should not advertise unavailable team controls, unlimited Council usage, API entitlements, durable history, exports, or provider availability as if already active.
+
+## Ecosystem boundaries
+
+| Platform | Role |
+|---|---|
+| OneGodian.org | Public organization, education, historical/identity interpretation |
+| OneGodian.com | Commerce, checkout, products, memberships and recurring revenue |
+| u.OneGodian.com | Learning, courses, certifications and training |
+| app.OneGodian.com | Broader OneGodian application/control surface |
+| OMOS.OneGodian.com | Governed intelligence runtime, Council, tools, records, docs and connector control |
+| QuantumOHI.com | Enterprise systems, governance architecture and consulting |
+| QRV.Network | Verification and credential infrastructure |
+| ACC / acc.onegodian.com | Approved execution control plane |
+
+## Research and specialized content
+
+The site may surface specialized OneGodian research, identity, metaphysical, synthetic-dignity, cosmological, particle-science, smart-contract, token/NFT, and institutional materials in documentation, artifacts, research, or future modules. These materials must not displace the mainstream customer proposition and must be classified according to actual implementation/evidence status.
+
+Scientific status requires appropriate hypotheses, falsifiable predictions, transparent methods, reproducibility, empirical testing, and independent replication. Model agreement, simulation output, or internal review alone is not scientific proof.
+
+## Public safety / authority boundaries
+
+- Model agreement is not factual verification.
+- Provider configuration is not a successful connection test.
+- Deterministic processing is not guaranteed truth.
+- A Decision Record is an audit record, not automatic legal certification.
+- Human authorization remains controlling for consequential external actions.
+- UTC is canonical system time; Gregorian controls civil/legal references; OneGodian Time is supplemental.
+- ONEGODIAN, LLC commercial/software/IP operations remain distinct from INO religious-society/community/internal-governance contexts.
+- OMOS does not claim governmental authority, legal immunity, financial-institution status, or compulsory authority over non-participants.
+
+## Production gate
+
+The immediate release gate is **OMOS-REF-0001**:
+
+1. exact deployed Git SHA matches the approved runtime revision;
+2. production PostgreSQL is initialized and durable;
+3. one governed Ask OMOS/Council run completes;
+4. Human Gate disposition is persisted;
+5. the Decision Record reopens from History;
+6. runtime is restarted/redeployed;
+7. the same Decision ID reopens with owner isolation, revision lineage and hash chain intact.
+
+Only after evidence for those gates exists should the tested configuration be represented as Production.
+
+## Version discipline
+
+> If a capability is not fully operational, documented, repeatable, and testable, it does not exist in the current operational version.
