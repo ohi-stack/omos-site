@@ -27,9 +27,7 @@ function request(path, parseJson = true, redirects = 0) {
 async function checkJson(path, expected) {
   const response = await request(path, true);
   assert.strictEqual(response.statusCode, 200);
-  for (const [key, value] of Object.entries(expected)) {
-    assert.strictEqual(response.body[key], value);
-  }
+  for (const [key, value] of Object.entries(expected)) assert.strictEqual(response.body[key], value);
   return response.body;
 }
 
@@ -37,7 +35,7 @@ async function checkHtml(path, text) {
   const response = await request(path, false);
   assert.strictEqual(response.statusCode, 200);
   assert.ok(String(response.headers["content-type"] || "").includes("text/html"));
-  assert.ok(response.body.includes(text));
+  assert.ok(response.body.includes(text), `${path} missing expected text: ${text}`);
 }
 
 async function run() {
@@ -47,37 +45,33 @@ async function run() {
   assert.ok(["memory", "postgresql"].includes(health.persistence.backend));
   assert.ok(health.orchestration);
   assert.ok(Array.isArray(health.orchestration.providers));
+  assert.ok(health.tools && health.tools.beliefMapper);
 
   await checkJson("/api/health", { status: "ok", service: "omos-site" });
 
   const manifest = await checkJson("/manifest", { id: "omos-site", name: "OMOS Runtime" });
   assert.ok(manifest.routes.public.includes("/dashboard"));
+  assert.ok(manifest.routes.public.includes("/belief-mapper/"));
+  assert.ok(manifest.routes.api.includes("/api/v1/belief-mapper/evaluate"));
   assert.ok(manifest.wordpressPlugin.compatibleHosts.length >= 1);
 
   await checkJson("/api/manifest", { id: "omos-site", name: "OMOS Runtime" });
 
   const routes = [
-    ["/", "OMOS"],
-    ["/omos", "OMOS"],
-    ["/ohi", "OHI"],
-    ["/models", "Model"],
-    ["/tools", "Tools"],
-    ["/artifacts", "Artifacts"],
-    ["/docs", "Docs"],
-    ["/shop", "Shop"],
-    ["/latest-news", "News"],
-    ["/dashboard", "Dashboard"],
-    ["/legal", "Legal"],
-    ["/contact", "Contact"],
-    ["/protocol", "Protocol"],
-    ["/algorithm", "Algorithm"],
-    ["/digital-sanctuary", "Digital Sanctuary"]
+    ["/", "OMOS"], ["/omos", "OMOS"], ["/workspace", "Workspace"], ["/distill", "Distill"],
+    ["/alignment", "Alignment"], ["/council", "Council"], ["/gcd-synthesis", "GCD"],
+    ["/verification", "Verification"], ["/decision-records", "Decision Records"], ["/ohi", "OHI"],
+    ["/models", "Model"], ["/ollm", "OneGodian LLM"], ["/tools", "Tools"],
+    ["/belief-mapper/", "Belief Mapper"], ["/artifacts", "Artifacts"], ["/docs", "Documentation"],
+    ["/shop", "Shop"], ["/latest-news", "News"], ["/dashboard", "Dashboard"],
+    ["/developers", "Developer"], ["/connections", "Connection"], ["/engineering-council", "Engineering Council"],
+    ["/mcp", "MCP"], ["/reference-run", "OMOS-REF-0001"], ["/status", "Status"],
+    ["/standards", "Standards"], ["/research", "Research"], ["/ecosystem", "Ecosystem"],
+    ["/founder", "Founder"], ["/legal", "Legal"], ["/contact", "Contact"],
+    ["/protocol", "Protocol"], ["/algorithm", "Algorithm"], ["/digital-sanctuary", "Digital Sanctuary"]
   ];
 
-  for (const [path, expectedText] of routes) {
-    await checkHtml(path, expectedText);
-  }
-
+  for (const [path, expectedText] of routes) await checkHtml(path, expectedText);
   console.log("OMOS smoke tests passed.");
 }
 
