@@ -47,6 +47,34 @@ function buildMeta(clientInfo, clientCapabilities = {}) {
   };
 }
 
+function declaredPermissionMethods(definition) {
+  const permissions = definition && definition.permissions || {};
+  return ['read', 'invoke', 'write'].flatMap((scope) => (
+    Array.isArray(permissions[scope]) ? permissions[scope] : []
+  ));
+}
+
+function permissionAllows(definition, method) {
+  const requested = String(method || '').trim();
+  if (!requested) return false;
+  return declaredPermissionMethods(definition).some((entry) => {
+    const allowed = String(entry || '').trim();
+    if (!allowed) return false;
+    if (allowed === '*' || allowed === requested) return true;
+    if (allowed.endsWith('/*')) return requested.startsWith(allowed.slice(0, -1));
+    return false;
+  });
+}
+
+function assertPermission(definition, method) {
+  if (permissionAllows(definition, method)) return;
+  const error = new Error('mcp_permission_denied');
+  error.code = 'mcp_permission_denied';
+  error.connectionId = definition && definition.id || null;
+  error.operation = method;
+  throw error;
+}
+
 function createMcpConnector({
   id,
   platform,
@@ -101,6 +129,7 @@ function createMcpConnector({
       throw new Error('legacy_mcp_initialize_not_supported');
     }
     if (!MODERN_METHODS.has(method)) throw new Error('mcp_method_not_supported');
+    assertPermission(definition, method);
     assertHumanApproval(definition, method, authorization);
     if (!authConfigured()) throw new Error('mcp_authentication_not_configured');
 
@@ -253,5 +282,8 @@ module.exports = {
   endpointAllowed,
   mirroredName,
   buildMeta,
+  declaredPermissionMethods,
+  permissionAllows,
+  assertPermission,
   MODERN_METHODS
 };
