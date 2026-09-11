@@ -1,108 +1,51 @@
 {
   "canonicalSite": "https://omos.onegodian.com",
   "runtime": "OMOS Node Runtime",
-  "version": "0.4.0",
-  "updated": "2026-05-25",
-  "principle": "OMOS.OneGodian.com is the canonical protocol, documentation, runtime, and tool-page node. Product checkout remains on OneGodian.com. Public institutional identity remains on OneGodian.org. Quantum/OHI infrastructure positioning remains on QuantumOHI.com.",
+  "version": "1.1.0",
+  "updated": "2026-09-10",
+  "principle": "OMOS.OneGodian.com is the canonical operational, documentation, runtime, and tool node. OneGodian.com remains the private commerce layer, OneGodian.org remains the public identity/educational layer, app.OneGodian.com remains the application console surface, and QuantumOHI.com remains the advanced O-H-I/enterprise layer.",
+  "publicProposition": "Make Better Decisions With AI.",
+  "maturityModel": ["Conceptual", "Prototype", "Functional", "Verified", "Production"],
   "routeGroups": {
-    "public": [
-      "/",
-      "/omos",
-      "/ohi",
-      "/models",
-      "/tools",
-      "/artifacts",
-      "/docs",
-      "/shop",
-      "/latest-news",
-      "/dashboard",
-      "/legal",
-      "/contact",
-      "/protocol",
-      "/algorithm",
-      "/digital-sanctuary"
-    ],
-    "tools": [
-      "/tools/bridge-builder",
-      "/tools/belief-mapper",
-      "/tools/declaration-generator",
-      "/tools/zolfi"
-    ],
-    "api": [
-      "/health",
-      "/api/health",
-      "/manifest",
-      "/api/manifest",
-      "/process",
-      "/api/zolfi/manifest"
-    ],
-    "commerceBridge": [
-      "/shop",
-      "https://onegodian.com/product-category/omos/"
-    ]
+    "primaryNavigation": ["/omos", "/workspace", "/council", "/ollm", "/tools", "/developers", "/pricing"],
+    "public": ["/", "/omos", "/workspace", "/council", "/ollm", "/tools", "/belief-mapper", "/developers", "/reference-run", "/pricing", "/ohi", "/models", "/artifacts", "/docs", "/shop", "/latest-news", "/dashboard", "/legal", "/contact", "/protocol", "/algorithm", "/digital-sanctuary", "/ohi-output-pipeline", "/ask/"],
+    "api": ["/health", "/api/health", "/manifest", "/api/manifest", "/process", "/api/v1/council/run", "/api/v1/council/runs", "/api/v1/council/runs/:id", "/api/v1/council/runs/:id/human-decision", "/api/v1/providers", "/api/v1/persistence"],
+    "commerceBridge": ["/shop", "/pricing", "https://onegodian.com"]
   },
+  "canonicalWorkflow": ["Ask OMOS", "Layer 1 / Distill", "Alignment", "Council Review", "Governed Synthesis", "Human Gate", "Decision Record", "Dashboard History"],
   "contentPillars": [
-    {
-      "name": "OMOS",
-      "role": "Operating system and public specification layer",
-      "primaryRoutes": ["/", "/omos", "/docs"]
-    },
-    {
-      "name": "OHI",
-      "role": "Intelligence synthesis and runtime reasoning layer",
-      "primaryRoutes": ["/ohi", "/models", "/dashboard"]
-    },
-    {
-      "name": "Protocol",
-      "role": "Identity, alignment, and interaction standard",
-      "primaryRoutes": ["/protocol", "/docs"]
-    },
-    {
-      "name": "Algorithm",
-      "role": "Observe, distill, align, select, execute, verify decision model",
-      "primaryRoutes": ["/algorithm", "/models"]
-    },
-    {
-      "name": "Tools",
-      "role": "Interactive utility pages and WordPress shortcode targets",
-      "primaryRoutes": ["/tools", "/tools/bridge-builder", "/tools/belief-mapper", "/tools/declaration-generator", "/tools/zolfi"]
-    },
-    {
-      "name": "Artifacts",
-      "role": "Whitepapers, WXR imports, animations, PDFs, manifests, and build records",
-      "primaryRoutes": ["/artifacts"]
-    },
-    {
-      "name": "Commerce",
-      "role": "WooCommerce/Stripe product bridge, not direct checkout on OMOS node",
-      "primaryRoutes": ["/shop", "https://onegodian.com/product-category/omos/"]
-    }
+    { "name": "OMOS", "role": "Runtime, orchestration, persistence, audit, operating architecture, and customer decision workspace", "primaryRoutes": ["/", "/omos", "/workspace", "/reference-run"] },
+    { "name": "Council", "role": "Independent model outputs, cross-model review, degraded-state handling, and governed synthesis", "primaryRoutes": ["/council", "/models", "/ohi-output-pipeline"] },
+    { "name": "OLLM", "role": "OneGodian model/intelligence layer intended to participate through the provider-neutral Model Gateway", "primaryRoutes": ["/ollm", "/models"] },
+    { "name": "O-H-I", "role": "Comparison, critique, synthesis, supported dissent, and human-reviewed output discipline", "primaryRoutes": ["/ohi", "/ohi-output-pipeline"] },
+    { "name": "Tools", "role": "Layer 1, Alignment, Identity, Verification, Intelligence, and runtime inspection tools", "primaryRoutes": ["/tools", "/belief-mapper"] },
+    { "name": "Developers", "role": "APIs, Model Gateway, Data/Action/Environment connection boundary, MCP roadmap, Engineering Council, and build evidence", "primaryRoutes": ["/developers", "/docs", "/reference-run"] },
+    { "name": "Commerce", "role": "Outcome-based OMOS products and paid entitlement pathways; checkout authority remains external/server verified", "primaryRoutes": ["/pricing", "/shop"] },
+    { "name": "Artifacts & Research", "role": "Source artifacts, standards, implementation evidence, visual material, and specialized OneGodian research", "primaryRoutes": ["/artifacts", "/docs"] }
   ],
+  "modelGateway": {
+    "currentAdapters": ["openai", "anthropic", "gemini", "xai"],
+    "openaiSourceSupport": "GPT-6 Astra connector contract exists on current source; live availability must be determined from deployed runtime evidence.",
+    "plannedFirstClassProvider": "OLLM",
+    "securityRule": "Provider credentials remain server-side and capability authorization is explicit."
+  },
+  "productionProof": {
+    "id": "OMOS-REF-0001",
+    "route": "/reference-run",
+    "rule": "PASS only after all nine production evidence gates succeed, including durable PostgreSQL, Human Gate persistence, restart survival, and Dashboard History reopen."
+  },
   "pluginTargets": [
-    {
-      "site": "OneGodian.com",
-      "role": "Commerce and WooCommerce product checkout layer",
-      "pluginUse": "Display OMOS product cards, route users to documentation, sync manifest, show runtime status."
-    },
-    {
-      "site": "OneGodian.org",
-      "role": "Public institutional explanation and identity layer",
-      "pluginUse": "Display OMOS explainers, tools, public framework summaries, and canonical content blocks."
-    },
-    {
-      "site": "QuantumOHI.com",
-      "role": "Quantum-OHI / infrastructure positioning layer",
-      "pluginUse": "Display runtime, protocol, OHI, and technical capability blocks that link back to OMOS."
-    }
+    { "site": "OneGodian.com", "role": "Private commerce and product checkout", "pluginUse": "OMOS product cards, documentation links, runtime status, and verified entitlement handoff." },
+    { "site": "OneGodian.org", "role": "Public identity, education, community, and institutional introduction", "pluginUse": "OMOS explainers, public tools, framework summaries, and canonical links." },
+    { "site": "QuantumOHI.com", "role": "Advanced O-H-I / enterprise governance and infrastructure", "pluginUse": "Runtime, protocol, O-H-I, and technical capability blocks that link back to OMOS." }
   ],
   "definitionOfDone": [
     "Route exists in Node runtime",
-    "Route exists in content map",
-    "Route exists in WordPress plugin manifest",
-    "Route is covered by smoke tests",
-    "Route has public-safe copy",
-    "Route has correct canonical link target",
-    "Route is connected to app.OneGodian.com manifest consumer",
-    "Route has deployment notes"
+    "Route exists in the canonical content map and sitemap",
+    "Route is covered by regression/smoke tests",
+    "Route has public-safe copy and explicit maturity boundaries",
+    "Route has correct canonical/internal/external links",
+    "Runtime-dependent claims can be checked through machine-readable evidence where possible",
+    "Deployment status is verified separately from repository merge state"
   ]
 }
