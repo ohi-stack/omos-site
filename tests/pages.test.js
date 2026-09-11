@@ -3,6 +3,7 @@ const https = require("https");
 const assert = require("assert");
 
 const BASE_URL = process.env.OMOS_BASE_URL || "http://localhost:3000";
+const CANONICAL_NAV = ["OMOS", "Workspace", "Council", "OLLM", "Tools", "Developers", "Pricing"];
 
 function request(path) {
   const url = new URL(path, BASE_URL);
@@ -40,8 +41,7 @@ async function expectShell(path) {
 
 async function expectHomeNavigation() {
   const response = await expectOk("/");
-  const expectedSummaries = ["OMOS", "Workspace", "Models", "Tools", "Developers", "Resources", "Shop"];
-  for (const label of expectedSummaries) {
+  for (const label of CANONICAL_NAV) {
     assert.ok(response.body.includes(`<summary>${label}</summary>`), `/ missing canonical mega-menu item: ${label}`);
   }
   return response;
@@ -102,7 +102,7 @@ async function run() {
   assert.equal(manifest.ui?.sharedHeader, true, "manifest must advertise shared header");
   assert.equal(manifest.ui?.sharedFooter, true, "manifest must advertise shared footer");
   assert.equal(manifest.ui?.megaMenu, true, "manifest must advertise mega menu");
-  assert.deepEqual(manifest.navigation?.map((item) => item.label), ["OMOS","Workspace","Models","Tools","Developers","Resources","Shop"], "manifest must expose the canonical seven-item mega menu");
+  assert.deepEqual(manifest.navigation?.map((item) => item.label), CANONICAL_NAV, "manifest must expose the canonical seven-item mega menu");
   assert.ok(manifest.routes?.public?.includes("/ask/"), "manifest must advertise /ask/");
   assert.deepEqual(manifest.orchestration?.stages, ["ask","layer1","alignment","council_review","governed_synthesis","human_gate","decision_record"], "manifest must preserve canonical governed runtime stages");
 
