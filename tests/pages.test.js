@@ -40,7 +40,7 @@ async function expectShell(path) {
 
 async function expectHomeNavigation() {
   const response = await expectOk("/");
-  const expectedSummaries = ["OMOS", "Workspace", "Models", "Tools", "Developers", "Resources", "Shop"];
+  const expectedSummaries = ["OMOS", "Workspace", "Council", "OLLM", "Tools", "Developers", "Pricing"];
   for (const label of expectedSummaries) {
     assert.ok(response.body.includes(`<summary>${label}</summary>`), `/ missing canonical mega-menu item: ${label}`);
   }
@@ -63,19 +63,51 @@ async function expectAskWorkspace() {
   return response;
 }
 
-async function run() {
-  const publicRoutes = [
-    "/", "/omos", "/ohi", "/models", "/tools", "/artifacts", "/docs", "/shop",
-    "/latest-news", "/dashboard", "/legal", "/contact", "/protocol", "/algorithm",
-    "/digital-sanctuary", "/ohi-output-pipeline"
-  ];
+async function expectStaticPage(path, marker) {
+  const response = await expectOk(path);
+  assert.ok(String(response.headers["content-type"] || "").includes("text/html"), `${path} must render HTML`);
+  assert.ok(response.body.includes(marker), `${path} missing marker: ${marker}`);
+}
 
-  for (const route of publicRoutes) {
-    if (route === "/") await expectOk(route);
-    else await expectShell(route);
-  }
+async function run() {
+  const shellRoutes = [
+    "/omos", "/workspace", "/council", "/ollm", "/tools", "/developers", "/pricing",
+    "/ohi", "/models", "/artifacts", "/docs", "/shop", "/latest-news", "/dashboard",
+    "/legal", "/contact", "/protocol", "/algorithm", "/digital-sanctuary", "/ohi-output-pipeline"
+  ];
+  await expectOk("/");
+  for (const route of shellRoutes) await expectShell(route);
   await expectHomeNavigation();
   await expectAskWorkspace();
+
+  const staticPages = [
+    ["/status-2026-09-10.html", "Production certification"],
+    ["/omos-ref-0001.html", "OMOS-REF-0001"],
+    ["/connections.html", "Connection & Adaptation Layer"],
+    ["/engineering-council.html", "Engineering Council Lifecycle"],
+    ["/mcp.html", "OneGodian MCP"],
+    ["/council-provenance.html", "Provenance precedes synthesis"],
+    ["/verification.html", "Agreement is not proof"],
+    ["/ollm.html", "OneGodian LLM"],
+    ["/developers.html", "Developer Hub"],
+    ["/tools/belief-mapper.html", "Belief Mapper"],
+    ["/tools/declaration-generator.html", "Declaration Generator"],
+    ["/tools/time-converter.html", "OTS-V5"],
+    ["/tools/protocol-explorer.html", "Protocol Explorer"],
+    ["/tools/algorithm-visualizer.html", "Observe"],
+    ["/models/openai.html", "GPT-6 Astra"],
+    ["/models/anthropic.html", "Anthropic"],
+    ["/models/gemini.html", "Gemini"],
+    ["/models/xai.html", "Grok"],
+    ["/docs/protocol-spec.html", "OneGodian Protocol"],
+    ["/docs/algorithm-spec.html", "OneGodian Algorithm"],
+    ["/docs/system-prompt.html", "system prompt"],
+    ["/docs/api-manifest.html", "Runtime manifest"],
+    ["/docs/compliance.html", "Compliance"],
+    ["/docs/version-history.html", "OMOS 1.1"],
+    ["/docs/sitemap.html", "OMOS live-site map"]
+  ];
+  for (const [path, marker] of staticPages) await expectStaticPage(path, marker);
 
   const apiRoutes = ["/api/health", "/api/manifest", "/api/v1/providers", "/api/v1/persistence"];
   for (const route of apiRoutes) await expectJson(route);
@@ -84,15 +116,17 @@ async function run() {
   assert.equal(manifest.ui?.sharedHeader, true, "manifest must advertise shared header");
   assert.equal(manifest.ui?.sharedFooter, true, "manifest must advertise shared footer");
   assert.equal(manifest.ui?.megaMenu, true, "manifest must advertise mega menu");
-  assert.deepEqual(manifest.navigation?.map((item) => item.label), ["OMOS","Workspace","Models","Tools","Developers","Resources","Shop"], "manifest must expose the canonical seven-item mega menu");
+  assert.deepEqual(manifest.navigation?.map((item) => item.label), ["OMOS","Workspace","Council","OLLM","Tools","Developers","Pricing"], "manifest must expose the canonical seven-item mega menu");
   assert.ok(manifest.routes?.public?.includes("/ask/"), "manifest must advertise /ask/");
   assert.deepEqual(manifest.orchestration?.stages, ["ask","layer1","alignment","council_review","governed_synthesis","human_gate","decision_record"], "manifest must preserve canonical governed runtime stages");
 
   await expectOk("/omos-ui.css");
+  await expectOk("/mega-menu-v2.css");
   await expectOk("/omos-ui.js");
   await expectOk("/ask-workspace.js");
+  await expectOk("/content-pages.css");
 
-  console.log("OMOS global UI shell, canonical mega menu, Ask OMOS workspace, and public route tests passed.");
+  console.log("OMOS shell, canonical navigation, flagship workspace, consolidated content pages, and runtime API tests passed.");
 }
 
 run().catch((error) => {
