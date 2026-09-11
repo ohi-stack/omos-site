@@ -5,21 +5,44 @@
   <url><loc>https://omos.onegodian.com/workspace</loc></url>
   <url><loc>https://omos.onegodian.com/council</loc></url>
   <url><loc>https://omos.onegodian.com/ollm</loc></url>
+  <url><loc>https://omos.onegodian.com/ohi</loc></url>
+  <url><loc>https://omos.onegodian.com/models</loc></url>
   <url><loc>https://omos.onegodian.com/tools</loc></url>
   <url><loc>https://omos.onegodian.com/developers</loc></url>
   <url><loc>https://omos.onegodian.com/pricing</loc></url>
-  <url><loc>https://omos.onegodian.com/ohi</loc></url>
-  <url><loc>https://omos.onegodian.com/models</loc></url>
+  <url><loc>https://omos.onegodian.com/ask/</loc></url>
+  <url><loc>https://omos.onegodian.com/dashboard</loc></url>
+  <url><loc>https://omos.onegodian.com/status</loc></url>
+  <url><loc>https://omos.onegodian.com/omos-ref-0001</loc></url>
+  <url><loc>https://omos.onegodian.com/connections</loc></url>
+  <url><loc>https://omos.onegodian.com/engineering-council</loc></url>
+  <url><loc>https://omos.onegodian.com/mcp</loc></url>
+  <url><loc>https://omos.onegodian.com/council-provenance</loc></url>
+  <url><loc>https://omos.onegodian.com/verification</loc></url>
+  <url><loc>https://omos.onegodian.com/models/openai</loc></url>
+  <url><loc>https://omos.onegodian.com/models/anthropic</loc></url>
+  <url><loc>https://omos.onegodian.com/models/gemini</loc></url>
+  <url><loc>https://omos.onegodian.com/models/xai</loc></url>
+  <url><loc>https://omos.onegodian.com/tools/belief-mapper</loc></url>
+  <url><loc>https://omos.onegodian.com/tools/declaration-generator</loc></url>
+  <url><loc>https://omos.onegodian.com/tools/time-converter</loc></url>
+  <url><loc>https://omos.onegodian.com/tools/protocol-explorer</loc></url>
+  <url><loc>https://omos.onegodian.com/tools/algorithm-visualizer</loc></url>
   <url><loc>https://omos.onegodian.com/artifacts</loc></url>
   <url><loc>https://omos.onegodian.com/docs</loc></url>
-  <url><loc>https://omos.onegodian.com/shop</loc></url>
-  <url><loc>https://omos.onegodian.com/latest-news</loc></url>
-  <url><loc>https://omos.onegodian.com/dashboard</loc></url>
-  <url><loc>https://omos.onegodian.com/legal</loc></url>
-  <url><loc>https://omos.onegodian.com/contact</loc></url>
+  <url><loc>https://omos.onegodian.com/docs/protocol-spec</loc></url>
+  <url><loc>https://omos.onegodian.com/docs/algorithm-spec</loc></url>
+  <url><loc>https://omos.onegodian.com/docs/system-prompt</loc></url>
+  <url><loc>https://omos.onegodian.com/docs/api-manifest</loc></url>
+  <url><loc>https://omos.onegodian.com/docs/compliance</loc></url>
+  <url><loc>https://omos.onegodian.com/docs/version-history</loc></url>
+  <url><loc>https://omos.onegodian.com/docs/sitemap</loc></url>
   <url><loc>https://omos.onegodian.com/protocol</loc></url>
   <url><loc>https://omos.onegodian.com/algorithm</loc></url>
   <url><loc>https://omos.onegodian.com/digital-sanctuary</loc></url>
   <url><loc>https://omos.onegodian.com/ohi-output-pipeline</loc></url>
-  <url><loc>https://omos.onegodian.com/ask/</loc></url>
+  <url><loc>https://omos.onegodian.com/shop</loc></url>
+  <url><loc>https://omos.onegodian.com/latest-news</loc></url>
+  <url><loc>https://omos.onegodian.com/legal</loc></url>
+  <url><loc>https://omos.onegodian.com/contact</loc></url>
 </urlset>
