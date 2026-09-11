@@ -37,7 +37,7 @@ async function checkHtml(path, text) {
   const response = await request(path, false);
   assert.strictEqual(response.statusCode, 200);
   assert.ok(String(response.headers["content-type"] || "").includes("text/html"));
-  assert.ok(response.body.includes(text));
+  assert.ok(response.body.includes(text), `${path} missing expected text: ${text}`);
 }
 
 async function run() {
@@ -63,7 +63,7 @@ async function run() {
     ["/models", "Model"],
     ["/tools", "Tools"],
     ["/artifacts", "Artifacts"],
-    ["/docs", "Docs"],
+    ["/docs", "Documentation"],
     ["/shop", "Shop"],
     ["/latest-news", "News"],
     ["/dashboard", "Dashboard"],
