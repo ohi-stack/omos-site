@@ -1,0 +1,171 @@
+/* Ask OMOS compatibility layer for the canonical black/gold visual standard. */
+
+body{
+  background:#020305 !important;
+  color:#f5f0e6 !important;
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px),
+    radial-gradient(circle at 12% 72%,rgba(66,198,255,.045),transparent 26%),
+    radial-gradient(circle at 82% 22%,rgba(216,179,90,.045),transparent 23%) !important;
+  background-size:64px 64px,64px 64px,auto,auto !important;
+}
+
+.ask-shell{
+  color:#f5f0e6 !important;
+}
+
+.ask-top{
+  background:rgba(2,3,5,.96) !important;
+  border-bottom:1px solid rgba(216,179,90,.15) !important;
+}
+
+.ask-brand{
+  min-height:64px !important;
+  color:transparent !important;
+  font-size:0 !important;
+}
+
+.ask-brand-mark{
+  width:238px !important;
+  height:66px !important;
+  border:0 !important;
+  border-radius:0 !important;
+  text-indent:-9999px !important;
+  overflow:hidden !important;
+  background-color:transparent !important;
+  background-image:url('/omos-logo-gold.png') !important;
+  background-repeat:no-repeat !important;
+  background-position:left center !important;
+  background-size:contain !important;
+  box-shadow:none !important;
+}
+
+.ask-top-link{
+  color:#aaa7a1 !important;
+}
+
+.ask-top-link:hover{
+  color:#f0d98a !important;
+}
+
+.ask-hero h1{
+  font-family:Georgia,"Times New Roman",serif !important;
+  font-weight:500 !important;
+  letter-spacing:-.06em !important;
+  color:#f5f0e6 !important;
+}
+
+.ask-hero h1 span{
+  background:linear-gradient(90deg,#f7f2e8 0%,#f0d98a 58%,#d8b9ee 80%,#68ccf0 100%) !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  color:transparent !important;
+}
+
+.ask-hero p,
+.ask-note,
+.ask-alert,
+.ask-stage-desc,
+.ask-stage-detail,
+.ask-history-item,
+.ask-result-panel p{
+  color:#aaa7a1 !important;
+}
+
+.ask-kicker,
+.ask-card label{
+  color:#f0d98a !important;
+}
+
+.ask-hero-aside,
+.ask-card,
+.ask-result-panel,
+.ask-model-output,
+.ask-history-item,
+.ask-provider,
+.ask-mini-status,
+.ask-stage,
+.ask-meta{
+  background:#08090c !important;
+  background-image:linear-gradient(180deg,rgba(255,255,255,.018),rgba(0,0,0,.07)) !important;
+  border-color:rgba(216,179,90,.16) !important;
+  box-shadow:0 18px 48px rgba(0,0,0,.28) !important;
+}
+
+.ask-card textarea,
+.ask-card input,
+.ask-card select{
+  background:#030406 !important;
+  border-color:rgba(216,179,90,.16) !important;
+  color:#f5f0e6 !important;
+}
+
+.ask-card textarea:focus,
+.ask-card input:focus,
+.ask-card select:focus{
+  border-color:rgba(216,179,90,.44) !important;
+  box-shadow:0 0 0 3px rgba(216,179,90,.07) !important;
+}
+
+.ask-example{
+  background:#08090c !important;
+  border-color:rgba(216,179,90,.14) !important;
+  color:#aaa7a1 !important;
+}
+
+.ask-example:hover{
+  border-color:rgba(216,179,90,.38) !important;
+  color:#f0d98a !important;
+}
+
+.ask-stage-name,
+.ask-result-panel strong,
+.ask-history-item strong,
+.ask-hero-aside strong{
+  color:#f5f0e6 !important;
+}
+
+.ask-stage-num{
+  background:rgba(216,179,90,.045) !important;
+}
+
+.ask-bar span{
+  background:linear-gradient(90deg,#d8b35a,#f0d98a,#42c6ff) !important;
+}
+
+/* Runtime state colors remain semantic rather than decorative. */
+.ask-stage[data-status="COMPLETE"] .ask-stage-num,
+.ask-stage[data-status="COMPLETE"] .ask-stage-status,
+.ask-provider[data-state="live_available"] strong{
+  color:#8af3d1 !important;
+}
+
+.ask-stage[data-status="RUNNING"] .ask-stage-num,
+.ask-stage[data-status="RUNNING"] .ask-stage-status{
+  color:#42c6ff !important;
+}
+
+.ask-stage[data-status="NEEDS_REVIEW"] .ask-stage-num,
+.ask-stage[data-status="NEEDS_REVIEW"] .ask-stage-status,
+.ask-provider[data-state="simulation_only"] strong{
+  color:#f0d98a !important;
+}
+
+@media(max-width:720px){
+  .ask-shell{
+    padding-left:16px !important;
+    padding-right:16px !important;
+  }
+  .ask-top{
+    margin:0 -16px !important;
+    padding:10px 18px 14px !important;
+  }
+  .ask-brand-mark{
+    width:205px !important;
+    height:58px !important;
+  }
+  .ask-hero h1{
+    font-size:clamp(48px,14vw,70px) !important;
+  }
+}
