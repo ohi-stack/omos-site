@@ -53,6 +53,13 @@ jobs:
           OMOS_REQUIRE_DURABLE_DB: 'false'
         run: npm run test:openai-astra
 
+      - name: OneGodian MCP and Connection Layer conformance
+        env:
+          DATABASE_URL: ''
+          NODE_ENV: test
+          OMOS_REQUIRE_DURABLE_DB: 'false'
+        run: npm run test:connections
+
       - name: Lifecycle regression
         env:
           DATABASE_URL: ''
