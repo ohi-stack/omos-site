@@ -89,7 +89,7 @@ async function expectConvergencePages() {
     ["/developers", "Canonical Engineering Council"],
     ["/pricing", "Commerce integrity rule"],
     ["/reference-run", "OMOS-REF-0001"],
-    ["/belief-mapper", "Seven belief dimensions"],
+    ["/belief-mapper", "OneGodian Ally"],
     ["/docs", "Engineering Council and agent governance"],
     ["/artifacts", "Specialized OneGodian research"]
   ];
