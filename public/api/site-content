@@ -1,0 +1,63 @@
+{
+  "status": "ok",
+  "schema_version": "1.0.0",
+  "generated_for": "2026-09-10",
+  "canonical_site": "https://omos.onegodian.com",
+  "customer_proposition": "Make Better Decisions With AI.",
+  "runtime_flow": [
+    "ask_omos",
+    "layer_1_distill",
+    "alignment",
+    "council_review",
+    "governed_synthesis",
+    "decision_record",
+    "dashboard_history"
+  ],
+  "human_gate": {
+    "required_for_governed_disposition": true,
+    "external_consequential_execution_separate": true
+  },
+  "source_repositories": [
+    {"repo":"ohi-stack/omos-site","role":"canonical runtime and public site","authority":"primary"},
+    {"repo":"ohi-stack/OneGodian-Metaphysical-Operating-System-AI-Studio","role":"historical/parallel public-site and WordPress implementation source","authority":"reconciled source"},
+    {"repo":"ohi-stack/onegodian-protocol","role":"Protocol, Algorithm, Belief Mapper specifications","authority":"specification source"},
+    {"repo":"ohi-stack/onegodian-llm","role":"OLLM product and provider architecture","authority":"product source"},
+    {"repo":"ohi-stack/acc-oruvalen","role":"Oru context and ACC execution boundary","authority":"integration source"},
+    {"repo":"ohi-stack/onegodian-api","role":"broader OneGodian API and commerce service boundary","authority":"integration source"},
+    {"repo":"ohi-stack/onegodian-science","role":"research evidence and claim-classification standard","authority":"research source"}
+  ],
+  "public_surfaces": {
+    "workspace": "/workspace",
+    "ask": "/ask/",
+    "dashboard": "/dashboard",
+    "council": "/council",
+    "models": "/models",
+    "ohi": "/ohi",
+    "protocol": "/protocol",
+    "algorithm": "/algorithm",
+    "tools": "/tools",
+    "docs": "/docs",
+    "artifacts": "/artifacts",
+    "ollm": "/ollm",
+    "developers": "/developers",
+    "pricing": "/pricing",
+    "shop": "/shop",
+    "build_status": "/latest-news",
+    "legal": "/legal",
+    "contact": "/contact"
+  },
+  "connector_classes": {
+    "model_gateway": ["openai","anthropic","gemini","xai","ollm_future"],
+    "data_gateway": ["github","google_drive","wordpress","stripe","postgresql_supabase","qrv","onegodian_apis"]
+  },
+  "maturity_model": ["CONCEPTUAL","PROTOTYPE","FUNCTIONAL","VERIFIED","PRODUCTION"],
+  "public_rules": [
+    "model agreement is not factual verification",
+    "provider configuration is not a successful live connection test",
+    "repository code is not deployment proof",
+    "human authorization remains required for consequential external actions",
+    "secrets remain server-side",
+    "scientific claims are classified by actual evidence",
+    "UTC is canonical system time; Gregorian controls civil/legal references; OneGodian Time is supplemental"
+  ]
+}
