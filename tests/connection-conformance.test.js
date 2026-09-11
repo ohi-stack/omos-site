@@ -141,6 +141,30 @@ async function main() {
       assert(call.body.params._meta['io.modelcontextprotocol/clientInfo']);
       assert.equal(call.body.params._meta['io.modelcontextprotocol/protocolVersion'], MCP_PROTOCOL_VERSION);
       assert.equal(observed.some((entry) => entry.body.method === 'initialize'), false, 'modern connector must not initialize');
+
+      const readOnly = createMcpConnector({
+        id: 'OMOS-CONN-MOCK-READONLY-0001',
+        platform: 'MCP Read Only Mock',
+        endpoint,
+        connectionClass: CONNECTION_CLASSES.DATA,
+        humanApprovalRequired: false,
+        capabilities: ['server.discover', 'tools.list'],
+        permissions: {
+          read: ['server/discover', 'tools/list'],
+          invoke: [],
+          write: []
+        }
+      });
+
+      const beforePermissionDenied = observed.length;
+      await assert.rejects(
+        readOnly.invoke({ method: 'tools/call', name: 'echo', arguments: { text: 'must-not-run' } }),
+        (error) => error && error.code === 'mcp_permission_denied'
+      );
+      assert.equal(observed.length, beforePermissionDenied, 'permission-denied call must be blocked before transport');
+
+      const permittedRead = await readOnly.invoke({ method: 'tools/list' });
+      assert(Array.isArray(permittedRead.result.tools), 'declared read permission must remain usable');
     });
 
     console.log('PASS OneGodian MCP Standard / Connection & Adaptation runtime conformance');
