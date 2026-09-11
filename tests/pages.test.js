@@ -44,6 +44,8 @@ async function expectHomeNavigation() {
   for (const label of expectedSummaries) {
     assert.ok(response.body.includes(`<summary>${label}</summary>`), `/ missing canonical mega-menu item: ${label}`);
   }
+  assert.ok(response.body.includes("Make Better Decisions With AI."), "/ missing customer-first proposition");
+  assert.ok(response.body.includes("Repository ≠ deployment ≠ production proof"), "/ missing evidence-gated production boundary");
   return response;
 }
 
@@ -68,12 +70,14 @@ async function expectConvergencePages() {
     ["/workspace", "Turn a difficult question into a reviewable decision."],
     ["/council", "Multiple models. One governed review."],
     ["/ollm", "OneGodian LLM"],
-    ["/models", "OMOS Model Connectors"],
+    ["/models", "OpenAI / GPT-6 Astra"],
     ["/tools", "Capability rule"],
     ["/developers", "Canonical Engineering Council"],
     ["/pricing", "Commerce integrity rule"],
     ["/reference-run", "OMOS-REF-0001"],
-    ["/belief-mapper", "Seven belief dimensions"]
+    ["/belief-mapper", "Seven belief dimensions"],
+    ["/docs", "Engineering Council and agent governance"],
+    ["/artifacts", "Specialized OneGodian research"]
   ];
   for (const [path, marker] of checks) {
     const response = await expectShell(path);
@@ -114,7 +118,7 @@ async function run() {
   await expectOk("/omos-ui.js");
   await expectOk("/ask-workspace.js");
 
-  console.log("OMOS global UI shell, canonical mega menu, convergence pages, Ask OMOS workspace, and public route tests passed.");
+  console.log("OMOS customer-first homepage, global UI shell, canonical mega menu, convergence pages, Ask OMOS workspace, and public route tests passed.");
 }
 
 run().catch((error) => {
