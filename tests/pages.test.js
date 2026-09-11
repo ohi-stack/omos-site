@@ -63,6 +63,23 @@ async function expectAskWorkspace() {
   return response;
 }
 
+async function expectBlackGoldStandard() {
+  const uiCss = await expectOk("/omos-ui.css");
+  assert.ok(uiCss.body.includes("@import url('/omos-black-gold.css')"), "global UI must load canonical black-gold stylesheet");
+  assert.ok(uiCss.body.includes("@import url('/omos-black-gold-ask.css')"), "global UI must load Ask OMOS black-gold compatibility stylesheet");
+
+  const theme = await expectOk("/omos-black-gold.css");
+  assert.ok(theme.body.includes("#020305"), "black-gold standard must define the obsidian page background");
+  assert.ok(theme.body.includes("/omos-logo-gold.png"), "black-gold standard must use the official gold OMOS logo");
+  assert.ok(theme.body.includes("body.omos-shell-active"), "black-gold standard must target shared-shell public pages");
+
+  const askTheme = await expectOk("/omos-black-gold-ask.css");
+  assert.ok(askTheme.body.includes(".ask-brand-mark"), "Ask OMOS theme must replace the legacy square brand mark");
+  assert.ok(askTheme.body.includes("/omos-logo-gold.png"), "Ask OMOS must use the official gold OMOS logo");
+
+  await expectOk("/omos-logo-gold.png");
+}
+
 async function run() {
   const publicRoutes = [
     "/", "/omos", "/ohi", "/models", "/tools", "/artifacts", "/docs", "/shop",
@@ -76,6 +93,7 @@ async function run() {
   }
   await expectHomeNavigation();
   await expectAskWorkspace();
+  await expectBlackGoldStandard();
 
   const apiRoutes = ["/api/health", "/api/manifest", "/api/v1/providers", "/api/v1/persistence"];
   for (const route of apiRoutes) await expectJson(route);
@@ -92,7 +110,7 @@ async function run() {
   await expectOk("/omos-ui.js");
   await expectOk("/ask-workspace.js");
 
-  console.log("OMOS global UI shell, canonical mega menu, Ask OMOS workspace, and public route tests passed.");
+  console.log("OMOS global UI shell, canonical mega menu, black-gold visual standard, Ask OMOS workspace, and public route tests passed.");
 }
 
 run().catch((error) => {
