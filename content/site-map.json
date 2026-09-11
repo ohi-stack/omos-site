@@ -25,34 +25,69 @@
   "canonical_workflow": ["ask", "layer1", "alignment", "council_review", "governed_synthesis", "human_gate", "decision_record", "history"],
   "routes": [
     { "path": "/", "purpose": "Customer entry, platform explanation, evidence status, architecture, product pathways, and build maturity." },
-    { "path": "/omos", "purpose": "OMOS operating model, architecture, Algorithm, O-H-I, standards, and maturity." },
+    { "path": "/omos", "purpose": "OMOS operating model, architecture, Algorithm, O-H-I, standards, connectors, and maturity." },
     { "path": "/workspace", "purpose": "Customer-facing Ask → Distill → Align → Council → Synthesize → Human Gate → Record → History workflow." },
     { "path": "/council", "purpose": "Independent model outputs, cross-model review, signal mapping, governed synthesis, degraded-state rules, and human review." },
     { "path": "/ollm", "purpose": "OneGodian LLM architecture and first-class future OMOS provider contract; runtime participation remains capability-gated." },
     { "path": "/models", "purpose": "Model connector control center for OpenAI/GPT-6 Astra, Anthropic, Gemini, xAI, and future OLLM configuration, health, and provenance." },
     { "path": "/tools", "purpose": "Layer 1, Alignment, Identity, Verification, Intelligence, and developer/runtime tools." },
     { "path": "/belief-mapper", "purpose": "Seven-dimensional belief-reflection and journey-stage product specification with privacy and maturity boundaries." },
-    { "path": "/developers", "purpose": "APIs, connection architecture, MCP status, Engineering Council, risk classes, and runtime interfaces." },
-    { "path": "/reference-run", "purpose": "OMOS-REF-0001 nine-gate production-proof standard." },
+    { "path": "/developers", "purpose": "APIs, Model Gateway, Data/Action/Environment Gateway, MCP status, Engineering Council, risk classes, and runtime interfaces." },
+    { "path": "/reference-run", "purpose": "OMOS-REF-0001 production-proof standard." },
     { "path": "/pricing", "purpose": "Outcome-based launch pricing and capability-gated entitlement boundaries." },
     { "path": "/shop", "purpose": "Products/services presentation and OneGodian.com commerce bridge." },
-    { "path": "/ohi", "purpose": "O-H-I multi-model comparison, synthesis, and human-reviewed output layer." },
+    { "path": "/ohi", "purpose": "O-H-I multi-model comparison, critique, dissent preservation, synthesis, and human-reviewed output layer." },
     { "path": "/ohi-output-pipeline", "purpose": "Cross-model review pipeline and synthesis explanation." },
-    { "path": "/protocol", "purpose": "OneGodian Protocol™ identity, semantic, agent, and interface guidance." },
+    { "path": "/protocol", "purpose": "OneGodian Protocol™ definitions, identity semantics, interoperability, and human-authority guidance." },
     { "path": "/algorithm", "purpose": "OneGodian Algorithm™ Observe → Distill → Align → Select → Execute → Verify." },
     { "path": "/artifacts", "purpose": "Architecture, evidence, standards, media, and specialized research including ODIN-SCI-0004." },
     { "path": "/docs", "purpose": "Documentation center for capability, production proof, engineering, connectors, commerce, OTS-V5, and research." },
     { "path": "/dashboard", "purpose": "Runtime health, provider state, Council runs, Decision Record history, and verification surfaces." },
-    { "path": "/latest-news", "purpose": "Build notes, releases, implementation milestones, and current status." },
+    { "path": "/latest-news", "purpose": "Build notes, releases, implementation milestones, and current production-certification status." },
     { "path": "/digital-sanctuary", "purpose": "Immersive OneGodian/OMOS conceptual experience." },
-    { "path": "/legal", "purpose": "Public-safe legal, institutional, and professional-advice boundaries." },
-    { "path": "/contact", "purpose": "Contact, support, implementation, and ecosystem routing." },
+    { "path": "/legal", "purpose": "Public-safe entity, authority, evidence, timekeeping, and professional-advice boundaries." },
+    { "path": "/contact", "purpose": "Product support, implementation, developer, commerce, and ecosystem routing." },
     { "path": "/ask/", "purpose": "Flagship operational Ask OMOS workspace." }
+  ],
+  "model_gateway": {
+    "purpose": "Who OMOS reasons with",
+    "providers": ["openai", "anthropic", "gemini", "xai"],
+    "future_providers": ["ollm"],
+    "provider_states": ["CONNECTED", "NOT_CONFIGURED", "DEGRADED", "UNAVAILABLE"],
+    "council_states": ["LIVE", "HYBRID", "DEGRADED", "SIMULATION"],
+    "rule": "Provider configuration is not the same as a successful live connection test."
+  },
+  "data_action_environment_gateway": {
+    "purpose": "What OMOS may securely read, synchronize, invoke, or operate",
+    "connector_classes": ["github", "google_drive", "wordpress", "stripe", "postgresql_or_supabase_compatible", "qrv", "onegodian_apis", "acc"],
+    "required_record_fields": ["source", "permissions", "sync_direction", "object_type", "external_id", "omos_id", "timestamps", "provenance", "conflict_policy", "health", "last_sync", "audit_events"],
+    "rule": "Synchronization does not establish truth, ownership, or authority."
+  },
+  "source_repositories": [
+    { "repository": "ohi-stack/omos-site", "role": "canonical OMOS runtime and public site", "authority": "primary implementation" },
+    { "repository": "ohi-stack/OneGodian-Metaphysical-Operating-System-AI-Studio", "role": "historical/parallel OMOS site planning and WordPress support", "authority": "reconciled source" },
+    { "repository": "ohi-stack/onegodian-protocol", "role": "Protocol, Algorithm, Belief Mapper, interoperability specifications", "authority": "specification source" },
+    { "repository": "ohi-stack/onegodian-llm", "role": "OLLM product/provider architecture", "authority": "product source" },
+    { "repository": "ohi-stack/acc-oruvalen", "role": "Oru continuity/context and ACC execution boundary", "authority": "integration source" },
+    { "repository": "ohi-stack/onegodian-api", "role": "broader OneGodian API and commerce service boundary", "authority": "integration source" },
+    { "repository": "ohi-stack/onegodian-science", "role": "scientific claim classification and evidence discipline", "authority": "research source" }
   ],
   "external_platform_targets": [
     { "domain": "https://onegodian.com", "role": "private commerce, product checkout, and commercial OneGodian platform" },
     { "domain": "https://onegodian.org", "role": "public identity, civil/cultural/educational and institutional introduction" },
+    { "domain": "https://u.onegodian.com", "role": "education, courses, certifications and training" },
     { "domain": "https://app.onegodian.com", "role": "application/console surface" },
-    { "domain": "https://quantumohi.com", "role": "advanced O-H-I / enterprise governance and infrastructure layer" }
+    { "domain": "https://quantumohi.com", "role": "advanced O-H-I / enterprise governance and infrastructure layer" },
+    { "domain": "https://qrv.network", "role": "verification and credential infrastructure" },
+    { "domain": "https://acc.onegodian.com", "role": "separately authorized execution control plane" }
+  ],
+  "public_rules": [
+    "Model agreement is not factual verification.",
+    "Provider configuration is not a successful live connection test.",
+    "Repository implementation is not deployment proof.",
+    "Human authorization remains required for consequential external actions.",
+    "Secrets remain server-side and outside public payloads, logs, Decision Records, and source control.",
+    "UTC is canonical system time; Gregorian is controlling for civil/legal references; OneGodian Time is supplemental.",
+    "Scientific claims are classified according to actual evidence and independent validation."
   ]
 }
