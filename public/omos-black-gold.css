@@ -1,0 +1,341 @@
+/* OMOS Black-Gold Page Standard — 2026-09-10
+   Canonical visual reference: IMG_4200.
+   This layer intentionally overrides legacy blue/navy page CSS while preserving
+   cyan/mint for operational status and runtime signals only. */
+
+:root{
+  --omos-bg:#020305;
+  --omos-panel:#08090c;
+  --omos-panel2:#0d0e12;
+  --omos-text:#f5f0e6;
+  --omos-muted:#aaa7a1;
+  --omos-line:rgba(216,179,90,.18);
+  --omos-gold:#d8b35a;
+  --omos-gold2:#f0d98a;
+  --omos-cyan:#42c6ff;
+  --omos-mint:#8af3d1;
+  --omos-purple:#b99cff;
+}
+
+html,
+body,
+body.omos-shell-active{
+  background:#020305 !important;
+  color:var(--omos-text) !important;
+}
+
+body.omos-shell-active{
+  background-image:
+    linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px),
+    radial-gradient(circle at 12% 72%,rgba(66,198,255,.055),transparent 28%),
+    radial-gradient(circle at 82% 24%,rgba(216,179,90,.045),transparent 24%) !important;
+  background-size:72px 72px,72px 72px,auto,auto !important;
+  background-attachment:fixed !important;
+}
+
+/* Global header — official gold OMOS identity */
+.omos-site-header{
+  background:rgba(2,3,5,.96) !important;
+  border-bottom:1px solid rgba(216,179,90,.18) !important;
+  box-shadow:0 14px 40px rgba(0,0,0,.34) !important;
+}
+
+.omos-header-inner{
+  min-height:96px !important;
+}
+
+.omos-brand{
+  min-width:245px;
+  gap:0 !important;
+}
+
+.omos-brand-mark{
+  width:238px !important;
+  height:66px !important;
+  border:0 !important;
+  border-radius:0 !important;
+  padding:0 !important;
+  color:transparent !important;
+  text-indent:-9999px !important;
+  overflow:hidden !important;
+  background-color:transparent !important;
+  background-image:url('/omos-logo-gold.png') !important;
+  background-repeat:no-repeat !important;
+  background-position:left center !important;
+  background-size:contain !important;
+  box-shadow:none !important;
+}
+
+.omos-brand-text{
+  display:none !important;
+}
+
+.omos-nav-button,
+.omos-nav-link{
+  color:#ede8df !important;
+}
+
+.omos-nav-button:hover,
+.omos-nav-link:hover,
+.omos-nav-button[aria-expanded="true"]{
+  color:#fff !important;
+  background:rgba(216,179,90,.075) !important;
+}
+
+.omos-mega{
+  background:rgba(5,5,7,.985) !important;
+  border-color:rgba(216,179,90,.20) !important;
+}
+
+.omos-mega-title{
+  color:var(--omos-gold2) !important;
+}
+
+.omos-mega a{
+  color:#d8d3cb !important;
+}
+
+.omos-mega a:hover{
+  color:#fff !important;
+  background:rgba(216,179,90,.075) !important;
+}
+
+.omos-btn{
+  border-color:rgba(216,179,90,.22) !important;
+  background:rgba(216,179,90,.035) !important;
+  color:#f3eee5 !important;
+}
+
+.omos-btn-primary{
+  background:linear-gradient(135deg,#b98d34,#f0d98a) !important;
+  color:#080706 !important;
+  border-color:transparent !important;
+}
+
+.omos-menu-toggle{
+  border-color:rgba(216,179,90,.22) !important;
+  background:#08090c !important;
+  color:#f5f0e6 !important;
+}
+
+/* Shared page framing */
+.omos-page-topper{
+  color:#b9b3aa !important;
+}
+
+.omos-breadcrumbs{
+  color:#98948d !important;
+}
+
+.omos-status-pill{
+  border-color:rgba(66,198,255,.28) !important;
+  background:rgba(66,198,255,.055) !important;
+  color:#bdeeff !important;
+}
+
+.omos-global-content,
+.omos-global-content > main,
+.omos-global-content > .wrap,
+.omos-global-content > .container,
+body.omos-shell-active main,
+body.omos-shell-active .wrap,
+body.omos-shell-active .container{
+  background-color:transparent !important;
+}
+
+/* Remove duplicate legacy pill navigation on pages already wrapped by the global shell. */
+body.omos-shell-active .wrap > .nav,
+body.omos-shell-active main > .nav,
+body.omos-shell-active .container > .nav{
+  display:none !important;
+}
+
+/* Editorial typography aligned with the black/gold launch page. */
+.omos-global-content h1,
+body.omos-shell-active h1{
+  font-family:Georgia,"Times New Roman",serif !important;
+  font-weight:500 !important;
+  letter-spacing:-.055em !important;
+  line-height:.96 !important;
+  color:#f5f0e6 !important;
+  background:linear-gradient(135deg,#f7f2e8 0%,#f7f2e8 58%,#f0d98a 73%,#d8b9ee 87%,#68ccf0 100%) !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+}
+
+.omos-global-content h2,
+.omos-global-content h3,
+body.omos-shell-active h2,
+body.omos-shell-active h3{
+  color:#f4efe7 !important;
+}
+
+.omos-global-content p,
+body.omos-shell-active p,
+body.omos-shell-active .sub{
+  color:#aaa7a1 !important;
+}
+
+body.omos-shell-active .eyebrow,
+body.omos-shell-active .omos-kicker,
+body.omos-shell-active .round{
+  color:var(--omos-gold2) !important;
+}
+
+/* Legacy blue/navy component conversion */
+body.omos-shell-active .hero{
+  background:transparent !important;
+}
+
+body.omos-shell-active .node,
+body.omos-shell-active .model,
+body.omos-shell-active .card,
+body.omos-shell-active .box,
+body.omos-shell-active .panel,
+body.omos-shell-active .review-item,
+body.omos-shell-active .signal,
+body.omos-shell-active .omos-workspace-card,
+body.omos-shell-active .omos-workspace-section,
+body.omos-shell-active .omos-metric-grid a,
+body.omos-shell-active .omos-process-list > div{
+  background:#08090c !important;
+  background-image:linear-gradient(180deg,rgba(255,255,255,.018),rgba(0,0,0,.06)) !important;
+  border-color:rgba(216,179,90,.16) !important;
+  box-shadow:0 18px 48px rgba(0,0,0,.30) !important;
+}
+
+body.omos-shell-active .node.question,
+body.omos-shell-active .node.human{
+  border-color:rgba(216,179,90,.34) !important;
+}
+
+body.omos-shell-active .node.output{
+  background:linear-gradient(135deg,rgba(216,179,90,.095),rgba(8,9,12,.98)) !important;
+  border-color:rgba(216,179,90,.34) !important;
+}
+
+body.omos-shell-active .node.output h2{
+  color:var(--omos-gold2) !important;
+}
+
+body.omos-shell-active .model{
+  border-color:rgba(216,179,90,.15) !important;
+}
+
+body.omos-shell-active .review{
+  border-color:rgba(185,156,255,.22) !important;
+}
+
+/* Keep moving pipeline/status elements operationally distinct. */
+body.omos-shell-active .arrow{
+  background:linear-gradient(var(--omos-gold),var(--omos-mint)) !important;
+}
+
+body.omos-shell-active .arrow:before{
+  box-shadow:0 0 18px var(--omos-gold2) !important;
+}
+
+body.omos-shell-active .arrow:after{
+  color:var(--omos-gold2) !important;
+}
+
+body.omos-shell-active .pulse,
+body.omos-shell-active .omos-live-dot:before,
+body.omos-shell-active .omos-runtime-dot{
+  background:var(--omos-mint) !important;
+}
+
+/* Workspace */
+.omos-workspace-hero{
+  background:linear-gradient(135deg,rgba(216,179,90,.075),rgba(8,9,12,.94) 44%,rgba(185,156,255,.035)) !important;
+  border-color:rgba(216,179,90,.20) !important;
+}
+
+.omos-stage-rail{
+  background:#08090c !important;
+  border-color:rgba(216,179,90,.16) !important;
+}
+
+.omos-stage-rail a{
+  border-color:rgba(216,179,90,.12) !important;
+  color:#aaa7a1 !important;
+}
+
+.omos-stage-rail a:hover{
+  background:rgba(216,179,90,.06) !important;
+  color:#fff !important;
+}
+
+.omos-workspace-card code{
+  background:#020305 !important;
+  color:#ead79e !important;
+  border:1px solid rgba(216,179,90,.12) !important;
+}
+
+/* Footer */
+.omos-site-footer{
+  background:#020305 !important;
+  border-top-color:rgba(216,179,90,.16) !important;
+}
+
+.omos-footer-col h4{
+  color:#f5f0e6 !important;
+}
+
+.omos-footer-col a,
+.omos-footer-brand p,
+.omos-footer-bottom{
+  color:#8f8b85 !important;
+}
+
+.omos-footer-col a:hover{
+  color:var(--omos-gold2) !important;
+}
+
+/* Force common inline legacy blue backgrounds back into the OMOS family. */
+body.omos-shell-active [style*="background:#0"],
+body.omos-shell-active [style*="background: #0"],
+body.omos-shell-active [style*="background-color:#0"],
+body.omos-shell-active [style*="background-color: #0"]{
+  border-color:rgba(216,179,90,.16);
+}
+
+@media(max-width:1120px){
+  .omos-header-inner{
+    min-height:88px !important;
+  }
+  .omos-nav.is-mobile-open{
+    background:rgba(2,3,5,.985) !important;
+    border-bottom-color:rgba(216,179,90,.18) !important;
+  }
+}
+
+@media(max-width:680px){
+  body.omos-shell-active{
+    padding-top:84px !important;
+    background-size:48px 48px,48px 48px,auto,auto !important;
+  }
+  .omos-header-inner{
+    min-height:84px !important;
+    padding:0 18px !important;
+  }
+  .omos-brand{
+    min-width:0;
+  }
+  .omos-brand-mark{
+    width:210px !important;
+    height:58px !important;
+  }
+  .omos-nav.is-mobile-open{
+    top:84px !important;
+  }
+  .omos-page-topper{
+    padding-top:18px !important;
+  }
+  .omos-global-content h1,
+  body.omos-shell-active h1{
+    font-size:clamp(46px,14vw,76px) !important;
+  }
+}
