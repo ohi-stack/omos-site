@@ -1,0 +1,1 @@
+This implementation is being completed through the shared OMOS shell and stylesheet so all public pages inherit the canonical black/gold visual system.
