@@ -8,6 +8,7 @@ const { OMOSProcess } = require("./src/runtime/omos");
 const { runCouncil, getCouncilRun, listCouncilRuns, setHumanDecision, getPersistenceStatus } = require("./src/runtime/orchestrator");
 const { verifyApiKey } = require("./src/runtime/keys");
 const { rateLimit } = require("./src/runtime/rateLimit");
+const { mapBeliefs } = require("./src/runtime/beliefMapper");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -105,7 +106,7 @@ const megaMenu = [
   { label: "Tools", groups: [
     ["Layer 1", [["OMOS Distill", "/distill"], ["Prompt Intake", "/ask/"], ["Meaning Units", "/distill"], ["Signal Classification", "/distill"]]],
     ["Alignment", [["Alignment Engine", "/alignment"], ["Hard Gates", "/alignment"], ["Decision Review", "/ask/"], ["Execution Readiness", "/alignment"]]],
-    ["Identity", [["Belief Mapper Status", "/tools"], ["Identity Tools", "/tools"], ["Declaration Tools", "/artifacts"], ["Digital Sanctuary", "/digital-sanctuary"]]],
+    ["Identity", [["Belief Mapper", "/belief-mapper/"], ["Identity Tools", "/tools"], ["Declaration Tools", "/artifacts"], ["Digital Sanctuary", "/digital-sanctuary"]]],
     ["Verification", [["Verification", "/verification"], ["Decision Records", "/decision-records"], ["Persistence", "/api/v1/persistence"], ["Compliance", "/standards"]]],
     ["Intelligence", [["Council of Models", "/council"], ["GCD Synthesis", "/gcd-synthesis"], ["Output Pipeline", "/ohi-output-pipeline"], ["OHI", "/ohi"]]],
     ["All Tools", [["Tools Home", "/tools"], ["Documentation", "/docs"], ["Artifacts", "/artifacts"], ["Workspace", "/workspace"]]]
@@ -149,8 +150,8 @@ function manifestPayload() {
     },
     navigation: megaMenu.map((item) => ({ label: item.label, groups: item.groups.map(([title]) => title) })),
     routes: {
-      public: [...publicRoutes, "/ask/"],
-      api: ["/health", "/manifest", "/api/health", "/api/manifest", "/process", "/api/v1/council/run", "/api/v1/council/runs", "/api/v1/council/runs/:id", "/api/v1/council/runs/:id/human-decision", "/api/v1/providers", "/api/v1/persistence"]
+      public: [...publicRoutes, "/ask/", "/belief-mapper/"],
+      api: ["/health", "/manifest", "/api/health", "/api/manifest", "/process", "/api/v1/council/run", "/api/v1/council/runs", "/api/v1/council/runs/:id", "/api/v1/council/runs/:id/human-decision", "/api/v1/providers", "/api/v1/persistence", "/api/v1/belief-mapper/evaluate"]
     },
     endpoints: {
       health: { method: "GET", path: "/health", authRequired: false },
@@ -161,7 +162,8 @@ function manifestPayload() {
       councilRunRecord: { method: "GET", path: "/api/v1/council/runs/:id", authRequired: true, authHeader: "x-omos-key" },
       humanDecision: { method: "POST", path: "/api/v1/council/runs/:id/human-decision", authRequired: true, authHeader: "x-omos-key" },
       providers: { method: "GET", path: "/api/v1/providers", authRequired: false },
-      persistence: { method: "GET", path: "/api/v1/persistence", authRequired: false }
+      persistence: { method: "GET", path: "/api/v1/persistence", authRequired: false },
+      beliefMapperEvaluate: { method: "POST", path: "/api/v1/belief-mapper/evaluate", authRequired: true, authHeader: "x-omos-key", persistence: "none_ephemeral" }
     },
     orchestration: {
       modes: ["simulation", "hybrid", "live"],
@@ -176,6 +178,9 @@ function manifestPayload() {
       runRecordStorage: persistence.backend,
       durableStorageStatus: persistence.durable ? "configured" : "memory_fallback_not_durable",
       persistence
+    },
+    tools: {
+      beliefMapper: { status: "functional_candidate", route: "/belief-mapper/", api: "/api/v1/belief-mapper/evaluate", persistence: "ephemeral_by_default", dimensions: 7 }
     },
     wordpressPlugin: {
       compatibleHosts: ALLOWED_PLUGIN_ORIGINS,
@@ -236,6 +241,7 @@ function pageTopper(route) {
 function applyGlobalShell(html, route) {
   let out = String(html || "");
   if (!/<html/i.test(out)) out = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>${out}</body></html>`;
+  if (!/<meta[^>]+name=["']viewport["']/i.test(out)) out = out.replace(/<head([^>]*)>/i, '<head$1><meta name="viewport" content="width=device-width,initial-scale=1">');
   if (!out.includes('/omos-ui.css')) out = out.replace(/<\/head>/i, '<link rel="stylesheet" href="/omos-ui.css"><link rel="stylesheet" href="/mega-menu-v2.css"></head>');
   else if (!out.includes('/mega-menu-v2.css')) out = out.replace(/<\/head>/i, '<link rel="stylesheet" href="/mega-menu-v2.css"></head>');
   out = out.replace(/<body([^>]*)>/i, `<body$1 class="omos-shell-active"><div class="omos-global-content">${shellHeader()}${pageTopper(route)}`);
@@ -284,7 +290,7 @@ function healthPayload() {
     canonicalHost: CANONICAL_HOST,
     ui: manifest.ui,
     persistence: getPersistenceStatus(),
-    publicRouteCount: publicRoutes.length,
+    publicRouteCount: manifest.routes.public.length,
     orchestration: {
       providers,
       liveProviderCount: providers.filter((p) => p.configured).length,
@@ -292,7 +298,8 @@ function healthPayload() {
       runRecordApi: true,
       humanDecisionApi: true,
       durablePersistence: getPersistenceStatus().durable
-    }
+    },
+    tools: manifest.tools
   };
 }
 
@@ -300,6 +307,7 @@ app.get(["/health", "/api/health"], (req, res) => res.json(healthPayload()));
 app.get(["/manifest", "/api/manifest"], (req, res) => res.json({ ...manifestPayload(), providerStatus: providerStatus(), generatedAtUtc: new Date().toISOString() }));
 app.get("/api/v1/providers", (req, res) => res.json({ status: "ok", providers: providerStatus() }));
 app.get("/api/v1/persistence", (req, res) => res.json({ status: "ok", persistence: getPersistenceStatus() }));
+app.get("/belief-mapper", (req, res) => res.redirect(302, "/belief-mapper/"));
 
 for (const route of publicRoutes) {
   app.get(route, (req, res) => sendPage(res, route));
@@ -311,6 +319,13 @@ app.get("/admin", (req, res) => sendPage(res, "/admin"));
 app.post("/process", requireApiKey, rateLimit(), (req, res) => {
   const result = OMOSProcess(req.body);
   res.json({ status: "ok", apiKey: { name: req.apiKeyMeta.name, plan: req.apiKeyMeta.plan }, data: result });
+});
+
+app.post("/api/v1/belief-mapper/evaluate", requireApiKey, rateLimit(), (req, res) => {
+  const answers = req.body && req.body.answers && typeof req.body.answers === "object" ? req.body.answers : req.body;
+  if (!answers || typeof answers !== "object" || Array.isArray(answers)) return res.status(400).json({ error: "answers_required", message: "Provide an answers object for the seven Belief Mapper dimensions." });
+  res.set("Cache-Control", "no-store");
+  res.json({ status: "ok", persistence: "none_ephemeral", data: mapBeliefs({ answers }) });
 });
 
 app.post("/api/v1/council/run", requireApiKey, rateLimit(), async (req, res) => {
