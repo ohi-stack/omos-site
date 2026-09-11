@@ -101,7 +101,7 @@ async function run() {
 
   const contentMarkers = {
     "/workspace": "Turn a difficult question into a reviewable decision.",
-    "/council": "structured disagreement",
+    "/council": "Structured Disagreement",
     "/ollm": "OneGodian LLM inside the OMOS model architecture.",
     "/distill": "OMOS Distill",
     "/alignment": "OMOS Alignment Engine",
