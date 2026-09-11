@@ -1,15 +1,4 @@
 (() => {
-  // Canonical public visual layer. Keep page-level legacy styles for layout/animation,
-  // but load the OMOS black/gold compatibility layer last so older blue/navy pages
-  // render as one product family.
-  if (!document.querySelector('link[data-omos-black-gold]')) {
-    const theme = document.createElement('link');
-    theme.rel = 'stylesheet';
-    theme.href = '/omos-black-gold.css';
-    theme.dataset.omosBlackGold = 'true';
-    document.head.appendChild(theme);
-  }
-
   const nav = document.querySelector('.omos-nav');
   const toggle = document.querySelector('.omos-menu-toggle');
   const items = [...document.querySelectorAll('.omos-nav-item')];
