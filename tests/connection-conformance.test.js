@@ -86,6 +86,10 @@ async function main() {
     assert.deepEqual(suite.results.map((result) => result.connection.connectionClass), ['model', 'model', 'model', 'model']);
     assert(suite.results.every((result) => result.productionClaim === false));
 
+    const emptyProbe = await runConformanceSuite([], { scope: 'runtime-probe' });
+    assert.equal(emptyProbe.status, 'REVIEW', 'zero-target probe must not report PASS');
+    assert.equal(emptyProbe.readiness, 'NO_PROBE_TARGETS');
+
     assert.throws(
       () => parseExternalDefinitions(JSON.stringify([{ id: 'bad', platform: 'bad', endpoint: 'https://example.com/mcp', token: 'do-not-allow' }])),
       /embedded_secret_prohibited/
@@ -98,11 +102,11 @@ async function main() {
         endpoint,
         connectionClass: CONNECTION_CLASSES.ACTION,
         humanApprovalRequired: true,
-        capabilities: ['server.discover', 'tools.list', 'tools.call'],
+        capabilities: ['server.discover', 'tools.list', 'tools.call', 'tasks.update', 'tasks.cancel'],
         permissions: {
           read: ['server/discover', 'tools/list'],
           invoke: ['tools/call'],
-          write: []
+          write: ['tasks/update', 'tasks/cancel']
         }
       });
 
@@ -122,6 +126,17 @@ async function main() {
         /human_approval_required/
       );
       assert.equal(observed.length, beforeBlockedCall, 'blocked action must not reach MCP server');
+
+      const beforeTaskMutation = observed.length;
+      await assert.rejects(
+        connector.invoke({ method: 'tasks/update', params: { taskId: 'task-1', status: 'done' } }),
+        /human_approval_required/
+      );
+      await assert.rejects(
+        connector.invoke({ method: 'tasks/cancel', params: { taskId: 'task-1' } }),
+        /human_approval_required/
+      );
+      assert.equal(observed.length, beforeTaskMutation, 'unauthorized task mutations must not reach MCP server');
 
       const approved = await connector.invoke({
         method: 'tools/call',
