@@ -15,8 +15,38 @@ const MODEL_CONFIG = [
   { provider: 'xai', adapter: xai, connectorId: 'OMOS-CONN-XAI-0001', authEnv: 'XAI_API_KEY' }
 ];
 
+const PROHIBITED_SECRET_KEYS = new Set([
+  'secret',
+  'token',
+  'password',
+  'apikey',
+  'api_key',
+  'authorization',
+  'bearer'
+]);
+
 function modelConnectors() {
   return MODEL_CONFIG.map((entry) => createModelConnector(entry));
+}
+
+function assertNoEmbeddedSecrets(value, index, path = []) {
+  if (Array.isArray(value)) {
+    value.forEach((entry, itemIndex) => assertNoEmbeddedSecrets(entry, index, [...path, String(itemIndex)]));
+    return;
+  }
+  if (!value || typeof value !== 'object') return;
+
+  for (const [key, nested] of Object.entries(value)) {
+    const normalized = String(key).toLowerCase();
+    if (PROHIBITED_SECRET_KEYS.has(normalized)) {
+      const location = [...path, key].join('.');
+      const error = new Error(`mcp_connection_${index}_embedded_secret_prohibited`);
+      error.code = 'embedded_secret_prohibited';
+      error.path = location;
+      throw error;
+    }
+    assertNoEmbeddedSecrets(nested, index, [...path, key]);
+  }
 }
 
 function parseExternalDefinitions(raw = process.env.OMOS_MCP_CONNECTIONS_JSON) {
@@ -28,10 +58,7 @@ function parseExternalDefinitions(raw = process.env.OMOS_MCP_CONNECTIONS_JSON) {
 
   return parsed.map((item, index) => {
     if (!item || typeof item !== 'object') throw new Error(`mcp_connection_${index}_object_required`);
-    const prohibited = ['secret', 'token', 'password', 'apiKey', 'api_key', 'authorization'];
-    for (const key of prohibited) {
-      if (Object.prototype.hasOwnProperty.call(item, key)) throw new Error(`mcp_connection_${index}_embedded_secret_prohibited`);
-    }
+    assertNoEmbeddedSecrets(item, index);
     return {
       id: item.id,
       platform: item.platform,
@@ -73,7 +100,9 @@ function sanitizedRegistry(options = {}) {
 
 module.exports = {
   MODEL_CONFIG,
+  PROHIBITED_SECRET_KEYS,
   modelConnectors,
+  assertNoEmbeddedSecrets,
   parseExternalDefinitions,
   externalMcpConnectors,
   allConnections,
