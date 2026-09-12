@@ -159,6 +159,15 @@ async function main() {
       /embedded_secret_prohibited/,
       'nested secret-shaped keys must be rejected before registry output'
     );
+    assert.throws(
+      () => createMcpConnector({
+        id: 'OMOS-CONN-EMBEDDED-CREDENTIAL-0001',
+        platform: 'Bad Credential Endpoint',
+        endpoint: 'https://user:password@example.com/mcp'
+      }),
+      /invalid_mcp_connector_configuration/,
+      'endpoint URLs must not embed credentials'
+    );
 
     await withMockMcpServer(async ({ endpoint, observed }) => {
       const connector = createMcpConnector({
@@ -259,6 +268,61 @@ async function main() {
 
       const permittedRead = await readOnly.invoke({ method: 'tools/list' });
       assert(Array.isArray(permittedRead.result.tools), 'declared read permission must remain usable');
+
+      const productionBlocked = createMcpConnector({
+        id: 'OMOS-CONN-MOCK-PROD-BLOCKED-0001',
+        platform: 'Production Approval Mock',
+        endpoint,
+        connectionClass: CONNECTION_CLASSES.ACTION,
+        humanApprovalRequired: true,
+        capabilities: ['tools.call'],
+        permissions: { read: [], invoke: ['tools/call'], write: [] }
+      });
+      const productionVerified = createMcpConnector({
+        id: 'OMOS-CONN-MOCK-PROD-VERIFIED-0001',
+        platform: 'Production Approval Verified Mock',
+        endpoint,
+        connectionClass: CONNECTION_CLASSES.ACTION,
+        humanApprovalRequired: true,
+        capabilities: ['tools.call'],
+        permissions: { read: [], invoke: ['tools/call'], write: [] },
+        authorizationVerifier: async ({ authorization }) => ({
+          verified: authorization.approvalRef === 'ACC-APPROVAL-0001',
+          source: 'test-authority'
+        })
+      });
+
+      process.env.NODE_ENV = 'production';
+      const beforeProductionBlocked = observed.length;
+      await assert.rejects(
+        productionBlocked.invoke({
+          method: 'tools/call',
+          name: 'echo',
+          arguments: { text: 'must-not-run' },
+          authorization: { approved: true, approvedBy: 'caller-only' }
+        }),
+        (error) => error && error.code === 'authoritative_approval_verifier_required'
+      );
+      assert.equal(observed.length, beforeProductionBlocked, 'caller-supplied approval must not self-authorize production transport');
+
+      await assert.rejects(
+        productionVerified.invoke({
+          method: 'tools/call',
+          name: 'echo',
+          arguments: { text: 'bad-ref' },
+          authorization: { approved: true, approvedBy: 'ACC', approvalRef: 'WRONG' }
+        }),
+        (error) => error && error.code === 'authoritative_approval_verification_failed'
+      );
+
+      const verifiedProductionCall = await productionVerified.invoke({
+        method: 'tools/call',
+        name: 'echo',
+        arguments: { text: 'verified-production-approval' },
+        authorization: { approved: true, approvedBy: 'ACC', approvalRef: 'ACC-APPROVAL-0001' }
+      });
+      assert.equal(verifiedProductionCall.result.content[0].text, 'verified-production-approval');
+      process.env.NODE_ENV = 'test';
     });
 
     await withEdgeMcpServer('wrong-id', async (endpoint) => {
