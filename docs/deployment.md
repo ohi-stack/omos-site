@@ -1,11 +1,13 @@
 # OMOS.OneGodian.com Production Deployment Runbook
 
-Canonical host: `https://omos.onegodian.com`
+Canonical host: `https://omos.onegodian.com`  
 Target runtime: `1.1.0`
 
-## Current production state
+## Production rule
 
-Before deploying, verify the public runtime version. If production still reports `1.0.1`, the host has not yet pulled and restarted the `1.1.0` runtime.
+Repository readiness, merge state, deployment state, and production verification are separate evidence states. A commit is not a deployment, and a successful deployment is not by itself proof that every connector or OMOS capability is production-verified.
+
+Before deploying, verify the public runtime version and build provenance. If production still reports `1.0.1`, lacks an exact build SHA, or reports non-durable persistence, the host has not yet reached the current `1.1.0` production baseline.
 
 ## Required production environment
 
@@ -19,8 +21,11 @@ Required deployment gates:
 - a non-placeholder `OMOS_API_KEYS` value
 - a valid PostgreSQL `DATABASE_URL`
 - `OMOS_DB_SSL` and `OMOS_DB_POOL_MAX` appropriate for the database provider
+- `OMOS_REQUIRE_DURABLE_DB=true`
+- `OMOS_ALLOW_MEMORY_PERSISTENCE=false`
+- `OMOS_BUILD_SHA=<exact deployed 40-character Git SHA>` when the host does not retain `.git` metadata
 
-Provider API keys are optional for deployment. Any unconfigured model provider must remain explicitly identified as simulation mode.
+Provider API keys are optional for the base runtime deployment. Any unconfigured model provider must remain explicitly identified as simulation mode. A configured key is not proof of a successful live provider call.
 
 ## Exact host-side deployment sequence
 
@@ -30,15 +35,21 @@ From the existing OMOS application directory on the production host:
 git fetch origin
 git checkout main
 git pull --ff-only origin main
-npm install
+export OMOS_BUILD_SHA=$(git rev-parse HEAD)
+npm ci
 npm run check
-npm run preflight:production
+npm run test:openai-astra
+npm run test:model-gateway
+npm run test:connections
 npm run test:lifecycle
+npm run test:decision-record
+npm run verify:persistence:restart
+npm run preflight:production
 ```
 
-The preflight command intentionally fails if PostgreSQL persistence, canonical host metadata, runtime version, or core security settings are missing.
+`preflight:production` intentionally fails if PostgreSQL persistence, canonical host metadata, runtime version, or core security settings are missing. The connector tests prove repository/runtime contracts without making a production claim about external services.
 
-Then restart the existing Node service using the process supervisor configured by the hosting environment. Do not introduce a new supervisor merely for this deployment. Examples may include the hosting control panel, systemd, PM2, Docker, or another already-configured mechanism.
+Then restart the existing Node service using the process supervisor already configured by the hosting environment. Do not introduce a new supervisor merely for this deployment. Examples may include the hosting control panel, systemd, PM2, Docker, or another already-configured mechanism.
 
 ## Local-on-host verification after restart
 
@@ -48,17 +59,21 @@ With the runtime listening on its configured `PORT`:
 OMOS_BASE_URL=http://127.0.0.1:3000 npm run smoke
 OMOS_BASE_URL=http://127.0.0.1:3000 npm run smoke:pages
 OMOS_BASE_URL=http://127.0.0.1:3000 npm run smoke:security
+npm run connections:status
 ```
 
 Adjust `127.0.0.1:3000` only if the production service uses a different internal port.
+
+`connections:status` is contract/configuration evidence. `connections:probe` should be run only for explicitly configured external MCP targets because it performs network requests. An empty probe target set must not be reported as PASS evidence.
 
 ## Canonical public verification
 
 After the reverse proxy is serving the restarted process:
 
 ```bash
-OMOS_BASE_URL=https://omos.onegodian.com \
-OMOS_EXPECTED_VERSION=1.1.0 \
+export OMOS_BASE_URL=https://omos.onegodian.com
+export OMOS_EXPECTED_VERSION=1.1.0
+export OMOS_EXPECTED_SHA=$(git rev-parse HEAD)
 npm run smoke:live
 ```
 
@@ -66,11 +81,35 @@ npm run smoke:live
 
 - `/api/health` reports `status: ok` and version `1.1.0`
 - `/api/manifest` reports version `1.1.0` and the canonical OMOS host
-- `/api/v1/persistence` reports PostgreSQL with durable persistence enabled
+- `/build.json` reports runtime-resolved provenance and the exact deployed SHA
+- `/api/v1/persistence` reports PostgreSQL with `durable=true` and `initialized=true`
 - `/api/v1/providers` responds successfully
 - `/`, `/ask/`, `/dashboard`, `/ohi-output-pipeline`, and `/sitemap.xml` resolve successfully
 
 The normal security smoke test must also confirm that protected runtime and Council endpoints reject unauthenticated requests.
+
+## OMOS-REF-0001 production proof
+
+After public smoke verification succeeds, follow `docs/OMOS-REF-0001-PRODUCTION-PROOF-RUNBOOK.md` and run:
+
+```bash
+export OMOS_PROOF_PHASE=create
+export OMOS_REFERENCE_MODE=simulation
+export OMOS_PRODUCTION_KEY=<authorized raw key held only in the protected shell>
+npm run verify:production:reference-run
+```
+
+Capture the emitted `requestId`, `recordHash`, and `runtimeStartedAtUtc`. Restart or redeploy the **same SHA**, then run the verifier again with `OMOS_PROOF_PHASE=reopen` and those exact evidence values. OMOS-REF-0001 may be marked PASS only if the runtime start timestamp advances and the same Decision Record reopens from PostgreSQL with the same record hash.
+
+## Model Gateway production verification
+
+The four provider adapters share the normalized contract tested by `npm run test:model-gateway`. That establishes `CONTRACT_VERIFIED`, not `LIVE_VERIFIED`.
+
+A provider may be represented as `LIVE_VERIFIED` only after a controlled call from the deployed OMOS environment proves the configured credential/model works and the resulting provider, connector, model, request ID where available, latency, status, usage metadata where available, and `simulated:false` provenance are persisted and reopen correctly in a Decision Record. See `docs/MODEL-GATEWAY-PRODUCTION-TEST.md`.
+
+## MCP and Connection & Adaptation production verification
+
+`npm run test:connections` establishes the OneGodian MCP / Connection & Adaptation contract in repository scope. A named external connector still requires live endpoint evidence, authentication without secret disclosure, discovery/list success, authorization enforcement for consequential operations, audit/provenance persistence, error/timeout behavior, and domain-specific verification before it is labeled Production.
 
 ## PostgreSQL persistence
 
@@ -92,12 +131,6 @@ Production must not be represented as having durable Decision Record history whi
 - PostgreSQL for durable Decision Records
 - operational logs retained according to the hosting policy
 
-## Deployment boundary
-
-A GitHub commit, successful CI job, or passing local test suite is not itself a production deployment. Deployment is complete only when the hosting environment has pulled the intended revision, restarted the runtime, and the canonical public smoke verification passes.
-
-OMOS remains component-classified. A successful runtime deployment does not automatically promote every OMOS capability from Functional to Verified or Production.
-
 ## Rollback
 
 If any post-deployment gate fails:
@@ -105,5 +138,6 @@ If any post-deployment gate fails:
 1. record the failed endpoint/test and current deployed commit;
 2. restore the last known-good host revision;
 3. restart the existing runtime service;
-4. repeat health, manifest, persistence, page, and security verification;
-5. do not reopen or relabel failed components as Production until the failure is resolved.
+4. repeat health, manifest, persistence, page, security, and exact-SHA verification;
+5. preserve the failed evidence rather than relabeling it as PASS;
+6. do not represent failed components as Production until the failure is resolved and retested.

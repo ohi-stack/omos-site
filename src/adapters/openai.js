@@ -72,6 +72,7 @@ async function generate({ prompt, context = {}, options = {} }) {
   const model = selectedModel();
   const reasoningEffort = selectedReasoningEffort(options.reasoningEffort);
   const runId = String(context.requestId || context.runId || context.decisionId || 'unassigned').slice(0, 512);
+  const startedAt = Date.now();
 
   const response = await fetch(RESPONSES_URL, {
     method: 'POST',
@@ -102,6 +103,7 @@ async function generate({ prompt, context = {}, options = {} }) {
     })
   });
 
+  const latencyMs = Date.now() - startedAt;
   if (!response.ok) {
     throw new Error(`openai_http_${response.status}`);
   }
@@ -113,6 +115,7 @@ async function generate({ prompt, context = {}, options = {} }) {
     api: 'responses',
     model: data.model || model,
     output: outputText(data),
+    latencyMs,
     simulated: false,
     metadata: {
       providerRequestId: data.id || null,
