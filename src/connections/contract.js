@@ -77,7 +77,13 @@ function approvalRequired(definition, operation = '') {
   if (!definition || definition.humanApprovalRequired !== true) return false;
   const normalized = String(operation || '').toLowerCase();
   if (!normalized) return true;
-  if (normalized === 'tools/call' || normalized === 'write' || normalized === 'execute') return true;
+  if ([
+    'tools/call',
+    'write',
+    'execute',
+    'tasks/update',
+    'tasks/cancel'
+  ].includes(normalized)) return true;
   if (normalized.startsWith('action:') || normalized.startsWith('environment:')) return true;
   return false;
 }
