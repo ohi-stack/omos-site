@@ -86,6 +86,20 @@ jobs:
           OMOS_REQUIRE_DURABLE_DB: 'true'
         run: npm run verify:persistence:restart
 
+      - name: Production preflight contract
+        env:
+          NODE_ENV: production
+          OMOS_VERSION: '1.1.0'
+          OMOS_CANONICAL_HOST: https://omos.onegodian.com
+          OMOS_BUILD_SHA: ${{ github.sha }}
+          OMOS_DB_SSL: 'false'
+          OMOS_DB_POOL_MAX: '5'
+          OMOS_REQUIRE_DURABLE_DB: 'true'
+          OMOS_ALLOW_MEMORY_PERSISTENCE: 'false'
+        run: |
+          HASH=$(node -e "const c=require('crypto');process.stdout.write(c.createHash('sha256').update('omos-ci-production-key').digest('hex'))")
+          OMOS_API_KEYS="ci-production:${HASH}:developer" npm run preflight:production
+
       - name: Start runtime with durable PostgreSQL
         run: |
           HASH_A=$(node -e "const c=require('crypto');process.stdout.write(c.createHash('sha256').update(process.env.OMOS_TEST_KEY_A).digest('hex'))")
