@@ -132,8 +132,22 @@ async function runConnectorConformance(connector, { scope = 'contract' } = {}) {
 }
 
 async function runConformanceSuite(connectors, options = {}) {
+  const targets = Array.isArray(connectors) ? connectors : [];
+  const scope = options.scope || 'contract';
+  if (scope === 'runtime-probe' && targets.length === 0) {
+    return {
+      standard: STANDARD_ID,
+      status: 'REVIEW',
+      readiness: 'NO_PROBE_TARGETS',
+      results: [],
+      generatedAtUtc: new Date().toISOString(),
+      productionClaim: false,
+      productionBoundary: 'No configured MCP connectors were available to probe; no interoperability evidence was produced.'
+    };
+  }
+
   const results = [];
-  for (const connector of connectors) results.push(await runConnectorConformance(connector, options));
+  for (const connector of targets) results.push(await runConnectorConformance(connector, options));
   return {
     standard: STANDARD_ID,
     status: results.every((result) => result.status === 'PASS') ? 'PASS' : results.some((result) => result.status === 'FAIL') ? 'FAIL' : 'REVIEW',
