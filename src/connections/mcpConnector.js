@@ -75,6 +75,31 @@ function assertPermission(definition, method) {
   throw error;
 }
 
+function validateRpcEnvelope(payload, requestId) {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+    const error = new Error('mcp_invalid_jsonrpc_response');
+    error.code = 'mcp_invalid_jsonrpc_response';
+    throw error;
+  }
+  if (payload.jsonrpc !== '2.0') {
+    const error = new Error('mcp_invalid_jsonrpc_version');
+    error.code = 'mcp_invalid_jsonrpc_version';
+    throw error;
+  }
+  if (payload.id !== requestId) {
+    const error = new Error('mcp_response_id_mismatch');
+    error.code = 'mcp_response_id_mismatch';
+    throw error;
+  }
+  const hasResult = Object.prototype.hasOwnProperty.call(payload, 'result');
+  const hasError = Object.prototype.hasOwnProperty.call(payload, 'error');
+  if (hasResult === hasError) {
+    const error = new Error('mcp_invalid_jsonrpc_envelope');
+    error.code = 'mcp_invalid_jsonrpc_envelope';
+    throw error;
+  }
+}
+
 function createMcpConnector({
   id,
   platform,
@@ -152,43 +177,60 @@ function createMcpConnector({
     };
     if (name) headers['Mcp-Name'] = String(name);
 
-    const controller = signal ? null : new AbortController();
-    const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
+    const timeoutController = new AbortController();
+    const combinedSignal = signal ? AbortSignal.any([signal, timeoutController.signal]) : timeoutController.signal;
+    const timer = setTimeout(() => timeoutController.abort(), timeoutMs);
     let response;
+    let payload;
     try {
       response = await fetch(endpoint, {
         method: 'POST',
         headers,
-        signal: signal || controller.signal,
+        signal: combinedSignal,
         body: JSON.stringify({ jsonrpc: '2.0', id: requestId, method, params: requestParams })
       });
+
+      const contentType = String(response.headers.get('content-type') || '').toLowerCase();
+      if (contentType.includes('text/event-stream')) {
+        const error = new Error('mcp_sse_response_requires_stream_handler');
+        error.code = 'mcp_sse_response_requires_stream_handler';
+        error.httpStatus = response.status;
+        throw error;
+      }
+
+      try { payload = await response.json(); }
+      catch (_) {
+        if (timeoutController.signal.aborted && !(signal && signal.aborted)) {
+          const timeoutError = new Error('mcp_request_timeout');
+          timeoutError.code = 'mcp_request_timeout';
+          throw timeoutError;
+        }
+        const error = new Error(`mcp_invalid_json_http_${response.status}`);
+        error.code = 'mcp_invalid_json';
+        error.httpStatus = response.status;
+        throw error;
+      }
+    } catch (error) {
+      if (timeoutController.signal.aborted && !(signal && signal.aborted) && error.code !== 'mcp_request_timeout') {
+        const timeoutError = new Error('mcp_request_timeout');
+        timeoutError.code = 'mcp_request_timeout';
+        throw timeoutError;
+      }
+      throw error;
     } finally {
-      if (timer) clearTimeout(timer);
-    }
-
-    const contentType = String(response.headers.get('content-type') || '').toLowerCase();
-    if (contentType.includes('text/event-stream')) {
-      const error = new Error('mcp_sse_response_requires_stream_handler');
-      error.code = 'mcp_sse_response_requires_stream_handler';
-      error.httpStatus = response.status;
-      throw error;
-    }
-
-    let payload;
-    try { payload = await response.json(); }
-    catch (_) {
-      const error = new Error(`mcp_invalid_json_http_${response.status}`);
-      error.httpStatus = response.status;
-      throw error;
+      clearTimeout(timer);
     }
 
     if (!response.ok) {
       const error = new Error(`mcp_http_${response.status}`);
+      error.code = `mcp_http_${response.status}`;
       error.httpStatus = response.status;
       error.payload = payload;
       throw error;
     }
-    if (payload && payload.error) {
+
+    validateRpcEnvelope(payload, requestId);
+    if (payload.error) {
       const error = new Error(payload.error.message || 'mcp_rpc_error');
       error.code = payload.error.code;
       error.payload = payload.error;
@@ -200,7 +242,7 @@ function createMcpConnector({
       method,
       name,
       protocolVersion: MCP_PROTOCOL_VERSION,
-      result: payload ? payload.result : null,
+      result: payload.result,
       transport: 'streamable-http-stateless',
       sessionIdUsed: false
     };
@@ -285,5 +327,6 @@ module.exports = {
   declaredPermissionMethods,
   permissionAllows,
   assertPermission,
+  validateRpcEnvelope,
   MODERN_METHODS
 };
