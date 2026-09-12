@@ -8,6 +8,7 @@ const PHASE = String(process.env.OMOS_PROOF_PHASE || 'create').trim().toLowerCas
 const REFERENCE_MODE = String(process.env.OMOS_REFERENCE_MODE || 'simulation').trim().toLowerCase();
 const EXISTING_RUN_ID = String(process.env.OMOS_REFERENCE_RUN_ID || '').trim();
 const EXPECTED_RECORD_HASH = String(process.env.OMOS_REFERENCE_RECORD_HASH || '').trim();
+const PRE_RESTART_RUNTIME_STARTED_AT = String(process.env.OMOS_REFERENCE_RUNTIME_STARTED_AT || '').trim();
 const OUTPUT_FILE = String(process.env.OMOS_PROOF_OUTPUT || '').trim();
 
 function assert(condition, message) {
@@ -19,6 +20,32 @@ function redact(value) {
   const text = String(value);
   if (text.length <= 12) return '[redacted]';
   return `${text.slice(0, 6)}…${text.slice(-4)}`;
+}
+
+function validSha(value) {
+  return /^[0-9a-f]{40}$/i.test(String(value || ''));
+}
+
+function validRecordHash(value) {
+  return /^sha256:[0-9a-f]{64}$/i.test(String(value || ''));
+}
+
+function validTimestamp(value) {
+  return Boolean(value) && Number.isFinite(Date.parse(value));
+}
+
+function validateEvidenceInputs() {
+  assert(['create', 'reopen'].includes(PHASE), 'OMOS_PROOF_PHASE must be create or reopen');
+  assert(EXPECTED_SHA, 'OMOS_EXPECTED_SHA is required for production proof');
+  assert(validSha(EXPECTED_SHA), 'OMOS_EXPECTED_SHA must be an exact 40-character Git SHA');
+
+  if (PHASE === 'reopen') {
+    assert(EXISTING_RUN_ID, 'OMOS_REFERENCE_RUN_ID is required when OMOS_PROOF_PHASE=reopen');
+    assert(EXPECTED_RECORD_HASH, 'OMOS_REFERENCE_RECORD_HASH is required when OMOS_PROOF_PHASE=reopen');
+    assert(validRecordHash(EXPECTED_RECORD_HASH), 'OMOS_REFERENCE_RECORD_HASH must be a sha256:<64-hex> value');
+    assert(PRE_RESTART_RUNTIME_STARTED_AT, 'OMOS_REFERENCE_RUNTIME_STARTED_AT is required when OMOS_PROOF_PHASE=reopen');
+    assert(validTimestamp(PRE_RESTART_RUNTIME_STARTED_AT), 'OMOS_REFERENCE_RUNTIME_STARTED_AT must be a valid timestamp');
+  }
 }
 
 async function request(path, options = {}, auth = false) {
@@ -69,7 +96,8 @@ async function verifyLiveRuntime() {
   assert(build.version === EXPECTED_VERSION, `build version ${build.version} != expected ${EXPECTED_VERSION}`);
   assert(build.provenance === 'runtime-resolved', `build provenance ${build.provenance || 'unknown'} != runtime-resolved`);
   assert(build.buildSha && build.buildSha !== 'unknown', 'live build SHA is unresolved');
-  if (EXPECTED_SHA) assert(build.buildSha === EXPECTED_SHA, `live build SHA ${build.buildSha} != expected ${EXPECTED_SHA}`);
+  assert(build.buildSha === EXPECTED_SHA, `live build SHA ${build.buildSha} != expected ${EXPECTED_SHA}`);
+  assert(validTimestamp(build.runtimeStartedAtUtc), 'build metadata is missing a valid runtimeStartedAtUtc');
 
   const persistencePayload = await json('/api/v1/persistence');
   const persistence = persistencePayload.persistence || persistencePayload;
@@ -82,7 +110,7 @@ async function verifyLiveRuntime() {
     version: health.version,
     buildSha: build.buildSha,
     buildShaShort: build.buildShaShort || build.buildSha.slice(0, 12),
-    runtimeStartedAtUtc: build.runtimeStartedAtUtc || null,
+    runtimeStartedAtUtc: build.runtimeStartedAtUtc,
     persistence: {
       backend: persistence.backend,
       durable: persistence.durable,
@@ -114,7 +142,7 @@ function verifyApprovedRecord(record) {
   assert(record.humanGate && record.humanGate.decision === 'APPROVED', 'persisted Human Gate decision must be APPROVED');
   assert(record.humanGate.decidedAt, 'persisted Human Gate decision timestamp is missing');
   assert(Number(record.revision || 0) >= 2, `approved record revision ${record.revision || 0} must be >= 2`);
-  assert(record.recordHash, 'approved record hash is missing');
+  assert(validRecordHash(record.recordHash), 'approved record hash must be sha256:<64-hex>');
   const stage7 = (record.stages || []).find((item) => item.id === 7);
   assert(stage7 && stage7.status === 'COMPLETE', 'Decision Record stage must be COMPLETE after approval');
 }
@@ -188,21 +216,22 @@ async function createReferenceRun(runtime) {
     humanDecision: reopened.humanGate.decision,
     humanDecisionAtUtc: reopened.humanGate.decidedAt,
     historyReopenVerified: true,
-    nextRequiredAction: 'Restart or redeploy the exact same revision, then run this verifier with OMOS_PROOF_PHASE=reopen using the emitted requestId and recordHash.'
+    nextRequiredAction: 'Restart or redeploy the exact same revision, then run this verifier with OMOS_PROOF_PHASE=reopen using the emitted requestId, recordHash, and runtimeStartedAtUtc.'
   };
 }
 
 async function reopenReferenceRun(runtime) {
   assert(API_KEY, 'OMOS_PRODUCTION_KEY is required for authenticated reopen proof');
-  assert(EXISTING_RUN_ID, 'OMOS_REFERENCE_RUN_ID is required when OMOS_PROOF_PHASE=reopen');
+
+  const previousStartMs = Date.parse(PRE_RESTART_RUNTIME_STARTED_AT);
+  const currentStartMs = Date.parse(runtime.runtimeStartedAtUtc);
+  assert(currentStartMs > previousStartMs, `runtime restart not proven: runtimeStartedAtUtc ${runtime.runtimeStartedAtUtc} did not advance beyond ${PRE_RESTART_RUNTIME_STARTED_AT}`);
 
   const reopenedPayload = await json(`/api/v1/council/runs/${encodeURIComponent(EXISTING_RUN_ID)}`, {}, true);
   const reopened = unwrap(reopenedPayload);
   verifyApprovedRecord(reopened);
   assert(reopened.requestId === EXISTING_RUN_ID, 'reopened Decision Record ID does not match requested reference run');
-  if (EXPECTED_RECORD_HASH) {
-    assert(reopened.recordHash === EXPECTED_RECORD_HASH, `reopened record hash ${reopened.recordHash} != pre-restart hash ${EXPECTED_RECORD_HASH}`);
-  }
+  assert(reopened.recordHash === EXPECTED_RECORD_HASH, `reopened record hash ${reopened.recordHash} != pre-restart hash ${EXPECTED_RECORD_HASH}`);
 
   const historyPayload = await json('/api/v1/council/runs?limit=100', {}, true);
   const history = unwrap(historyPayload);
@@ -217,7 +246,9 @@ async function reopenReferenceRun(runtime) {
     canonicalHost: BASE,
     version: runtime.version,
     deployedSha: runtime.buildSha,
+    preRestartRuntimeStartedAtUtc: PRE_RESTART_RUNTIME_STARTED_AT,
     runtimeStartedAtUtc: runtime.runtimeStartedAtUtc,
+    restartObserved: true,
     persistence: runtime.persistence,
     requestId: reopened.requestId,
     revision: reopened.revision,
@@ -238,7 +269,7 @@ function emit(evidence) {
 }
 
 async function run() {
-  assert(['create', 'reopen'].includes(PHASE), 'OMOS_PROOF_PHASE must be create or reopen');
+  validateEvidenceInputs();
   const runtime = await verifyLiveRuntime();
   const evidence = PHASE === 'create' ? await createReferenceRun(runtime) : await reopenReferenceRun(runtime);
   emit(evidence);
