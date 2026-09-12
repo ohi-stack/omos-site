@@ -42,7 +42,7 @@ async function withMockMcpServer(run) {
       result = {
         protocolVersion: MCP_PROTOCOL_VERSION,
         supportedProtocolVersions: [MCP_PROTOCOL_VERSION],
-        capabilities: { tools: {}, resources: {} },
+        capabilities: { tools: {}, resources: {}, tasks: {} },
         serverInfo: { name: 'omos-mcp-conformance-mock', version: '1.0.0' }
       };
     } else if (body.method === 'tools/list') {
@@ -51,6 +51,10 @@ async function withMockMcpServer(run) {
       result = { resources: [] };
     } else if (body.method === 'tools/call') {
       result = { content: [{ type: 'text', text: String(body.params.arguments && body.params.arguments.text || 'ok') }] };
+    } else if (body.method === 'tasks/update') {
+      result = { task: { id: body.params.taskId, status: body.params.status || 'updated' } };
+    } else if (body.method === 'tasks/cancel') {
+      result = { cancelled: true, taskId: body.params.taskId };
     } else {
       res.setHeader('content-type', 'application/json');
       res.end(JSON.stringify({ jsonrpc: '2.0', id: body.id, error: { code: -32601, message: 'Method not found' } }));
@@ -68,6 +72,57 @@ async function withMockMcpServer(run) {
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }
+}
+
+async function withEdgeMcpServer(mode, run) {
+  const server = http.createServer(async (req, res) => {
+    const chunks = [];
+    for await (const chunk of req) chunks.push(chunk);
+    const body = JSON.parse(Buffer.concat(chunks).toString('utf8'));
+    res.statusCode = 200;
+    res.setHeader('content-type', 'application/json');
+
+    if (mode === 'slow-body') {
+      res.write('{"jsonrpc":"2.0","id":');
+      setTimeout(() => {
+        if (!res.destroyed) res.end(`${JSON.stringify(body.id)},"result":{"tools":[]}}`);
+      }, 120);
+      return;
+    }
+
+    if (mode === 'wrong-id') {
+      res.end(JSON.stringify({ jsonrpc: '2.0', id: `${body.id}-wrong`, result: { tools: [] } }));
+      return;
+    }
+
+    if (mode === 'wrong-version') {
+      res.end(JSON.stringify({ jsonrpc: '1.0', id: body.id, result: { tools: [] } }));
+      return;
+    }
+
+    res.end(JSON.stringify({ jsonrpc: '2.0', id: body.id, result: { tools: [] } }));
+  });
+
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const address = server.address();
+  try {
+    await run(`http://127.0.0.1:${address.port}/mcp`);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+}
+
+function readOnlyConnector(endpoint, options = {}) {
+  return createMcpConnector({
+    id: options.id || 'OMOS-CONN-MOCK-EDGE-0001',
+    platform: options.platform || 'MCP Edge Mock',
+    endpoint,
+    connectionClass: CONNECTION_CLASSES.DATA,
+    humanApprovalRequired: false,
+    capabilities: ['tools.list'],
+    permissions: { read: ['tools/list'], invoke: [], write: [] },
+    timeoutMs: options.timeoutMs || 1000
+  });
 }
 
 async function main() {
@@ -93,6 +148,16 @@ async function main() {
     assert.throws(
       () => parseExternalDefinitions(JSON.stringify([{ id: 'bad', platform: 'bad', endpoint: 'https://example.com/mcp', token: 'do-not-allow' }])),
       /embedded_secret_prohibited/
+    );
+    assert.throws(
+      () => parseExternalDefinitions(JSON.stringify([{
+        id: 'nested-bad',
+        platform: 'bad',
+        endpoint: 'https://example.com/mcp',
+        permissions: { read: [], metadata: { token: 'nested-secret' } }
+      }])),
+      /embedded_secret_prohibited/,
+      'nested secret-shaped keys must be rejected before registry output'
     );
 
     await withMockMcpServer(async ({ endpoint, observed }) => {
@@ -147,6 +212,20 @@ async function main() {
       assert.equal(approved.result.content[0].text, 'approved');
       assert.equal(approved.sessionIdUsed, false);
 
+      const approvedUpdate = await connector.invoke({
+        method: 'tasks/update',
+        params: { taskId: 'task-1', status: 'done' },
+        authorization: { approved: true, approvedBy: 'OMOS-CONFORMANCE-TEST' }
+      });
+      assert.equal(approvedUpdate.result.task.status, 'done');
+
+      const approvedCancel = await connector.invoke({
+        method: 'tasks/cancel',
+        params: { taskId: 'task-1' },
+        authorization: { approved: true, approvedBy: 'OMOS-CONFORMANCE-TEST' }
+      });
+      assert.equal(approvedCancel.result.cancelled, true);
+
       const call = observed.find((entry) => entry.body.method === 'tools/call');
       assert(call, 'approved tools/call must reach mock server');
       assert.equal(call.headers['mcp-protocol-version'], MCP_PROTOCOL_VERSION);
@@ -180,6 +259,30 @@ async function main() {
 
       const permittedRead = await readOnly.invoke({ method: 'tools/list' });
       assert(Array.isArray(permittedRead.result.tools), 'declared read permission must remain usable');
+    });
+
+    await withEdgeMcpServer('wrong-id', async (endpoint) => {
+      const connector = readOnlyConnector(endpoint, { id: 'OMOS-CONN-MOCK-WRONG-ID-0001' });
+      await assert.rejects(
+        connector.invoke({ method: 'tools/list' }),
+        (error) => error && error.code === 'mcp_response_id_mismatch'
+      );
+    });
+
+    await withEdgeMcpServer('wrong-version', async (endpoint) => {
+      const connector = readOnlyConnector(endpoint, { id: 'OMOS-CONN-MOCK-WRONG-VERSION-0001' });
+      await assert.rejects(
+        connector.invoke({ method: 'tools/list' }),
+        (error) => error && error.code === 'mcp_invalid_jsonrpc_version'
+      );
+    });
+
+    await withEdgeMcpServer('slow-body', async (endpoint) => {
+      const connector = readOnlyConnector(endpoint, { id: 'OMOS-CONN-MOCK-TIMEOUT-0001', timeoutMs: 25 });
+      await assert.rejects(
+        connector.invoke({ method: 'tools/list' }),
+        (error) => error && error.code === 'mcp_request_timeout'
+      );
     });
 
     console.log('PASS OneGodian MCP Standard / Connection & Adaptation runtime conformance');
