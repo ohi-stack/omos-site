@@ -3,6 +3,7 @@
 const {
   MCP_PROTOCOL_VERSION,
   CONNECTION_CLASSES,
+  approvalRequired,
   assertHumanApproval,
   publicDefinition,
   nonEmptyString
@@ -27,6 +28,7 @@ let requestSequence = 0;
 function endpointAllowed(endpoint) {
   let parsed;
   try { parsed = new URL(endpoint); } catch (_) { return false; }
+  if (parsed.username || parsed.password) return false;
   if (parsed.protocol === 'https:') return true;
   const local = parsed.hostname === '127.0.0.1' || parsed.hostname === 'localhost' || parsed.hostname === '::1';
   return process.env.NODE_ENV !== 'production' && parsed.protocol === 'http:' && local;
@@ -100,6 +102,59 @@ function validateRpcEnvelope(payload, requestId) {
   }
 }
 
+function normalizeAuthorizationVerification(result) {
+  if (result === true) return { verified: true };
+  if (result && typeof result === 'object' && result.verified === true) return result;
+  return { verified: false };
+}
+
+async function verifyHumanAuthorization(definition, operation, authorization, authorizationVerifier) {
+  if (!approvalRequired(definition, operation)) return { required: false, verified: true };
+
+  assertHumanApproval(definition, operation, authorization);
+
+  // A caller-supplied boolean is not authoritative production approval. In
+  // production, consequential external execution must bind to a verifier
+  // supplied by the authorized control plane (for example ACC/OCP/OEG).
+  if (process.env.NODE_ENV === 'production') {
+    if (typeof authorizationVerifier !== 'function') {
+      const error = new Error('authoritative_approval_verifier_required');
+      error.code = 'authoritative_approval_verifier_required';
+      error.connectionId = definition.id;
+      error.operation = operation;
+      throw error;
+    }
+
+    let verification;
+    try {
+      verification = normalizeAuthorizationVerification(await authorizationVerifier({
+        connection: publicDefinition(definition),
+        operation,
+        authorization
+      }));
+    } catch (cause) {
+      const error = new Error('authoritative_approval_verification_failed');
+      error.code = 'authoritative_approval_verification_failed';
+      error.connectionId = definition.id;
+      error.operation = operation;
+      error.cause = cause;
+      throw error;
+    }
+
+    if (!verification.verified) {
+      const error = new Error('authoritative_approval_verification_failed');
+      error.code = 'authoritative_approval_verification_failed';
+      error.connectionId = definition.id;
+      error.operation = operation;
+      throw error;
+    }
+
+    return { required: true, verified: true, verification };
+  }
+
+  return { required: true, verified: true, verification: { source: 'local-nonproduction-envelope' } };
+}
+
 function createMcpConnector({
   id,
   platform,
@@ -111,12 +166,19 @@ function createMcpConnector({
   capabilities = ['server.discover', 'tools.list', 'resources.list'],
   permissions = { read: ['server/discover', 'tools/list', 'resources/list'], invoke: [], write: [] },
   humanApprovalRequired = true,
+  authorizationVerifier = null,
   version = '1.0.0',
   timeoutMs = 10000,
   clientInfo = { name: 'omos-runtime', version: process.env.OMOS_VERSION || '1.1.0' }
 } = {}) {
   if (!nonEmptyString(id) || !nonEmptyString(platform) || !endpointAllowed(endpoint)) {
     throw new Error('invalid_mcp_connector_configuration');
+  }
+  if (!/^[A-Za-z0-9-]+$/.test(String(authHeader || ''))) {
+    throw new Error('invalid_mcp_auth_header');
+  }
+  if (authScheme && !/^[A-Za-z][A-Za-z0-9._-]{0,31}$/.test(String(authScheme))) {
+    throw new Error('invalid_mcp_auth_scheme');
   }
 
   const authConfigured = () => !authEnv || Boolean(process.env[authEnv]);
@@ -155,7 +217,7 @@ function createMcpConnector({
     }
     if (!MODERN_METHODS.has(method)) throw new Error('mcp_method_not_supported');
     assertPermission(definition, method);
-    assertHumanApproval(definition, method, authorization);
+    await verifyHumanAuthorization(definition, method, authorization, authorizationVerifier);
     if (!authConfigured()) throw new Error('mcp_authentication_not_configured');
 
     const name = mirroredName(method, params);
@@ -328,5 +390,6 @@ module.exports = {
   permissionAllows,
   assertPermission,
   validateRpcEnvelope,
+  verifyHumanAuthorization,
   MODERN_METHODS
 };
