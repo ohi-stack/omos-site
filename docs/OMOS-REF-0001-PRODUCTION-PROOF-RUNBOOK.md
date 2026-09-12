@@ -16,7 +16,8 @@ A PASS proves the deployed OMOS revision can:
 6. persist an explicit human disposition;
 7. finalize and reopen the Decision Record;
 8. list the same record in history;
-9. survive a runtime restart/redeployment without losing or mutating that record.
+9. prove a runtime restart/redeployment occurred; and
+10. reopen the exact same record after that restart without losing or mutating it.
 
 A PASS does **not** by itself certify every external model provider as live or factually verify model output. Provider live verification is a separate Model Gateway gate.
 
@@ -54,11 +55,11 @@ Set it for the verification session:
 
 ```bash
 export OMOS_EXPECTED_VERSION=1.1.0
-export OMOS_EXPECTED_SHA=<exact deployed commit SHA>
+export OMOS_EXPECTED_SHA=<exact 40-character deployed commit SHA>
 export OMOS_BASE_URL=https://omos.onegodian.com
 ```
 
-Do not use a moving branch name as production evidence. The SHA is the evidence identity.
+`OMOS_EXPECTED_SHA` is mandatory. Do not use a moving branch name as production evidence. The exact SHA is the evidence identity.
 
 ## Gate 1 — Production preflight
 
@@ -84,7 +85,7 @@ Any failure blocks restart/deployment promotion.
 
 ## Gate 2 — Deploy and resolve build provenance
 
-Start/restart OMOS through the production process manager. `npm start` runs `scripts/write-build-metadata.js` before `server.js`, producing `/build.json` with runtime-resolved build provenance.
+Start/restart OMOS through the production process manager. `npm start` runs `scripts/write-build-metadata.js` before `server.js`, producing `/build.json` with runtime-resolved build provenance and `runtimeStartedAtUtc`.
 
 Then run:
 
@@ -98,7 +99,7 @@ PASS requires:
 
 - `/api/health` reports `1.1.0`;
 - `/api/manifest` reports `1.1.0` and the canonical host;
-- `/build.json` reports `service=omos-site`, `provenance=runtime-resolved`, and the exact expected SHA;
+- `/build.json` reports `service=omos-site`, `provenance=runtime-resolved`, the exact expected SHA, and a valid `runtimeStartedAtUtc`;
 - `/api/v1/persistence` reports `backend=postgresql`, `durable=true`, `initialized=true`, and no error;
 - provider status endpoint is valid;
 - `/`, `/ask/`, `/dashboard`, `/ohi-output-pipeline`, and `/sitemap.xml` respond successfully.
@@ -116,13 +117,14 @@ npm run verify:production:reference-run
 
 The verifier must prove:
 
+- the exact deployed SHA matches `OMOS_EXPECTED_SHA`;
 - the run is created under the authenticated owner;
 - stages 1–5 are complete;
 - stage 6 is `NEEDS_REVIEW` before authorization;
 - stage 7 remains pending before authorization;
 - an explicit `APPROVED` Human Gate disposition is persisted;
 - the finalized record reaches stage 7;
-- the record has revision `>= 2` and a non-empty SHA-256 record hash;
+- the record has revision `>= 2` and a valid SHA-256 record hash;
 - immediate authenticated reopen succeeds;
 - history contains the same request ID.
 
@@ -137,7 +139,7 @@ revision
 humanDecisionAtUtc
 ```
 
-Do not lose `requestId` or `recordHash`; they are required for the restart proof.
+Do not lose `requestId`, `recordHash`, or `runtimeStartedAtUtc`; all three are required for the restart proof.
 
 ## Gate 4 — Restart or redeploy the exact revision
 
@@ -151,7 +153,7 @@ npm run smoke:live
 
 again with the same `OMOS_EXPECTED_SHA`.
 
-The new `runtimeStartedAtUtc` should demonstrate a runtime restart while `buildSha` remains identical.
+The post-restart `/build.json` must retain the same `buildSha` while reporting a later `runtimeStartedAtUtc`.
 
 ## Gate 5 — Reopen the exact Decision Record after restart
 
@@ -159,19 +161,24 @@ The new `runtimeStartedAtUtc` should demonstrate a runtime restart while `buildS
 export OMOS_PROOF_PHASE=reopen
 export OMOS_REFERENCE_RUN_ID=<requestId from Gate 3>
 export OMOS_REFERENCE_RECORD_HASH=<recordHash from Gate 3>
+export OMOS_REFERENCE_RUNTIME_STARTED_AT=<runtimeStartedAtUtc from Gate 3>
 export OMOS_PROOF_OUTPUT=/tmp/omos-ref-0001-after-restart.json
 npm run verify:production:reference-run
 ```
 
+The three `OMOS_REFERENCE_*` evidence inputs above are mandatory. The verifier will not issue a PASS if any are omitted.
+
 PASS requires:
 
+- the live build SHA is still the exact `OMOS_EXPECTED_SHA`;
+- the new `runtimeStartedAtUtc` is strictly later than the pre-restart timestamp captured in Gate 3;
 - the exact Decision Record is returned after restart;
 - the request ID is unchanged;
 - the Human Gate decision is still `APPROVED`;
 - the final Decision Record stage remains complete;
-- the record hash exactly matches the pre-restart hash;
+- the record hash exactly matches the mandatory pre-restart hash;
 - the record remains present in history;
-- live runtime version, build SHA, and PostgreSQL durability gates still pass.
+- live runtime version and PostgreSQL durability gates still pass.
 
 ## Evidence record
 
@@ -184,7 +191,8 @@ The production Engineering Record should retain the following non-secret evidenc
 | Canonical host | `https://omos.onegodian.com` |
 | OMOS version | `1.1.0` |
 | Deployed SHA | exact 40-character Git SHA |
-| Deployment/restart timestamp | UTC |
+| Pre-restart runtime start timestamp | UTC |
+| Post-restart runtime start timestamp | later UTC value |
 | Persistence backend | PostgreSQL |
 | Persistence durable | `true` |
 | Persistence initialized | `true` |
@@ -193,6 +201,7 @@ The production Engineering Record should retain the following non-secret evidenc
 | Post-restart record hash | exact same hash |
 | Human disposition | `APPROVED` or `REJECTED` as applicable |
 | Immediate reopen | PASS |
+| Restart observed | PASS |
 | Post-restart reopen | PASS |
 | History retrieval | PASS |
 | Live smoke | PASS |
@@ -203,6 +212,6 @@ Do not place `DATABASE_URL`, raw `OMOS_PRODUCTION_KEY`, provider API keys, or ot
 
 ## Certification rule
 
-OMOS-REF-0001 is **PASS** only if every production gate above is evidenced against one exact deployed SHA and the same Decision Record survives restart/redeployment.
+OMOS-REF-0001 is **PASS** only if every production gate above is evidenced against one exact deployed SHA, the runtime start timestamp proves a restart/redeployment occurred, and the same Decision Record survives that restart/redeployment with an unchanged record hash.
 
-If the runtime uses memory persistence, the deployed SHA is unresolved, the record disappears, the hash changes unexpectedly, or the production host is still serving an older version, the result is **FAIL / NOT PRODUCTION-VERIFIED**.
+If the runtime uses memory persistence, the deployed SHA is unresolved or mismatched, the runtime restart cannot be proven, the record disappears, the hash changes unexpectedly, or the production host is still serving an older version, the result is **FAIL / NOT PRODUCTION-VERIFIED**.
