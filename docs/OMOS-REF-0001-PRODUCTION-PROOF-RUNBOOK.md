@@ -1,6 +1,6 @@
 # OMOS-REF-0001 Production Proof Runbook
 
-**Milestone:** OMOS-REF-0001  
+**Milestone:** `OMOS-REF-0001`  
 **Release target:** OMOS 1.1.0  
 **Purpose:** Prove that one governed OMOS transaction is running on the canonical production host, persists durably in PostgreSQL, survives a runtime restart/redeployment, and can be reopened from history with the same Decision Record identity and hash.
 
@@ -23,19 +23,22 @@ A PASS does **not** by itself certify every external model provider as live or f
 
 ## Required production environment
 
-The production host must supply these values at runtime. Never commit the secret values to GitHub.
+The production host must supply these values at runtime. Never commit secret values to GitHub.
 
 ```text
 NODE_ENV=production
 OMOS_VERSION=1.1.0
 OMOS_CANONICAL_HOST=https://omos.onegodian.com
-OMOS_API_KEYS=<hashed production key store>
+OMOS_BUILD_SHA=<exact 40-character deployed Git SHA>
+OMOS_API_KEYS=<name:sha256_hash:plan[,name:sha256_hash:plan...]>
 DATABASE_URL=<production PostgreSQL connection URL>
 OMOS_DB_SSL=true
 OMOS_DB_POOL_MAX=5
 OMOS_REQUIRE_DURABLE_DB=true
 OMOS_ALLOW_MEMORY_PERSISTENCE=false
 ```
+
+`OMOS_API_KEYS` stores only SHA-256 hashes. Never place a raw `omos_live_...` key in that variable. `OMOS_BUILD_SHA` must be changed whenever the production deployment candidate changes.
 
 The operator performing the authenticated proof also needs the corresponding raw OMOS API key available only in that protected shell/session as:
 
@@ -51,7 +54,7 @@ Before deploying, record the exact candidate SHA:
 git rev-parse HEAD
 ```
 
-Set it for the verification session:
+Set the same value in the production runtime as `OMOS_BUILD_SHA`, then set it for the verification session:
 
 ```bash
 export OMOS_EXPECTED_VERSION=1.1.0
@@ -75,8 +78,13 @@ PASS requires:
 - Node 20+;
 - `NODE_ENV=production`;
 - exact OMOS version and canonical host;
-- non-placeholder OMOS API key configuration;
-- valid PostgreSQL `DATABASE_URL`;
+- exact, non-zero 40-character `OMOS_BUILD_SHA`;
+- one or more `OMOS_API_KEYS` records in `name:sha256_hash:plan` format with no raw key material;
+- valid PostgreSQL `DATABASE_URL` with a database host and database name;
+- explicit `OMOS_DB_SSL=true|false`;
+- `OMOS_DB_POOL_MAX` set to a valid integer from 1 through 50 (initial production recommendation: `5`);
+- `OMOS_REQUIRE_DURABLE_DB=true`;
+- `OMOS_ALLOW_MEMORY_PERSISTENCE=false`;
 - successful database connectivity;
 - successful idempotent migrations;
 - persistence reported as PostgreSQL, durable, and initialized.
@@ -139,7 +147,7 @@ revision
 humanDecisionAtUtc
 ```
 
-Do not lose `requestId`, `recordHash`, or `runtimeStartedAtUtc`; all three are required for the restart proof.
+Do not lose `requestId`, `recordHash`, or `runtimeStartedAtUtc`; all three are required for the restart proof. These values must come from the create-phase PASS output, not from manually reconstructed substitutes.
 
 ## Gate 4 — Restart or redeploy the exact revision
 
