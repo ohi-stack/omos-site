@@ -3,6 +3,7 @@
 const {
   MCP_PROTOCOL_VERSION,
   CONNECTION_CLASSES,
+  approvalRequired,
   assertHumanApproval,
   publicDefinition,
   nonEmptyString
@@ -27,6 +28,7 @@ let requestSequence = 0;
 function endpointAllowed(endpoint) {
   let parsed;
   try { parsed = new URL(endpoint); } catch (_) { return false; }
+  if (parsed.username || parsed.password) return false;
   if (parsed.protocol === 'https:') return true;
   const local = parsed.hostname === '127.0.0.1' || parsed.hostname === 'localhost' || parsed.hostname === '::1';
   return process.env.NODE_ENV !== 'production' && parsed.protocol === 'http:' && local;
@@ -75,6 +77,84 @@ function assertPermission(definition, method) {
   throw error;
 }
 
+function validateRpcEnvelope(payload, requestId) {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+    const error = new Error('mcp_invalid_jsonrpc_response');
+    error.code = 'mcp_invalid_jsonrpc_response';
+    throw error;
+  }
+  if (payload.jsonrpc !== '2.0') {
+    const error = new Error('mcp_invalid_jsonrpc_version');
+    error.code = 'mcp_invalid_jsonrpc_version';
+    throw error;
+  }
+  if (payload.id !== requestId) {
+    const error = new Error('mcp_response_id_mismatch');
+    error.code = 'mcp_response_id_mismatch';
+    throw error;
+  }
+  const hasResult = Object.prototype.hasOwnProperty.call(payload, 'result');
+  const hasError = Object.prototype.hasOwnProperty.call(payload, 'error');
+  if (hasResult === hasError) {
+    const error = new Error('mcp_invalid_jsonrpc_envelope');
+    error.code = 'mcp_invalid_jsonrpc_envelope';
+    throw error;
+  }
+}
+
+function normalizeAuthorizationVerification(result) {
+  if (result === true) return { verified: true };
+  if (result && typeof result === 'object' && result.verified === true) return result;
+  return { verified: false };
+}
+
+async function verifyHumanAuthorization(definition, operation, authorization, authorizationVerifier) {
+  if (!approvalRequired(definition, operation)) return { required: false, verified: true };
+
+  assertHumanApproval(definition, operation, authorization);
+
+  // A caller-supplied boolean is not authoritative production approval. In
+  // production, consequential external execution must bind to a verifier
+  // supplied by the authorized control plane (for example ACC/OCP/OEG).
+  if (process.env.NODE_ENV === 'production') {
+    if (typeof authorizationVerifier !== 'function') {
+      const error = new Error('authoritative_approval_verifier_required');
+      error.code = 'authoritative_approval_verifier_required';
+      error.connectionId = definition.id;
+      error.operation = operation;
+      throw error;
+    }
+
+    let verification;
+    try {
+      verification = normalizeAuthorizationVerification(await authorizationVerifier({
+        connection: publicDefinition(definition),
+        operation,
+        authorization
+      }));
+    } catch (cause) {
+      const error = new Error('authoritative_approval_verification_failed');
+      error.code = 'authoritative_approval_verification_failed';
+      error.connectionId = definition.id;
+      error.operation = operation;
+      error.cause = cause;
+      throw error;
+    }
+
+    if (!verification.verified) {
+      const error = new Error('authoritative_approval_verification_failed');
+      error.code = 'authoritative_approval_verification_failed';
+      error.connectionId = definition.id;
+      error.operation = operation;
+      throw error;
+    }
+
+    return { required: true, verified: true, verification };
+  }
+
+  return { required: true, verified: true, verification: { source: 'local-nonproduction-envelope' } };
+}
+
 function createMcpConnector({
   id,
   platform,
@@ -86,12 +166,19 @@ function createMcpConnector({
   capabilities = ['server.discover', 'tools.list', 'resources.list'],
   permissions = { read: ['server/discover', 'tools/list', 'resources/list'], invoke: [], write: [] },
   humanApprovalRequired = true,
+  authorizationVerifier = null,
   version = '1.0.0',
   timeoutMs = 10000,
   clientInfo = { name: 'omos-runtime', version: process.env.OMOS_VERSION || '1.1.0' }
 } = {}) {
   if (!nonEmptyString(id) || !nonEmptyString(platform) || !endpointAllowed(endpoint)) {
     throw new Error('invalid_mcp_connector_configuration');
+  }
+  if (!/^[A-Za-z0-9-]+$/.test(String(authHeader || ''))) {
+    throw new Error('invalid_mcp_auth_header');
+  }
+  if (authScheme && !/^[A-Za-z][A-Za-z0-9._-]{0,31}$/.test(String(authScheme))) {
+    throw new Error('invalid_mcp_auth_scheme');
   }
 
   const authConfigured = () => !authEnv || Boolean(process.env[authEnv]);
@@ -130,7 +217,7 @@ function createMcpConnector({
     }
     if (!MODERN_METHODS.has(method)) throw new Error('mcp_method_not_supported');
     assertPermission(definition, method);
-    assertHumanApproval(definition, method, authorization);
+    await verifyHumanAuthorization(definition, method, authorization, authorizationVerifier);
     if (!authConfigured()) throw new Error('mcp_authentication_not_configured');
 
     const name = mirroredName(method, params);
@@ -152,43 +239,60 @@ function createMcpConnector({
     };
     if (name) headers['Mcp-Name'] = String(name);
 
-    const controller = signal ? null : new AbortController();
-    const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
+    const timeoutController = new AbortController();
+    const combinedSignal = signal ? AbortSignal.any([signal, timeoutController.signal]) : timeoutController.signal;
+    const timer = setTimeout(() => timeoutController.abort(), timeoutMs);
     let response;
+    let payload;
     try {
       response = await fetch(endpoint, {
         method: 'POST',
         headers,
-        signal: signal || controller.signal,
+        signal: combinedSignal,
         body: JSON.stringify({ jsonrpc: '2.0', id: requestId, method, params: requestParams })
       });
+
+      const contentType = String(response.headers.get('content-type') || '').toLowerCase();
+      if (contentType.includes('text/event-stream')) {
+        const error = new Error('mcp_sse_response_requires_stream_handler');
+        error.code = 'mcp_sse_response_requires_stream_handler';
+        error.httpStatus = response.status;
+        throw error;
+      }
+
+      try { payload = await response.json(); }
+      catch (_) {
+        if (timeoutController.signal.aborted && !(signal && signal.aborted)) {
+          const timeoutError = new Error('mcp_request_timeout');
+          timeoutError.code = 'mcp_request_timeout';
+          throw timeoutError;
+        }
+        const error = new Error(`mcp_invalid_json_http_${response.status}`);
+        error.code = 'mcp_invalid_json';
+        error.httpStatus = response.status;
+        throw error;
+      }
+    } catch (error) {
+      if (timeoutController.signal.aborted && !(signal && signal.aborted) && error.code !== 'mcp_request_timeout') {
+        const timeoutError = new Error('mcp_request_timeout');
+        timeoutError.code = 'mcp_request_timeout';
+        throw timeoutError;
+      }
+      throw error;
     } finally {
-      if (timer) clearTimeout(timer);
-    }
-
-    const contentType = String(response.headers.get('content-type') || '').toLowerCase();
-    if (contentType.includes('text/event-stream')) {
-      const error = new Error('mcp_sse_response_requires_stream_handler');
-      error.code = 'mcp_sse_response_requires_stream_handler';
-      error.httpStatus = response.status;
-      throw error;
-    }
-
-    let payload;
-    try { payload = await response.json(); }
-    catch (_) {
-      const error = new Error(`mcp_invalid_json_http_${response.status}`);
-      error.httpStatus = response.status;
-      throw error;
+      clearTimeout(timer);
     }
 
     if (!response.ok) {
       const error = new Error(`mcp_http_${response.status}`);
+      error.code = `mcp_http_${response.status}`;
       error.httpStatus = response.status;
       error.payload = payload;
       throw error;
     }
-    if (payload && payload.error) {
+
+    validateRpcEnvelope(payload, requestId);
+    if (payload.error) {
       const error = new Error(payload.error.message || 'mcp_rpc_error');
       error.code = payload.error.code;
       error.payload = payload.error;
@@ -200,7 +304,7 @@ function createMcpConnector({
       method,
       name,
       protocolVersion: MCP_PROTOCOL_VERSION,
-      result: payload ? payload.result : null,
+      result: payload.result,
       transport: 'streamable-http-stateless',
       sessionIdUsed: false
     };
@@ -285,5 +389,7 @@ module.exports = {
   declaredPermissionMethods,
   permissionAllows,
   assertPermission,
+  validateRpcEnvelope,
+  verifyHumanAuthorization,
   MODERN_METHODS
 };
