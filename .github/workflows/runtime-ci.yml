@@ -53,6 +53,13 @@ jobs:
           OMOS_REQUIRE_DURABLE_DB: 'false'
         run: npm run test:openai-astra
 
+      - name: Model Gateway normalized connector contract
+        env:
+          DATABASE_URL: ''
+          NODE_ENV: test
+          OMOS_REQUIRE_DURABLE_DB: 'false'
+        run: npm run test:model-gateway
+
       - name: OneGodian MCP and Connection Layer conformance
         env:
           DATABASE_URL: ''
