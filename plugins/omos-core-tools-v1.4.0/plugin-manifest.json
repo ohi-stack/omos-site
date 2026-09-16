@@ -5,7 +5,7 @@
     "version": "1.4.0",
     "type": "wordpress-plugin",
     "owner": "ONEGODIAN, LLC",
-    "status": "development-scaffold",
+    "status": "repository-implemented-unverified",
     "canonical_runtime": "https://omos.onegodian.com"
   },
   "role": "OMOS-specific WordPress presentation and governed-runtime interface layer",
@@ -33,13 +33,24 @@
     "https://u.onegodian.org",
     "https://omos.onegodian.org"
   ],
-  "shared_runtime_reads": [
+  "implemented_runtime_reads": [
     "/api/health",
     "/api/manifest",
     "/api/v1/providers",
     "/api/v1/persistence"
   ],
-  "planned_shortcodes": [
+  "implemented_authenticated_actions": [
+    "POST /api/v1/council/run via logged-in WordPress /wp-json/omos/v1/ask when an OMOS bridge key is configured"
+  ],
+  "implemented_wordpress_rest": [
+    "GET /wp-json/omos/v1/status",
+    "GET /wp-json/omos/v1/manifest",
+    "GET /wp-json/omos/v1/health",
+    "GET /wp-json/omos/v1/providers",
+    "GET /wp-json/omos/v1/persistence",
+    "POST /wp-json/omos/v1/ask"
+  ],
+  "implemented_shortcodes": [
     "[omos_runtime_status]",
     "[omos_manifest]",
     "[omos_ask]",
@@ -56,11 +67,16 @@
     "[onegodian_omos_manifest]",
     "[onegodian_omos_links]"
   ],
+  "intentionally_inactive": [
+    "node heartbeat / registration until a verified canonical OMOS runtime endpoint exists"
+  ],
   "security_boundary": [
     "provider credentials remain server-side in OMOS",
     "public WordPress REST responses must not expose secrets",
-    "consequential execution remains behind authenticated OMOS/ACC control planes",
+    "authenticated Ask OMOS requires a bridge key and a logged-in WordPress user",
+    "OMOS_BRIDGE_API_KEY server configuration is preferred over database storage",
+    "consequential external-system writes remain behind authenticated OMOS/ACC control planes",
     "WordPress presentation sites do not become Decision Record authorities"
   ],
-  "production_rule": "Do not mark v1.4.0 production-installed until executable plugin code, security checks, target-site installation, runtime connectivity, shortcode rendering, and deployment evidence are verified."
+  "production_rule": "Do not mark v1.4.0 production-installed until syntax/security checks, target-site installation, runtime connectivity, shortcode rendering, authenticated Ask OMOS behavior, and deployment evidence are verified."
 }
