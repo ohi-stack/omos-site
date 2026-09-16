@@ -1,134 +1,180 @@
-# OMOS Plugin Production Integration Plan
+# OMOS WordPress Plugin Production Integration Plan
 
 Prepared for: ONEGODIAN, LLC  
-System: OMOS — OneGodian Metaphysical Operating System  
-Status: Production planning record
+Updated: 2026-09-16  
+Canonical runtime: `https://omos.onegodian.com`  
+Canonical bridge package: `plugins/omos-core-tools-v1.3.0/`
 
 ## Purpose
 
-This document defines the controlled production path for adding OMOS plugin functionality across the OneGodian ecosystem without collapsing the distinction between public explanation, commerce, and runtime execution.
+OMOS WordPress functionality is a distributed **client bridge** to the central OMOS runtime. WordPress may present OMOS status, tools, artifacts, launch surfaces, authorized Decision Record views, and site-specific commerce/education integrations. WordPress must not become a second Layer 1 / Alignment / Council / Synthesis / Decision Record runtime.
 
-The objective is to make OMOS usable as a real product layer while preserving institutional, legal, and operational clarity.
+Canonical architecture: `docs/OMOS-WORDPRESS-BRIDGE-ARCHITECTURE-2026-09-16.md`.
 
-## Domain Role Separation
-
-### OneGodian.org
-
-Use OneGodian.org as the public interpretation and educational layer.
-
-Recommended OMOS functions:
-
-- OMOS overview page
-- Digital Sanctuary page
-- OneGodian Algorithm explanation
-- Belief Mapper Lite public funnel
-- White paper and protocol documentation
-- Public ethics and consent notices
-- Links to OMOS.OneGodian.com for runtime access
-
-Do not use OneGodian.org as the heavy execution/control-plane domain.
-
-### OneGodian.com
-
-Use OneGodian.com as the commercial and user-facing product layer.
-
-Recommended OMOS functions:
-
-- Paid memberships
-- Digital products
-- User dashboards
-- Identity tools
-- Belief Mapper results
-- Personalized content pathways
-- WooCommerce product bridges
-- Stripe-backed premium access
+## Domain roles
 
 ### OMOS.OneGodian.com
 
-Use OMOS.OneGodian.com as the dedicated protocol/runtime domain.
+Central runtime and technical source of governed OMOS state:
 
-Recommended OMOS functions:
+- Ask OMOS runtime
+- Layer 1
+- Alignment Engine
+- Council / Model Gateway
+- Governed Synthesis
+- Human Gate state
+- canonical Decision Records and History
+- provider/runtime provenance
+- connector contracts and runtime health
 
-- Runtime API
-- `/process` endpoint
-- Dashboard interface
-- API key enforcement
-- Integration documentation
-- Developer and system tests
+### OneGodian.com
 
-## Minimum Viable Plugin Scope
+Commercial/member-facing WordPress property:
 
-The first production-ready plugin should include only the following modules:
+- OMOS product pathways
+- WooCommerce products/orders as commerce source of record where applicable
+- entitlement bridge into OMOS
+- Ask OMOS launcher
+- approved Decision Record/history views for authenticated users
+- tool/artifact cards
 
-1. Admin settings screen
-2. API key field for OMOS runtime access
-3. Runtime endpoint URL setting
-4. Belief Mapper Lite shortcode
-5. OMOS dashboard embed shortcode
-6. WooCommerce membership/product bridge
-7. Consent notice component
-8. Basic health check panel
+### OneGodian.org
 
-Avoid adding advanced identity, credential, agent, or financial functions until the core plugin is stable, documented, and repeatable.
+Public interpretation/educational WordPress property:
 
-## Required Public Language
+- OMOS explainers
+- Protocol / Algorithm / O-H-I education
+- public tools and artifact links
+- public-safe runtime status
+- contributor/learning pathways
 
-Use disciplined language:
+### QuantumOHI.com
 
-- founder-defined identity framework
-- public explanation layer
-- voluntary participation
-- identity reflection
-- human-centered technology
-- educational and commercial tools
-- internal governance context only
+Technical/O-H-I WordPress property:
 
-Avoid public language that implies:
+- O-H-I/Council architecture
+- runtime/connector status
+- technical documentation links
+- approved enterprise/integration pathways
 
-- independent nation-state authority
-- governmental authority over non-members
-- exemption from U.S. law
-- compulsory belief or conversion
-- financial guarantees
+## v1.3.0 reference bridge scope
 
-## Implementation Checklist
+Implemented source baseline:
 
-### Phase 1 — Stabilize Runtime
+1. `OMOS Core Tools` plugin bootstrap.
+2. Server-side `OMOS_Runtime_Client`.
+3. HTTPS OMOS runtime URL setting.
+4. Site profiles for OneGodian.com, OneGodian.org, QuantumOHI.com, and generic WordPress clients.
+5. Runtime health retrieval from `/api/health`.
+6. Runtime manifest retrieval from `/api/manifest`.
+7. Safe WordPress REST status + bridge manifest.
+8. `[omos_runtime_status]`.
+9. `[omos_manifest]`.
+10. `[omos_open_console_button]`.
+11. `[omos_ask_launcher]`.
+12. Server-only authenticated-request key boundary using `OMOS_RUNTIME_API_KEY`.
+13. No external write/action capabilities enabled by default.
 
-- Confirm `/health` response remains public and stable
-- Confirm `/process` requires `x-omos-key`
-- Add versioned manifest endpoint
-- Add integration documentation
-- Add smoke tests for runtime and plugin-facing endpoints
+## Legacy/source assets
 
-### Phase 2 — WordPress Plugin Adapter
+The repository also contains the older `wordpress/omos-platform-console.php`, page installer, menu builder, navigation assets, consensus widget, shortcode registry, and architecture documents. They are source material for modular migration. Any placeholder renderer remains a placeholder and must not be advertised as an operational OMOS capability.
 
-- Add WordPress admin settings page
-- Add shortcode: `[omos_belief_mapper]`
-- Add shortcode: `[omos_dashboard_embed]`
-- Add API client wrapper with timeout handling
-- Add consent text before any user submission
-- Add non-financial, non-governmental disclaimer language
+## Production phases
 
-### Phase 3 — OneGodian.org Deployment
+### Phase 0 — canonical runtime parity
 
-- Publish OMOS public landing page
-- Publish Digital Sanctuary page
-- Embed Belief Mapper Lite
-- Link to OMOS documentation and protocol pages
+Before treating any WordPress integration as production-connected:
 
-### Phase 4 — OneGodian.com Deployment
+- deploy OMOS 1.1.0/current approved main to the canonical host;
+- verify exact deployed SHA;
+- verify durable PostgreSQL;
+- verify health + manifest;
+- complete OMOS-REF-0001 production evidence.
 
-- Add OMOS product category
-- Add membership products
-- Add dashboard access path
-- Add WooCommerce entitlement checks
-- Add customer onboarding email copy
+### Phase 1 — bridge activation on staging
 
-## Production Rule
+For each WordPress property:
 
-If a feature is not operational, documented, tested, and repeatable, it is not part of the current production version.
+- activate `omos-core-tools`;
+- set the runtime URL to `https://omos.onegodian.com`;
+- select/verify the site profile;
+- test server-side health and manifest;
+- verify public status fallback when runtime is unavailable;
+- verify no runtime key appears in HTML/REST/JS/logs.
 
-## Current Recommended Version Label
+### Phase 2 — manifest/content synchronization
 
-OMOS Plugin MVP: `v0.1.0-production-planning`
+Add allowlisted, versioned, idempotent synchronization for:
+
+- OMOS tool catalog
+- artifact catalog
+- documentation links
+- approved runtime status metadata
+- page/module manifest where intentionally managed centrally
+
+WordPress remains source of record for its own published posts/pages unless a specific field/object is explicitly delegated to OMOS synchronization.
+
+### Phase 3 — authenticated Decision Record client
+
+Add an authenticated server-side OMOS client for:
+
+- user's authorized run history
+- Decision Record retrieval
+- safe status/provenance summaries
+- approved Human Gate interactions only when the OMOS authorization contract is satisfied
+
+Never expose an OMOS service credential to the browser. Preserve owner/tenant isolation.
+
+### Phase 4 — OneGodian.com commerce entitlement bridge
+
+Map WooCommerce/customer entitlement state into OMOS using minimum necessary data, stable source IDs, provenance, timestamps, and revocation state.
+
+OMOS consumes the entitlement. It does not become the WooCommerce order ledger or payment processor.
+
+### Phase 5 — separately authorized actions
+
+Publishing, editing, deleting, emailing, charging, refunding, deploying, or other consequential WordPress actions do not belong to ordinary sync.
+
+Use:
+
+```text
+OMOS governed decision
+→ Human Gate / policy authorization
+→ ACC / action router
+→ WordPress action adapter
+→ target result receipt
+→ OMOS audit / Decision Record outcome
+```
+
+## Security requirements
+
+- HTTPS only for runtime calls.
+- Runtime key server-side only; `wp-config.php`/environment preferred.
+- No arbitrary browser-supplied target URLs.
+- Bounded timeouts and redirects.
+- Sanitize input; escape output.
+- Nonces + WordPress capability checks for WordPress mutations.
+- Least-privilege external permissions.
+- Idempotency for write operations.
+- Audit receipts for writes/actions.
+- No sensitive Decision Record caching on public pages.
+- No automatic equation of WordPress user IDs with OMOS owner IDs without an explicit identity map.
+
+## Deployment acceptance
+
+A site is not an operational OMOS WordPress bridge merely because the plugin is installed. It must prove:
+
+- plugin activation succeeds;
+- site profile is correct;
+- central runtime is reachable server-to-server;
+- manifest/version state is accurate;
+- shortcodes fail safely;
+- secrets are absent from public output;
+- source-of-record boundaries are correct;
+- authenticated modules preserve owner isolation;
+- entitlement state can be revoked/reconciled;
+- any action path requires and records the correct authorization.
+
+## Production rule
+
+If a feature is not operational, documented, tested, observable, repeatable, and usable on the target WordPress property, it is not part of the production plugin version.
