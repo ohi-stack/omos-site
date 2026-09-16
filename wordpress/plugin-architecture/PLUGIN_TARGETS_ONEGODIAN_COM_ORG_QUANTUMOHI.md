@@ -1,133 +1,204 @@
-# OMOS Core Tools Plugin Targets
+# OMOS WordPress Runtime Bridge Targets
 
-Status: v1.0 target deployment map  
-Plugin: `omos-core-tools`  
-Primary Node Source: `https://omos.onegodian.com`  
-Target WordPress Properties: `OneGodian.com`, `OneGodian.org`, `QuantumOHI.com`
+Status: repository-ready integration baseline  
+Canonical Runtime: `https://omos.onegodian.com`  
+Canonical Runtime Repository: `ohi-stack/omos-site`  
+Shared WordPress Plugin Repository: `ohi-stack/onegodian-platform-plugin`  
+Shared Plugin Baseline: `0.3.0`  
+Primary Target Properties: `OneGodian.org`, `OneGodian.com`, `QuantumOHI.com`  
+Optional OMOS WordPress Presentation Target: `OMOS.OneGodian.org`
 
 ## Purpose
 
-The OMOS Core Tools plugin will be used on selected WordPress properties to display OMOS content, protocol links, runtime status, artifact cards, and tool cards sourced from the OMOS node.
+The OMOS WordPress integration connects approved OneGodian WordPress properties to the central OMOS runtime.
 
-The plugin must not convert those properties into OMOS itself. Each site keeps its own role.
+The integration must not turn each WordPress property into a separate OMOS runtime. The Node runtime remains authoritative for runtime health, model/provider state, governed processing, persistence state, Council execution, and Decision Records.
+
+WordPress remains a presentation, commerce, education, or technology client according to the role of the property.
+
+## Canonical Architecture
+
+```text
+                        OMOS CENTRAL RUNTIME
+                     https://omos.onegodian.com
+                               │
+              health / manifest / providers / persistence
+                               │
+                    OneGodian Platform Plugin
+                      ohi-stack/onegodian-platform-plugin
+                               │
+       ┌───────────────────────┼────────────────────────┐
+       │                       │                        │
+OneGodian.org           OneGodian.com            QuantumOHI.com
+Public / identity       Commerce / store          Technology / OHI
+       │                       │                        │
+       └───────────────────────┼────────────────────────┘
+                               │
+                    optional WordPress presentation
+                      OMOS.OneGodian.org
+```
+
+## Current Runtime Endpoints Used By WordPress
+
+The shared WordPress bridge reads only current, implemented public OMOS endpoints:
+
+```text
+GET https://omos.onegodian.com/api/health
+GET https://omos.onegodian.com/api/manifest
+GET https://omos.onegodian.com/api/v1/providers
+GET https://omos.onegodian.com/api/v1/persistence
+```
+
+The bridge does **not** assume `/api/tools`, `/api/artifacts`, `/api/docs`, `/api/ecosystem`, or `/api/bridge/status` exist unless those routes are separately implemented and verified in the Node runtime.
+
+## Shared WordPress REST Surface
+
+OneGodian Platform Plugin v0.3.0 exposes:
+
+```text
+GET  /wp-json/onegodian/v1/health
+GET  /wp-json/onegodian/v1/manifest
+GET  /wp-json/onegodian/v1/omos/status
+GET  /wp-json/onegodian/v1/omos/manifest
+GET  /wp-json/onegodian/v1/omos/providers
+GET  /wp-json/onegodian/v1/omos/persistence
+POST /wp-json/onegodian/v1/omos/sync
+```
+
+`POST /omos/sync` is administrator-only and refreshes the cached public runtime state. It is not an execution endpoint.
+
+## Shared Shortcodes
+
+```text
+[onegodian_platform_dashboard]
+[onegodian_omos_status]
+[onegodian_omos_manifest]
+[onegodian_omos_links]
+```
+
+OMOS-specific presentation plugins may add additional shortcodes, but these four form the shared cross-platform status baseline.
 
 ## Target Site Roles
 
-| Site | Role | Plugin Use |
+| Site | Role | OMOS Integration Use |
 | --- | --- | --- |
-| `OneGodian.com` | Store / commerce platform | Display OMOS product cards, protocol kit links, artifact/download cards, and commerce bridge pathways. Checkout remains on OneGodian.com. |
-| `OneGodian.org` | Organization / public identity / institutional home | Display public OMOS explanation cards, Algorithm/Protocol education links, source documents, and public-safe status blocks. |
-| `QuantumOHI.com` | Quantum-OHI / systems and technology positioning | Display OMOS/OHI protocol modules, alignment docs, developer-facing links, and Quantum-OHI integration pathways. |
+| `OneGodian.org` | Public identity / education / participation | Explain OMOS, display runtime status, link to Protocol, Algorithm, O-H-I, Docs, Belief Mapper, and Ask OMOS. |
+| `OneGodian.com` | Commerce / products / checkout | Display OMOS commercial offerings and technical context; commerce remains on the store. |
+| `QuantumOHI.com` | Technology / O-H-I / enterprise positioning | Display provider/runtime status, OMOS/O-H-I architecture, developer links, and implementation pathways. |
+| `U.OneGodian.org` | Education | Optional OMOS education/status widgets and course references. |
+| `OMOS.OneGodian.org` | WordPress presentation client, if deployed | Render OMOS presentation content while consuming the canonical runtime at `omos.onegodian.com`. |
 
-## Required Node Endpoints
+## OMOS.OneGodian.org Boundary
 
-The plugin should read from these OMOS node endpoints when available:
+The `.org` OMOS property should be treated as a **presentation client or redirect/alias target**, not a second execution authority, unless the architecture is deliberately changed later.
 
-```text
-https://omos.onegodian.com/api/health
-https://omos.onegodian.com/api/manifest
-https://omos.onegodian.com/api/ecosystem
-https://omos.onegodian.com/api/tools
-https://omos.onegodian.com/api/artifacts
-https://omos.onegodian.com/api/docs
-https://omos.onegodian.com/api/bridge/status
-```
+It must not independently own:
 
-If an endpoint is unavailable, the plugin must show a public-safe fallback message and mark the module as planned or unavailable, not operational.
+- model provider credentials;
+- Council execution authority;
+- Decision Record storage;
+- production persistence;
+- human-gate authority;
+- runtime verification state.
 
-## Required Plugin Screens
+Those remain with the canonical OMOS runtime.
 
-- OMOS Dashboard
-- Node Settings
-- Content Sync
-- Tool Cards
-- Artifact Cards
-- Docs Cards
-- Bridge Status
-- Compliance Notice
-- Import / Export
-- System Health
+## Admin Surfaces
 
-## Required Shortcodes
+### Canonical Node Admin
 
 ```text
-[omos_manifest]
-[omos_runtime_status]
-[omos_ecosystem_cards]
-[omos_tool_grid]
-[omos_artifact_grid]
-[omos_docs_grid]
-[omos_open_console_button]
-[omos_bridge_builder]
+https://omos.onegodian.com/admin
 ```
 
-`[omos_bridge_builder]` must remain a placeholder until the Bridge-Builder runtime is implemented, connected, and tested.
+Responsibilities:
 
-## Site-Specific Placement
+- runtime status;
+- provider status;
+- persistence status;
+- Decision Record inspection;
+- human approval/rejection;
+- manifest inspection.
 
-### OneGodian.com
+### WordPress Shared Admin
 
-Recommended locations:
+OneGodian Platform Plugin reports:
 
-- `/product-category/omos/`
-- OMOS product pages
-- digital downloads pages
-- developer kit product pages
-- footer / resource menu
+- detected/configured site role;
+- canonical OMOS node URL;
+- bridge connection state;
+- runtime version;
+- provider count;
+- persistence backend/durability;
+- last manual sync timestamp;
+- direct link to the OMOS Admin control plane.
 
-Primary CTA:
+## Repository Boundaries
+
+### `ohi-stack/omos-site`
+
+Owns:
+
+- Node/Express runtime;
+- Ask OMOS;
+- Layer 1 and Alignment execution;
+- Council/provider adapters;
+- governed synthesis;
+- Human Gate;
+- Decision Records;
+- persistence;
+- runtime/admin pages;
+- OMOS-specific WordPress source assets.
+
+### `ohi-stack/onegodian-platform-plugin`
+
+Owns:
+
+- shared WordPress service framework;
+- cross-property OMOS status synchronization;
+- site-role detection;
+- WordPress status REST endpoints;
+- shared OMOS shortcodes;
+- shared admin connection/status UI.
+
+### `ohi-stack/acc-wp-adapter`
+
+Owns or should own authenticated ACC-to-WordPress action operations where a governed control plane needs to perform writes. It is distinct from public/read-through OMOS status sync.
+
+## Security Rules
+
+1. Provider API keys never enter WordPress public markup or public REST responses.
+2. WordPress status synchronization is read-through and cache-backed.
+3. Consequential OMOS actions require authenticated runtime/control-plane APIs.
+4. Human approval remains separate from model agreement and from factual verification.
+5. WordPress target sites must not claim independent OMOS runtime authority.
+6. A failed node request must render a public-safe degraded/unavailable state rather than fabricated operational data.
+
+## Deployment Checklist — Per Target Site
+
+1. Install OneGodian Platform Plugin v0.3.0 or later.
+2. Configure OMOS Node URL as `https://omos.onegodian.com`.
+3. Confirm target-site role.
+4. Test local `/wp-json/onegodian/v1/health`.
+5. Test local `/wp-json/onegodian/v1/omos/status`.
+6. Confirm the OMOS runtime version is returned.
+7. Confirm provider status is returned without secrets.
+8. Confirm persistence status is returned.
+9. Trigger one administrator OMOS sync and record the UTC timestamp.
+10. Add approved shortcodes to site-specific pages.
+11. Test the degraded fallback by temporarily simulating node unavailability in staging.
+12. Capture screenshots and endpoint evidence.
+13. Mark the property `verified` only after those checks pass.
+
+## Maturity States
 
 ```text
-View OMOS Products
+repository-ready
+→ installed
+→ configured
+→ connected
+→ verified
+→ production-verified
 ```
 
-### OneGodian.org
-
-Recommended locations:
-
-- `/omos/`
-- `/what-is-onegodian/`
-- `/onegodian-algorithm/`
-- `/digital-sanctuary/`
-- educational resource pages
-
-Primary CTA:
-
-```text
-Learn the OMOS Framework
-```
-
-### QuantumOHI.com
-
-Recommended locations:
-
-- `/omos/`
-- `/ohi/`
-- `/alignment/`
-- `/developer/`
-- services / technical strategy pages
-
-Primary CTA:
-
-```text
-Open OMOS Protocol Docs
-```
-
-## Compliance Requirements
-
-1. OMOS is a protocol, specification, documentation, and runtime-support framework.
-2. ONEGODIAN, LLC is the commercial/IP/software/education entity.
-3. INO governance/religious society language must remain separated and used only where legally appropriate.
-4. Gregorian/civil records remain controlling for legal, financial, tax, banking, and institutional matters.
-5. No plugin output should imply independent nation-state authority, immunity from law, authority over non-members, or financial guarantees.
-
-## Deployment Checklist
-
-1. Install plugin on staging copy of each WordPress site.
-2. Configure OMOS Node URL: `https://omos.onegodian.com`.
-3. Test `/api/health` and `/api/manifest` from the plugin.
-4. Add target-specific shortcodes to approved pages.
-5. Confirm fallback messages display if node is unavailable.
-6. Confirm compliance notice displays where required.
-7. Verify no checkout or financial action happens on OMOS node.
-8. Promote staging to production only after screenshots and endpoint tests are recorded.
+A Git commit does not by itself advance a target WordPress property past `repository-ready`.
