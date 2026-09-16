@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "1.0.0",
+  "statusDate": "2026-09-16",
+  "canonical": {
+    "repository": "ohi-stack/omos-site",
+    "branch": "main",
+    "baselineSha": "da7b33b01333d090ba4241cdd1963c9989cc1a13",
+    "runtimeHost": "https://omos.onegodian.com",
+    "runtimeVersion": "1.1.0",
+    "sourceOfTruth": true
+  },
+  "domains": [
+    {
+      "host": "omos.onegodian.com",
+      "role": "canonical-runtime",
+      "verificationState": "LIVE_REACHABLE_LATEST_DEPLOYED_SHA_NOT_PROVEN"
+    },
+    {
+      "host": "omos.onegodian.org",
+      "role": "wordpress-presentation-client",
+      "verificationState": "DEPLOYMENT_NOT_INDEPENDENTLY_VERIFIED"
+    }
+  ],
+  "repositories": {
+    "runtimeAndSpecializedWordPress": "ohi-stack/omos-site",
+    "developmentMirror": "ohi-stack/OneGodian-Metaphysical-Operating-System-AI-Studio",
+    "sharedWordPressPlatform": "ohi-stack/onegodian-platform-plugin",
+    "wordpressActionAdapter": "ohi-stack/acc-wp-adapter",
+    "accControlPlane": "ohi-stack/acc",
+    "ollmProviderRuntime": "ohi-stack/onegodian-llm"
+  },
+  "mirror": {
+    "repository": "ohi-stack/OneGodian-Metaphysical-Operating-System-AI-Studio",
+    "expectedSource": "ohi-stack/omos-site@main",
+    "observedSyncedSha": "6abcce83e2377b19abf1aa9b608375d2363bf191",
+    "state": "BEHIND_CURRENT_MAIN_AT_STATUS_CHECK"
+  },
+  "wordpressLayers": {
+    "sharedPlatform": {
+      "repository": "ohi-stack/onegodian-platform-plugin",
+      "minimumVersion": "0.3.0",
+      "role": "shared cross-property status, role detection, cache refresh, and common OMOS presentation"
+    },
+    "omosCoreTools": {
+      "repository": "ohi-stack/omos-site",
+      "path": "plugins/omos-core-tools-v1.4.0",
+      "version": "1.4.0",
+      "role": "specialized OMOS WordPress UI, runtime proxies, shortcodes, and authenticated Ask OMOS bridge",
+      "canonicalRuntime": "https://omos.onegodian.com",
+      "maturity": "REPOSITORY_IMPLEMENTED_DEPLOYMENT_UNVERIFIED"
+    },
+    "actionAdapter": {
+      "repository": "ohi-stack/acc-wp-adapter",
+      "role": "authenticated governed WordPress and WooCommerce writes after applicable OMOS/Human Gate/ACC authorization"
+    }
+  },
+  "requiredWordPressTargets": [
+    "onegodian.org",
+    "onegodian.com",
+    "quantumohi.com",
+    "omos.onegodian.org"
+  ],
+  "optionalWordPressTargets": [
+    "u.onegodian.org"
+  ],
+  "v14RuntimeReads": [
+    "/api/health",
+    "/api/manifest",
+    "/api/v1/providers",
+    "/api/v1/persistence"
+  ],
+  "v14AuthenticatedRuntimeActions": [
+    "POST /api/v1/council/run"
+  ],
+  "v14WordPressRest": [
+    "GET /wp-json/omos/v1/status",
+    "GET /wp-json/omos/v1/manifest",
+    "GET /wp-json/omos/v1/health",
+    "GET /wp-json/omos/v1/providers",
+    "GET /wp-json/omos/v1/persistence",
+    "POST /wp-json/omos/v1/ask"
+  ],
+  "productionRule": "Repository synchronization is not deployment synchronization. Required WordPress properties are VERIFIED only after the expected plugin/runtime contracts are installed, configured, endpoint-tested, page-tested, and recorded on each property."
+}
