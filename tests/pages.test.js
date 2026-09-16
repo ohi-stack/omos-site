@@ -99,6 +99,33 @@ async function expectConvergencePages() {
   }
 }
 
+async function expectOruSurfaces() {
+  const page = await expectOk("/oru/");
+  const markers = [
+    "Oru’Valen™ Lived Experience Layer",
+    "Fact is not inference",
+    "Privacy, consent, and authority",
+    "Human input or authorized evidence",
+    "ACC authorized execution",
+    "human-approved memory/current-state update"
+  ];
+  for (const marker of markers) assert.ok(page.body.includes(marker), `/oru/ missing marker: ${marker}`);
+  assert.ok(page.body.includes("omos-site-header"), "/oru/ missing OMOS header contract");
+  assert.ok(page.body.includes("omos-site-footer"), "/oru/ missing OMOS footer contract");
+  assert.ok(page.body.includes("/api/oru.json"), "/oru/ missing machine profile link");
+
+  const profile = await expectJson("/api/oru.json");
+  assert.equal(profile.id, "oru-valen", "Oru profile must expose canonical id");
+  assert.equal(profile.authority?.human_authority_final, true, "Oru profile must preserve final human authority");
+  assert.equal(profile.authority?.durable_memory_update_requires_approval, true, "durable Oru memory must remain approval-gated");
+  assert.equal(profile.learning_rules?.inference_may_auto_promote_to_fact, false, "Oru inference must not auto-promote to fact");
+  assert.equal(profile.learning_rules?.automatic_surveillance_claim, false, "Oru profile must not claim background surveillance");
+  assert.ok(profile.memory_classes?.includes("lived_experience"), "Oru profile must include lived experience memory class");
+  assert.ok(profile.memory_classes?.includes("decision_memory"), "Oru profile must include decision memory class");
+  assert.ok(profile.epistemic_classes?.includes("INFERENCE"), "Oru profile must expose epistemic separation");
+  assert.equal(profile.maturity?.deployment_status, "requires_separate_proof", "source implementation must not imply deployment proof");
+}
+
 async function run() {
   const publicRoutes = [
     "/", "/omos", "/workspace", "/council", "/ollm", "/ohi", "/models", "/tools",
@@ -115,8 +142,9 @@ async function run() {
   await expectAskWorkspace();
   await expectBlackGoldStandard();
   await expectConvergencePages();
+  await expectOruSurfaces();
 
-  const apiRoutes = ["/api/health", "/api/manifest", "/api/v1/providers", "/api/v1/persistence"];
+  const apiRoutes = ["/api/health", "/api/manifest", "/api/v1/providers", "/api/v1/persistence", "/api/oru.json"];
   for (const route of apiRoutes) await expectJson(route);
 
   const manifest = await expectJson("/api/manifest");
@@ -139,7 +167,7 @@ async function run() {
   await expectOk("/omos-ui.js");
   await expectOk("/ask-workspace.js");
 
-  console.log("OMOS customer-first homepage, global UI shell, black-gold standard, convergence pages, evidence-safe provider states, and Ask OMOS workspace tests passed.");
+  console.log("OMOS customer-first homepage, global UI shell, black-gold standard, convergence pages, Oru Valen architecture/profile surfaces, evidence-safe provider states, and Ask OMOS workspace tests passed.");
 }
 
 run().catch((error) => {
