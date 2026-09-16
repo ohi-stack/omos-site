@@ -1,0 +1,496 @@
+:root {
+  --omos-bg: #050507;
+  --omos-bg-elevated: #070607;
+  --omos-bg-soft: #15111f;
+  --omos-panel: #17121f;
+  --omos-gold: #d8b35a;
+  --omos-gold-light: #f0d98a;
+  --omos-purple: #6f3cff;
+  --omos-text: #f5f1e8;
+  --omos-muted: rgba(245, 241, 232, 0.78);
+  --omos-border: rgba(216, 179, 90, 0.22);
+  --omos-purple-border: rgba(111, 60, 255, 0.32);
+  --omos-success: #62d49b;
+  --omos-warning: #f0c66e;
+  --omos-danger: #ff7f86;
+  --omos-radius: 22px;
+  --omos-radius-sm: 14px;
+  --omos-shadow: 0 18px 44px rgba(0, 0, 0, 0.26);
+  --omos-font: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.omos-module,
+.omos-admin-shell {
+  box-sizing: border-box;
+  font-family: var(--omos-font);
+}
+
+.omos-module *,
+.omos-admin-shell * {
+  box-sizing: border-box;
+}
+
+.omos-module {
+  position: relative;
+  overflow: hidden;
+  margin: 24px 0;
+  padding: clamp(20px, 3vw, 34px);
+  color: var(--omos-text);
+  border: 1px solid var(--omos-border);
+  border-radius: var(--omos-radius);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(111, 60, 255, 0.17), transparent 36%),
+    radial-gradient(circle at 86% 4%, rgba(216, 179, 90, 0.12), transparent 32%),
+    linear-gradient(180deg, #070607 0%, #050507 100%);
+  box-shadow: var(--omos-shadow);
+}
+
+.omos-module::before,
+.omos-admin-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 0 44%, rgba(240, 217, 138, 0.035) 50%, transparent 56% 100%);
+}
+
+.omos-module-header,
+.omos-panel-heading,
+.omos-admin-hero,
+.omos-feature-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.omos-module-header {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(245, 241, 232, 0.08);
+}
+
+.omos-module h2,
+.omos-module h3,
+.omos-admin-shell h1,
+.omos-admin-shell h2,
+.omos-admin-shell h3 {
+  margin: 0;
+  color: var(--omos-text);
+  line-height: 1.15;
+}
+
+.omos-module h2 {
+  margin-top: 7px;
+  font-size: clamp(24px, 4vw, 38px);
+  letter-spacing: -0.025em;
+}
+
+.omos-module h3,
+.omos-admin-shell h2 {
+  font-size: 20px;
+}
+
+.omos-module p,
+.omos-admin-shell p {
+  color: var(--omos-muted);
+  line-height: 1.65;
+}
+
+.omos-brand-kicker,
+.omos-card-eyebrow {
+  display: inline-block;
+  color: var(--omos-gold-light);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.omos-profile-badge,
+.omos-version-badge,
+.omos-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 29px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.045em;
+  white-space: nowrap;
+}
+
+.omos-profile-badge,
+.omos-version-badge {
+  color: var(--omos-gold-light);
+  border: 1px solid var(--omos-border);
+  background: rgba(216, 179, 90, 0.08);
+}
+
+.omos-status-registered,
+.omos-status-working,
+.omos-status-connected {
+  color: #ddfff0;
+  border: 1px solid rgba(98, 212, 155, 0.34);
+  background: rgba(98, 212, 155, 0.12);
+}
+
+.omos-status-error {
+  color: #ffe7e9;
+  border: 1px solid rgba(255, 127, 134, 0.34);
+  background: rgba(255, 127, 134, 0.11);
+}
+
+.omos-status-panel {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--omos-purple-border);
+  border-radius: var(--omos-radius-sm);
+  background: rgba(111, 60, 255, 0.07);
+}
+
+.omos-status-panel p {
+  margin: 0;
+}
+
+.omos-metric-grid,
+.omos-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.omos-metric {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--omos-border);
+  border-radius: var(--omos-radius-sm);
+  background: rgba(7, 6, 7, 0.76);
+}
+
+.omos-metric span {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--omos-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.omos-metric strong {
+  display: block;
+  overflow: hidden;
+  color: var(--omos-text);
+  font-size: 17px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.omos-card-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.omos-cols-1 { grid-template-columns: 1fr; }
+.omos-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.omos-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.omos-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.omos-card,
+.omos-feature-card,
+.omos-state {
+  border: 1px solid var(--omos-border);
+  border-radius: var(--omos-radius-sm);
+  background: rgba(7, 6, 7, 0.82);
+}
+
+.omos-card {
+  min-height: 180px;
+  padding: 19px;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.omos-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(240, 217, 138, 0.42);
+  background: rgba(21, 17, 31, 0.92);
+}
+
+.omos-card h3,
+.omos-feature-card h3 {
+  margin-top: 8px;
+}
+
+.omos-card p {
+  min-height: 52px;
+}
+
+.omos-feature-card {
+  padding: clamp(18px, 3vw, 28px);
+}
+
+.omos-feature-card > div {
+  max-width: 720px;
+}
+
+.omos-button,
+.omos-text-link {
+  text-decoration: none !important;
+}
+
+.omos-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 16px;
+  color: var(--omos-text) !important;
+  border: 1px solid rgba(245, 241, 232, 0.16);
+  border-radius: 999px;
+  background: rgba(245, 241, 232, 0.055);
+  font-weight: 800;
+  line-height: 1;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.omos-button:hover,
+.omos-button:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--omos-gold);
+  outline: none;
+}
+
+.omos-button-primary {
+  color: #130f08 !important;
+  border-color: var(--omos-gold);
+  background: linear-gradient(135deg, var(--omos-gold-light), var(--omos-gold));
+  box-shadow: 0 8px 24px rgba(216, 179, 90, 0.18);
+}
+
+.omos-text-link {
+  color: var(--omos-gold-light) !important;
+  font-weight: 800;
+}
+
+.omos-console-wrap,
+.omos-dashboard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.omos-dashboard-actions {
+  margin-top: 18px;
+}
+
+.omos-state {
+  padding: 18px;
+}
+
+.omos-state-error {
+  border-color: rgba(255, 127, 134, 0.28);
+  background: rgba(255, 127, 134, 0.06);
+}
+
+.omos-state-empty {
+  border-color: rgba(245, 241, 232, 0.14);
+}
+
+/* WordPress admin */
+.omos-admin-shell {
+  position: relative;
+  max-width: 1480px;
+  margin-top: 20px;
+  color: var(--omos-text);
+}
+
+.omos-admin-hero,
+.omos-admin-panel,
+.omos-admin-metrics {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 18px;
+  color: var(--omos-text);
+  border: 1px solid var(--omos-border);
+  border-radius: var(--omos-radius);
+  background:
+    radial-gradient(circle at 9% 0%, rgba(111, 60, 255, 0.18), transparent 36%),
+    radial-gradient(circle at 92% 0%, rgba(216, 179, 90, 0.12), transparent 28%),
+    var(--omos-bg);
+  box-shadow: var(--omos-shadow);
+}
+
+.omos-admin-hero,
+.omos-admin-panel {
+  padding: 26px;
+}
+
+.omos-admin-hero h1 {
+  margin: 8px 0 0;
+  color: var(--omos-text);
+  font-size: clamp(30px, 4vw, 44px);
+  letter-spacing: -0.035em;
+}
+
+.omos-admin-hero p {
+  max-width: 760px;
+  margin-bottom: 0;
+}
+
+.omos-admin-actions {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.omos-admin-shell .button-primary {
+  border-color: var(--omos-gold) !important;
+  color: #130f08 !important;
+  background: linear-gradient(135deg, var(--omos-gold-light), var(--omos-gold)) !important;
+  box-shadow: none !important;
+  font-weight: 800;
+}
+
+.omos-admin-metrics {
+  padding: 16px;
+}
+
+.omos-admin-panel h2 {
+  margin-top: 7px;
+}
+
+.omos-panel-heading {
+  margin-bottom: 18px;
+}
+
+.omos-panel-heading p {
+  max-width: 620px;
+  text-align: right;
+}
+
+.omos-table-wrap {
+  overflow-x: auto;
+  border: 1px solid rgba(245, 241, 232, 0.08);
+  border-radius: var(--omos-radius-sm);
+}
+
+.omos-admin-shell .omos-status-table {
+  min-width: 900px;
+  margin: 0;
+  border: 0;
+  color: var(--omos-text);
+  background: transparent;
+}
+
+.omos-admin-shell .omos-status-table thead th {
+  padding: 14px 12px;
+  color: var(--omos-gold-light);
+  border-bottom: 1px solid var(--omos-border);
+  background: rgba(216, 179, 90, 0.06);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.omos-admin-shell .omos-status-table td {
+  padding: 14px 12px;
+  color: var(--omos-text);
+  border-bottom-color: rgba(245, 241, 232, 0.06);
+  background: rgba(7, 6, 7, 0.7);
+  vertical-align: middle;
+}
+
+.omos-admin-shell .omos-status-table tr:nth-child(even) td {
+  background: rgba(21, 17, 31, 0.72);
+}
+
+.omos-admin-shell code {
+  color: var(--omos-gold-light);
+  background: rgba(216, 179, 90, 0.08);
+}
+
+.omos-error-text { color: #ffb6bb; }
+.omos-ok-text { color: var(--omos-muted); }
+
+.omos-layout-compact {
+  padding: 16px;
+  border-radius: 16px;
+}
+
+.omos-layout-workspace,
+.omos-layout-dashboard {
+  width: 100%;
+  max-width: none;
+}
+
+.omos-profile-commerce .omos-card-eyebrow,
+.omos-profile-commerce .omos-brand-kicker {
+  color: var(--omos-gold-light);
+}
+
+.omos-profile-enterprise {
+  border-color: var(--omos-purple-border);
+}
+
+@media (max-width: 1100px) {
+  .omos-cols-4,
+  .omos-cols-3,
+  .omos-metric-grid,
+  .omos-dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .omos-module,
+  .omos-admin-hero,
+  .omos-admin-panel {
+    border-radius: 16px;
+  }
+
+  .omos-module-header,
+  .omos-panel-heading,
+  .omos-admin-hero,
+  .omos-feature-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .omos-panel-heading p {
+    text-align: left;
+  }
+
+  .omos-status-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .omos-cols-4,
+  .omos-cols-3,
+  .omos-cols-2,
+  .omos-metric-grid,
+  .omos-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .omos-metric strong {
+    white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .omos-card,
+  .omos-button {
+    transition: none;
+  }
+}
