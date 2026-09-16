@@ -24,15 +24,16 @@ final class OMOS_Runtime_Client {
 
     public function sanitize_settings($value) {
         $defaults = $this->defaults();
+        $current = $this->settings();
         $value = is_array($value) ? $value : array();
 
         return array(
-            'runtime_url'   => $this->sanitize_https_url(isset($value['runtime_url']) ? $value['runtime_url'] : $defaults['runtime_url'], $defaults['runtime_url']),
-            'public_url'    => $this->sanitize_https_url(isset($value['public_url']) ? $value['public_url'] : $defaults['public_url'], $defaults['public_url']),
-            'cache_minutes' => max(1, min(60, absint(isset($value['cache_minutes']) ? $value['cache_minutes'] : 5))),
-            'node_name'     => sanitize_text_field(isset($value['node_name']) ? $value['node_name'] : $defaults['node_name']),
-            'node_role'     => sanitize_key(isset($value['node_role']) ? $value['node_role'] : $defaults['node_role']),
-            'api_key'       => sanitize_text_field(isset($value['api_key']) ? $value['api_key'] : ''),
+            'runtime_url'   => $this->sanitize_https_url(isset($value['runtime_url']) ? $value['runtime_url'] : $current['runtime_url'], $defaults['runtime_url']),
+            'public_url'    => $this->sanitize_https_url(isset($value['public_url']) ? $value['public_url'] : $current['public_url'], $defaults['public_url']),
+            'cache_minutes' => max(1, min(60, absint(isset($value['cache_minutes']) ? $value['cache_minutes'] : $current['cache_minutes']))),
+            'node_name'     => sanitize_text_field(isset($value['node_name']) ? $value['node_name'] : $current['node_name']),
+            'node_role'     => sanitize_key(isset($value['node_role']) ? $value['node_role'] : $current['node_role']),
+            'api_key'       => isset($value['api_key']) ? sanitize_text_field($value['api_key']) : (string) $current['api_key'],
         );
     }
 
