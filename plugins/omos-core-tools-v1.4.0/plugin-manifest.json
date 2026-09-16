@@ -1,0 +1,66 @@
+{
+  "plugin": {
+    "name": "OMOS Core Tools",
+    "slug": "omos-core-tools",
+    "version": "1.4.0",
+    "type": "wordpress-plugin",
+    "owner": "ONEGODIAN, LLC",
+    "status": "development-scaffold",
+    "canonical_runtime": "https://omos.onegodian.com"
+  },
+  "role": "OMOS-specific WordPress presentation and governed-runtime interface layer",
+  "depends_on_or_reuses": {
+    "shared_platform_plugin": {
+      "repository": "ohi-stack/onegodian-platform-plugin",
+      "minimum_version": "0.3.0",
+      "purpose": "shared WordPress infrastructure and common OMOS status synchronization"
+    }
+  },
+  "related_repositories": {
+    "runtime": "ohi-stack/omos-site",
+    "shared_wordpress": "ohi-stack/onegodian-platform-plugin",
+    "governed_wordpress_actions": "ohi-stack/acc-wp-adapter"
+  },
+  "presentation_target": {
+    "url": "https://omos.onegodian.org",
+    "status": "not-independently-verified",
+    "authority": "client-only"
+  },
+  "target_sites": [
+    "https://onegodian.org",
+    "https://onegodian.com",
+    "https://quantumohi.com",
+    "https://u.onegodian.org",
+    "https://omos.onegodian.org"
+  ],
+  "shared_runtime_reads": [
+    "/api/health",
+    "/api/manifest",
+    "/api/v1/providers",
+    "/api/v1/persistence"
+  ],
+  "planned_shortcodes": [
+    "[omos_runtime_status]",
+    "[omos_manifest]",
+    "[omos_ask]",
+    "[omos_council]",
+    "[omos_tool_grid]",
+    "[omos_docs_grid]",
+    "[omos_decision_history]",
+    "[omos_belief_mapper]",
+    "[omos_unity_dashboard]"
+  ],
+  "shared_shortcodes": [
+    "[onegodian_platform_dashboard]",
+    "[onegodian_omos_status]",
+    "[onegodian_omos_manifest]",
+    "[onegodian_omos_links]"
+  ],
+  "security_boundary": [
+    "provider credentials remain server-side in OMOS",
+    "public WordPress REST responses must not expose secrets",
+    "consequential execution remains behind authenticated OMOS/ACC control planes",
+    "WordPress presentation sites do not become Decision Record authorities"
+  ],
+  "production_rule": "Do not mark v1.4.0 production-installed until executable plugin code, security checks, target-site installation, runtime connectivity, shortcode rendering, and deployment evidence are verified."
+}
