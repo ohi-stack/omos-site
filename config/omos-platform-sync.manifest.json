@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAtUtc": "2026-09-16T21:50:00Z",
+  "canonical": {
+    "repository": "ohi-stack/omos-site",
+    "branch": "main",
+    "baselineSha": "6abcce83e2377b19abf1aa9b608375d2363bf191",
+    "runtimeHost": "https://omos.onegodian.com",
+    "runtimeVersion": "1.1.0",
+    "sourceOfTruth": true
+  },
+  "domains": [
+    {
+      "host": "omos.onegodian.com",
+      "role": "canonical-runtime",
+      "expectedBehavior": "Serve the OMOS Node/Express runtime and public product site.",
+      "verificationState": "LIVE_OBSERVED_DEPLOYED_VERSION_NOT_YET_PROVEN_1_1_0"
+    },
+    {
+      "host": "omos.onegodian.org",
+      "role": "requested-public-alias",
+      "expectedBehavior": "Redirect or proxy to the canonical OMOS runtime without becoming an independent source of truth.",
+      "verificationState": "UNVERIFIED"
+    }
+  ],
+  "mirrors": [
+    {
+      "repository": "ohi-stack/OneGodian-Metaphysical-Operating-System-AI-Studio",
+      "branch": "main",
+      "mode": "scheduled-read-only-mirror",
+      "authority": "development-mirror-only",
+      "expectedSource": "ohi-stack/omos-site@main",
+      "observedSyncedSha": "6abcce83e2377b19abf1aa9b608375d2363bf191"
+    }
+  ],
+  "wordpressBridge": {
+    "pluginSlug": "omos-core-tools",
+    "packageVersion": "1.3.0",
+    "packagePath": "plugins/omos-core-tools-v1.3.0",
+    "mode": "bridge-client",
+    "nodeSource": "https://omos.onegodian.com",
+    "readOnlyByDefault": true,
+    "sourcePaths": [
+      "plugins/omos-core-tools-v1.3.0/omos-core-tools.php",
+      "plugins/omos-core-tools-v1.3.0/includes/class-omos-node-client.php",
+      "plugins/omos-core-tools-v1.3.0/includes/class-omos-shortcodes.php",
+      "plugins/omos-core-tools-v1.3.0/includes/class-omos-admin.php"
+    ],
+    "legacyReferencePaths": [
+      "wordpress/omos-platform-console.php",
+      "wordpress/omos-page-generator.php",
+      "wordpress/omos-ai-consensus-widget.php",
+      "wordpress/onegodian-global-navigation.php",
+      "wordpress/onegodian-mega-menu-builder.php"
+    ],
+    "requiredNodeEndpoints": [
+      "/api/health",
+      "/api/manifest",
+      "/api/ecosystem",
+      "/api/tools",
+      "/api/artifacts",
+      "/api/docs",
+      "/api/bridge/status"
+    ]
+  },
+  "wordpressTargets": [
+    {
+      "host": "onegodian.com",
+      "role": "commerce",
+      "pluginMode": "bridge-client",
+      "deploymentState": "REQUIRES_LIVE_INSTALL_VERIFICATION"
+    },
+    {
+      "host": "onegodian.org",
+      "role": "public-identity-education",
+      "pluginMode": "bridge-client",
+      "deploymentState": "REQUIRES_LIVE_INSTALL_VERIFICATION"
+    },
+    {
+      "host": "quantumohi.com",
+      "role": "technology-positioning",
+      "pluginMode": "bridge-client",
+      "deploymentState": "REQUIRES_LIVE_INSTALL_VERIFICATION"
+    }
+  ],
+  "productionRule": "Repository synchronization is not deployment synchronization. A target may be marked VERIFIED only after plugin version, node URL, health/manifest reachability, shortcode smoke tests, local bridge status, and target-site evidence are recorded for that property."
+}
