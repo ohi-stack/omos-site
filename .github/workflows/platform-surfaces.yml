@@ -1,0 +1,31 @@
+name: OMOS Platform Surface Contract
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'config/platform-surfaces.json'
+      - 'scripts/verify-platform-surfaces.js'
+      - 'docs/WORDPRESS-PLATFORM-SYNC.md'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'config/platform-surfaces.json'
+      - 'scripts/verify-platform-surfaces.js'
+      - 'docs/WORDPRESS-PLATFORM-SYNC.md'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validate platform surface contract
+        run: node scripts/verify-platform-surfaces.js
