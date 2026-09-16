@@ -18,8 +18,8 @@
     },
     {
       "host": "omos.onegodian.org",
-      "role": "requested-public-alias",
-      "expectedBehavior": "Redirect or proxy to the canonical OMOS runtime without becoming an independent source of truth.",
+      "role": "wordpress-presentation-client",
+      "expectedBehavior": "Present OMOS through WordPress while reading runtime state from https://omos.onegodian.com. It must not become an independent runtime source of truth.",
       "verificationState": "UNVERIFIED"
     }
   ],
@@ -33,6 +33,14 @@
       "observedSyncedSha": "6abcce83e2377b19abf1aa9b608375d2363bf191"
     }
   ],
+  "repositories": {
+    "runtimeAndPluginSource": "ohi-stack/omos-site",
+    "developmentMirror": "ohi-stack/OneGodian-Metaphysical-Operating-System-AI-Studio",
+    "sharedWordPressPlatform": "ohi-stack/onegodian-platform-plugin",
+    "wordpressActionAdapter": "ohi-stack/acc-wp-adapter",
+    "accControlPlane": "ohi-stack/acc",
+    "ollmProviderRuntime": "ohi-stack/onegodian-llm"
+  },
   "wordpressBridge": {
     "pluginSlug": "omos-core-tools",
     "packageVersion": "1.3.0",
@@ -67,21 +75,38 @@
     {
       "host": "onegodian.com",
       "role": "commerce",
+      "required": true,
       "pluginMode": "bridge-client",
       "deploymentState": "REQUIRES_LIVE_INSTALL_VERIFICATION"
     },
     {
       "host": "onegodian.org",
       "role": "public-identity-education",
+      "required": true,
       "pluginMode": "bridge-client",
       "deploymentState": "REQUIRES_LIVE_INSTALL_VERIFICATION"
     },
     {
       "host": "quantumohi.com",
       "role": "technology-positioning",
+      "required": true,
       "pluginMode": "bridge-client",
       "deploymentState": "REQUIRES_LIVE_INSTALL_VERIFICATION"
+    },
+    {
+      "host": "omos.onegodian.org",
+      "role": "omos-wordpress-presentation",
+      "required": true,
+      "pluginMode": "presentation-client-of-canonical-runtime",
+      "deploymentState": "REQUIRES_LIVE_INSTALL_VERIFICATION"
+    },
+    {
+      "host": "u.onegodian.org",
+      "role": "education",
+      "required": false,
+      "pluginMode": "optional-bridge-client",
+      "deploymentState": "OPTIONAL_REQUIRES_LIVE_INSTALL_VERIFICATION"
     }
   ],
-  "productionRule": "Repository synchronization is not deployment synchronization. A target may be marked VERIFIED only after plugin version, node URL, health/manifest reachability, shortcode smoke tests, local bridge status, and target-site evidence are recorded for that property."
+  "productionRule": "Repository synchronization is not deployment synchronization. A required target may be marked VERIFIED only after plugin version, canonical Node URL, health/manifest reachability, shortcode smoke tests, local bridge status, and target-site evidence are recorded for that property."
 }
