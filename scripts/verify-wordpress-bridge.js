@@ -28,8 +28,13 @@ if (manifest.canonical.runtimeHost !== 'https://omos.onegodian.com') failures.pu
 if (manifest.wordpressBridge.packageVersion !== '1.3.0') failures.push('manifest:plugin_version');
 
 const targetHosts = new Set((manifest.wordpressTargets || []).map(item => item.host));
-for (const host of ['onegodian.com', 'onegodian.org', 'quantumohi.com']) {
+for (const host of ['onegodian.com', 'onegodian.org', 'quantumohi.com', 'omos.onegodian.org', 'u.onegodian.org']) {
   if (!targetHosts.has(host)) failures.push(`manifest:missing_target:${host}`);
+}
+
+const requiredHosts = new Set((manifest.wordpressTargets || []).filter(item => item.required !== false).map(item => item.host));
+for (const host of ['onegodian.com', 'onegodian.org', 'quantumohi.com', 'omos.onegodian.org']) {
+  if (!requiredHosts.has(host)) failures.push(`manifest:required_target_not_enforced:${host}`);
 }
 
 for (const relative of manifest.wordpressBridge.sourcePaths || []) requireFile(relative);
@@ -40,7 +45,8 @@ requireText('plugins/omos-core-tools-v1.3.0/omos-core-tools.php', [
   ['plugin_version', /Version:\s*1\.3\.0/],
   ['bridge_status_route', /\/bridge\/status/],
   ['readable_rest', /WP_REST_Server::READABLE/],
-  ['plugin_loaded', /plugins_loaded/]
+  ['plugin_loaded', /plugins_loaded/],
+  ['presentation_role', /omos-wordpress-presentation-client/]
 ]);
 
 requireText('plugins/omos-core-tools-v1.3.0/includes/class-omos-node-client.php', [
@@ -81,9 +87,10 @@ const result = {
   },
   wordpressTargets: (manifest.wordpressTargets || []).map(target => ({
     host: target.host,
+    required: target.required !== false,
     deploymentState: target.deploymentState
   })),
-  alias: (manifest.domains || []).find(item => item.host === 'omos.onegodian.org') || null,
+  presentationDomain: (manifest.domains || []).find(item => item.host === 'omos.onegodian.org') || null,
   failures,
   productionClaim: false,
   note: 'PASS proves repository-side bridge packaging and safety boundaries only. Each WordPress property still requires live installation and target-site verification.'
