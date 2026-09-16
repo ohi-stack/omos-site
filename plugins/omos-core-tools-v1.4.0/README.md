@@ -39,7 +39,7 @@ It must not become a second independent runtime authority unless that architectu
 
 ## Shared-Plugin Dependency Boundary
 
-Where `OneGodian Platform Plugin` v0.3.0+ is available, OMOS Core Tools should reuse its shared runtime-status contract rather than duplicating it.
+Where `OneGodian Platform Plugin` v0.3.0+ is available, OMOS Core Tools should reuse its shared runtime-status contract rather than redefining the cross-site authority model.
 
 Shared status capabilities include:
 
@@ -51,26 +51,35 @@ GET  /wp-json/onegodian/v1/omos/persistence
 POST /wp-json/onegodian/v1/omos/sync
 ```
 
-OMOS Core Tools may add richer OMOS-specific endpoints under `/wp-json/omos/v1/`, but overlapping endpoints should delegate to or remain compatible with the shared plugin contract.
+OMOS Core Tools adds richer OMOS-specific endpoints under `/wp-json/omos/v1/`.
 
-## Planned / OMOS-Specific Capabilities
+## Implemented v1.4.0 Runtime Contract
 
-- OMOS runtime connection/status screen
-- Ask OMOS interface/embed
-- Council presentation and run inspection
-- Decision History presentation
-- Belief Mapper presentation
-- OMOS Tools and Docs grids
-- Unity Dashboard presentation
-- node registration/heartbeat contract where the runtime endpoint exists
-- capability-safe admin access and nonce-protected WordPress operations
-- production checklist and documentation screens
+The plugin source now implements:
 
-No provider API keys should be stored in public WordPress content or returned by WordPress public REST endpoints. Model credentials remain server-side in OMOS.
+```text
+GET  /wp-json/omos/v1/status
+GET  /wp-json/omos/v1/manifest
+GET  /wp-json/omos/v1/health
+GET  /wp-json/omos/v1/providers
+GET  /wp-json/omos/v1/persistence
+POST /wp-json/omos/v1/ask
+```
 
-## Shortcodes
+`POST /omos/v1/ask` requires a logged-in WordPress user and a configured OMOS bridge key. It proxies to the canonical authenticated Council endpoint rather than running models inside WordPress.
 
-OMOS-specific shortcode targets:
+Current canonical runtime reads are limited to routes that actually exist in the OMOS Node runtime:
+
+```text
+/api/health
+/api/manifest
+/api/v1/providers
+/api/v1/persistence
+```
+
+Node heartbeat/registration is intentionally **not active** in this plugin version because the canonical OMOS runtime does not currently expose a verified `/api/v1/nodes/heartbeat` contract.
+
+## Implemented Shortcodes
 
 ```text
 [omos_runtime_status]
@@ -93,6 +102,31 @@ Shared cross-platform status shortcodes supplied by OneGodian Platform Plugin v0
 [onegodian_omos_links]
 ```
 
+## Admin Screens
+
+The v1.4.0 source provides:
+
+- OMOS Dashboard
+- App Bridge
+- Settings
+- API Keys
+- Tools
+- Status
+- Production Checklist
+- Documentation
+
+The Status screen reads health, manifest, provider state, and persistence state from the canonical runtime.
+
+## Security Boundary
+
+- Provider API keys stay server-side in the OMOS runtime.
+- The plugin may hold only an OMOS bridge credential for authenticated runtime access.
+- `OMOS_BRIDGE_API_KEY` supplied through server configuration is preferred over storing a bridge key in WordPress options.
+- Public REST endpoints expose status/manifest information only.
+- Authenticated Ask OMOS requires a logged-in WordPress user plus the bridge credential.
+- WordPress does not become the authoritative Decision Record store.
+- Consequential external-system writes remain under the OMOS → Human Gate → ACC → action-adapter path.
+
 ## Target Properties
 
 | Property | Core Tools Use | Shared Platform Bridge |
@@ -105,9 +139,23 @@ Shared cross-platform status shortcodes supplied by OneGodian Platform Plugin v0
 
 ## Maturity
 
-Current package state: **Development / package scaffold**.
+Current package state: **Repository Implemented / Deployment Unverified**.
 
-The README and architecture contract exist, but v1.4.0 must not be represented as a production-installed plugin until its executable package, REST routes, shortcodes, admin screens, security checks, and target-property installation tests are present and verified.
+Executable plugin code, REST proxies, shortcodes, settings, status screens, credential boundary, and production checklist now exist in the repository. This is still not proof that v1.4.0 is installed or functioning on any target WordPress production site.
+
+## Production Verification Gates
+
+Before a target site is marked synchronized/verified:
+
+1. Install the shared platform plugin v0.3.0+ where applicable.
+2. Install OMOS Core Tools v1.4.0 where richer OMOS UI is required.
+3. Configure `https://omos.onegodian.com` as the canonical runtime.
+4. Verify health, manifest, providers, and persistence proxies.
+5. Verify approved shortcodes render correctly.
+6. Verify authenticated Ask OMOS works only for logged-in users with a valid bridge credential.
+7. Verify no provider credentials appear in WordPress output or REST responses.
+8. Verify degraded behavior when the central runtime is unavailable.
+9. Record target-site screenshots, endpoint responses, plugin versions, and UTC timestamps.
 
 ## Production Rule
 
