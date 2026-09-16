@@ -1,246 +1,188 @@
-# OMOS Core Tools — Production Plugin Structure
+# OMOS Core Tools — Production WordPress Bridge Structure
 
-Status: v1.0 architecture baseline  
-Target Plugin: `omos-core-tools`  
-Target Site: `OMOS.OneGodian.com`  
-Purpose: Turn OMOS.OneGodian.com into a controlled WordPress protocol/specification console for OMOS documentation, tools, artifacts, registry references, compliance, and system status.
+Status: v1.3.0 architecture baseline  
+Canonical runtime: `https://omos.onegodian.com`  
+Canonical runtime repository: `ohi-stack/omos-site`  
+Reference plugin source: `plugins/omos-core-tools-v1.3.0/`
 
-## 1. Production Directory Structure
+## 1. Role
+
+`omos-core-tools` is a WordPress **client bridge** to the canonical OMOS Node/Express runtime. It may render approved OMOS data, launch OMOS experiences, synchronize allowlisted manifests, bridge entitlements, and expose site-specific WordPress integration surfaces.
+
+It must **not** reproduce Layer 1, Alignment, Council orchestration, Governed Synthesis, Human Gate authority, or the canonical Decision Store in WordPress.
+
+Target WordPress properties:
+
+- OneGodian.com — commerce/member-facing bridge
+- OneGodian.org — public education/interpretation bridge
+- QuantumOHI.com — O-H-I/technical integration bridge
+- additional WordPress properties only through an explicit site profile and source-of-record contract
+
+OMOS.OneGodian.com remains the central OMOS runtime rather than a WordPress plugin host.
+
+## 2. Production directory target
 
 ```text
 omos-core-tools/
 ├── omos-core-tools.php
-├── uninstall.php
 ├── readme.txt
+├── uninstall.php
 │
 ├── includes/
-│   ├── class-omos-loader.php
-│   ├── class-omos-activator.php
-│   ├── class-omos-admin-menu.php
-│   ├── class-omos-cpt.php
-│   ├── class-omos-rest-api.php
+│   ├── class-omos-core-tools.php
+│   ├── class-omos-runtime-client.php
+│   ├── class-omos-site-profile.php
+│   ├── class-omos-manifest-sync.php
 │   ├── class-omos-shortcodes.php
-│   ├── class-omos-page-installer.php
-│   ├── class-omos-mega-menu.php
-│   ├── class-omos-artifacts.php
-│   ├── class-omos-tools.php
-│   ├── class-omos-dashboard-builder.php
-│   ├── class-omos-registry.php
-│   ├── class-omos-docs.php
-│   ├── class-omos-shop-integration.php
-│   ├── class-omos-compliance.php
-│   ├── class-omos-import-export.php
+│   ├── class-omos-admin.php
 │   ├── class-omos-system-health.php
-│   ├── class-omos-engagement-counter.php
-│   └── class-omos-settings.php
+│   ├── class-omos-decision-record-client.php
+│   ├── class-omos-entitlements.php
+│   ├── class-omos-audit.php
+│   └── class-omos-webhooks.php
 │
 ├── admin/
 │   ├── views/
 │   │   ├── dashboard.php
-│   │   ├── page-installer.php
-│   │   ├── mega-menu.php
-│   │   ├── artifacts.php
-│   │   ├── tools.php
-│   │   ├── dashboard-builder.php
-│   │   ├── registry.php
-│   │   ├── docs.php
-│   │   ├── shop-integration.php
-│   │   ├── compliance.php
-│   │   ├── import-export.php
-│   │   ├── system-health.php
+│   │   ├── connection.php
+│   │   ├── sync.php
+│   │   ├── entitlements.php
+│   │   ├── audit.php
 │   │   └── settings.php
-│   ├── css/
-│   │   └── omos-admin.css
-│   └── js/
-│       └── omos-admin.js
+│   ├── css/omos-admin.css
+│   └── js/omos-admin.js
 │
 ├── public/
-│   ├── css/
-│   │   └── omos-public.css
-│   └── js/
-│       ├── omos-public.js
-│       └── omos-consensus-counter.js
+│   ├── css/omos-public.css
+│   └── js/omos-public.js
 │
-├── templates/
-│   ├── dashboard.php
-│   ├── artifact-grid.php
-│   ├── tool-grid.php
-│   ├── system-status.php
-│   ├── registry-verify.php
-│   └── open-console-button.php
-│
-└── assets/
-    └── index.html
+└── templates/
+    ├── runtime-status.php
+    ├── manifest-card.php
+    ├── ask-launcher.php
+    ├── decision-history.php
+    └── artifact-grid.php
 ```
 
-## 2. Core Plugin Purpose
+The current v1.3.0 reference source implements the bootstrap, runtime client, control layer, bridge status/manifest REST routes, and initial shortcodes. The remaining classes above are modularization/next-increment targets rather than claims of current completion.
 
-The OMOS Core Tools plugin should operate as the WordPress control layer for OMOS.OneGodian.com.
+## 3. Core responsibilities
 
-It should manage:
+### Runtime client
 
-- OMOS page installation and repair;
-- mega menu structure;
-- artifacts and download resources;
-- tool library and shortcode output;
-- dashboard routes and public console components;
-- custom post types;
-- REST API routes;
-- registry references;
-- documentation indexes;
-- WooCommerce/shop pathways;
-- compliance notices;
-- import/export utilities;
-- system health checks;
-- engagement/consensus counters;
-- settings and feature flags.
+Server-to-server HTTPS access to the canonical OMOS APIs. Provider/model keys remain at OMOS; the WordPress bridge needs only its own OMOS client credential when authenticated calls are enabled.
 
-## 3. File Responsibilities
+### Site profile
 
-### Root Files
+Controls which WordPress integration modules are appropriate for the host. A profile is configuration, not authorization.
 
-| File | Responsibility |
-| --- | --- |
-| `omos-core-tools.php` | Plugin header, constants, includes, loader bootstrapping, activation/deactivation hooks. |
-| `uninstall.php` | Controlled cleanup of plugin options, transients, temporary data, and plugin-created records when selected. |
-| `readme.txt` | WordPress plugin metadata, changelog, installation instructions, shortcodes, and admin screens. |
+### Manifest synchronization
 
-### Includes
+Synchronizes allowlisted OMOS tools/artifacts/docs/status projections with provenance, source IDs, hashes/versions, timestamps, conflict policy, and idempotency.
 
-| File | Responsibility |
-| --- | --- |
-| `class-omos-loader.php` | Registers actions, filters, shortcodes, admin assets, public assets, and route hooks. |
-| `class-omos-activator.php` | Creates default options, registers CPTs, flushes rewrites, seeds required pages if enabled. |
-| `class-omos-admin-menu.php` | Builds the OMOS admin menu and connects all admin view screens. |
-| `class-omos-cpt.php` | Registers OMOS CPTs such as artifacts, tools, docs, registry records, and system notices. |
-| `class-omos-rest-api.php` | Registers REST endpoints for status, manifest, tools, artifacts, registry verification, and bridge checks. |
-| `class-omos-shortcodes.php` | Registers public shortcodes such as `[omos_tool_grid]`, `[omos_artifact_grid]`, `[omos_system_status]`, `[omos_open_console_button]`, and future `[omos_bridge_builder]`. |
-| `class-omos-page-installer.php` | Creates and repairs the master sitemap pages and tool routes. |
-| `class-omos-mega-menu.php` | Builds or validates the seven-link OMOS mega menu and footer link groups. |
-| `class-omos-artifacts.php` | Manages artifacts, PDFs, downloads, protocols, prompt packs, and documentation products. |
-| `class-omos-tools.php` | Manages tool records, tool cards, tool routes, shortcode mapping, and enabled/disabled tool states. |
-| `class-omos-dashboard-builder.php` | Builds public dashboard sections and admin-configurable cards. |
-| `class-omos-registry.php` | Manages registry references, verification metadata, ODIN references, and record lookup display. |
-| `class-omos-docs.php` | Builds documentation indexes and protocol/specification archives. |
-| `class-omos-shop-integration.php` | Bridges OMOS tools/artifacts to WooCommerce products and Stripe-backed purchase flows. |
-| `class-omos-compliance.php` | Provides disclaimers, institutional safety language, footer notices, and page-level compliance blocks. |
-| `class-omos-import-export.php` | Imports/exports plugin settings, tool manifests, artifact manifests, and WXR support references. |
-| `class-omos-system-health.php` | Checks WordPress, WooCommerce, REST, pages, menus, shortcodes, plugin bridge status, and API health. |
-| `class-omos-engagement-counter.php` | Provides public counters for consensus, interactions, downloads, or tool usage where appropriate. |
-| `class-omos-settings.php` | Central settings registry, option sanitization, capability checks, feature flags, and defaults. |
+### Decision Record client
 
-### Admin Views
+Displays only records the authenticated OMOS identity/tenant is authorized to retrieve. WordPress does not become the canonical Decision Store.
 
-Each file in `admin/views/` should be a display-only admin screen. Logic belongs in `includes/` classes.
+### Entitlement adapter
 
-### Public Templates
+On OneGodian.com, translates WooCommerce/customer entitlement state into an OMOS-readable entitlement claim with source identifiers and revocation state. Payment/order truth remains with the commerce source.
 
-Templates in `templates/` should render shortcode output and public dashboard components without containing business logic.
+### Action boundary
 
-## 4. Required Admin Screens
+Consequential WordPress writes are not enabled by normal sync. They require a separately authorized action path such as OMOS → Human Gate → ACC → WordPress action adapter → result receipt → OMOS audit.
 
-| Admin Screen | Purpose |
-| --- | --- |
-| OMOS → Dashboard | Site status, route count, active tools, artifacts, docs, menu status, WooCommerce status, health warnings. |
-| OMOS → Page Installer | Generate or repair `/omos`, `/ohi`, `/models`, `/tools`, `/artifacts`, `/docs`, `/shop`, `/latest-news`, `/dashboard`, `/legal`, `/contact`, and child pages. |
-| OMOS → Mega Menu | Build the seven-link primary mega menu and footer link groups. |
-| OMOS → Artifacts | Manage protocol PDFs, prompt packs, specs, WXR files, and downloads. |
-| OMOS → Tools | Manage tool cards, shortcodes, status, and routes. |
-| OMOS → Dashboard Builder | Configure cards shown on the public OMOS dashboard. |
-| OMOS → Registry | Manage verification references and registry lookup display. |
-| OMOS → Docs | Manage protocol/specification documentation indexes. |
-| OMOS → Shop Integration | Map tools/artifacts to WooCommerce products. |
-| OMOS → Compliance | Manage public-safe disclaimers, institutional classification language, and footer notices. |
-| OMOS → Import / Export | Export settings, import manifests, and support migration. |
-| OMOS → System Health | Test pages, shortcodes, REST endpoints, plugin bridges, WooCommerce, and required settings. |
-| OMOS → Settings | Global plugin configuration and feature flags. |
+## 4. v1.3.0 implemented baseline
 
-## 5. Required Public Shortcodes
+The reference package currently provides:
 
-| Shortcode | Output |
-| --- | --- |
-| `[omos_dashboard]` | Public OMOS dashboard shell. |
-| `[omos_artifact_grid]` | Artifact/download card grid. |
-| `[omos_tool_grid]` | Tool library grid. |
-| `[omos_system_status]` | Public-safe system status. |
-| `[omos_registry_verify]` | Registry lookup/verification display. |
-| `[omos_open_console_button]` | CTA button linking to `/dashboard` or app control plane. |
-| `[omos_consensus_counter]` | Public engagement/consensus counter where enabled. |
-| `[omos_bridge_builder]` | Future Bridge-Builder tool interface. Must remain non-operational until implemented and tested. |
+- WordPress admin `OMOS Bridge` screen;
+- HTTPS runtime URL setting;
+- automatic/manual site profile;
+- server-side runtime client;
+- health retrieval from `/api/health`;
+- manifest retrieval from `/api/manifest`;
+- provider/persistence client methods for later diagnostics;
+- `/wp-json/omos/v1/bridge/status`;
+- `/wp-json/omos/v1/manifest`;
+- `[omos_runtime_status]`;
+- `[omos_manifest]`;
+- `[omos_open_console_button]`;
+- `[omos_ask_launcher]`;
+- server-only `OMOS_RUNTIME_API_KEY` boundary;
+- zero external write capabilities by default.
 
-## 6. REST API Baseline
+## 5. Existing WordPress source assets
 
-Recommended routes:
+The canonical repository also contains legacy/prototype components including:
+
+- `wordpress/omos-platform-console.php`
+- `wordpress/omos-page-generator.php`
+- `wordpress/omos-ai-consensus-widget.php`
+- navigation/menu builders
+- page templates
+- shortcode registry
+
+These are migration inputs. They do not override the central-runtime architecture. A registered shortcode that renders only a placeholder is not an operational feature.
+
+## 6. WordPress REST baseline
+
+Current reference bridge:
 
 ```text
-/wp-json/omos/v1/health
-/wp-json/omos/v1/manifest
-/wp-json/omos/v1/tools
-/wp-json/omos/v1/artifacts
-/wp-json/omos/v1/docs
-/wp-json/omos/v1/registry/verify
-/wp-json/omos/v1/bridge/status
-/wp-json/omos/v1/settings
+GET /wp-json/omos/v1/bridge/status
+GET /wp-json/omos/v1/manifest
 ```
 
-Write routes must require nonce checks and appropriate capabilities. Public read routes must sanitize output and avoid exposing private configuration.
+Future read surfaces may include tools, artifacts, docs, and authorized Decision Record projections. Future write routes must require WordPress capability checks, nonces where browser-admin initiated, explicit OMOS/ACC authorization where consequential, idempotency, and audit receipts.
 
-## 7. Master Sitemap Alignment
-
-The plugin must align with the current OMOS master sitemap:
+## 7. Public shortcode baseline
 
 ```text
-/
-/omos
-/ohi
-/models
-/tools
-/tools/bridge-builder
-/artifacts
-/docs
-/shop
-/latest-news
-/dashboard
-/admin
-/legal
-/contact
+[omos_runtime_status]
+[omos_manifest]
+[omos_open_console_button]
+[omos_ask_launcher]
 ```
 
-Primary mega menu:
+Additional artifact/tool/history shortcodes should be promoted only after their backing data path is connected and tested.
 
-```text
-OMOS
-OHI
-Models
-Tools
-Artifacts
-Docs
-Shop
-```
+## 8. Source-of-record rules
 
-`Open Console` remains a separate CTA, not a primary mega menu item.
+| Data | Authority |
+| --- | --- |
+| Governed OMOS runs / Decision Records | OMOS runtime + durable Decision Store |
+| Model/Council provenance | OMOS runtime |
+| WordPress pages/posts | owning WordPress site |
+| WooCommerce products/orders | OneGodian.com/WooCommerce where applicable |
+| OMOS tool/artifact manifest | OMOS runtime |
+| WordPress execution result | target WordPress site, with receipt returned to OMOS |
 
-## 8. Production Rules
+Synchronization never changes source authority by itself.
 
-1. No public feature should be labeled operational unless the shortcode, route, or endpoint exists and is tested.
-2. All input must be sanitized.
-3. All output must be escaped.
-4. Admin actions must use nonce checks.
-5. Settings must use capability checks.
-6. Compliance language must separate ONEGODIAN, LLC commercial/IP functions from INO governance/religious society functions.
-7. OMOS.OneGodian.com must remain the protocol/specification/alignment platform, not the store, LMS, galaxy, or capital platform.
-8. Any new route must be added to both the sitemap/source-map documentation and the page installer manifest.
+## 9. Security rules
 
-## 9. Production Priority
+1. OMOS runtime secrets are never exposed to browser code.
+2. `OMOS_RUNTIME_API_KEY` is server-side only; environment/`wp-config.php` is preferred.
+3. All runtime URLs must use HTTPS.
+4. Sanitize input and escape output.
+5. WordPress mutations require appropriate capabilities and nonce protection.
+6. Remote actions require least privilege and explicit authorization.
+7. Never persist raw external credentials in Decision Records.
+8. Preserve identity/tenant ownership on authenticated OMOS requests.
+9. Redact sensitive data from logs/status output.
+10. Public bridge health proves connectivity only; it does not prove factual truth or authorization to act.
 
-The next build priority is:
+## 10. Production sequence
 
-1. Confirm the existing plugin zip matches this structure.
-2. Add missing class files as stubs if needed.
-3. Add admin screens as view files.
-4. Register shortcodes.
-5. Register REST health and manifest endpoints.
-6. Add page installer manifest for the master sitemap.
-7. Add system health checks.
-8. Add Bridge-Builder as a documented planned tool, not an operational tool, until implemented.
-9. Package as `omos-core-tools-v1.3.0.zip` after testing.
+1. Establish canonical OMOS 1.1.0 live-host parity.
+2. Stage v1.3.0 on OneGodian.com, OneGodian.org, and QuantumOHI.com.
+3. Verify activation, runtime health, manifest compatibility, safe failure behavior, and secret non-exposure.
+4. Add signed/versioned manifest sync.
+5. Add authorized Decision Record/history client.
+6. Add OneGodian.com WooCommerce entitlement adapter.
+7. Connect consequential WordPress actions through ACC/separate action authorization.
+8. Add PHP/WordPress regression tests and packaging checks.
+9. Publish a release ZIP only after the target installation is documented, tested, repeatable, and usable.
+
+Canonical details: `docs/OMOS-WORDPRESS-BRIDGE-ARCHITECTURE-2026-09-16.md`.
