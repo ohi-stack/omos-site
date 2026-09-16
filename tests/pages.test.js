@@ -105,7 +105,7 @@ async function expectOruSurfaces() {
     "Oru’Valen™ Lived Experience Layer",
     "Fact is not inference",
     "Privacy, consent, and authority",
-    "Human input or authorized evidence",
+    "Human input / authorized evidence",
     "ACC authorized execution",
     "human-approved memory/current-state update"
   ];
