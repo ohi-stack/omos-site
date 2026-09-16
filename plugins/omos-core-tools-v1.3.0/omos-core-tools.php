@@ -74,15 +74,25 @@ final class OMOS_Core_Tools {
         return rest_ensure_response($status);
     }
 
+    private function host_matches($host, $domain) {
+        return $host === $domain || substr($host, -strlen('.' . $domain)) === '.' . $domain;
+    }
+
     private function site_role() {
         $host = strtolower((string) wp_parse_url(home_url('/'), PHP_URL_HOST));
-        if ($host === 'onegodian.com' || substr($host, -15) === '.onegodian.com') {
-            return $host === 'omos.onegodian.com' ? 'canonical-omos-runtime-host' : 'commerce-or-ecosystem-property';
+        if ($host === 'omos.onegodian.org') {
+            return 'omos-wordpress-presentation-client';
         }
-        if ($host === 'onegodian.org' || substr($host, -15) === '.onegodian.org') {
+        if ($host === 'omos.onegodian.com') {
+            return 'canonical-omos-runtime-host';
+        }
+        if ($this->host_matches($host, 'onegodian.com')) {
+            return 'commerce-or-ecosystem-property';
+        }
+        if ($this->host_matches($host, 'onegodian.org')) {
             return 'public-identity-or-education-property';
         }
-        if ($host === 'quantumohi.com' || substr($host, -15) === '.quantumohi.com') {
+        if ($this->host_matches($host, 'quantumohi.com')) {
             return 'technology-positioning-property';
         }
         return 'configured-wordpress-property';
