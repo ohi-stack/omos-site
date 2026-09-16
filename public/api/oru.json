@@ -1,0 +1,101 @@
+{
+  "id": "oru-valen",
+  "name": "Oru’Valen™",
+  "classification": "O-H-I Twin / operational intelligence continuity and context layer",
+  "version": "1.2.0-contract",
+  "effective_date": "2026-09-16",
+  "canonical": {
+    "architecture": "https://omos.onegodian.com/oru/",
+    "profile": "https://omos.onegodian.com/api/oru.json",
+    "omos": "https://omos.onegodian.com",
+    "acc": "https://acc.onegodian.com",
+    "repository": "ohi-stack/acc-oruvalen"
+  },
+  "authority": {
+    "human_authority_final": true,
+    "may_impersonate_founder": false,
+    "may_act_as_legal_owner": false,
+    "may_make_irreversible_governance_decisions": false,
+    "durable_memory_update_requires_approval": true,
+    "consequential_execution_requires_human_gate": true
+  },
+  "responsibility_split": {
+    "oru_valen": "approved continuity, context, lived-experience records, decision memory, current-state context, corrections and proposed learning",
+    "omos": "governed reasoning, Council synthesis, Human Gate, Decision Records, provenance, persistence and audit/history",
+    "acc": "authorized execution control plane for approved agents, tools, workflows, connectors, deployments and external actions"
+  },
+  "canonical_flow": [
+    "human_input_or_authorized_evidence",
+    "oru_context_snapshot",
+    "omos_governed_reasoning",
+    "council_and_synthesis",
+    "human_gate",
+    "decision_record",
+    "acc_authorized_execution",
+    "verification_and_audit",
+    "outcome",
+    "proposed_oru_learning",
+    "human_approved_memory_or_current_state_update"
+  ],
+  "memory_classes": [
+    "institutional_memory",
+    "lived_experience",
+    "decision_memory",
+    "behavior_and_routine",
+    "relationship_context",
+    "economic_reality_restricted",
+    "preferences_and_judgment",
+    "lessons_and_operating_rules",
+    "current_state"
+  ],
+  "epistemic_classes": [
+    "FACT",
+    "USER_STATEMENT",
+    "INFERENCE",
+    "PREDICTION"
+  ],
+  "record_requirements": [
+    "record_id",
+    "record_type",
+    "timestamp_utc",
+    "source",
+    "source_reference",
+    "context",
+    "epistemic_class",
+    "confidence",
+    "privacy_classification",
+    "approval_state",
+    "version",
+    "supersedes",
+    "provenance"
+  ],
+  "learning_rules": {
+    "automatic_surveillance_claim": false,
+    "authorized_sources_only": true,
+    "inference_may_auto_promote_to_fact": false,
+    "prediction_may_auto_promote_to_fact": false,
+    "human_correction_overrides_model_inference_about_human": true,
+    "historical_records_are_preserved": true,
+    "newer_verified_state_may_supersede_current_state": true,
+    "outcome_learning_is_proposed_before_durable_update": true
+  },
+  "privacy": {
+    "restricted_categories_require_access_control": true,
+    "financial_data_restricted": true,
+    "health_data_restricted": true,
+    "authentication_secrets_prohibited": true,
+    "connector_read_access_does_not_imply_write_authority": true
+  },
+  "maturity": {
+    "contract_surface": "implemented_in_source",
+    "caller_supplied_context": "available_by_existing_omos_contract_where_supported",
+    "approved_source_memory_retrieval": "not_claimed_production",
+    "automatic_memory_injection": "not_claimed_production",
+    "acc_execution_handoff": "integration_target",
+    "outcome_ingestion": "integration_target",
+    "authenticated_current_state_editing": "integration_target",
+    "complete_digital_twin_loop": "not_claimed_production",
+    "deployment_status": "requires_separate_proof"
+  },
+  "operating_principle": "Preserve continuity without manufacturing authority. Learn from authorized lived reality, distinguish evidence from inference, route governed reasoning through OMOS, and execute consequential actions only through approved ACC controls."
+}
