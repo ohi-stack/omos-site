@@ -1,0 +1,87 @@
+{
+  "plugin": {
+    "name": "OMOS Core Tools",
+    "slug": "omos-core-tools",
+    "version": "1.5.0",
+    "type": "wordpress-plugin",
+    "owner": "ONEGODIAN, LLC",
+    "originator": "One Gregory Onegodian™",
+    "status": "repository-functional-unverified-live",
+    "public_surface": "https://omos.onegodian.org",
+    "governed_runtime": "https://omos.onegodian.com"
+  },
+  "architecture": {
+    "wordpress_role": "presentation-and-integration-client",
+    "runtime_role": "governed-runtime-authority",
+    "execution_control_plane": "ACC",
+    "source_of_record": "connected-domain-remains-authoritative"
+  },
+  "depends_on_or_reuses": {
+    "shared_platform_plugin": {
+      "repository": "ohi-stack/onegodian-platform-plugin",
+      "minimum_version": "0.3.0",
+      "purpose": "shared WordPress infrastructure, navigation, platform sync, health, registry and common services"
+    }
+  },
+  "canonical_shortcodes": [
+    "[omos_manifest]",
+    "[omos_runtime_status]",
+    "[omos_ecosystem_cards]",
+    "[omos_bridge_builder]",
+    "[omos_tool_grid]",
+    "[omos_artifact_grid]",
+    "[omos_docs_grid]",
+    "[omos_open_console_button]",
+    "[omos_ohi_pipeline]",
+    "[omos_unity_dashboard]"
+  ],
+  "compatibility_shortcodes": [
+    "[omos_ask]",
+    "[omos_council]",
+    "[omos_decision_history]",
+    "[omos_belief_mapper]"
+  ],
+  "wordpress_rest": [
+    "GET /wp-json/omos/v1/status",
+    "GET /wp-json/omos/v1/sync",
+    "GET /wp-json/omos/v1/shortcodes",
+    "GET /wp-json/omos/v1/manifest",
+    "GET /wp-json/omos/v1/health",
+    "GET /wp-json/omos/v1/providers",
+    "GET /wp-json/omos/v1/persistence",
+    "POST /wp-json/omos/v1/ask"
+  ],
+  "admin_screens": [
+    "Dashboard",
+    "App Bridge",
+    "Shortcodes",
+    "Settings",
+    "API Keys",
+    "Tools Registry",
+    "Submissions",
+    "Status",
+    "Production Checklist",
+    "Documentation",
+    "System Prompt"
+  ],
+  "target_sites": [
+    "https://omos.onegodian.org",
+    "https://onegodian.org",
+    "https://onegodian.com",
+    "https://u.onegodian.org",
+    "https://quantumohi.com"
+  ],
+  "security_boundary": [
+    "WordPress never stores model-provider credentials",
+    "OMOS_BRIDGE_API_KEY server configuration is preferred over database storage",
+    "public REST responses never expose the bridge key",
+    "WordPress does not own Council authority, Human Gate, Decision Records or PostgreSQL",
+    "WordPress does not authorize deployments, payments, credential changes or consequential external actions",
+    "authenticated Ask OMOS submits to the governed runtime and does not create a competing local Decision Record store"
+  ],
+  "verification": {
+    "repository_gate": "PHP syntax + manifest contract + shortcode registry contract",
+    "live_gate": "WPVibe verifies installed version, /wp-json/omos/v1/sync, shortcode health and runtime connectivity per target site",
+    "production_rule": "Repository implementation alone does not certify a live WordPress installation or the OMOS runtime."
+  }
+}
