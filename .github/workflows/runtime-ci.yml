@@ -49,6 +49,14 @@ jobs:
       - name: WordPress bridge repository contract
         run: npm run verify:wordpress-bridge
 
+      - name: WordPress bridge PHP syntax
+        run: |
+          php -l plugins/omos-core-tools-v1.3.0/omos-core-tools.php
+          php -l plugins/omos-core-tools-v1.3.0/includes/class-omos-node-client.php
+          php -l plugins/omos-core-tools-v1.3.0/includes/class-omos-shortcodes.php
+          php -l plugins/omos-core-tools-v1.3.0/includes/class-omos-admin.php
+          php -l plugins/omos-core-tools-v1.3.0/uninstall.php
+
       - name: GPT-6 Astra adapter contract
         env:
           DATABASE_URL: ''
