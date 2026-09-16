@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "1.0.0",
+  "system": "OMOS — OneGodian Metaphysical Operating System",
+  "runtimeVersionTarget": "1.1.0",
+  "wordpressPluginVersionTarget": "0.3.0",
+  "canonical": {
+    "publicWordPress": "https://omos.onegodian.org",
+    "governedRuntime": "https://omos.onegodian.com",
+    "runtimeManifest": "https://omos.onegodian.com/api/manifest",
+    "runtimeHealth": "https://omos.onegodian.com/api/health"
+  },
+  "repositories": {
+    "runtime": "ohi-stack/omos-site",
+    "sharedWordPressPlugin": "ohi-stack/onegodian-platform-plugin",
+    "protocol": "ohi-stack/onegodian-protocol",
+    "acc": "ohi-stack/acc",
+    "ollm": "ohi-stack/onegodian-llm"
+  },
+  "wordpressNodes": [
+    {
+      "host": "omos.onegodian.org",
+      "url": "https://omos.onegodian.org",
+      "role": "omos-public",
+      "pluginRequired": true
+    },
+    {
+      "host": "onegodian.org",
+      "url": "https://onegodian.org",
+      "role": "organization-public",
+      "pluginRequired": true
+    },
+    {
+      "host": "onegodian.com",
+      "url": "https://onegodian.com",
+      "role": "commerce",
+      "pluginRequired": true
+    },
+    {
+      "host": "u.onegodian.org",
+      "url": "https://u.onegodian.org",
+      "role": "university",
+      "pluginRequired": true
+    },
+    {
+      "host": "quantumohi.com",
+      "url": "https://quantumohi.com",
+      "role": "quantumohi-public",
+      "pluginRequired": true
+    }
+  ],
+  "wordpressContract": {
+    "manifestPath": "/wp-json/onegodian/v1/omos",
+    "healthPath": "/wp-json/onegodian/v1/omos/health",
+    "syncPath": "/wp-json/onegodian/v1/platform-sync"
+  },
+  "authority": {
+    "wordpress": "presentation, documentation, navigation, public runtime status and cross-site discovery",
+    "omosRuntime": "governed runs, provider execution, Layer 1, Alignment, Council, Governed Synthesis, Human Gate, Decision Records, History and persistence",
+    "acc": "authorized consequential external execution control plane",
+    "protocol": "definitions, scope, interoperability and authority rules",
+    "ollm": "model/intelligence provider and synthesis runtime track",
+    "humanFinalAuthority": true
+  },
+  "syncDefinition": {
+    "runtimeAlignedWhen": "the canonical runtime reports target version/build provenance and passes production evidence gates",
+    "wordpressNodeAlignedWhen": "the live platform-sync endpoint reports the target plugin version and canonical OMOS public/runtime surfaces",
+    "ecosystemAlignedWhen": "runtime plus every required WordPress node are aligned and the authority boundary is unchanged"
+  },
+  "productionClaim": false
+}
