@@ -35,6 +35,20 @@ final class OMOS_Shortcodes {
         return $result['data'];
     }
 
+    private function is_list_array($value) {
+        if (!is_array($value)) {
+            return false;
+        }
+        $index = 0;
+        foreach (array_keys($value) as $key) {
+            if ($key !== $index) {
+                return false;
+            }
+            $index++;
+        }
+        return true;
+    }
+
     private function items($payload, $preferred = array()) {
         if (!is_array($payload)) {
             return array();
@@ -44,11 +58,11 @@ final class OMOS_Shortcodes {
                 return array_values($payload[$key]);
             }
         }
-        if (array_is_list($payload)) {
+        if ($this->is_list_array($payload)) {
             return $payload;
         }
         if (isset($payload['data']) && is_array($payload['data'])) {
-            return array_is_list($payload['data']) ? $payload['data'] : array($payload['data']);
+            return $this->is_list_array($payload['data']) ? $payload['data'] : array($payload['data']);
         }
         return array($payload);
     }
@@ -68,9 +82,9 @@ final class OMOS_Shortcodes {
             if (!is_array($item)) {
                 continue;
             }
-            $title = $item['title'] ?? $item['name'] ?? $item['id'] ?? 'OMOS Record';
-            $description = $item['description'] ?? $item['summary'] ?? $item['status'] ?? '';
-            $url = $item['url'] ?? $item['href'] ?? '';
+            $title = isset($item['title']) ? $item['title'] : (isset($item['name']) ? $item['name'] : (isset($item['id']) ? $item['id'] : 'OMOS Record'));
+            $description = isset($item['description']) ? $item['description'] : (isset($item['summary']) ? $item['summary'] : (isset($item['status']) ? $item['status'] : ''));
+            $url = isset($item['url']) ? $item['url'] : (isset($item['href']) ? $item['href'] : '');
             $html .= '<article class="omos-core-card"><h3>' . esc_html((string) $title) . '</h3>';
             if ($description !== '') {
                 $html .= '<p>' . esc_html(wp_trim_words(wp_strip_all_tags((string) $description), 32)) . '</p>';
@@ -88,8 +102,8 @@ final class OMOS_Shortcodes {
         if (is_wp_error($payload)) {
             return $this->error_card($payload->get_error_message());
         }
-        $version = $payload['version'] ?? $payload['runtimeVersion'] ?? $payload['omos_version'] ?? 'reported by node';
-        $status = $payload['status'] ?? $payload['maturity'] ?? 'available';
+        $version = isset($payload['version']) ? $payload['version'] : (isset($payload['runtimeVersion']) ? $payload['runtimeVersion'] : (isset($payload['omos_version']) ? $payload['omos_version'] : 'reported by node'));
+        $status = isset($payload['status']) ? $payload['status'] : (isset($payload['maturity']) ? $payload['maturity'] : 'available');
         return '<div class="omos-core-card"><h3>OMOS Manifest</h3><p><strong>Node:</strong> ' . esc_html($this->client->node_url()) . '</p><p><strong>Version:</strong> ' . esc_html((string) $version) . '</p><p><strong>Status:</strong> ' . esc_html((string) $status) . '</p></div>';
     }
 
