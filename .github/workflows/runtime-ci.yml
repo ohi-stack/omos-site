@@ -46,6 +46,9 @@ jobs:
       - name: Syntax checks
         run: npm run check
 
+      - name: WordPress bridge repository contract
+        run: npm run verify:wordpress-bridge
+
       - name: GPT-6 Astra adapter contract
         env:
           DATABASE_URL: ''
