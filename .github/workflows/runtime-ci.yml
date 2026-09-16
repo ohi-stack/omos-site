@@ -46,6 +46,12 @@ jobs:
       - name: Syntax checks
         run: npm run check
 
+      - name: OMOS WordPress v1.4 repository contract
+        run: npm run verify:wordpress-bridge
+
+      - name: OMOS Core Tools v1.4 PHP syntax
+        run: php -l plugins/omos-core-tools-v1.4.0/omos-core-tools.php
+
       - name: GPT-6 Astra adapter contract
         env:
           DATABASE_URL: ''
