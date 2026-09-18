@@ -56,6 +56,7 @@ This repo maps the following source materials into implementation-ready document
 - OneGodian AI System Prompt
 - OneGodian Frequency Standard
 - OHI Output Pipeline HTML animation
+- Quantum-OHI™ API intelligence and ACC authority boundary
 - Agent Authority Model
 - Founder and origin statement
 - OMOS WordPress/WXR assets
@@ -227,3 +228,16 @@ OMOS routes explain, document, and route traffic into:
 8. Connect commerce entitlements to governed OMOS runs.
 9. Add analytics and conversion tracking.
 10. Confirm all public claims match implemented/runtime status.
+
+
+## Quantum-OHI™ platform relationship
+
+Quantum-OHI™ is the OneGodian platform-intelligence and decision-support layer connected to `api.onegodian.org`. It analyzes telemetry and operational context; it does not directly own or mutate platform state.
+
+Canonical action boundary:
+
+```text
+Platform telemetry → Quantum-OHI™ analysis → recommendation → ACC approval/workflow → authoritative service → audit/verification
+```
+
+OMOS remains the governed runtime/orchestration layer for OHI workflows, Human Gate decisions and Decision Records. ACC remains the separate execution control plane. See `docs/QUANTUM-OHI-API-INTELLIGENCE-BOUNDARY.md`.

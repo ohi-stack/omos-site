@@ -1,6 +1,6 @@
 # OMOS Repository Status Report
 
-Date: 2026-09-15
+Date: 2026-09-17
 Repository: `ohi-stack/omos-site`
 Canonical runtime: `https://omos.onegodian.com`
 Repository runtime target: `1.1.0`
@@ -23,10 +23,15 @@ Production deployment work is tracked by Issue #45 and the automated production-
 OneGodian Protocol™ = definitions, identity rules, scope, and interoperability
 OneGodian Algorithm™ = Observe → Distill → Align → Select → Execute → Verify
 OHI™ = multi-model comparison, critique, meaningful-dissent preservation, and governed synthesis
+Quantum-OHI™ = platform observation, analysis, anomaly/dependency intelligence, forecasting, and recommendations; not authoritative state execution
 OMOS™ = runtime, orchestration, interfaces, persistence, Human Gate, audit, and Decision Records
 OLLM = dedicated OneGodian model/intelligence provider track integrated through OMOS
 Oru’Valen™ = approved continuity/context layer
 ACC™ = separate execution control plane for authorized agents and external actions
+
+Canonical platform action boundary:
+
+`telemetry → Quantum-OHI™ analysis → recommendation → ACC approval/workflow → authoritative service → audit/verification`
 ```
 
 ## Canonical Product Flow
