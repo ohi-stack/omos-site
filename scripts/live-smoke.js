@@ -35,61 +35,117 @@ async function ok(path) {
 async function run() {
   console.log(`Verifying OMOS canonical runtime: ${BASE}`);
 
-  const health = await json('/api/health');
-  assert(health.status === 'ok', '/api/health status must be ok');
-  assert(health.version === EXPECTED_VERSION, `live runtime version ${health.version} != expected ${EXPECTED_VERSION}`);
-
-  const manifest = await json('/api/manifest');
-  assert(manifest.version === EXPECTED_VERSION, `manifest version ${manifest.version} != expected ${EXPECTED_VERSION}`);
-  assert(manifest.canonicalHost === BASE, `manifest canonicalHost ${manifest.canonicalHost} != ${BASE}`);
-
-  const build = await json('/build.json');
-  assert(build.service === 'omos-site', `build metadata service ${build.service || 'unknown'} != omos-site`);
-  assert(build.version === EXPECTED_VERSION, `build metadata version ${build.version} != expected ${EXPECTED_VERSION}`);
-  assert(build.provenance === 'runtime-resolved', `build provenance is ${build.provenance || 'unknown'}, expected runtime-resolved`);
-  assert(build.buildSha && build.buildSha !== 'unknown', 'build SHA is unresolved');
-  if (EXPECTED_SHA) {
-    assert(build.buildSha === EXPECTED_SHA, `live build SHA ${build.buildSha} != expected ${EXPECTED_SHA}`);
-  }
-
-  const persistence = await json('/api/v1/persistence');
-  assert(persistence.persistence?.backend === 'postgresql', `persistence backend is ${persistence.persistence?.backend || 'unknown'}, expected postgresql`);
-  assert(persistence.persistence?.durable === true, 'durable PostgreSQL persistence is not active');
-  assert(persistence.persistence?.initialized === true, 'PostgreSQL persistence is not initialized');
-  assert(!persistence.persistence?.error, `persistence reports error: ${persistence.persistence?.error}`);
-
-  const providerResponse = await json('/api/v1/providers');
-  assert(Array.isArray(providerResponse.providers), 'provider status payload must include providers');
-
-  await ok('/');
-  await ok('/ask/');
-  await ok('/dashboard');
-  await ok('/ohi-output-pipeline');
-  await ok('/sitemap.xml');
-
+  const failures = [];
   const evidence = {
-    status: 'PASS',
+    status: 'FAIL',
     checkedAtUtc: new Date().toISOString(),
     canonicalHost: BASE,
-    version: health.version,
-    buildSha: build.buildSha,
-    persistence: {
-      backend: persistence.persistence.backend,
-      durable: persistence.persistence.durable,
-      initialized: persistence.persistence.initialized
+    expected: {
+      version: EXPECTED_VERSION,
+      buildSha: EXPECTED_SHA || null
     },
-    providers: providerResponse.providers.map((item) => ({
-      provider: item.provider,
-      configured: item.configured,
-      status: item.status
-    }))
+    observed: {
+      health: null,
+      manifest: null,
+      build: null,
+      persistence: null,
+      providers: null,
+      publicSurfaces: {}
+    },
+    failures
   };
 
-  console.log('OMOS live production evidence PASSED.');
+  async function gate(name, fn) {
+    try {
+      await fn();
+    } catch (error) {
+      failures.push({ gate: name, message: error.message });
+    }
+  }
+
+  await gate('health', async () => {
+    const health = await json('/api/health');
+    evidence.observed.health = {
+      status: health.status,
+      version: health.version,
+      environment: health.environment,
+      canonicalHost: health.canonicalHost
+    };
+    assert(health.status === 'ok', '/api/health status must be ok');
+    assert(health.version === EXPECTED_VERSION, `live runtime version ${health.version} != expected ${EXPECTED_VERSION}`);
+  });
+
+  await gate('manifest', async () => {
+    const manifest = await json('/api/manifest');
+    evidence.observed.manifest = {
+      version: manifest.version,
+      canonicalHost: manifest.canonicalHost,
+      status: manifest.status
+    };
+    assert(manifest.version === EXPECTED_VERSION, `manifest version ${manifest.version} != expected ${EXPECTED_VERSION}`);
+    assert(manifest.canonicalHost === BASE, `manifest canonicalHost ${manifest.canonicalHost} != ${BASE}`);
+  });
+
+  await gate('build', async () => {
+    const build = await json('/build.json');
+    evidence.observed.build = {
+      service: build.service,
+      version: build.version,
+      provenance: build.provenance,
+      buildSha: build.buildSha
+    };
+    assert(build.service === 'omos-site', `build metadata service ${build.service || 'unknown'} != omos-site`);
+    assert(build.version === EXPECTED_VERSION, `build metadata version ${build.version} != expected ${EXPECTED_VERSION}`);
+    assert(build.provenance === 'runtime-resolved', `build provenance is ${build.provenance || 'unknown'}, expected runtime-resolved`);
+    assert(build.buildSha && build.buildSha !== 'unknown', 'build SHA is unresolved');
+    if (EXPECTED_SHA) {
+      assert(build.buildSha === EXPECTED_SHA, `live build SHA ${build.buildSha} != expected ${EXPECTED_SHA}`);
+    }
+  });
+
+  await gate('persistence', async () => {
+    const persistence = await json('/api/v1/persistence');
+    evidence.observed.persistence = persistence.persistence || null;
+    assert(persistence.persistence?.backend === 'postgresql', `persistence backend is ${persistence.persistence?.backend || 'unknown'}, expected postgresql`);
+    assert(persistence.persistence?.durable === true, 'durable PostgreSQL persistence is not active');
+    assert(persistence.persistence?.initialized === true, 'PostgreSQL persistence is not initialized');
+    assert(!persistence.persistence?.error, `persistence reports error: ${persistence.persistence?.error}`);
+  });
+
+  await gate('providers', async () => {
+    const providerResponse = await json('/api/v1/providers');
+    assert(Array.isArray(providerResponse.providers), 'provider status payload must include providers');
+    evidence.observed.providers = providerResponse.providers.map((item) => ({
+      provider: item.provider,
+      configured: item.configured,
+      status: item.status,
+      healthVerified: item.healthVerified
+    }));
+  });
+
+  for (const path of ['/', '/ask/', '/dashboard', '/ohi-output-pipeline', '/sitemap.xml']) {
+    await gate(`surface:${path}`, async () => {
+      const res = await ok(path);
+      evidence.observed.publicSurfaces[path] = res.status;
+    });
+  }
+
+  if (failures.length === 0) {
+    evidence.status = 'PASS';
+    console.log('OMOS live production evidence PASSED.');
+    console.log(JSON.stringify(evidence, null, 2));
+    return;
+  }
+
+  console.error(`OMOS live production evidence FAILED: ${failures.length} gate(s) failed.`);
+  for (const failure of failures) {
+    console.error(`- [${failure.gate}] ${failure.message}`);
+  }
   console.log(JSON.stringify(evidence, null, 2));
+  process.exitCode = 1;
 }
 
 run().catch((error) => {
-  console.error(`OMOS live production evidence FAILED: ${error.message}`);
+  console.error(`OMOS live production evidence FAILED unexpectedly: ${error.message}`);
   process.exit(1);
 });
