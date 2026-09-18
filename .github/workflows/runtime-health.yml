@@ -31,7 +31,7 @@ jobs:
         id: runtime_target
         shell: bash
         run: |
-          echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+          node -e "console.log('version=' + require('./package.json').version)" >> "$GITHUB_OUTPUT"
 
       - name: Verify live version, build SHA, persistence, providers, and public surfaces
         id: evidence
