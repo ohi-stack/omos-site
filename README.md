@@ -1,180 +1,90 @@
-# OMOS Site
+# OMOS — OneGodian Metaphysical Operating System™
 
-Public site and documentation repository for **OMOS — OneGodian Metaphysical Operating System**.
+Canonical governed runtime and engineering repository for **OMOS™ — OneGodian Metaphysical Operating System™**.
 
-Canonical site target: `https://omos.onegodian.com`
+- **Governed runtime:** `https://omos.onegodian.com`
+- **WordPress presentation/documentation client:** `https://omos.onegodian.org`
+- **Execution control plane:** `https://acc.onegodian.com`
+- **Current runtime line:** OMOS 1.1.x / Functional, production certification in progress
+- **Current WordPress bridge:** OMOS Core Tools v1.5.0
 
 ## Purpose
 
-This repo holds the public-facing OMOS site plan, documentation map, WordPress import assets, protocol references, tool-page requirements, plugin page-generation logic, runtime manifests, environment files, static API fallbacks, and production deployment notes for building OMOS.OneGodian.com.
+OMOS is the governed runtime, orchestration, persistence, interface, Decision Record, connector, and audit layer for the OneGodian technology architecture.
 
-OMOS is positioned as the operating layer where OneGodian identity, OHI synthesis, model pages, protocol documents, tools, post categories, shop pathways, and developer-facing assets are organized into a usable public platform.
+Maintain these system boundaries:
 
-## Current repository status
+- **OneGodian Protocol™** — terminology, identity/interoperability rules, scope and policy constraints.
+- **OneGodian Algorithm™** — evaluation and decision logic; canonical cycle: **Observe → Distill → Align → Select → Execute → Verify**.
+- **OHI™** — multi-model comparison, critique, contradiction detection, synthesis and supported dissent.
+- **OMOS™** — runtime execution, orchestration, model/data/action interfaces, Human Gate, Decision Records, persistence, history and auditability.
+- **OLLM™** — OneGodian model/intelligence provider layer inside the OMOS Model Gateway.
+- **ACC™** — separately authorized command/execution control plane for consequential actions.
 
-This repository is a hybrid documentation + lightweight Node runtime + WordPress support repository.
+This repository must not collapse those responsibilities into one generic application.
 
-The Node layer currently provides:
+## Current product flow
 
-- `/health`
-- `/api/health`
-- `/manifest`
-- `/api/manifest`
-- `/api/ecosystem`
-- `/api/tools`
-- `/api/artifacts`
-- `/api/docs`
-- `/api/bridge/status`
-- `/process`
-- `/dashboard`
-
-Some API extension routes are currently provided as static fallback JSON under `/public/api/` until the dynamic runtime controller is expanded.
-
-The WordPress layer contains the OMOS page generator / core tools architecture used to create and repair the public page structure and to support plugin deployment on OneGodian.com, OneGodian.org, and QuantumOHI.com.
-
-Use this rule for version discipline:
-
-> If a feature is not implemented, versioned, documented, repeatable, logged where applicable, and testable, it is not operational in the current version.
-
-## Runtime architecture
-
-OMOS.OneGodian.com acts as:
-
-- the canonical OMOS runtime node
-- the public protocol/documentation layer
-- the manifest provider for plugins and dashboards
-- the synchronization target for WordPress OMOS integrations
-- the bridge layer into app.OneGodian.com
-
-## Source documents integrated
-
-This repo maps the following source materials into implementation-ready documentation:
-
-- OHI Runtime technical specification
-- OTS-V5 corrected timekeeping standard
-- OneGodian Algorithm whitepaper
-- OneGodian AI System Prompt
-- OneGodian Frequency Standard
-- OHI Output Pipeline HTML animation
-- Quantum-OHI™ API intelligence and ACC authority boundary
-- Agent Authority Model
-- Founder and origin statement
-- OMOS WordPress/WXR assets
-- OMOS Core Tools / Page Generator plugin assets
-- Bridge-Builder Protocol specification
-- Bridge-Builder Tool specification and WordPress page draft
-- OMOS Node Content and Plugin Bridge Plan
-- OneGodian ecosystem manifest
-- ODIN-SCI-0004 — OneGodian Particle Science™ research standard
-
-## Science registry additions
-
-The repository now includes:
+The primary governed user journey is:
 
 ```text
-docs/ODIN-SCI-0004-ONEGODIAN-PARTICLE-SCIENCE.md
+INPUT
+  ↓
+LAYER 1 — DISTILL
+  ↓
+ALIGN
+  ↓
+COUNCIL
+  ↓
+SYNTHESIZE
+  ↓
+RECORD / HUMAN GATE
+  ↓
+HISTORY
 ```
 
-This record classifies OneGodian Particle Science™ as a theoretical/research-development discipline, preserves the historical `OELA-0007-PARTICLES` cross-reference, and separates established physics, OneGodian theoretical models, and metaphysical interpretation.
+A complete production reference run must later be reopenable and auditable from its persisted Decision Record.
 
-## Master site architecture
+## Repository maturity rule
+
+> If a feature is not implemented, versioned, documented, repeatable, logged where applicable, testable, and supported by the required evidence, it is not operational in the current version.
+
+Repository CI success is not the same as live deployment proof.
+
+## Runtime responsibilities — `omos.onegodian.com`
+
+The canonical Node/Express runtime owns or coordinates:
+
+- Ask OMOS governed input;
+- Layer 1 intake/distillation;
+- Alignment Engine state;
+- Model Gateway and Council orchestration;
+- OpenAI / Anthropic / Gemini / xAI provider interfaces where configured;
+- OLLM provider integration as it becomes operational;
+- cross-model review and governed synthesis;
+- Human Gate approval/rejection state;
+- Decision Records and provenance;
+- PostgreSQL persistence and history;
+- model/data/action connection contracts;
+- runtime health, manifest, provider and persistence surfaces;
+- OHI output/pipeline behavior;
+- production evidence and OMOS-REF-0001 verification.
+
+WordPress does **not** become a second OMOS runtime.
+
+## WordPress presentation responsibilities — `omos.onegodian.org`
+
+The WordPress surface is a public/documentation/presentation client of the canonical runtime.
+
+**OMOS Core Tools v1.5.0** is sourced from:
 
 ```text
-/
-/omos
-/ohi
-/models
-/tools
-/tools/bridge-builder
-/artifacts
-/docs
-/shop
-/latest-news
-/dashboard
-/admin
-/legal
-/contact
-/protocol
-/algorithm
-/digital-sanctuary
-/ohi-output-pipeline
+plugins/omos-core-tools-v1.5.0/
 ```
 
-## Primary mega menu
+It provides branded OMOS modules, runtime inspection, bridge status, and controlled Ask OMOS delegation without becoming provider, Council, Human Gate, Decision Record, PostgreSQL, deployment, payment or credential authority.
 
-The public mega menu should use these seven primary links:
-
-1. OMOS
-2. OHI
-3. Models
-4. Tools
-5. Artifacts
-6. Docs
-7. Shop
-
-`Open Console` should remain a persistent CTA that links to `/dashboard` or the app control plane.
-
-Supporting links such as Latest News, Legal, Contact, Protocol, Algorithm, and OHI Output Pipeline may appear in secondary navigation, footer links, cards, and contextual page CTAs.
-
-## Node and environment setup
-
-Primary environment file:
-
-```text
-.env.example
-```
-
-Required production variables include:
-
-```text
-OMOS_CANONICAL_HOST
-ONEGODIAN_ORG_URL
-ONEGODIAN_STORE_URL
-ONEGODIAN_APP_URL
-ONEGODIAN_UNIVERSITY_URL
-ONEGODIAN_GALAXY_URL
-ONEGODIAN_CAPITAL_URL
-QUANTUMOHI_URL
-OMOS_API_KEYS
-OMOS_WP_PLUGIN_VERSION
-```
-
-## Manifests and static API fallbacks
-
-Machine-readable setup files:
-
-```text
-config/ecosystem.manifest.json
-public/api/ecosystem
-public/api/tools
-public/api/artifacts
-public/api/docs
-public/api/bridge/status
-```
-
-These files support plugin and dashboard development before all dynamic API controllers are finalized.
-
-## WordPress plugin bridge
-
-The OMOS plugin used on:
-
-- OneGodian.com
-- OneGodian.org
-- QuantumOHI.com
-
-should:
-
-- consume `/api/manifest`
-- consume `/api/ecosystem`
-- consume `/api/bridge/status`
-- sync route inventories
-- expose OMOS shortcodes
-- render OMOS cards and documentation blocks
-- provide dashboard launch links
-- connect WooCommerce OMOS products
-- preserve canonical OMOS routes
-
-### Expected plugin shortcodes
+### Canonical 10 OMOS Core Tools modules
 
 ```text
 [omos_manifest]
@@ -186,58 +96,252 @@ should:
 [omos_docs_grid]
 [omos_open_console_button]
 [omos_ohi_pipeline]
+[omos_unity_dashboard]
 ```
 
-## Commerce bridge
+Compatibility surfaces retained in v1.5.0:
 
-Commercial checkout remains on OneGodian.com.
+```text
+[omos_ask]
+[omos_council]
+[omos_decision_history]
+[omos_belief_mapper]
+```
 
-OMOS routes explain, document, and route traffic into:
+### WordPress verification contract
 
-- WooCommerce products
-- PDF guides
-- protocol kits
-- developer downloads
-- courses
-- memberships
+```text
+GET  /wp-json/omos/v1/status
+GET  /wp-json/omos/v1/sync
+GET  /wp-json/omos/v1/shortcodes
+GET  /wp-json/omos/v1/manifest
+GET  /wp-json/omos/v1/health
+GET  /wp-json/omos/v1/providers
+GET  /wp-json/omos/v1/persistence
+POST /wp-json/omos/v1/ask
+```
 
-## Deployment checklist
+Provider credentials must not be placed in the WordPress plugin. `OMOS_BRIDGE_API_KEY` may be supplied server-side where the authenticated runtime bridge is enabled.
 
-1. Copy `.env.example` to `.env`
-2. Configure runtime keys
-3. `npm install`
-4. `npm run check`
-5. `npm run smoke`
-6. `npm run smoke:pages`
-7. Deploy Node runtime
-8. Confirm `/api/manifest` output
-9. Confirm `/api/ecosystem` output
-10. Confirm `/api/bridge/status` output
-11. Confirm plugin sync on connected WordPress sites
-12. Confirm app.OneGodian.com connectivity
+## Shared WordPress ecosystem
 
-## Priority implementation order
+The shared cross-property platform bridge lives in:
 
-1. Complete `OMOS-REF-0001` production deployment proof against `omos.onegodian.com`.
-2. Deploy the current `main` revision containing production persistence hardening.
-3. Verify PostgreSQL durability, restart survival, owner isolation, and Decision Record reopening.
-4. Verify live provider configuration for OpenAI, Anthropic, Gemini, and xAI.
-5. Reconcile or close superseded open pull requests after confirming their changes are already represented on `main`.
-6. Install and test the OMOS WordPress bridge separately on each approved target.
-7. Publish and expose science/standards records, beginning with ODIN-SCI-0004.
-8. Connect commerce entitlements to governed OMOS runs.
-9. Add analytics and conversion tracking.
-10. Confirm all public claims match implemented/runtime status.
+```text
+ohi-stack/onegodian-platform-plugin
+```
 
+Current target roles:
 
-## Quantum-OHI™ platform relationship
+- `OneGodian.org` — public / identity / institutional presentation;
+- `OneGodian.com` — commerce;
+- `QuantumOHI.com` — technology / OHI presentation;
+- `U.OneGodian.org` — education, optional shared OMOS status bridge unless separately required;
+- `OMOS.OneGodian.org` — specialized OMOS Core Tools presentation client.
 
-Quantum-OHI™ is the OneGodian platform-intelligence and decision-support layer connected to `api.onegodian.org`. It analyzes telemetry and operational context; it does not directly own or mutate platform state.
+Consequential WordPress/WooCommerce writes remain on the governed path:
+
+```text
+OMOS → Human Gate → ACC → acc-wp-adapter → WordPress/WooCommerce → execution evidence
+```
+
+## Current customer-first navigation
+
+The canonical OMOS information architecture is organized around what users can do:
+
+1. **OMOS**
+2. **WORKSPACE**
+3. **COUNCIL**
+4. **OLLM**
+5. **TOOLS**
+6. **DEVELOPERS**
+7. **PRICING**
+
+Persistent actions include runtime/status access, Sign In where available, and **ASK OMOS** as the dominant product CTA.
+
+## Core product surfaces
+
+Current and planned route families include:
+
+```text
+/
+/omos
+/ask
+/dashboard
+/runs
+/ohi
+/council
+/models
+/providers
+/algorithm
+/protocol
+/tools
+/docs
+/artifacts
+/shop
+/belief-mapper
+/ohi-output-pipeline
+/oru
+/status
+/legal
+/contact
+```
+
+Not every route has the same maturity. Public claims must reflect actual component evidence.
+
+## Oru’Valen integration
+
+The current mainline includes:
+
+- `/oru/` — public Oru’Valen architecture/lived-experience surface;
+- `/api/oru.json` — machine-readable profile/architecture surface;
+- FACT / USER_STATEMENT / INFERENCE / PREDICTION separation;
+- human-correction priority;
+- no background-surveillance claim;
+- approval-gated durable memory/update boundaries;
+- consequential execution retained behind Human Gate + ACC.
+
+## Environment and production contract
+
+Primary environment template:
+
+```text
+.env.example
+```
+
+Production OMOS uses protected server-side configuration. Critical production variables include, as applicable:
+
+```text
+NODE_ENV
+PORT
+OMOS_VERSION
+OMOS_CANONICAL_HOST
+OMOS_BUILD_SHA
+OMOS_API_KEYS
+DATABASE_URL
+OMOS_DB_SSL
+OMOS_DB_POOL_MAX
+OMOS_REQUIRE_DURABLE_DB
+OMOS_ALLOW_MEMORY_PERSISTENCE
+OPENAI_API_KEY
+OPENAI_MODEL
+ANTHROPIC_API_KEY
+ANTHROPIC_MODEL
+GEMINI_API_KEY
+GEMINI_MODEL
+XAI_API_KEY
+XAI_MODEL
+ONEGODIAN_ORG_URL
+ONEGODIAN_STORE_URL
+ONEGODIAN_APP_URL
+QUANTUMOHI_URL
+```
+
+Never commit real credentials.
+
+## Production persistence rule
+
+A production OMOS deployment must not silently fall back to memory when durable persistence is required.
+
+The expected production posture is:
+
+```text
+DATABASE_URL configured
+OMOS_REQUIRE_DURABLE_DB=true
+OMOS_ALLOW_MEMORY_PERSISTENCE=false
+PostgreSQL migrations applied
+/api/v1/persistence reports durable PostgreSQL
+Decision Record survives process restart/redeploy
+```
+
+## Production verification
+
+The controlling P0 gate is **OMOS-REF-0001**.
+
+The canonical production-evidence sequence is:
+
+```text
+exact main SHA deployed
+→ production preflight PASS
+→ live smoke PASS
+→ governed reference run created
+→ Human Gate disposition persisted
+→ Decision Record hash captured
+→ runtime restarted/redeployed on same SHA
+→ live smoke PASS after restart
+→ same Decision Record reopened
+→ Dashboard History confirms persistence
+```
+
+See:
+
+```text
+docs/OMOS-REF-0001-PRODUCTION-PROOF-RUNBOOK.md
+```
+
+and GitHub Issue **#57**.
+
+## Development checks
+
+Common repository checks include:
+
+```bash
+npm ci
+npm run check
+npm run test:openai-astra
+npm run test:model-gateway
+npm run test:connections
+npm run test:lifecycle
+npm run test:decision-record
+npm run verify:persistence:restart
+npm run preflight:production
+npm run smoke:live
+```
+
+The exact required set is defined by current package scripts and CI workflows.
+
+## Source and standards material
+
+This repository maps implementation and documentation for, among other assets:
+
+- OneGodian Protocol™;
+- OneGodian Algorithm™;
+- OHI Runtime and Council architecture;
+- OHI Output Pipeline;
+- OTS-V5 corrected timekeeping standard;
+- OneGodian AI System Prompt;
+- OneGodian Frequency Standard;
+- Agent Authority Model;
+- Quantum-OHI API intelligence / ACC authority boundary;
+- Bridge-Builder Protocol and tooling;
+- OneGodian MCP / Connection & Adaptation work;
+- OneGodian ecosystem manifests;
+- ODIN-SCI-0004 — OneGodian Particle Science™ research standard.
+
+## Quantum-OHI relationship
+
+Quantum-OHI is the OneGodian platform-intelligence and decision-support layer. It may analyze telemetry and operational context, but it does not directly own or mutate authoritative platform state merely because it produced a recommendation.
 
 Canonical action boundary:
 
 ```text
-Platform telemetry → Quantum-OHI™ analysis → recommendation → ACC approval/workflow → authoritative service → audit/verification
+Platform telemetry
+→ Quantum-OHI analysis
+→ recommendation
+→ OMOS governance / applicable Human Gate
+→ ACC approval/workflow
+→ authoritative service
+→ audit / verification
 ```
 
-OMOS remains the governed runtime/orchestration layer for OHI workflows, Human Gate decisions and Decision Records. ACC remains the separate execution control plane. See `docs/QUANTUM-OHI-API-INTELLIGENCE-BOUNDARY.md`.
+## Immediate priority
+
+The source repository is substantially Functional. The immediate engineering objective is **not another architecture rewrite**. It is:
+
+1. keep `main` internally synchronized;
+2. deploy the exact current main revision to the existing canonical runtime host;
+3. prove durable PostgreSQL and exact-build provenance;
+4. complete OMOS-REF-0001 create → restart → reopen evidence;
+5. install/verify Core Tools v1.5.0 on the WordPress presentation node;
+6. verify the shared WordPress bridge on required connected properties;
+7. only then advance applicable components from Functional toward Verified/Production.
