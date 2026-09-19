@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0.0",
+  "updatedAt": "2026-09-18",
+  "trackedPlatforms": 11,
+  "corePageTotal": 386,
+  "platforms": [
+    { "platform": "OneGodian.org", "pages": 36 },
+    { "platform": "OneGodian.com", "pages": 72 },
+    { "platform": "U.OneGodian.com", "pages": 25 },
+    { "platform": "Galaxy.OneGodian.com", "pages": 32 },
+    { "platform": "Capital.OneGodian.com", "pages": 55 },
+    { "platform": "OMOS.OneGodian.com", "pages": 30 },
+    { "platform": "App.OneGodian.com", "pages": 40 },
+    { "platform": "OBP1.OneGodian.org", "pages": 28 },
+    { "platform": "Time.OneGodian.org", "pages": 24 },
+    { "platform": "QuantumOHI.com", "pages": 26 },
+    { "platform": "QRV.Network", "pages": 18 }
+  ],
+  "rules": {
+    "sourceOfTruth": "ODIN-addressable page registry",
+    "productionRule": "A page is not production-complete until implemented, documented, repeatable, and live-verified."
+  }
+}
