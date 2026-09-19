@@ -1,9 +1,11 @@
 {
-  "schemaVersion": "1.0.0",
-  "updatedAt": "2026-09-18",
+  "schemaVersion": "1.1.0",
+  "updatedAt": "2026-09-19",
   "platform": "OMOS.OneGodian.com",
   "canonicalHost": "https://omos.onegodian.com",
   "pageCount": 30,
+  "sitemapDocument": "docs/OMOS-SITEMAP-2026-09-19.md",
+  "registryPolicy": "Thirty ODIN-addressable core pages remain the canonical page registry. Runtime application and API surfaces may exist without increasing the core-page count until formally assigned an ODIN identity.",
   "pages": [
     { "odin": "ODIN-OMOS-0001", "title": "Home", "path": "/" },
     { "odin": "ODIN-OMOS-0002", "title": "OMOS Overview", "path": "/omos" },
