@@ -8,6 +8,7 @@ const REQUIRED = [
   'OMOS_API_KEYS',
   'DATABASE_URL',
   'OMOS_DB_SSL',
+  'OMOS_DB_SSL_REJECT_UNAUTHORIZED',
   'OMOS_DB_POOL_MAX',
   'OMOS_REQUIRE_DURABLE_DB',
   'OMOS_ALLOW_MEMORY_PERSISTENCE'
@@ -99,6 +100,10 @@ async function run() {
 
   if (!['true', 'false'].includes(String(process.env.OMOS_DB_SSL || '').toLowerCase())) {
     fail('OMOS_DB_SSL must be explicitly set to true or false.');
+  }
+  if (String(process.env.OMOS_DB_SSL || '').toLowerCase() === 'true' &&
+      String(process.env.OMOS_DB_SSL_REJECT_UNAUTHORIZED || '').toLowerCase() !== 'true') {
+    fail('OMOS_DB_SSL_REJECT_UNAUTHORIZED must be true when PostgreSQL TLS is enabled.');
   }
 
   const poolMax = Number(process.env.OMOS_DB_POOL_MAX);
