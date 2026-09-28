@@ -3,6 +3,7 @@ const helmet = require("helmet");
 const compression = require("compression");
 const path = require("path");
 const fs = require("fs");
+const { randomUUID } = require("crypto");
 
 const { OMOSProcess } = require("./src/runtime/omos");
 const { runCouncil, getCouncilRun, listCouncilRuns, setHumanDecision, getPersistenceStatus } = require("./src/runtime/orchestrator");
@@ -10,6 +11,14 @@ const { verifyApiKey } = require("./src/runtime/keys");
 const { rateLimit } = require("./src/runtime/rateLimit");
 
 const app = express();
+app.disable("x-powered-by");
+app.use((req, res, next) => {
+  const incoming = String(req.headers["x-request-id"] || "").trim();
+  const requestId = /^[A-Za-z0-9._:-]{1,128}$/.test(incoming) ? incoming : randomUUID();
+  req.requestId = requestId;
+  res.setHeader("x-request-id", requestId);
+  next();
+});
 const PORT = process.env.PORT || 3000;
 const OMOS_VERSION = process.env.OMOS_VERSION || "1.1.0";
 const CANONICAL_HOST = process.env.OMOS_CANONICAL_HOST || "https://omos.onegodian.com";
@@ -54,60 +63,39 @@ const pageMeta = {
 
 const megaMenu = [
   { label: "OMOS", groups: [
-    ["Start Here", [["What Is OMOS?","/omos"],["How OMOS Works","/algorithm"],["Platform Overview","/"],["Roadmap","/latest-news"]]],
-    ["Foundation", [["OneGodian Protocol™","/protocol"],["OneGodian Algorithm™","/algorithm"],["O-H-I™","/ohi"],["Digital Sanctuary","/digital-sanctuary"]]],
-    ["Architecture", [["OMOS Architecture","/omos"],["Runtime Architecture","/docs"],["Reference Run","/reference-run"],["Decision Records","/dashboard"]]],
-    ["O-H-I", [["Council of Models","/models"],["GCD Synthesis","/ohi"],["Output Pipeline","/ohi-output-pipeline"],["Human Review","/dashboard"]]],
-    ["Standards", [["Runtime Specification","/docs"],["Compliance Test Suite","/docs"],["OTS-V5","/docs"],["Runtime Health","/api/health"]]],
-    ["About", [["Development History","/latest-news"],["Maturity Model","/docs"],["Legal & Compliance","/legal"],["Contact","/contact"]]]
+    ["Start Here", [["What Is OMOS?", "/omos"], ["How OMOS Works", "/algorithm"], ["Platform Overview", "/"], ["Roadmap", "/latest-news"]]],
+    ["Architecture", [["OMOS Architecture", "/omos"], ["Runtime Architecture", "/docs"], ["Reference Run", "/reference-run"], ["Decision Records", "/dashboard"]]],
+    ["Workspace", [["Ask OMOS", "/ask/"], ["Workspace", "/workspace"], ["Runtime Dashboard", "/dashboard"], ["Contact", "/contact"]]]
   ]},
-  { label: "Workspace", groups: [
-    ["Ask", [["Ask OMOS","/ask/"],["New Run","/ask/"],["Recent Runs","/dashboard"],["Templates","/tools"]]],
-    ["Decisions", [["Decision Review","/ask/"],["Compare Options","/ask/"],["Human Review","/dashboard"],["Decision Records","/dashboard"]]],
-    ["Documents", [["Document Review","/ask/"],["Artifacts","/artifacts"],["Saved Records","/dashboard"],["Documentation","/docs"]]],
-    ["Projects", [["Project Analysis","/ask/"],["Project Runs","/dashboard"],["Build Notes","/latest-news"],["Implementation Help","/contact"]]],
-    ["Records", [["Run History","/dashboard"],["Provider Provenance","/dashboard"],["Verification State","/dashboard"],["Persistence Status","/api/v1/persistence"]]],
-    ["Account", [["Workspace Home","/workspace"],["Dashboard","/dashboard"],["App Console",APP_URL],["Pricing","/pricing"]]]
+  { label: "OHI", groups: [
+    ["Intelligence", [["O-H-I Overview", "/ohi"], ["Council of Models", "/models"], ["Output Pipeline", "/ohi-output-pipeline"], ["Governed Synthesis", "/ohi"]]],
+    ["Review", [["Independent Outputs", "/ohi-output-pipeline"], ["Cross-Model Review", "/ohi-output-pipeline"], ["Human Review", "/dashboard"], ["Verification Boundary", "/docs"]]],
+    ["Standards", [["OneGodian Protocol™", "/protocol"], ["OneGodian Algorithm™", "/algorithm"], ["Legal & Compliance", "/legal"], ["Contact", "/contact"]]]
   ]},
-  { label: "Council", groups: [
-    ["AI Council", [["Council Overview","/council"],["Council Workspace","/ask/"],["Council of Models","/models"],["Recent Runs","/dashboard"]]],
-    ["Models", [["OpenAI","/models"],["Anthropic Claude","/models"],["Google Gemini","/models"],["xAI Grok","/models"]]],
-    ["Council Process", [["Independent Outputs","/ohi-output-pipeline"],["Cross-Model Review","/ohi-output-pipeline"],["Agreement Mapping","/ohi-output-pipeline"],["Contradictions","/ohi-output-pipeline"]]],
-    ["Synthesis", [["Governed Synthesis","/ohi"],["GCD Synthesis","/ohi"],["Supported Dissent","/ohi"],["Confidence & Limits","/ohi"]]],
-    ["Reviews", [["Human Review","/dashboard"],["Approval Gate","/dashboard"],["Verification Boundary","/docs"],["Council History","/dashboard"]]],
-    ["Results", [["Decision Record","/dashboard"],["Run History","/dashboard"],["Provider Status","/api/v1/providers"],["Export & Evidence","/dashboard"]]]
-  ]},
-  { label: "OLLM", groups: [
-    ["OneGodian LLM", [["OLLM Overview","/ollm"],["O-H-I Intelligence","/ohi"],["OMOS Integration","/omos"],["Roadmap","/latest-news"]]],
-    ["Runtime", [["Runtime Dashboard","/dashboard"],["Provider Status","/api/v1/providers"],["Persistence","/api/v1/persistence"],["Health","/api/health"]]],
-    ["Model Gateway", [["OpenAI","/models"],["Claude","/models"],["Gemini","/models"],["Grok","/models"]]],
-    ["Knowledge", [["Documentation","/docs"],["Artifacts","/artifacts"],["Protocol","/protocol"],["Algorithm","/algorithm"]]],
-    ["Evaluations", [["Alignment Engine","/tools"],["Layer 1","/tools"],["Council Review","/council"],["Verification","/tools"]]],
-    ["Developers", [["Developer Hub","/developers"],["API Manifest","/api/manifest"],["Schemas & Specs","/docs"],["Contact","/contact"]]]
+  { label: "Models", groups: [
+    ["Providers", [["OpenAI", "/models"], ["Anthropic Claude", "/models"], ["Google Gemini", "/models"], ["xAI Grok", "/models"]]],
+    ["Runtime", [["Provider Status", "/api/v1/providers"], ["Runtime Health", "/api/health"], ["Persistence", "/api/v1/persistence"], ["Manifest", "/api/manifest"]]],
+    ["OLLM", [["OneGodian LLM", "/ollm"], ["OMOS Integration", "/omos"], ["Documentation", "/docs"], ["Developer Hub", "/developers"]]]
   ]},
   { label: "Tools", groups: [
-    ["Layer 1", [["Layer 1 Tools","/tools"],["Prompt Intake","/ask/"],["Distillation","/tools"],["Signal Classification","/tools"]]],
-    ["Alignment", [["Alignment Engine","/tools"],["Algorithm","/algorithm"],["Decision Review","/ask/"],["Execution Readiness","/tools"]]],
-    ["Identity", [["Belief Mapper","/belief-mapper"],["Identity Tools","/tools"],["Declaration Tools","/tools"],["Digital Sanctuary","/digital-sanctuary"]]],
-    ["Verification", [["Verification Tools","/tools"],["Decision Records","/dashboard"],["Persistence","/api/v1/persistence"],["Compliance","/legal"]]],
-    ["Intelligence", [["Council of Models","/models"],["Output Pipeline","/ohi-output-pipeline"],["Governed Synthesis","/ohi"],["O-H-I","/ohi"]]],
-    ["All Tools", [["Tools Home","/tools"],["Documentation","/docs"],["Artifacts","/artifacts"],["Workspace","/workspace"]]]
+    ["Decision Tools", [["Ask OMOS", "/ask/"], ["Layer 1", "/tools"], ["Alignment", "/algorithm"], ["Decision Review", "/ask/"]]],
+    ["Identity", [["Belief Mapper", "/belief-mapper"], ["Identity Tools", "/tools"], ["Digital Sanctuary", "/digital-sanctuary"], ["O-H-I", "/ohi"]]],
+    ["Verification", [["Decision Records", "/dashboard"], ["Reference Run", "/reference-run"], ["Compliance", "/legal"], ["Runtime Status", "/api/health"]]]
   ]},
-  { label: "Developers", groups: [
-    ["Developer Hub", [["Developers","/developers"],["Getting Started","/docs"],["Documentation","/docs"],["GitHub","https://github.com/ohi-stack/omos-site"]]],
-    ["APIs", [["API Manifest","/api/manifest"],["Health API","/api/health"],["Provider API","/api/v1/providers"],["Persistence API","/api/v1/persistence"]]],
-    ["Connections", [["Model Connectors","/models"],["Data Connectors","/developers"],["App Console",APP_URL],["QuantumOHI",QUANTUM_OHI_URL]]],
-    ["Engineering", [["Engineering Council","/developers"],["Reference Run","/reference-run"],["Build Notes","/latest-news"],["Production Evidence","/reference-run"]]],
-    ["Standards", [["OneGodian Protocol™","/protocol"],["OneGodian Algorithm™","/algorithm"],["O-H-I","/ohi"],["Compliance","/legal"]]],
-    ["Runtime", [["Runtime Dashboard","/dashboard"],["Manifest","/api/manifest"],["Providers","/api/v1/providers"],["History","/dashboard"]]]
+  { label: "Artifacts", groups: [
+    ["Evidence", [["Artifacts Home", "/artifacts"], ["Reference Run", "/reference-run"], ["Build Notes", "/latest-news"], ["Provider Provenance", "/dashboard"]]],
+    ["Research", [["Documentation", "/docs"], ["Protocol", "/protocol"], ["Algorithm", "/algorithm"], ["O-H-I Pipeline", "/ohi-output-pipeline"]]],
+    ["Workspace", [["Saved Records", "/dashboard"], ["Workspace", "/workspace"], ["Ask OMOS", "/ask/"], ["Developers", "/developers"]]]
   ]},
-  { label: "Pricing", groups: [
-    ["Free", [["Ask OMOS","/ask/"],["Tools","/tools"],["Belief Mapper","/belief-mapper"],["Start Here","/omos"]]],
-    ["Pro", [["OMOS Pro","/pricing"],["Saved History","/dashboard"],["Decision Records","/dashboard"],["Get Started","/pricing"]]],
-    ["Council", [["OMOS Council","/pricing"],["AI Council","/council"],["Multi-Model Review","/models"],["Get Council","/pricing"]]],
-    ["Business", [["OMOS Business","/pricing"],["Decision Governance","/pricing"],["Developer Access","/developers"],["Contact Sales","/contact"]]],
-    ["Services", [["Decision Review","/pricing"],["AI Council Review","/pricing"],["Document Review","/pricing"],["Implementation Services","/contact"]]],
-    ["Shop", [["OMOS Shop","/shop"],["OneGodian.com",STORE_URL],["Products & Downloads","/shop"],["Product Docs","/docs"]]]
+  { label: "Docs", groups: [
+    ["Get Started", [["What Is OMOS?", "/omos"], ["How OMOS Works", "/algorithm"], ["Ask OMOS", "/ask/"], ["Workspace", "/workspace"]]],
+    ["Engineering", [["Developer Hub", "/developers"], ["API Manifest", "/api/manifest"], ["Health API", "/api/health"], ["Schemas & Specs", "/docs"]]],
+    ["Governance", [["Protocol", "/protocol"], ["Algorithm", "/algorithm"], ["Reference Run", "/reference-run"], ["Legal & Compliance", "/legal"]]]
+  ]},
+  { label: "Shop", groups: [
+    ["OMOS", [["OMOS Shop", "/shop"], ["Products & Downloads", "/shop"], ["Product Docs", "/docs"], ["Pricing", "/pricing"]]],
+    ["OneGodian", [["OneGodian.com", STORE_URL], ["OneGodian.org", ORG_URL], ["App Console", APP_URL], ["QuantumOHI", QUANTUM_OHI_URL]]],
+    ["Services", [["Decision Review", "/pricing"], ["AI Council Review", "/pricing"], ["Implementation Services", "/contact"], ["Contact Sales", "/contact"]]]
   ]}
 ];
 
@@ -164,12 +152,32 @@ app.get(["/manifest","/api/manifest"],(req,res)=>res.json({...manifestPayload(),
 app.get("/api/v1/providers",(req,res)=>res.json({status:"ok",providers:providerStatus()}));
 app.get("/api/v1/persistence",(req,res)=>res.json({status:"ok",persistence:getPersistenceStatus()}));
 for(const route of publicRoutes){app.get(route,(req,res)=>sendPage(res,route));app.get(`${route}/`,(req,res)=>sendPage(res,route));}
-app.get("/admin",(req,res)=>sendPage(res,"/admin"));
+app.get("/admin",(req,res)=>{
+  res.setHeader("Cache-Control", "no-store");
+  return sendPage(res, "/admin");
+});
 app.post("/process",requireApiKey,rateLimit(),(req,res)=>{const result=OMOSProcess(req.body);res.json({status:"ok",apiKey:{name:req.apiKeyMeta.name,plan:req.apiKeyMeta.plan},data:result});});
 app.post("/api/v1/council/run",requireApiKey,rateLimit(),async(req,res)=>{try{const data=await runCouncil({prompt:req.body.prompt||req.body.input||req.body.question,context:req.body.context||{},providers:Array.isArray(req.body.providers)?req.body.providers:undefined,mode:req.body.mode||"auto"});res.json({status:"ok",apiKey:{name:req.apiKeyMeta.name,plan:req.apiKeyMeta.plan},data});}catch(error){const status=error.message==="prompt_required"||error.message==="provider_required"?400:500;res.status(status).json({error:"council_run_failed",message:error.message});}});
 app.get("/api/v1/council/runs",requireApiKey,async(req,res)=>{try{const data=await listCouncilRuns(req.query.limit);res.json({status:"ok",apiKey:{name:req.apiKeyMeta.name,plan:req.apiKeyMeta.plan},data,persistence:getPersistenceStatus()});}catch(error){res.status(500).json({error:"run_history_failed",message:error.message});}});
 app.get("/api/v1/council/runs/:id",requireApiKey,async(req,res)=>{try{const record=await getCouncilRun(req.params.id);if(!record)return res.status(404).json({error:"run_not_found",requestId:req.params.id});res.json({status:"ok",apiKey:{name:req.apiKeyMeta.name,plan:req.apiKeyMeta.plan},data:record,persistence:getPersistenceStatus()});}catch(error){res.status(500).json({error:"run_read_failed",message:error.message});}});
 app.post("/api/v1/council/runs/:id/human-decision",requireApiKey,rateLimit(),async(req,res)=>{try{const decision=String(req.body.decision||'').toUpperCase();if(!['APPROVED','REJECTED'].includes(decision))return res.status(400).json({error:"invalid_human_decision",message:"decision must be APPROVED or REJECTED"});const record=await setHumanDecision(req.params.id,decision,req.body.comment||'',req.apiKeyMeta.name);if(!record)return res.status(404).json({error:"run_not_found",requestId:req.params.id});res.json({status:"ok",apiKey:{name:req.apiKeyMeta.name,plan:req.apiKeyMeta.plan},data:record,persistence:getPersistenceStatus()});}catch(error){res.status(500).json({error:"human_decision_failed",message:error.message});}});
 app.use(express.static(path.join(__dirname,"public"),{redirect:false}));
-app.use((req,res)=>res.status(404).json({error:"not_found",message:"Route not found in OMOS runtime manifest.",manifest:"/manifest"}));
-app.listen(Number(PORT)||3000,"0.0.0.0",()=>console.log(`OMOS running on ${PORT} · persistence=${getPersistenceStatus().backend}`));
+app.use((error, req, res, next) => {
+  if (res.headersSent) return next(error);
+  console.error(JSON.stringify({ event: "omos_request_error", requestId: req.requestId || null, code: error?.code || "unhandled_error" }));
+  return res.status(500).json({ error: "internal_server_error", requestId: req.requestId || null });
+});
+app.use((req,res)=>res.status(404).json({error:"not_found",message:"Route not found in OMOS runtime manifest.",manifest:"/manifest",requestId:req.requestId || null}));
+
+const server = app.listen(Number(PORT)||3000,"0.0.0.0",()=>console.log(`OMOS running on ${PORT} · persistence=${getPersistenceStatus().backend}`));
+function shutdown(signal) {
+  console.log(JSON.stringify({ event: "omos_shutdown", signal }));
+  const timer = setTimeout(() => process.exit(1), 10000);
+  timer.unref();
+  server.close(() => {
+    clearTimeout(timer);
+    process.exit(0);
+  });
+}
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on("SIGINT", () => shutdown("SIGINT"));

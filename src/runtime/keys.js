@@ -54,7 +54,11 @@ function verifyApiKey(apiKey) {
 
   const keyHash = hashApiKey(apiKey);
   const keys = parseKeyStore();
-  const found = keys.find((key) => key.hash === keyHash) || null;
+  const found = keys.find((key) => {
+    const stored = Buffer.from(String(key.hash || ""), "hex");
+    const presented = Buffer.from(keyHash, "hex");
+    return stored.length === presented.length && crypto.timingSafeEqual(stored, presented);
+  }) || null;
   if (found) {
     ownerContext.enterWith(found);
     return found;

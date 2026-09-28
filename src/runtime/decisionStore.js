@@ -30,7 +30,9 @@ function getPool() {
   const { Pool } = require('pg');
   pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.OMOS_DB_SSL === 'false' ? false : { rejectUnauthorized: false },
+    ssl: process.env.OMOS_DB_SSL === 'false' ? false : {
+      rejectUnauthorized: process.env.OMOS_DB_SSL_REJECT_UNAUTHORIZED !== 'false'
+    },
     max: Number(process.env.OMOS_DB_POOL_MAX || 5),
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 10000
