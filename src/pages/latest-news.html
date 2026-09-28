@@ -1,1 +1,204 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OMOS News & Build Status — September 15, 2026</title><meta name="description" content="Current OMOS implementation, production deployment parity, Model Gateway, MCP, persistence, and OMOS-REF-0001 status for September 15, 2026."><link rel="stylesheet" href="/section-page.css"></head><body><main class="section-page"><section class="sp-hero"><span class="sp-eyebrow">News & Build Notes • September 15, 2026</span><h1>Repository hardened. Canonical production host update required.</h1><p class="sp-lead">OMOS has advanced beyond the September 10 convergence into a production-readiness build with normalized Model Gateway contracts, strict production preflight checks, MCP authorization hardening, PostgreSQL durability controls, Decision Record restart verification, and exact deployed-SHA evidence tooling. The scheduled production monitor still sees the canonical host on runtime version 1.0.1 while the approved repository target is 1.1.0, so the live host is reachable but not yet aligned with current main.</p><div class="sp-actions"><a class="sp-btn sp-btn-primary" href="/ask/">Ask OMOS</a><a class="sp-btn" href="/api/health">Runtime Health</a><a class="sp-btn" href="/api/v1/persistence">Persistence</a><a class="sp-btn" href="/models">Model Gateway</a><a class="sp-btn" href="/reference-run">OMOS-REF-0001</a></div></section><section class="sp-section"><div class="sp-grid"><article class="sp-card"><span class="sp-status">Repository-verified</span><h2>Governed Runtime</h2><p>Layer 1, alignment, Council orchestration, cross-review, governed synthesis, Human Gate, Decision Records, owner-scoped history, and persistent run interfaces are implemented in the current source.</p></article><article class="sp-card"><span class="sp-status">Repository-verified</span><h2>Strict Production Preflight</h2><p>Production startup now requires exact build provenance, non-placeholder hashed API-key configuration, valid PostgreSQL configuration, durable persistence, explicit SSL/pool settings, and disabled memory fallback.</p></article><article class="sp-card"><span class="sp-status">Repository-verified</span><h2>Model Gateway</h2><p>OpenAI, Anthropic, Gemini, and xAI use normalized provider contracts and production verification rules. Configuration still does not equal successful live provider execution.</p></article><article class="sp-card"><span class="sp-status">Repository-verified</span><h2>MCP Hardening</h2><p>Consequential MCP mutations require authoritative approval; endpoint credential handling, JSON-RPC correlation, body-timeout behavior, and regression coverage are hardened in source.</p></article><article class="sp-card"><span class="sp-status warn">Deployment mismatch</span><h2>Canonical Host</h2><p>September 15 scheduled health evidence reports live runtime version <strong>1.0.1</strong> while the repository target is <strong>1.1.0</strong>. The host must be pulled/restarted onto an approved current-main descendant before production certification.</p></article><article class="sp-card"><span class="sp-status warn">Certification gate</span><h2>OMOS-REF-0001</h2><p>PASS still requires exact deployed-SHA parity, initialized durable PostgreSQL, one governed run, server-side Human Gate disposition, history reopen, restart/redeploy, and reopening the same Decision Record with owner isolation and audit chain intact.</p></article><article class="sp-card"><span class="sp-status warn">Next capability</span><h2>External Evidence Verification</h2><p>OMOS keeps Council convergence separate from factual verification. The next layer is source retrieval, claim-to-source mapping, evidence quality, provenance, and explicit verification results.</p></article><article class="sp-card"><span class="sp-status warn">Productization</span><h2>Commerce & Entitlements</h2><p>The product path is defined, but checkout → server-verified entitlement → governed run → durable Decision Record → History must be production-tested before paid automation is represented as complete.</p></article></div></section><section class="sp-section"><span class="sp-eyebrow">Current release order</span><div class="sp-list"><div><strong>P0:</strong> deploy approved current main to the existing Hostinger Node runtime and establish source/version parity.</div><div><strong>P0:</strong> run OMOS-REF-0001 end to end on the live host, including restart/reopen evidence.</div><div><strong>P1:</strong> complete live provider health/execution verification for OpenAI, Anthropic, Gemini, and xAI.</div><div><strong>P2:</strong> add external evidence verification and stronger provider telemetry.</div><div><strong>P3:</strong> activate governed Data / Action / Environment connectors through source-of-record-aware authorization.</div><div><strong>P4:</strong> complete checkout/entitlement and paid Decision/Council products without overstating unavailable functionality.</div></div><div class="sp-callout"><strong>Production rule:</strong> repository merge ≠ deployment; deployment ≠ production proof. Production requires exact source parity plus repeatable behavioral evidence.</div></section></main></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latest News & Runtime Releases — OMOS</title>
+<style>
+:root {
+  --bg: #040508;
+  --panel: rgba(14, 18, 26, 0.88);
+  --panel-deep: rgba(7, 9, 13, 0.94);
+  --gold: #e3be69;
+  --gold-bright: #ffe39c;
+  --cyan: #55d7ff;
+  --purple: #9d72ff;
+  --text: #f8f4ea;
+  --muted: #aaa6b5;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-gold: rgba(227, 190, 105, 0.22);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 50% -10%, rgba(119, 82, 209, 0.18), transparent 34rem),
+    linear-gradient(rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(180deg, #030508 0%, #06080d 45%, #030508 100%);
+  background-size: 100% 100%, 44px 44px, 44px 44px, 100% 100%;
+  font-family: Arial, Helvetica, ui-sans-serif, system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+.wrap {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.eyebrow {
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 0 4px rgba(85, 215, 255, 0.14), 0 0 16px rgba(85, 215, 255, 0.85);
+  display: inline-block;
+}
+
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(42px, 6.8vw, 84px);
+  line-height: 0.95;
+  margin: 12px 0 20px;
+  letter-spacing: -0.045em;
+  font-weight: 400;
+  color: #f8f4ea;
+}
+
+h1 span {
+  background: linear-gradient(90deg, var(--gold-bright), #ccb5ff 55%, var(--cyan));
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.hero-sub {
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.68;
+  max-width: 860px;
+  margin-bottom: 44px;
+}
+
+.news-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.news-item {
+  background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.news-item:hover {
+  border-color: var(--line-gold);
+  transform: translateY(-2px);
+}
+
+.news-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  background: rgba(227, 190, 105, 0.1);
+  border: 1px solid var(--line-gold);
+}
+
+.date {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.news-item h2 {
+  font-family: Georgia, serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0 0 12px;
+}
+
+.news-item p {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.65;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .news-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .wrap { padding: 24px 16px 60px; }
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <div class="eyebrow"><span class="live-dot"></span>RUNTIME DISPATCH • DEPLOYMENT CHRONOLOGY</div>
+    <h1>Latest Updates &<br><span>Release Milestones.</span></h1>
+    <p class="hero-sub">Track active deployment milestones, council orchestration updates, runtime manifest changes, and protocol revisions across the OneGodian ecosystem.</p>
+  </header>
+
+  <section class="news-feed">
+    <article class="news-item">
+      <div class="news-header">
+        <span class="badge">Runtime Release</span>
+        <span class="date">March 2026</span>
+      </div>
+      <h2>OMOS Runtime v1.1.0 Unified Architecture</h2>
+      <p>Introduced the global 4200 black design system across all application surfaces, complete with golden OMOS branding, deep obsidian carbon panels, Georgia serif typography, and the canonical 7-category mega menu.</p>
+    </article>
+
+    <article class="news-item">
+      <div class="news-header">
+        <span class="badge">Flagship Feature</span>
+        <span class="date">March 2026</span>
+      </div>
+      <h2>Interactive Council Review Pipeline</h2>
+      <p>Deployed the visual OHI review cycle explainer detailing 4-way independent execution across OpenAI, Anthropic, Google Gemini, and xAI Grok with comparative signal isolation (Agreement, Contradiction, Omission, Novelty).</p>
+    </article>
+
+    <article class="news-item">
+      <div class="news-header">
+        <span class="badge">Governance Protocol</span>
+        <span class="date">February 2026</span>
+      </div>
+      <h2>Human Authority Gate Formalization</h2>
+      <p>Established strict policy separation: all model generations remain intermediate proposals until confirmed by human sign-off, writing immutable provenance logs directly into Decision Records.</p>
+    </article>
+
+    <article class="news-item">
+      <div class="news-header">
+        <span class="badge">Protocol Spec</span>
+        <span class="date">January 2026</span>
+      </div>
+      <h2>The OneGodian Algorithm™ Whitepaper Integration</h2>
+      <p>Published core mathematical definitions for Observe → Distill → Align → Select → Execute → Verify multi-stage heuristic processing.</p>
+    </article>
+  </section>
+</main>
+</body>
+</html>

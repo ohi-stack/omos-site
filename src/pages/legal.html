@@ -1,1 +1,157 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OMOS Legal & Classification</title><meta name="description" content="OMOS legal, institutional, entity, timekeeping, evidence, and human-authority boundaries."><link rel="stylesheet" href="/section-page.css"></head><body><main class="section-page"><section class="sp-hero"><span class="sp-eyebrow">Compliance • Classification • Boundaries</span><h1>Legal & Institutional Positioning</h1><p class="sp-lead">OMOS is a software, documentation, identity-reflection, and decision-support framework. Public pages distinguish technical capability, private commercial activity, voluntary community/religious-society contexts, and controlling civil law.</p></section><section class="sp-section"><div class="sp-grid sp-grid-2"><article class="sp-card"><h2>ONEGODIAN, LLC</h2><p>Commercial, software, intellectual-property, publishing, education, licensing, product, and implementation activity belongs to ONEGODIAN, LLC. OMOS commerce routes to OneGodian.com.</p></article><article class="sp-card"><h2>Indigenous Nation of Onegodia</h2><p>INO-related spiritual, religious-society, community, and internal-governance material remains contextually separate from ONEGODIAN, LLC commercial/software operations. OMOS does not use that distinction to claim immunity from applicable civil law.</p></article><article class="sp-card"><h2>Decision Support</h2><p>OMOS outputs can be incomplete or wrong. Model agreement is not factual proof. OMOS does not replace qualified legal, financial, medical, tax, engineering, or other professional advice.</p></article><article class="sp-card"><h2>Human Authority</h2><p>Human approval remains explicit for governed results. Financial transactions, contracts, credentials, registries, infrastructure changes, account actions, and other consequential external execution require separate authorization.</p></article><article class="sp-card"><h2>Time & Records</h2><p>UTC is canonical system time. Gregorian dates remain controlling for civil, legal, banking, tax, contract, and institutional records. OneGodian Time under OTS-V5 may be stored as a derived supplemental representation.</p></article><article class="sp-card"><h2>Research Claims</h2><p>Metaphysical, cosmological, synthetic-dignity, particle, consciousness, and related research concepts must be labeled according to evidence status. Internal model consensus does not establish empirical scientific fact.</p></article></div><div class="sp-callout"><strong>No automatic legal effect:</strong> a declaration, Decision Record, certificate, identity result, protocol output, or model-generated analysis does not by itself create government recognition, legal jurisdiction, regulatory approval, financial-institution status, or guaranteed institutional acceptance.</div></section></main></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legal Classification & Entity Separation — OMOS</title>
+<style>
+:root {
+  --bg: #040508;
+  --panel: rgba(14, 18, 26, 0.88);
+  --panel-deep: rgba(7, 9, 13, 0.94);
+  --gold: #e3be69;
+  --gold-bright: #ffe39c;
+  --cyan: #55d7ff;
+  --purple: #9d72ff;
+  --text: #f8f4ea;
+  --muted: #aaa6b5;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-gold: rgba(227, 190, 105, 0.22);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 50% -10%, rgba(119, 82, 209, 0.18), transparent 34rem),
+    linear-gradient(rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(180deg, #030508 0%, #06080d 45%, #030508 100%);
+  background-size: 100% 100%, 44px 44px, 44px 44px, 100% 100%;
+  font-family: Arial, Helvetica, ui-sans-serif, system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+.wrap {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.eyebrow {
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 0 4px rgba(85, 215, 255, 0.14), 0 0 16px rgba(85, 215, 255, 0.85);
+  display: inline-block;
+}
+
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(42px, 6.8vw, 84px);
+  line-height: 0.95;
+  margin: 12px 0 20px;
+  letter-spacing: -0.045em;
+  font-weight: 400;
+  color: #f8f4ea;
+}
+
+h1 span {
+  background: linear-gradient(90deg, var(--gold-bright), #ccb5ff 55%, var(--cyan));
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.hero-sub {
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.68;
+  max-width: 860px;
+  margin-bottom: 44px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.legal-card {
+  background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+}
+
+.legal-card h2 {
+  font-family: Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--gold-bright);
+  margin: 0 0 12px;
+}
+
+.legal-card p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.65;
+  margin: 0;
+}
+
+@media (max-width: 760px) {
+  .grid { grid-template-columns: 1fr; }
+  .wrap { padding: 24px 16px 60px; }
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <div class="eyebrow"><span class="live-dot"></span>GOVERNANCE & COMPLIANCE • INSTITUTIONAL STANDARDS</div>
+    <h1>Legal Classification &<br><span>Entity Separation.</span></h1>
+    <p class="hero-sub">Formal boundary definitions separating public protocol documentation, experimental multi-model runtime execution, and commercial private enterprise activities.</p>
+  </header>
+
+  <section class="grid">
+    <article class="legal-card">
+      <h2>Systems Framework Classification</h2>
+      <p>OMOS™ (OneGodian Metaphysical Operating System) functions as a systems architecture, software runtime, and technical documentation framework built upon the ONEGODIAN™ philosophical foundation. It is an engineering methodology, not a financial, religious, or legal advisory service.</p>
+    </article>
+
+    <article class="legal-card">
+      <h2>Commercial Entity Separation</h2>
+      <p>ONEGODIAN, LLC operates as the commercial, software development, publishing, and intellectual property entity. Commercial transactions, merchandise, memberships, and paid services are conducted through OneGodian.com.</p>
+    </article>
+
+    <article class="legal-card">
+      <h2>Gregorian Controlling Time Standard</h2>
+      <p>While OMOS and OHI explore advanced timekeeping standards (including OTS-V5, lunar cycles, and harmonic decimal measures), the Gregorian calendar remains controlling and definitive for all legal, banking, tax, contractual, and institutional records.</p>
+    </article>
+
+    <article class="legal-card">
+      <h2>AI Maturity & Human Gate Principle</h2>
+      <p>All AI-generated outputs from the Council of Models (including OpenAI, Anthropic, Google Gemini, and xAI Grok) are treated strictly as intermediate proposals. Final synthesis, execution authorization, and legal accountability remain exclusively with human sovereign decision-makers.</p>
+    </article>
+  </section>
+</main>
+</body>
+</html>

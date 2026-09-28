@@ -25,17 +25,46 @@
     });
   });
 
+  function closeMobileNav() {
+    if (nav && nav.classList.contains('is-mobile-open')) {
+      nav.classList.remove('is-mobile-open');
+      if (toggle) {
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.classList.remove('is-open');
+      }
+    }
+  }
+
   if (toggle && nav) {
     toggle.addEventListener('click', () => {
       const opening = !nav.classList.contains('is-mobile-open');
       nav.classList.toggle('is-mobile-open', opening);
       toggle.setAttribute('aria-expanded', String(opening));
-      toggle.textContent = opening ? '×' : '☰';
+      toggle.classList.toggle('is-open', opening);
+    });
+  }
+
+  if (nav) {
+    nav.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        closeAll();
+        closeMobileNav();
+      });
     });
   }
 
   document.addEventListener('click', (event) => {
-    if (!event.target.closest('.omos-site-header')) closeAll();
+    if (!event.target.closest('.omos-site-header')) {
+      closeAll();
+      closeMobileNav();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeAll();
+      closeMobileNav();
+    }
   });
 
   window.addEventListener('resize', () => {

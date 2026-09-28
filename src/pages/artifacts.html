@@ -1,1 +1,231 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Artifacts & Research — OMOS</title></head><body><main style="max-width:1160px;margin:0 auto;padding:64px 24px"><p style="color:#f0d98a;text-transform:uppercase;letter-spacing:.14em;font-weight:800">Artifacts • Evidence • Research • Media</p><h1>OMOS Artifacts & Research</h1><p style="max-width:920px;font-size:19px;line-height:1.7">This area preserves the documents, diagrams, implementation records, visual explainers, standards, and specialized OneGodian research that support OMOS. Artifact availability is not the same as scientific validation, legal recognition, or production deployment; each item should be read according to its stated status and evidence basis.</p><section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin:34px 0"><article style="padding:24px;border:1px solid rgba(255,255,255,.1);border-radius:18px"><h2>Architecture & Runtime</h2><p>OMOS architecture, browser-to-output reference run, Decision Record persistence, provider adapters, manifest, deployment evidence, and runtime specifications.</p><p><a href="/docs">Documentation Center</a> · <a href="/reference-run">Production Proof</a></p></article><article style="padding:24px;border:1px solid rgba(255,255,255,.1);border-radius:18px"><h2>Protocol & Algorithm</h2><p>The OneGodian Protocol™, OneGodian Algorithm™, identity/alignment concepts, system-prompt materials, and Observe → Distill → Align → Select → Execute → Verify logic.</p><p><a href="/protocol">Protocol</a> · <a href="/algorithm">Algorithm</a></p></article><article style="padding:24px;border:1px solid rgba(255,255,255,.1);border-radius:18px"><h2>O-H-I & GCD Synthesis</h2><p>Multi-model comparison, cross-review, signal separation, GCD-style synthesis, supported dissent, and human-reviewed output architecture.</p><p><a href="/ohi">O-H-I</a> · <a href="/ohi-output-pipeline">Output Pipeline</a></p></article><article style="padding:24px;border:1px solid rgba(255,255,255,.1);border-radius:18px"><h2>Timekeeping</h2><p>OTS-V5 is the current operational OneGodian Timekeeping System standard. OMOS uses UTC for canonical machine timestamps and may derive OneGodian Time as supplemental representation.</p><p><a href="/docs">OTS-V5 documentation</a></p></article><article style="padding:24px;border:1px solid rgba(255,255,255,.1);border-radius:18px"><h2>Engineering Council</h2><p>Agent authority, GitHub issue/PR workflow, CI, review, human approval, deployment proof, and engineering provenance records.</p><p><a href="/developers">Engineering Council</a></p></article><article style="padding:24px;border:1px solid rgba(255,255,255,.1);border-radius:18px"><h2>Digital Sanctuary</h2><p>Immersive and visual presentation material for the OneGodian/OMOS conceptual environment.</p><p><a href="/digital-sanctuary">Open Digital Sanctuary</a></p></article></section><h2>Specialized OneGodian research</h2><section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px"><article style="padding:24px;border:1px solid rgba(240,217,138,.25);border-radius:18px"><p style="color:#f0d98a;font-weight:800">ODIN-SCI-0004</p><h3>OneGodian Particle Science™</h3><p>A OneGodian theoretical/research framework concerning proposed OneGodian particle concepts. It should be presented as internally authored research/theory unless and until independent scientific evidence validates specific physical claims.</p><p><a href="https://github.com/ohi-stack/omos-site/blob/main/docs/ODIN-SCI-0004-ONEGODIAN-PARTICLE-SCIENCE.md">Open research record ↗</a></p></article><article style="padding:24px;border:1px solid rgba(255,255,255,.1);border-radius:18px"><h3>Belief Mapper</h3><p>A seven-dimensional belief-reflection product specification with Seeker, Believer, OneGodian, and Elder journey stages plus a separate OneGodian Ally relationship/status.</p><p><a href="/belief-mapper">Open Belief Mapper specification</a></p></article><article style="padding:24px;border:1px solid rgba(255,255,255,.1);border-radius:18px"><h3>OLLM</h3><p>The OneGodian LLM architecture is a defined model/intelligence layer intended to become a first-class OMOS provider after runtime and evaluation gates pass.</p><p><a href="/ollm">Open OLLM overview</a></p></article></section><h2>Artifact handling rule</h2><p>OMOS distinguishes <strong>source artifact</strong>, <strong>implementation evidence</strong>, <strong>runtime evidence</strong>, and <strong>external validation</strong>. A PDF, specification, model output, repository commit, or Council consensus can establish provenance or implementation status, but none should automatically be treated as independent external validation of the underlying claim.</p><p style="margin-top:30px"><a href="/docs">Documentation</a> · <a href="/tools">Tools</a> · <a href="/latest-news">Build Status</a> · <a href="https://github.com/ohi-stack/omos-site">Canonical Repository ↗</a></p></main></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMOS Artifacts & Reference Assets</title>
+<style>
+:root {
+  --bg: #040508;
+  --panel: rgba(14, 18, 26, 0.88);
+  --panel-deep: rgba(7, 9, 13, 0.94);
+  --gold: #e3be69;
+  --gold-bright: #ffe39c;
+  --cyan: #55d7ff;
+  --purple: #9d72ff;
+  --text: #f8f4ea;
+  --muted: #aaa6b5;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-gold: rgba(227, 190, 105, 0.22);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 50% -10%, rgba(119, 82, 209, 0.18), transparent 34rem),
+    linear-gradient(rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(180deg, #030508 0%, #06080d 45%, #030508 100%);
+  background-size: 100% 100%, 44px 44px, 44px 44px, 100% 100%;
+  font-family: Arial, Helvetica, ui-sans-serif, system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+.wrap {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.eyebrow {
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 0 4px rgba(85, 215, 255, 0.14), 0 0 16px rgba(85, 215, 255, 0.85);
+  display: inline-block;
+}
+
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(42px, 6.8vw, 84px);
+  line-height: 0.95;
+  margin: 12px 0 20px;
+  letter-spacing: -0.045em;
+  font-weight: 400;
+  color: #f8f4ea;
+}
+
+h1 span {
+  background: linear-gradient(90deg, var(--gold-bright), #ccb5ff 55%, var(--cyan));
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.hero-sub {
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.68;
+  max-width: 860px;
+  margin-bottom: 44px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.artifact-card {
+  background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.artifact-card:hover {
+  border-color: var(--line-gold);
+  transform: translateY(-2px);
+}
+
+.artifact-card h2 {
+  font-family: Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 12px 0 10px;
+}
+
+.artifact-card p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 18px;
+}
+
+.badge {
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  background: rgba(227, 190, 105, 0.1);
+  border: 1px solid var(--line-gold);
+}
+
+.artifact-link {
+  color: var(--gold-bright);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.artifact-link:hover {
+  color: #ffffff;
+}
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 540px) {
+  .grid { grid-template-columns: 1fr; }
+  .wrap { padding: 24px 16px 60px; }
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <div class="eyebrow"><span class="live-dot"></span>PRODUCTION ARTIFACTS • ASSET REPOSITORY</div>
+    <h1>System Blueprints &<br><span>Canonical Assets.</span></h1>
+    <p class="hero-sub">Publicly available schemas, architecture diagrams, whitepaper assets, protocol specifications, and implementation models supporting OMOS and OHI runtime environments.</p>
+  </header>
+
+  <section class="grid">
+    <article class="artifact-card">
+      <div>
+        <span class="badge">Architecture Diagram</span>
+        <h2>Council Flow Diagram</h2>
+        <p>High-resolution workflow schematic tracing human input, Layer 1 quarantine, 4-way execution, and human approval gates.</p>
+      </div>
+      <a class="artifact-link" href="/ohi-output-pipeline">View Pipeline Diagram →</a>
+    </article>
+
+    <article class="artifact-card">
+      <div>
+        <span class="badge">Visual Explainer</span>
+        <h2>Digital Sanctuary</h2>
+        <p>Interactive meditation canvas with 432 Hz frequency calibration and contemplative design elements.</p>
+      </div>
+      <a class="artifact-link" href="/digital-sanctuary">Explore Sanctuary →</a>
+    </article>
+
+    <article class="artifact-card">
+      <div>
+        <span class="badge">JSON Schema</span>
+        <h2>Decision Record Manifest</h2>
+        <p>Formal validation schema for auditable decision logging, provider responses, and human disposition markers.</p>
+      </div>
+      <a class="artifact-link" href="/api/manifest">Inspect JSON Schema →</a>
+    </article>
+
+    <article class="artifact-card">
+      <div>
+        <span class="badge">Source Document</span>
+        <h2>Canon Library Records</h2>
+        <p>Nine source texts defining executive operating doctrine, universal book structure, and generational audience framing.</p>
+      </div>
+      <a class="artifact-link" href="/canon-library">Open Canon Library →</a>
+    </article>
+
+    <article class="artifact-card">
+      <div>
+        <span class="badge">Harmonic Standard</span>
+        <h2>432 Hz Audio Reference</h2>
+        <p>Specifications for primary harmonic audio branding across meditative, educational, and calendar releases.</p>
+      </div>
+      <a class="artifact-link" href="/canon-library">Read Audio Standard →</a>
+    </article>
+
+    <article class="artifact-card">
+      <div>
+        <span class="badge">Specification</span>
+        <h2>OneGodian Protocol v1.1</h2>
+        <p>Cross-agent communication schemas and semantic interoperability rules for decentralized intelligent systems.</p>
+      </div>
+      <a class="artifact-link" href="/protocol">Read Protocol Spec →</a>
+    </article>
+  </section>
+</main>
+</body>
+</html>

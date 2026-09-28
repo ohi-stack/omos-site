@@ -3,9 +3,222 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>OMOS Canon Library | OneGodian</title>
+<title>OMOS Canon Library — OneGodian</title>
 <style>
-:root{--bg:#070607;--panel:#111827;--panel2:#17121f;--gold:#d8b35a;--purple:#6f3cff;--text:#f5f1e8;--muted:rgba(245,241,232,.74);--line:rgba(216,179,90,.24)}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,rgba(111,60,255,.18),transparent 34%),radial-gradient(circle at bottom right,rgba(216,179,90,.12),transparent 34%),linear-gradient(180deg,var(--bg),var(--panel2));color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;line-height:1.65}.wrap{max-width:1180px;margin:0 auto;padding:36px 22px}.nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:42px}.nav a{color:var(--text);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:13px;background:rgba(255,255,255,.04)}.eyebrow{color:var(--gold);font-weight:800;letter-spacing:.18em;text-transform:uppercase;font-size:12px}h1{font-size:clamp(40px,7vw,72px);line-height:1.02;margin:14px 0 18px;letter-spacing:-.04em}p{color:var(--muted);font-size:18px;max-width:920px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:34px}.card{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.025));border-radius:22px;padding:22px;min-height:220px}.card h2{margin:0 0 10px;color:var(--gold);font-size:21px}.tag{display:inline-block;margin:0 0 12px;padding:5px 10px;border:1px solid rgba(216,179,90,.28);border-radius:999px;color:#f0d98a;font-size:12px;text-transform:uppercase;letter-spacing:.08em}.notice{margin-top:32px;border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:18px;background:rgba(255,255,255,.04);color:var(--muted)}footer{border-top:1px solid var(--line);margin-top:60px;padding-top:24px;color:var(--muted);font-size:14px}
+:root {
+  --bg: #040508;
+  --panel: rgba(14, 18, 26, 0.88);
+  --panel-deep: rgba(7, 9, 13, 0.94);
+  --gold: #e3be69;
+  --gold-bright: #ffe39c;
+  --cyan: #55d7ff;
+  --purple: #9d72ff;
+  --text: #f8f4ea;
+  --muted: #aaa6b5;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-gold: rgba(227, 190, 105, 0.22);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 50% -10%, rgba(119, 82, 209, 0.18), transparent 34rem),
+    linear-gradient(rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(180deg, #030508 0%, #06080d 45%, #030508 100%);
+  background-size: 100% 100%, 44px 44px, 44px 44px, 100% 100%;
+  font-family: Arial, Helvetica, ui-sans-serif, system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+.wrap {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.eyebrow {
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 0 4px rgba(85, 215, 255, 0.14), 0 0 16px rgba(85, 215, 255, 0.85);
+  display: inline-block;
+}
+
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(42px, 6.8vw, 84px);
+  line-height: 0.95;
+  margin: 12px 0 20px;
+  letter-spacing: -0.045em;
+  font-weight: 400;
+  color: #f8f4ea;
+}
+
+h1 span {
+  background: linear-gradient(90deg, var(--gold-bright), #ccb5ff 55%, var(--cyan));
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.hero-sub {
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.68;
+  max-width: 860px;
+  margin-bottom: 44px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.card:hover {
+  border-color: var(--line-gold);
+  transform: translateY(-2px);
+}
+
+.card h2 {
+  font-family: Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 10px 0 10px;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  background: rgba(227, 190, 105, 0.1);
+  border: 1px solid var(--line-gold);
+}
+
+.notice {
+  margin-top: 40px;
+  border: 1px solid var(--line-gold);
+  border-radius: 20px;
+  padding: 24px;
+  background: rgba(227, 190, 105, 0.04);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  .wrap { padding: 24px 16px 60px; }
+}
 </style>
 </head>
-<body><main class="wrap"><nav class="nav"><a href="/">Home</a><a href="/omos">OMOS</a><a href="/ohi">OHI</a><a href="/protocol">Protocol</a><a href="/algorithm">Algorithm</a><a href="/docs">Docs</a><a href="/api/manifest">Manifest</a></nav><section><div class="eyebrow">OMOS Canon Library</div><h1>Source Documents for the OneGodian Operating Architecture</h1><p>This library organizes the uploaded OneGodian source documents into practical OMOS routes. These records should be treated as canonical reference material for protocol documentation, OHI synthesis, publishing, runtime design, and institutional-safe explanation.</p></section><section class="grid"><article class="card"><span class="tag">Governance</span><h2>The OneGodian Algorithm</h2><p>Four-layer AI governance framework: Protocol, Experience, Community, and Orientation. This is the core source for identity recognition, AI interaction standards, belief mapping, and implementation roadmap.</p></article><article class="card"><span class="tag">OHI</span><h2>Evolution of OHI</h2><p>Chronological explanation of OHI from consciousness principle to sovereign intelligence architecture, including the distinction between AI tools and OneGodian governed synthesis.</p></article><article class="card"><span class="tag">Runtime</span><h2>OneGodian Build Process</h2><p>Production discipline for converting ideas into usable systems, pages, plugins, APIs, documentation, and repeatable deployments.</p></article><article class="card"><span class="tag">Executive</span><h2>Founder & CEO Perspective</h2><p>Private enterprise operating doctrine for decision-making, speech, execution, capital, isolation, human intelligence, loyalty, and internal standards.</p></article><article class="card"><span class="tag">Publishing</span><h2>Universal Book Structure</h2><p>Publishing framework for books, chapters, records, downloadable products, and canonical OneGodian educational materials.</p></article><article class="card"><span class="tag">Audio</span><h2>Frequency Standard</h2><p>432 Hz is designated as the OneGodian primary harmonic reference for branded audio, meditative products, calendar releases, and immersive experiences, as a system-level design choice.</p></article><article class="card"><span class="tag">Lexicon</span><h2>OneGodianology Lexicon</h2><p>Terminology review and language standardization for public-safe OneGodian explanations, learning materials, and documentation.</p></article><article class="card"><span class="tag">Audience</span><h2>Gen Alpha & Gen Beta</h2><p>Strategic audience framing for why OneGodian matters to emerging generations, identity formation, technology, creativity, and future education.</p></article><article class="card"><span class="tag">System Map</span><h2>Life + Work Integration</h2><p>Canonical expanded mind map connecting work, life, operations, thought systems, priorities, and long-range execution.</p></article></section><div class="notice">Compliance note: OMOS.OneGodian.com documents protocol, software, education, identity reflection, and runtime architecture. ONEGODIAN, LLC remains the private enterprise/commercial entity. Formal governance or religious society language must remain separated and used only where legally appropriate.</div><footer>Authored and developed under the OneGodian ecosystem. OMOS is the public runtime documentation node.</footer></main></body></html>
+<body>
+<main class="wrap">
+  <header>
+    <div class="eyebrow"><span class="live-dot"></span>CANONICAL RECORDS • SOURCE SPECIFICATIONS</div>
+    <h1>The OneGodian<br><span>Canon Library.</span></h1>
+    <p class="hero-sub">Organized repository of canonical OneGodian source documents. These records serve as primary reference material for protocol specification, OHI synthesis, audio frequency standards, and executive architecture.</p>
+  </header>
+
+  <section class="grid">
+    <article class="card">
+      <span class="badge">Governance</span>
+      <h2>The OneGodian Algorithm</h2>
+      <p>Four-layer AI governance framework: Protocol, Experience, Community, and Orientation. The primary source for identity recognition and runtime roadmap.</p>
+    </article>
+
+    <article class="card">
+      <span class="badge">OHI</span>
+      <h2>Evolution of OHI</h2>
+      <p>Chronological explanation of OHI from consciousness principle to sovereign intelligence architecture, establishing the clear distinction between raw AI tools and governed synthesis.</p>
+    </article>
+
+    <article class="card">
+      <span class="badge">Runtime</span>
+      <h2>OneGodian Build Process</h2>
+      <p>Disciplined engineering methodology for converting conceptual models into stable software, APIs, multi-model orchestrators, and auditable pipelines.</p>
+    </article>
+
+    <article class="card">
+      <span class="badge">Executive</span>
+      <h2>Founder & CEO Perspective</h2>
+      <p>Operating doctrine for sovereign decision-making, executive speech, capital allocation, human cognitive preservation, and internal standards.</p>
+    </article>
+
+    <article class="card">
+      <span class="badge">Publishing</span>
+      <h2>Universal Book Structure</h2>
+      <p>Structured publishing framework for books, whitepapers, monographs, downloadable records, and educational canon.</p>
+    </article>
+
+    <article class="card">
+      <span class="badge">Acoustic</span>
+      <h2>432 Hz Harmonic Reference</h2>
+      <p>System-wide standard establishing 432 Hz as the primary harmonic frequency for soundscapes, meditative products, and audio releases.</p>
+    </article>
+
+    <article class="card">
+      <span class="badge">Lexicon</span>
+      <h2>OneGodianology Lexicon</h2>
+      <p>Terminology standardization and semantic dictionary for public-safe explanations, cross-disciplinary dialogues, and documentation.</p>
+    </article>
+
+    <article class="card">
+      <span class="badge">Audience</span>
+      <h2>Gen Alpha & Gen Beta Framing</h2>
+      <p>Strategic analysis of emerging generational cognitive patterns, identity formation, AI immersion, and educational methodologies.</p>
+    </article>
+
+    <article class="card">
+      <span class="badge">System Map</span>
+      <h2>Life + Work Integration</h2>
+      <p>Comprehensive systems mind map connecting personal coherence, operational execution, institutional priority, and long-range vision.</p>
+    </article>
+  </section>
+
+  <div class="notice">
+    <strong>Compliance Note:</strong> OMOS.OneGodian.com documents protocol, software, education, identity reflection, and runtime architecture. ONEGODIAN, LLC remains the private enterprise and commercial entity. Institutional and commercial operations remain formally separated.
+  </div>
+</main>
+</body>
+</html>

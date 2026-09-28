@@ -1,1 +1,249 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The OneGodian Algorithm™ — OMOS</title><meta name="description" content="Public OMOS explanation of the OneGodian Algorithm: Observe, Distill, Align, Select, Execute, Verify."><link rel="stylesheet" href="/section-page.css"></head><body><main class="section-page"><section class="sp-hero"><span class="sp-eyebrow">Algorithm • Evaluation • Decision Logic</span><h1>The OneGodian Algorithm™</h1><p class="sp-lead">The Algorithm is the evaluation and decision-logic layer used by OMOS. It does not replace the Protocol, O-H-I, or the runtime. The operational cycle is explicit and inspectable.</p><div class="sp-actions"><a class="sp-btn sp-btn-primary" href="/ask/">Run Ask OMOS</a><a class="sp-btn" href="/protocol">Protocol</a><a class="sp-btn" href="/ohi">O-H-I</a></div></section><section class="sp-section"><div class="sp-flow"><span>Observe</span><span>Distill</span><span>Align</span><span>Select</span><span>Execute</span><span>Verify</span></div><div class="sp-grid"><article class="sp-card"><h2>Observe</h2><p>Capture the actual question, context, facts, constraints, evidence, source material, and uncertainty without prematurely deciding the answer.</p></article><article class="sp-card"><h2>Distill</h2><p>Reduce non-material noise while preserving meaning. Layer 1 extracts objective, claims, questions, requirements, contradictions, evidence, ambiguity, and quarantined instructions.</p></article><article class="sp-card"><h2>Align</h2><p>Evaluate candidate reasoning across explicit dimensions and hard gates instead of hiding judgment inside one opaque score.</p></article><article class="sp-card"><h2>Select</h2><p>Compare alternatives, preserve dissent, identify evidence gaps, and select a defensible recommendation or escalate to human review.</p></article><article class="sp-card"><h2>Execute</h2><p>Carry out only actions within the authorized scope. Consequential financial, legal, credential, registry, infrastructure, or external-system actions require separate authorization controls.</p></article><article class="sp-card"><h2>Verify</h2><p>Check outcome, evidence, provenance, persistence, integrity, and whether the result actually satisfied the original objective. Verification is not the same as model agreement.</p></article></div></section><section class="sp-section"><span class="sp-eyebrow">OMOS implementation</span><div class="sp-list"><div><strong>Customer runtime:</strong> Ask OMOS → Layer 1 → Alignment → Council Review → Governed Synthesis → Decision Record → Dashboard History.</div><div><strong>Human Gate:</strong> approval/rejection is enforced in the governed record transition and does not automatically authorize unrelated external actions.</div><div><strong>Alignment state:</strong> Truth, Clarity, Coherence, Dignity, Constructive Unity, Evidence Support, Verifiability, Transparency, Reproducibility, Security, Long-Term Benefit, and Execution Readiness can be represented independently.</div><div><strong>Hard gates:</strong> dignity, consent, authority, fabricated evidence, instruction integrity, and unresolved high risk may block or escalate even when weighted scores are otherwise high.</div><div><strong>Record discipline:</strong> inputs, versions, provider provenance, hashes, timestamps, verification state, and human disposition belong in the Decision Record.</div></div><div class="sp-callout"><strong>Operational standard:</strong> deterministic logic can make a process reproducible, but reproducibility does not guarantee factual truth. Evidence and verification remain separate from scoring.</div></section></main></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The OneGodian Algorithm™ — OMOS</title>
+<style>
+:root {
+  --bg: #040508;
+  --panel: rgba(14, 18, 26, 0.88);
+  --panel-deep: rgba(7, 9, 13, 0.94);
+  --gold: #e3be69;
+  --gold-bright: #ffe39c;
+  --cyan: #55d7ff;
+  --purple: #9d72ff;
+  --text: #f8f4ea;
+  --muted: #aaa6b5;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-gold: rgba(227, 190, 105, 0.22);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 50% -10%, rgba(119, 82, 209, 0.18), transparent 34rem),
+    linear-gradient(rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(180deg, #030508 0%, #06080d 45%, #030508 100%);
+  background-size: 100% 100%, 44px 44px, 44px 44px, 100% 100%;
+  font-family: Arial, Helvetica, ui-sans-serif, system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+.wrap {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.eyebrow {
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 0 4px rgba(85, 215, 255, 0.14), 0 0 16px rgba(85, 215, 255, 0.85);
+  display: inline-block;
+}
+
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(42px, 6.8vw, 84px);
+  line-height: 0.95;
+  margin: 12px 0 20px;
+  letter-spacing: -0.045em;
+  font-weight: 400;
+  color: #f8f4ea;
+}
+
+h1 span {
+  background: linear-gradient(90deg, var(--gold-bright), #ccb5ff 55%, var(--cyan));
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.hero-sub {
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.68;
+  max-width: 860px;
+  margin-bottom: 44px;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.step-card {
+  background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.step-card:hover {
+  border-color: var(--line-gold);
+  transform: translateY(-2px);
+}
+
+.step-card h2 {
+  font-family: Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 10px 0 10px;
+}
+
+.step-card p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  background: rgba(227, 190, 105, 0.1);
+  border: 1px solid var(--line-gold);
+}
+
+.code-box {
+  background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 30px;
+  margin-top: 36px;
+}
+
+.code-box h3 {
+  font-family: Georgia, serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--gold-bright);
+  margin: 0 0 16px;
+}
+
+pre {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+  color: #e2dfeb;
+  font-family: monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-x: auto;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .steps-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 600px) {
+  .steps-grid { grid-template-columns: 1fr; }
+  .wrap { padding: 24px 16px 60px; }
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <div class="eyebrow"><span class="live-dot"></span>DECISION LOGIC • REASONING PIPELINE</div>
+    <h1>The OneGodian Algorithm™<br><span>Heuristic Alignment System.</span></h1>
+    <p class="hero-sub">A unity-based logic system designed to identify and execute the clearest, most aligned, and least destructive path across human and intelligent-system environments.</p>
+  </header>
+
+  <section class="steps-grid">
+    <article class="step-card">
+      <span class="badge">Step 01</span>
+      <h2>Observe</h2>
+      <p>Collect contextual inputs, explicit parameters, implicit signals, emotional states, and environmental constraints without premature judgment.</p>
+    </article>
+
+    <article class="step-card">
+      <span class="badge">Step 02</span>
+      <h2>Distill</h2>
+      <p>Separate immutable truth from speculation. Filter out noise, tribal bias, historical friction, and quarantined instruction injection.</p>
+    </article>
+
+    <article class="step-card">
+      <span class="badge">Step 03</span>
+      <h2>Align</h2>
+      <p>Evaluate remaining candidates against eight core criteria: truth, clarity, coherence, dignity, constructive unity, evidence support, verifiability, and execution readiness.</p>
+    </article>
+
+    <article class="step-card">
+      <span class="badge">Step 04</span>
+      <h2>Select</h2>
+      <p>Determine the optimal, highest-coherence path that maximizes constructive value while minimizing collateral distortion.</p>
+    </article>
+
+    <article class="step-card">
+      <span class="badge">Step 05</span>
+      <h2>Execute</h2>
+      <p>Implement the chosen action decisively, with precision, proportional effort, and documented traceability.</p>
+    </article>
+
+    <article class="step-card">
+      <span class="badge">Step 06</span>
+      <h2>Verify</h2>
+      <p>Audit output against original objectives, measure real-world feedback loops, and write an immutable Decision Record for historical review.</p>
+    </article>
+  </section>
+
+  <section class="code-box">
+    <h3>Runtime Execution Pseudocode</h3>
+    <pre><code>FUNCTION RunOneGodianAlgorithm(Context, Query, ModelCouncil):
+    RawSignals = Observe(Context, Query)
+    DistilledSignal = Distill(RawSignals, QuarantineSuspiciousInstructions=TRUE)
+    Candidates = ModelCouncil.ExecuteAllIndependent(DistilledSignal)
+    CouncilCritiques = ModelCouncil.CrossReview(Candidates)
+    
+    AlignmentScores = EvaluateAlignment(CouncilCritiques, Criteria=[
+        "Truth", "Clarity", "Coherence", "Dignity", 
+        "ConstructiveUnity", "Verifiability"
+    ])
+    
+    SelectedPath = SelectHighestCoherence(AlignmentScores)
+    
+    // Human Authority Gate
+    AuthorizedDecision = AwaitHumanGate(SelectedPath)
+    
+    FinalOutput = Execute(AuthorizedDecision)
+    VerifyAndLogDecisionRecord(FinalOutput)
+    RETURN FinalOutput</code></pre>
+  </section>
+</main>
+</body>
+</html>

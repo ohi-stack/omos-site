@@ -2497,19 +2497,34 @@ footer {
     height: 38px;
     position: relative;
     width: 42px;
+    background: transparent;
+    border: none;
+    padding: 0;
   }
 
   .menu-toggle span {
     background: white;
-    height: 1px;
+    height: 2px;
     left: 9px;
     position: absolute;
     top: 15px;
     width: 24px;
+    transition: transform 0.22s ease, top 0.22s ease, opacity 0.18s ease;
+    border-radius: 1px;
   }
 
   .menu-toggle span:last-child {
     top: 23px;
+  }
+
+  .menu-toggle[aria-expanded="true"] span:first-child {
+    top: 19px;
+    transform: rotate(45deg);
+  }
+
+  .menu-toggle[aria-expanded="true"] span:last-child {
+    top: 19px;
+    transform: rotate(-45deg);
   }
 
   .primary-nav {
@@ -2528,7 +2543,8 @@ footer {
     top: 72px;
   }
 
-  .primary-nav.open {
+  .primary-nav.open,
+  .primary-nav.is-open {
     display: flex;
   }
 
@@ -2766,19 +2782,34 @@ footer {
     height: 38px;
     position: relative;
     width: 42px;
+    background: transparent;
+    border: none;
+    padding: 0;
   }
 
   .menu-toggle span {
     background: white;
-    height: 1px;
+    height: 2px;
     left: 9px;
     position: absolute;
     top: 15px;
     width: 24px;
+    transition: transform 0.22s ease, top 0.22s ease, opacity 0.18s ease;
+    border-radius: 1px;
   }
 
   .menu-toggle span:last-child {
     top: 23px;
+  }
+
+  .menu-toggle[aria-expanded="true"] span:first-child {
+    top: 19px;
+    transform: rotate(45deg);
+  }
+
+  .menu-toggle[aria-expanded="true"] span:last-child {
+    top: 19px;
+    transform: rotate(-45deg);
   }
 
   .primary-nav {
@@ -2855,7 +2886,8 @@ footer {
     padding: 10px 8px;
   }
 
-  .primary-nav.open {
+  .primary-nav.open,
+  .primary-nav.is-open {
     display: flex;
   }
 
@@ -3056,6 +3088,29 @@ footer {
   footer {
     grid-template-columns: 1fr;
   }
+}
+
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: heroFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-fade-in-delayed {
+  animation: heroFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
+.animate-fade-in-delayed-2 {
+  animation: heroFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
 }
 
 @media (prefers-reduced-motion: reduce) {

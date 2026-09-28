@@ -1,1 +1,259 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>What Is OMOS? — Architecture</title><meta name="description" content="OMOS architecture: governed runtime, Protocol, Algorithm, O-H-I, model and data connectors, Decision Records, OLLM, Oru’Valen, and ACC boundaries."><link rel="stylesheet" href="/section-page.css"></head><body><main class="section-page"><section class="sp-hero"><span class="sp-eyebrow">OMOS • Architecture • Operational Intelligence</span><h1>OMOS is the governed operating layer around complex AI-assisted decisions.</h1><p class="sp-lead">OMOS receives and distills human requests, evaluates alignment, coordinates multiple model providers, preserves disagreement and evidence gaps, produces governed synthesis, keeps human authority explicit, persists Decision Records, and connects approved systems through auditable interfaces.</p><div class="sp-actions"><a class="sp-btn sp-btn-primary" href="/ask/">Ask OMOS</a><a class="sp-btn" href="/dashboard">Operational Workspace</a><a class="sp-btn" href="/models">Model Connectors</a><a class="sp-btn" href="/developers">Developer Hub</a></div></section><section class="sp-section"><span class="sp-eyebrow">Core separation</span><div class="sp-grid"><article class="sp-card"><h2>OneGodian Protocol™</h2><p>Definitions, identity rules, scope, semantics, interoperability, transparency, and human-authority boundaries.</p><a href="/protocol">Protocol →</a></article><article class="sp-card"><h2>OneGodian Algorithm™</h2><p>Evaluation and decision logic organized around Observe → Distill → Align → Select → Execute → Verify.</p><a href="/algorithm">Algorithm →</a></article><article class="sp-card"><h2>O-H-I™</h2><p>Multi-model comparison, critique, dissent preservation, evidence-gap detection, and governed synthesis.</p><a href="/ohi">O-H-I →</a></article><article class="sp-card"><h2>OMOS™</h2><p>Runtime, orchestration, interfaces, persistence, health, provider routing, audit, and Decision Records.</p></article><article class="sp-card"><h2>OLLM</h2><p>OneGodian model/intelligence provider and related product under development. It participates through OMOS rather than replacing the runtime.</p><a href="/ollm">OLLM →</a></article><article class="sp-card"><h2>Human Authority</h2><p>Approval, rejection, revision, and authorization remain human-controlled. External consequential actions require separately authorized execution controls.</p></article></div></section><section class="sp-section"><span class="sp-eyebrow">Canonical governed transaction</span><div class="sp-list"><div><strong>1 — Ask OMOS:</strong> capture the decision, problem, document, or project context.</div><div><strong>2 — Layer 1 / Distill:</strong> preserve objective, claims, requirements, evidence, ambiguity, contradictions, and quarantined instructions.</div><div><strong>3 — Alignment:</strong> evaluate explicit dimensions and hard gates.</div><div><strong>4 — Council:</strong> collect independent outputs from configured providers and perform cross-review.</div><div><strong>5 — Governed Synthesis:</strong> preserve agreement, contradictions, missing evidence, novel insights, supported dissent, uncertainty, and recommendation conditions.</div><div><strong>6 — Human Gate + Decision Record:</strong> accept/reject the governed result and persist auditable state.</div><div><strong>7 — History:</strong> reopen, inspect, compare, replay where supported, and verify record lineage.</div></div></section><section class="sp-section"><span class="sp-eyebrow">Connection architecture</span><div class="sp-grid sp-grid-2"><article class="sp-card"><h2>Model Gateway — who OMOS reasons with</h2><p>OpenAI, Anthropic, Google Gemini, xAI, and future OLLM/provider interfaces sit behind normalized connector contracts. Live, Hybrid, Degraded, and Simulation states remain explicit.</p><a href="/models">Model Connectors →</a></article><article class="sp-card"><h2>Data / Action / Environment Gateway — what OMOS may use</h2><p>GitHub, Google Drive, WordPress, Stripe, PostgreSQL/Supabase-compatible infrastructure, QRV, OneGodian APIs, and ACC retain source-of-record ownership, permissions, sync direction, IDs, timestamps, provenance, conflict policy, health, and audit events.</p><a href="/developers">Connector Architecture →</a></article></div><div class="sp-callout"><strong>Source-of-record rule:</strong> OMOS may correlate external records without pretending to originate them. Synchronization does not establish truth, ownership, or authority.</div></section><section class="sp-section"><span class="sp-eyebrow">Execution & continuity</span><table class="sp-table"><thead><tr><th>System</th><th>Role</th></tr></thead><tbody><tr><td>Oru’Valen™</td><td>Personalized O-H-I Twin / continuity and approved-context layer. The full automatic memory/learning loop is not represented as complete.</td></tr><tr><td>OMOS</td><td>Governed reasoning, synthesis, Human Gate, Decision Records, and audit/history.</td></tr><tr><td>ACC™</td><td>Separate execution control plane for approved agents/actions, deployments, and operational work.</td></tr><tr><td>QRV.Network</td><td>Verification and credential infrastructure where separately implemented and authorized.</td></tr></tbody></table></section><section class="sp-section"><span class="sp-eyebrow">Maturity</span><div class="sp-panel"><h2>Conceptual → Prototype → Functional → Verified → Production</h2><p>OMOS uses component-level maturity. A live website does not make every planned capability Production. Repository implementation does not prove deployment, and deployment does not prove production readiness without source parity and behavioral evidence.</p></div></section></main></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMOS Architecture & Operating Framework</title>
+<style>
+:root {
+  --bg: #040508;
+  --panel: rgba(14, 18, 26, 0.88);
+  --panel-deep: rgba(7, 9, 13, 0.94);
+  --gold: #e3be69;
+  --gold-bright: #ffe39c;
+  --cyan: #55d7ff;
+  --purple: #9d72ff;
+  --text: #f8f4ea;
+  --muted: #aaa6b5;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-gold: rgba(227, 190, 105, 0.22);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 50% -10%, rgba(119, 82, 209, 0.18), transparent 34rem),
+    linear-gradient(rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(180deg, #030508 0%, #06080d 45%, #030508 100%);
+  background-size: 100% 100%, 44px 44px, 44px 44px, 100% 100%;
+  font-family: Arial, Helvetica, ui-sans-serif, system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+.wrap {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.eyebrow {
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 0 4px rgba(85, 215, 255, 0.14), 0 0 16px rgba(85, 215, 255, 0.85);
+  display: inline-block;
+}
+
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(42px, 6.8vw, 84px);
+  line-height: 0.95;
+  margin: 12px 0 20px;
+  letter-spacing: -0.045em;
+  font-weight: 400;
+  color: #f8f4ea;
+}
+
+h1 span {
+  background: linear-gradient(90deg, var(--gold-bright), #ccb5ff 55%, var(--cyan));
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.hero-sub {
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.68;
+  max-width: 860px;
+  margin-bottom: 44px;
+}
+
+.stack {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.stack-card {
+  background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.stack-card:hover {
+  border-color: var(--line-gold);
+  transform: translateY(-2px);
+}
+
+.stack-card h2 {
+  font-family: Georgia, serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 12px 0 10px;
+}
+
+.stack-card p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  background: rgba(227, 190, 105, 0.1);
+  border: 1px solid var(--line-gold);
+}
+
+.callout {
+  background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 32px;
+  margin-top: 24px;
+}
+
+.callout h3 {
+  font-family: Georgia, serif;
+  font-size: 22px;
+  color: var(--gold-bright);
+  margin: 0 0 10px;
+}
+
+.callout p {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+.actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+  color: #08080a;
+  font-weight: 800;
+  font-size: 14px;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(227, 190, 105, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 26px rgba(227, 190, 105, 0.45);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 800px) {
+  .stack { grid-template-columns: 1fr; }
+  .wrap { padding: 24px 16px 60px; }
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <div class="eyebrow"><span class="live-dot"></span>OPERATIONAL FRAMEWORK • SYSTEM ARCHITECTURE</div>
+    <h1>The Operating Architecture<br><span>For Governed Intelligence.</span></h1>
+    <p class="hero-sub">OMOS™ (OneGodian Metaphysical Operating System) coordinates identity, multi-provider model routing, structural distillation, and verifiable decision logs. It translates high-level alignment principles into strict software execution gates.</p>
+  </header>
+
+  <section class="stack">
+    <article class="stack-card">
+      <span class="badge">Tier 01</span>
+      <h2>Root Identity Layer</h2>
+      <p>ONEGODIAN™ serves as the foundational identity, philosophical architecture, and unified coherence baseline. It provides invariant semantic anchors that prevent drift across disparate AI reasoning pipelines.</p>
+    </article>
+
+    <article class="stack-card">
+      <span class="badge">Tier 02</span>
+      <h2>Operating & Routing Layer</h2>
+      <p>OMOS™ operates as the orchestration layer, connecting external clients, provider adapters, distillation engines, persistence modules, and auditable logging pipelines.</p>
+    </article>
+
+    <article class="stack-card">
+      <span class="badge">Tier 03</span>
+      <h2>Protocol & Algorithm</h2>
+      <p>The OneGodian Protocol™ and The OneGodian Algorithm™ govern runtime interoperability: Observe, Distill, Align, Select, Execute, and Verify across every request cycle.</p>
+    </article>
+
+    <article class="stack-card">
+      <span class="badge">Tier 04</span>
+      <h2>Production Gate & Integrity</h2>
+      <p>Hard boundaries isolate production runtime software from speculative hype. Gregorian time standards govern institutional records, while OHI Council review guarantees multi-model verification.</p>
+    </article>
+  </section>
+
+  <section class="callout">
+    <h3>Institutional & Commercial Separation</h3>
+    <p>OMOS.OneGodian.com serves as the public Node.js runtime, API documentation center, and protocol specification platform. Commercial merchandise, physical editions, and memberships are strictly hosted on OneGodian.com.</p>
+    <div class="actions">
+      <a class="btn-primary" href="/ask/">Open Governed Workspace</a>
+      <a class="btn-secondary" href="/docs">Read Documentation</a>
+      <a class="btn-secondary" href="/api/manifest">View Runtime Manifest</a>
+    </div>
+  </section>
+</main>
+</body>
+</html>

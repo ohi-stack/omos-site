@@ -1,0 +1,53 @@
+{
+  "entities": {
+    "DecisionRecord": {
+      "title": "DecisionRecord",
+      "description": "OMOS Council decision record and governance artifact",
+      "type": "object",
+      "properties": {
+        "requestId": { "type": "string", "description": "Unique run or decision identifier" },
+        "ownerId": { "type": "string", "description": "Owner identifier of the record" },
+        "mode": { "type": "string", "description": "Council execution mode" },
+        "outputStatus": { "type": "string", "description": "Status of the council output" },
+        "verificationStatus": { "type": "string", "description": "Verification gate status" },
+        "humanDecision": { "type": "string", "description": "Human governance decision if reviewed" },
+        "revision": { "type": "number", "description": "Monotonically increasing revision number" },
+        "recordHash": { "type": "string", "description": "Cryptographic SHA-256 evidence hash" },
+        "previousRecordHash": { "type": "string", "description": "Previous revision hash in chain" },
+        "startedAt": { "type": "string", "format": "date-time", "description": "Run start timestamp" },
+        "completedAt": { "type": "string", "format": "date-time", "description": "Run completion timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last update timestamp" }
+      },
+      "required": ["requestId", "ownerId", "revision", "recordHash"]
+    },
+    "TaskClassification": {
+      "title": "TaskClassification",
+      "description": "Engineering Council Stage 02 Task Classification artifact",
+      "type": "object",
+      "properties": {
+        "classificationId": { "type": "string", "description": "Unique classification ID" },
+        "issueNumber": { "type": "number", "description": "GitHub issue or PR number" },
+        "issueTitle": { "type": "string", "description": "GitHub issue title" },
+        "category": { "type": "string", "description": "Canonical engineering category" },
+        "priority": { "type": "string", "description": "Assigned priority level" },
+        "complexity": { "type": "string", "description": "Complexity tier" },
+        "targetBranch": { "type": "string", "description": "Isolated Git target branch" },
+        "evidenceHash": { "type": "string", "description": "Cryptographic evidence hash" },
+        "repo": { "type": "string", "description": "GitHub repository slug" },
+        "classifiedAt": { "type": "string", "format": "date-time", "description": "Classification timestamp" },
+        "ownerId": { "type": "string", "description": "Operator or owner identity" }
+      },
+      "required": ["classificationId", "issueNumber", "category", "priority", "evidenceHash"]
+    }
+  },
+  "firestore": {
+    "/decision_records/{recordId}": {
+      "schema": { "$ref": "#/entities/DecisionRecord" },
+      "description": "Governed OMOS Council decision records"
+    },
+    "/task_classifications/{classificationId}": {
+      "schema": { "$ref": "#/entities/TaskClassification" },
+      "description": "Engineering Council Stage 02 classification artifacts"
+    }
+  }
+}

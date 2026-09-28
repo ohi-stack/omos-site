@@ -1,1 +1,180 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The OneGodian Protocol™ — OMOS</title><meta name="description" content="Public OMOS specification for the OneGodian Protocol: definitions, identity semantics, interoperability, human authority, and implementation boundaries."><link rel="stylesheet" href="/section-page.css"></head><body><main class="section-page"><section class="sp-hero"><span class="sp-eyebrow">Protocol • Definitions • Interoperability</span><h1>The OneGodian Protocol™</h1><p class="sp-lead">The Protocol defines the terms, identity semantics, scope, interoperability rules, human-authority boundaries, and implementation guidance that OneGodian-aware systems use. It is distinct from the OneGodian Algorithm™ and from the OMOS runtime.</p><div class="sp-actions"><a class="sp-btn sp-btn-primary" href="/algorithm">Open Algorithm</a><a class="sp-btn" href="/docs">Documentation</a><a class="sp-btn" href="/api/manifest">Runtime Manifest</a></div></section><section class="sp-section"><div class="sp-grid"><article class="sp-card"><h2>Definitions</h2><p>Canonical terminology, meaning, scope, naming, and relationship rules for OneGodian systems and interfaces.</p></article><article class="sp-card"><h2>Identity Semantics</h2><p>Structured ways to represent voluntary identity, role, context, declaration, and user-supplied meaning without treating software output as legal authority.</p></article><article class="sp-card"><h2>Interoperability</h2><p>Provider-neutral contracts for models, applications, plugins, APIs, data sources, and execution systems.</p></article><article class="sp-card"><h2>Human Authority</h2><p>Models, agents, services, and O-H-I processes provide analysis and execution support. They do not replace the human decision-maker or silently escalate authority.</p></article><article class="sp-card"><h2>Transparency</h2><p>Operational systems should expose version, provenance, maturity, uncertainty, verification status, and whether outputs were simulated, degraded, or live.</p></article><article class="sp-card"><h2>Voluntary Use</h2><p>The Protocol is a framework for documentation, software, identity reflection, interoperability, and education. It does not claim compulsory authority over non-participants.</p></article></div></section><section class="sp-section"><span class="sp-eyebrow">Implementation relationship</span><table class="sp-table"><thead><tr><th>Component</th><th>What it does</th></tr></thead><tbody><tr><td>OneGodian Protocol™</td><td>Defines rules, semantics, boundaries, and interoperability.</td></tr><tr><td>OneGodian Algorithm™</td><td>Provides evaluation and decision logic.</td></tr><tr><td>O-H-I™</td><td>Compares, critiques, preserves dissent, and synthesizes model outputs.</td></tr><tr><td>OMOS™</td><td>Runs the workflow, exposes interfaces, records state, persists Decision Records, and reports health.</td></tr></tbody></table><div class="sp-callout">The canonical Protocol repository is specification-stage. Public OMOS pages distinguish written standards from runtime capabilities and do not imply a feature is operational merely because its protocol has been documented.</div></section></main></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The OneGodian Protocol™ — OMOS</title>
+<style>
+:root {
+  --bg: #040508;
+  --panel: rgba(14, 18, 26, 0.88);
+  --panel-deep: rgba(7, 9, 13, 0.94);
+  --gold: #e3be69;
+  --gold-bright: #ffe39c;
+  --cyan: #55d7ff;
+  --purple: #9d72ff;
+  --text: #f8f4ea;
+  --muted: #aaa6b5;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-gold: rgba(227, 190, 105, 0.22);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 50% -10%, rgba(119, 82, 209, 0.18), transparent 34rem),
+    linear-gradient(rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(180deg, #030508 0%, #06080d 45%, #030508 100%);
+  background-size: 100% 100%, 44px 44px, 44px 44px, 100% 100%;
+  font-family: Arial, Helvetica, ui-sans-serif, system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+.wrap {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.eyebrow {
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 0 4px rgba(85, 215, 255, 0.14), 0 0 16px rgba(85, 215, 255, 0.85);
+  display: inline-block;
+}
+
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(42px, 6.8vw, 84px);
+  line-height: 0.95;
+  margin: 12px 0 20px;
+  letter-spacing: -0.045em;
+  font-weight: 400;
+  color: #f8f4ea;
+}
+
+h1 span {
+  background: linear-gradient(90deg, var(--gold-bright), #ccb5ff 55%, var(--cyan));
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.hero-sub {
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.68;
+  max-width: 860px;
+  margin-bottom: 44px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.protocol-card {
+  background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.protocol-card:hover {
+  border-color: var(--line-gold);
+  transform: translateY(-2px);
+}
+
+.protocol-card h2 {
+  font-family: Georgia, serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 12px 0 10px;
+}
+
+.protocol-card p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  background: rgba(227, 190, 105, 0.1);
+  border: 1px solid var(--line-gold);
+}
+
+@media (max-width: 800px) {
+  .grid { grid-template-columns: 1fr; }
+  .wrap { padding: 24px 16px 60px; }
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <div class="eyebrow"><span class="live-dot"></span>INTERACTION SPECIFICATION • STANDARD ARCHITECTURE</div>
+    <h1>The OneGodian Protocol™<br><span>Universal Interoperability.</span></h1>
+    <p class="hero-sub">An open, non-prescriptive, and non-denominational framework designed for seamless interoperability across human identity expression, AI interaction architectures, and decentralized agent workflows.</p>
+  </header>
+
+  <section class="grid">
+    <article class="protocol-card">
+      <span class="badge">Layer 01</span>
+      <h2>Human Layer (Identity Sovereign)</h2>
+      <p>Protects individual agency, dignity, cognitive sovereignty, and intentional focus. Ensures human participants maintain uncoerced control over goals and synthesis decisions.</p>
+    </article>
+
+    <article class="protocol-card">
+      <span class="badge">Layer 02</span>
+      <h2>Semantic Layer (Signal Normalization)</h2>
+      <p>Standardizes vocabulary, removes inflammatory framing, isolates tribal heuristics, and extracts pure intent from raw communicative inputs.</p>
+    </article>
+
+    <article class="protocol-card">
+      <span class="badge">Layer 03</span>
+      <h2>Agent Layer (Multi-Model Review)</h2>
+      <p>Governs model-to-model arbitration, peer critiques, consensus validation, and contradiction detection across diverse foundation model providers.</p>
+    </article>
+
+    <article class="protocol-card">
+      <span class="badge">Layer 04</span>
+      <h2>Interface Layer (Execution & Provenance)</h2>
+      <p>Enforces transparent API handshakes, cryptographic or auditable provenance tracking, and strict runtime gate confirmation before persistent state mutation.</p>
+    </article>
+  </section>
+</main>
+</body>
+</html>

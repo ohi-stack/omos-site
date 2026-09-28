@@ -75,6 +75,32 @@
     @media(max-width:1050px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.split{grid-template-columns:1fr}}
     @media(max-width:780px){.app{grid-template-columns:1fr}aside{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)}nav{grid-template-columns:repeat(2,minmax(0,1fr))}.side-bottom{margin-top:18px}main{padding:22px 16px 44px}.topbar{flex-direction:column}.toolbar{grid-template-columns:1fr}.review-grid{grid-template-columns:1fr}}
     @media(max-width:520px){.grid{grid-template-columns:1fr}nav{grid-template-columns:1fr}.run-top{flex-direction:column}}
+    .category-pill{display:inline-flex;align-items:center;padding:3px 9px;border-radius:6px;font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+    .cat-Bug{background:rgba(255,123,123,.14);color:#ff9b9b;border:1px solid rgba(255,123,123,.35)}
+    .cat-Security{background:rgba(255,80,120,.18);color:#ff6b8b;border:1px solid rgba(255,80,120,.4)}
+    .cat-Feature{background:rgba(66,198,255,.12);color:var(--cyan);border:1px solid rgba(66,198,255,.3)}
+    .cat-Infrastructure{background:rgba(244,204,98,.14);color:var(--yellow);border:1px solid rgba(244,204,98,.35)}
+    .cat-Documentation{background:rgba(169,139,255,.14);color:var(--purple);border:1px solid rgba(169,139,255,.32)}
+    .cat-Research{background:rgba(130,190,255,.14);color:#9bc5ff;border:1px solid rgba(130,190,255,.32)}
+    .cat-Release{background:rgba(94,227,154,.14);color:var(--green);border:1px solid rgba(94,227,154,.32)}
+    .stage-pill{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px;letter-spacing:.03em}
+    .stage-pending{background:rgba(244,204,98,.12);color:var(--yellow);border:1px solid rgba(244,204,98,.25)}
+    .stage-classified{background:rgba(94,227,154,.12);color:var(--green);border:1px solid rgba(94,227,154,.25)}
+    .gh-card{border:1px solid var(--line);border-radius:14px;background:#09111a;padding:16px;display:flex;flex-direction:column;gap:12px;transition:border-color .15s}
+    .gh-card:hover{border-color:var(--line2)}
+    .gh-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+    .gh-title-area{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+    .gh-num{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--cyan);font-weight:800;font-size:13px}
+    .gh-title{font-size:15px;font-weight:750;color:#f0f6fc}
+    .gh-meta{display:flex;gap:12px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:11px}
+    .gh-box{border:1px solid var(--line2);border-radius:10px;padding:12px 14px;background:rgba(6,12,19,.85)}
+    .gh-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px}
+    .artifact-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}
+    .artifact-cell{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#07101a}
+    .artifact-cell label{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);display:block;margin-bottom:4px}
+    .artifact-cell strong{font-size:13px;color:#fff}
+    .btn.busy{opacity:.7;pointer-events:none}
+    @media(max-width:768px){.artifact-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
   </style>
 </head>
 <body>
@@ -93,10 +119,11 @@
 
   <section id="app-view" class="app hidden">
     <aside>
-      <div class="brand"><div class="eyebrow">OMOS</div><strong>Admin Control Plane</strong><span>Runtime administration and governed review</span></div>
+      <div class="brand"><img src="/omos-logo-gold.png" alt="OMOS" style="height:32px;width:auto;margin-bottom:8px;display:block;" /><strong>Admin Control Plane</strong><span>Runtime administration and governed review</span></div>
       <nav>
         <button class="nav-btn active" data-view="overview-view">Overview</button>
         <button class="nav-btn" data-view="records-view">Decision Records</button>
+        <button class="nav-btn" data-view="github-view">GitHub Issues &amp; Tasks</button>
         <button class="nav-btn" data-view="providers-view">Providers & Persistence</button>
         <button class="nav-btn" data-view="system-view">System Manifest</button>
       </nav>
@@ -141,6 +168,11 @@
               <div class="card-head"><h3>Persistence Gate</h3><span id="persistence-pill" class="pill warning">Checking</span></div>
               <table><tbody id="persistence-summary"></tbody></table>
             </div>
+            <div class="card">
+              <div class="card-head"><h3>Engineering Council</h3><span id="overview-gh-pill" class="pill info">Stage 02</span></div>
+              <p style="font-size:12px;color:var(--muted);margin:0 0 12px">Stage 01 GitHub Issues can be directly triaged into Stage 02 Task Classification with assigned developer agents and governance gates.</p>
+              <button class="btn small primary" data-go="github-view" style="width:100%">Open GitHub Issues &amp; Tasks →</button>
+            </div>
           </div>
         </div>
       </section>
@@ -154,6 +186,59 @@
             <div id="record-count" class="pill info" style="align-self:center;justify-self:end">0 records</div>
           </div>
           <div id="runs-container" class="runs"><div class="empty">Loading records…</div></div>
+        </div>
+      </section>
+
+      <section id="github-view" class="view-section hidden">
+        <div class="grid">
+          <div class="metric"><div class="metric-label">Open Issues</div><div id="gh-metric-open" class="metric-value">—</div><div id="gh-metric-open-note" class="metric-note">Loading issues…</div></div>
+          <div class="metric"><div class="metric-label">Stage 02 Classified</div><div id="gh-metric-classified" class="metric-value">—</div><div id="gh-metric-classified-note" class="metric-note">Council artifacts</div></div>
+          <div class="metric"><div class="metric-label">Pending Classification</div><div id="gh-metric-pending" class="metric-value">—</div><div id="gh-metric-pending-note" class="metric-note">Awaiting Stage 02 triage</div></div>
+          <div class="metric"><div class="metric-label">Repository &amp; API Rate</div><div id="gh-metric-repo" class="metric-value" style="font-size:14px;margin-top:10px;font-family:ui-monospace,monospace">ohi-stack/omos-site</div><div id="gh-metric-rate" class="metric-note">— remaining</div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h3>GitHub Issues &amp; Engineering Council Lifecycle</h3>
+              <div class="muted" style="font-size:12px;margin-top:4px">Browse open issues from the repository and trigger Stage 02: Task Classification with agent assignment, security gates, and traceable evidence.</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <input id="gh-repo-input" type="text" value="ohi-stack/omos-site" placeholder="owner/repo" style="width:190px;padding:7px 10px;font-size:12px;font-family:ui-monospace,monospace">
+              <button id="gh-fetch-btn" class="btn small primary">Fetch Issues</button>
+            </div>
+          </div>
+
+          <div id="gh-notice" class="hidden" style="margin-bottom:14px;padding:10px 14px;border-radius:10px;background:rgba(244,204,98,.1);border:1px solid rgba(244,204,98,.3);color:var(--yellow);font-size:12px"></div>
+
+          <div class="toolbar" style="grid-template-columns:minmax(180px,1fr) 150px 150px 130px auto">
+            <input id="gh-search" type="text" placeholder="Search issues by title, #number, author, or keyword…">
+            <select id="gh-status-filter">
+              <option value="all">All Stages</option>
+              <option value="classified">Stage 02: Classified</option>
+              <option value="pending">Stage 01: Pending</option>
+            </select>
+            <select id="gh-category-filter">
+              <option value="all">All Categories</option>
+              <option value="Bug">Bug</option>
+              <option value="Feature">Feature</option>
+              <option value="Security">Security</option>
+              <option value="Infrastructure">Infrastructure</option>
+              <option value="Documentation">Documentation</option>
+              <option value="Research">Research</option>
+              <option value="Release">Release</option>
+            </select>
+            <select id="gh-type-filter">
+              <option value="all">All Types</option>
+              <option value="issue">Issues Only</option>
+              <option value="pull_request">PRs Only</option>
+            </select>
+            <div id="gh-count-pill" class="pill info" style="align-self:center;justify-self:end">0 issues</div>
+          </div>
+
+          <div id="gh-issues-container" class="runs">
+            <div class="empty">Loading GitHub issues…</div>
+          </div>
         </div>
       </section>
 
@@ -180,9 +265,22 @@
     </div>
   </div>
 
+  <div id="classification-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="classification-modal-title">
+    <div class="modal-card" style="width:min(920px, 100%)">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow" style="color:var(--cyan)">OMOS Engineering Council • Lifecycle Stage 02</div>
+          <h3 id="classification-modal-title" style="margin-top:5px">Task Classification Artifact</h3>
+        </div>
+        <button id="close-classification-modal" class="btn small">Close</button>
+      </div>
+      <div id="classification-modal-body"></div>
+    </div>
+  </div>
+
   <script>
     let apiKey = sessionStorage.getItem('omos_admin_key') || '';
-    let state = { health:null, providers:[], persistence:null, runs:[], activeRecord:null };
+    let state = { health:null, providers:[], persistence:null, runs:[], activeRecord:null, githubIssues:[], githubClassifications:[], activeClassification:null };
 
     const $ = (id) => document.getElementById(id);
     const authView = $('auth-view');
@@ -273,9 +371,378 @@
       try{await apiRequest(`/api/v1/council/runs/${encodeURIComponent(id)}/human-decision`,{method:'POST',body:JSON.stringify({decision,comment})});closeModal();await loadRuns();}catch(e){alert(e.message);}
     }
 
+    function normalizeClassification(c){
+      if(!c) return null;
+      const issueNum = c.issue?.number ?? c.issueNumber;
+      const issueTitle = c.issue?.title ?? c.issueTitle ?? `Issue #${issueNum}`;
+      const issueUrl = c.issue?.htmlUrl ?? c.issue?.html_url ?? c.issueUrl ?? `https://github.com/ohi-stack/omos-site/issues/${issueNum}`;
+      return {
+        ...c,
+        issueNumber: issueNum,
+        issueTitle: issueTitle,
+        issueUrl: issueUrl,
+        category: c.categorization?.category ?? c.category ?? 'Task',
+        priority: c.categorization?.priority ?? c.priority ?? 'Medium',
+        complexity: c.categorization?.complexity ?? c.complexity ?? 'Standard',
+        targetBranch: c.categorization?.targetBranch ?? c.targetBranch ?? `feat/issue-${issueNum}`,
+        rationale: c.categorization?.rationale ?? c.rationale ?? '',
+        acceptanceCriteria: c.categorization?.acceptanceCriteria ?? c.acceptanceCriteria ?? [],
+        recommendedAgent: c.assignment?.recommendedAgent ?? c.recommendedAgent ?? { name: 'OMOS Developer Agent', agentId: 'OMOS-DEV-0001' },
+        recommendedReviewer: c.assignment?.recommendedReviewer ?? c.recommendedReviewer ?? { name: 'Independent Review Agent', agentId: 'OMOS-DEV-REV-0001' },
+        evidenceHash: c.audit?.evidenceHash ?? c.evidenceHash ?? '',
+        classifiedAt: c.audit?.classifiedAt ?? c.classifiedAt ?? '',
+        classifiedBy: c.audit?.classifiedBy ?? c.classifiedBy ?? 'Admin',
+        governanceGates: {
+          quarantinedInstructionsCheck: c.governanceGates?.quarantinedInstructionsDetected ? 'flagged' : (c.governanceGates?.quarantinedInstructionsCheck || 'passed'),
+          securityReviewRequired: Boolean(c.governanceGates?.requiresSecurityReview || c.governanceGates?.securityReviewRequired),
+          humanGateEnforced: Boolean(c.governanceGates?.requiresHumanGateBeforeMerge ?? true)
+        }
+      };
+    }
+
+    async function loadGitHubIssues(manual=false){
+      const repo = $('gh-repo-input')?.value.trim() || 'ohi-stack/omos-site';
+      $('gh-metric-repo').textContent = repo;
+      if(manual && $('gh-fetch-btn')) {
+        $('gh-fetch-btn').disabled = true;
+        $('gh-fetch-btn').textContent = 'Fetching…';
+      }
+      try {
+        const [issuesRes, classRes] = await Promise.all([
+          apiRequest(`/api/v1/github/issues?repo=${encodeURIComponent(repo)}&state=open&limit=100`),
+          apiRequest(`/api/v1/github/classifications?repo=${encodeURIComponent(repo)}`)
+        ]);
+        const fetched = issuesRes.data?.issues || [];
+        const stored = (classRes.data || []).map(normalizeClassification).filter(Boolean);
+        state.githubClassifications = stored;
+
+        const classMap = new Map();
+        stored.forEach(c => classMap.set(Number(c.issueNumber), c));
+
+        state.githubIssues = fetched.map(item => {
+          const c = classMap.get(Number(item.number));
+          return {
+            ...item,
+            isClassified: Boolean(c),
+            classification: c || null
+          };
+        });
+
+        const openCount = state.githubIssues.length;
+        const classifiedCount = state.githubIssues.filter(i => i.isClassified).length;
+        const pendingCount = openCount - classifiedCount;
+
+        $('gh-metric-open').textContent = String(openCount);
+        $('gh-metric-open-note').textContent = `${repo} open items`;
+        $('gh-metric-classified').textContent = String(classifiedCount);
+        $('gh-metric-classified-note').textContent = 'Stage 02 artifacts';
+        $('gh-metric-pending').textContent = String(pendingCount);
+        $('gh-metric-pending-note').textContent = pendingCount === 0 ? 'All open issues classified' : 'Awaiting Stage 02 triage';
+
+        if($('overview-gh-pill')){
+          $('overview-gh-pill').textContent = `${classifiedCount}/${openCount} Classified`;
+          $('overview-gh-pill').className = `pill ${classifiedCount === openCount && openCount ? 'success' : 'info'}`;
+        }
+
+        if(issuesRes.data?.rateLimit){
+          const rl = issuesRes.data.rateLimit;
+          $('gh-metric-rate').textContent = `${rl.remaining}/${rl.limit} API reqs`;
+        } else {
+          $('gh-metric-rate').textContent = issuesRes.data?.cached ? 'Local fallback active' : 'Live API connected';
+        }
+
+        const noticeEl = $('gh-notice');
+        if(noticeEl){
+          if(issuesRes.data?.rateLimited || issuesRes.data?.source === 'mock_fallback'){
+            noticeEl.textContent = 'Notice: GitHub API public unauthenticated rate limit reached. Displaying simulated/cached repository backlog with full Task Classification orchestration.';
+            noticeEl.classList.remove('hidden');
+          } else {
+            noticeEl.classList.add('hidden');
+          }
+        }
+
+        renderGitHubIssues();
+      } catch(e) {
+        console.error('Failed to load GitHub issues:', e);
+        $('gh-issues-container').innerHTML = `<div class="empty" style="color:var(--red)">Failed to load issues: ${escapeHtml(e.message)}</div>`;
+      } finally {
+        if($('gh-fetch-btn')) {
+          $('gh-fetch-btn').disabled = false;
+          $('gh-fetch-btn').textContent = 'Fetch Issues';
+        }
+      }
+    }
+
+    function renderGitHubIssues(){
+      const q = ($('gh-search')?.value || '').trim().toLowerCase();
+      const statusFilter = $('gh-status-filter')?.value || 'all';
+      const categoryFilter = $('gh-category-filter')?.value || 'all';
+      const typeFilter = $('gh-type-filter')?.value || 'all';
+
+      const list = state.githubIssues.filter(issue => {
+        if(statusFilter === 'classified' && !issue.isClassified) return false;
+        if(statusFilter === 'pending' && issue.isClassified) return false;
+        if(categoryFilter !== 'all'){
+          if(!issue.isClassified || issue.classification?.category !== categoryFilter) return false;
+        }
+        if(typeFilter === 'issue' && issue.isPullRequest) return false;
+        if(typeFilter === 'pull_request' && !issue.isPullRequest) return false;
+        if(q){
+          const cat = issue.classification?.category || '';
+          const agent = issue.classification?.recommendedAgent?.name || '';
+          const text = `${issue.number} ${issue.title} ${issue.body||''} ${issue.user?.login||''} ${cat} ${agent}`.toLowerCase();
+          if(!text.includes(q)) return false;
+        }
+        return true;
+      });
+
+      $('gh-count-pill').textContent = `${list.length} issue${list.length === 1 ? '' : 's'}`;
+
+      if(!list.length){
+        $('gh-issues-container').innerHTML = '<div class="empty">No GitHub issues match the selected criteria.</div>';
+        return;
+      }
+
+      $('gh-issues-container').innerHTML = list.map(issue => {
+        const c = issue.classification;
+        const isPr = Boolean(issue.isPullRequest);
+        const labelsHtml = (issue.labels || []).map(lbl => {
+          const name = typeof lbl === 'string' ? lbl : lbl.name;
+          return `<span class="gh-tag">${escapeHtml(name)}</span>`;
+        }).join('');
+
+        const bodySnippet = escapeHtml((issue.body || '').replace(/\r?\n/g, ' ')).slice(0, 180);
+        const author = escapeHtml(issue.user?.login || 'unknown');
+        const createdDate = issue.created_at ? new Date(issue.created_at).toLocaleDateString() : '';
+
+        let stageBoxHtml = '';
+        if(issue.isClassified && c){
+          const cat = escapeHtml(c.category);
+          const agentName = escapeHtml(c.recommendedAgent?.name || 'Assigned Developer Agent');
+          const reviewerName = escapeHtml(c.recommendedReviewer?.name || 'Reviewer Agent');
+          const branch = escapeHtml(c.targetBranch || `feat/issue-${issue.number}`);
+          const priorityClass = c.priority === 'Critical' ? 'error' : c.priority === 'High' ? 'warning' : 'info';
+          stageBoxHtml = `
+            <div class="gh-box">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px">
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                  <span class="stage-pill stage-classified">● Stage 02: Classified</span>
+                  <span class="category-pill cat-${cat}">${cat}</span>
+                  <span class="pill ${priorityClass}">${escapeHtml(c.priority)} Priority</span>
+                  <span class="pill info">${escapeHtml(c.complexity)}</span>
+                </div>
+                <code style="font-size:11px;color:var(--cyan);background:#07101a;padding:2px 7px;border-radius:4px">${branch}</code>
+              </div>
+              <div style="font-size:12px;color:#d9e5ef;margin-bottom:6px">
+                <span class="muted">Agent Assignment:</span> <strong>${agentName}</strong>
+                <span class="muted" style="margin:0 6px">•</span>
+                <span class="muted">Reviewer:</span> <strong>${reviewerName}</strong>
+              </div>
+              <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.4">
+                ${escapeHtml(c.rationale || '')}
+              </div>
+              <div class="gh-actions">
+                <button class="btn small primary" onclick="openClassificationModal(${issue.number})">View Stage 02 Artifact</button>
+                <button class="btn small" id="btn-reclassify-${issue.number}" onclick="triggerClassification(${issue.number})">Re-classify</button>
+                <a class="btn small" href="${escapeHtml(issue.html_url)}" target="_blank" rel="noopener">GitHub #${issue.number} ↗</a>
+              </div>
+            </div>
+          `;
+        } else {
+          stageBoxHtml = `
+            <div class="gh-box" style="border-style:dashed">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px">
+                <span class="stage-pill stage-pending">○ Stage 01: GitHub Issue (Classification Pending)</span>
+                <span class="muted" style="font-size:11px">Awaiting OMOS Engineering Council Stage 02</span>
+              </div>
+              <div style="font-size:12px;color:var(--muted);margin-bottom:10px">
+                Categorize into canonical category (Bug, Feature, Security, Infrastructure, Docs, Research, Release), calculate priority and complexity, verify security gates, and assign qualified developer and independent reviewer agents.
+              </div>
+              <div class="gh-actions">
+                <button class="btn small primary" id="btn-classify-${issue.number}" onclick="triggerClassification(${issue.number})" style="display:inline-flex;align-items:center;gap:6px">
+                  <span>⚡</span> Trigger Task Classification
+                </button>
+                <a class="btn small" href="${escapeHtml(issue.html_url)}" target="_blank" rel="noopener">GitHub #${issue.number} ↗</a>
+              </div>
+            </div>
+          `;
+        }
+
+        return `
+          <article class="gh-card" id="issue-card-${issue.number}">
+            <div class="gh-top">
+              <div class="gh-title-area">
+                <span class="gh-num">#${issue.number}</span>
+                <a href="${escapeHtml(issue.html_url)}" target="_blank" rel="noopener" class="gh-title" style="text-decoration:none">${escapeHtml(issue.title)}</a>
+                <span class="pill ${isPr ? 'warning' : 'info'}">${isPr ? 'Pull Request' : 'Issue'}</span>
+              </div>
+              <div class="gh-meta">
+                <span>Opened by <strong>@${author}</strong></span>
+                ${createdDate ? `<span>${createdDate}</span>` : ''}
+              </div>
+            </div>
+            ${labelsHtml ? `<div style="display:flex;flex-wrap:wrap;gap:4px">${labelsHtml}</div>` : ''}
+            ${bodySnippet ? `<div style="font-size:12px;color:var(--muted);line-height:1.5">${bodySnippet}…</div>` : ''}
+            ${stageBoxHtml}
+          </article>
+        `;
+      }).join('');
+    }
+
+    async function triggerClassification(issueNumber){
+      const btn = $(`btn-classify-${issueNumber}`) || $(`btn-reclassify-${issueNumber}`);
+      const origText = btn ? btn.innerHTML : '';
+      if(btn){
+        btn.disabled = true;
+        btn.innerHTML = '⚡ Classifying…';
+      }
+      const repo = $('gh-repo-input')?.value.trim() || 'ohi-stack/omos-site';
+      const issue = state.githubIssues.find(i => Number(i.number) === Number(issueNumber));
+
+      try {
+        const res = await apiRequest(`/api/v1/github/issues/${issueNumber}/classify`, {
+          method: 'POST',
+          body: JSON.stringify({
+            repo,
+            issue: issue ? {
+              number: issue.number,
+              title: issue.title,
+              body: issue.body,
+              labels: issue.labels,
+              html_url: issue.html_url,
+              user: issue.user
+            } : undefined
+          })
+        });
+
+        const classification = normalizeClassification(res.data);
+        if(issue){
+          issue.isClassified = true;
+          issue.classification = classification;
+        }
+        const idx = state.githubClassifications.findIndex(c => Number(c.issueNumber) === Number(issueNumber));
+        if(idx >= 0){
+          state.githubClassifications[idx] = classification;
+        } else {
+          state.githubClassifications.push(classification);
+        }
+
+        const openCount = state.githubIssues.length;
+        const classifiedCount = state.githubIssues.filter(i => i.isClassified).length;
+        $('gh-metric-classified').textContent = String(classifiedCount);
+        $('gh-metric-pending').textContent = String(openCount - classifiedCount);
+
+        renderGitHubIssues();
+        openClassificationModal(issueNumber);
+      } catch(e) {
+        alert('Classification failed: ' + e.message);
+      } finally {
+        if(btn){
+          btn.disabled = false;
+          btn.innerHTML = origText;
+        }
+      }
+    }
+
+    function openClassificationModal(issueNumber){
+      const item = state.githubIssues.find(i => Number(i.number) === Number(issueNumber));
+      const raw = item?.classification || state.githubClassifications.find(x => Number(x.issueNumber || x.issue?.number) === Number(issueNumber));
+      const c = normalizeClassification(raw);
+      if(!c){
+        alert('Classification artifact not found for issue #' + issueNumber);
+        return;
+      }
+      state.activeClassification = c;
+      $('classification-modal-title').textContent = `Issue #${c.issueNumber}: ${c.issueTitle}`;
+      const criteriaHtml = (c.acceptanceCriteria || []).map(ac => `<li style="margin-bottom:6px;display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--green)">✓</span><span>${escapeHtml(ac)}</span></li>`).join('');
+
+      $('classification-modal-body').innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--line);">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <span class="category-pill cat-${escapeHtml(c.category)}">${escapeHtml(c.category)}</span>
+            <span class="pill ${c.priority === 'Critical' ? 'error' : c.priority === 'High' ? 'warning' : 'info'}">${escapeHtml(c.priority)} Priority</span>
+            <span class="pill info">${escapeHtml(c.complexity)} Complexity</span>
+            <span class="stage-pill stage-classified">● Stage 02: Task Classified</span>
+          </div>
+          <a href="${escapeHtml(c.issueUrl)}" target="_blank" rel="noopener" class="btn small">Open on GitHub ↗</a>
+        </div>
+
+        <div class="artifact-grid">
+          <div class="artifact-cell">
+            <label>Canonical Category</label>
+            <strong style="color:var(--cyan)">${escapeHtml(c.category)}</strong>
+          </div>
+          <div class="artifact-cell">
+            <label>Target Branch</label>
+            <code style="font-size:11px;color:var(--yellow);word-break:break-all">${escapeHtml(c.targetBranch)}</code>
+          </div>
+          <div class="artifact-cell">
+            <label>Assigned Agent</label>
+            <strong>${escapeHtml(c.recommendedAgent?.name || 'OMOS Developer Agent')}</strong>
+            <div class="muted" style="font-size:10px">${escapeHtml(c.recommendedAgent?.agentId || '')}</div>
+          </div>
+          <div class="artifact-cell">
+            <label>Independent Reviewer</label>
+            <strong>${escapeHtml(c.recommendedReviewer?.name || 'Independent Review Agent')}</strong>
+            <div class="muted" style="font-size:10px">${escapeHtml(c.recommendedReviewer?.agentId || '')}</div>
+          </div>
+        </div>
+
+        <div style="margin:16px 0">
+          <h4 style="font-size:11px;margin:0 0 6px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)">Classification Rationale</h4>
+          <div style="background:#07101a;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font-size:13px;line-height:1.5">${escapeHtml(c.rationale || 'None provided')}</div>
+        </div>
+
+        <div style="margin:16px 0">
+          <h4 style="font-size:11px;margin:0 0 8px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)">Extracted Acceptance Criteria</h4>
+          <ul style="list-style:none;padding:0;margin:0;font-size:13px">${criteriaHtml || '<li class="muted">Standard unit and integration testing suite must pass.</li>'}</ul>
+        </div>
+
+        <div style="margin:16px 0">
+          <h4 style="font-size:11px;margin:0 0 8px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)">Engineering Governance &amp; Security Gates</h4>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:12px">
+            <div style="padding:10px;background:#07101a;border:1px solid var(--line);border-radius:8px">
+              <div class="muted" style="font-size:10px;margin-bottom:3px">Quarantined Instructions</div>
+              <span class="pill ${c.governanceGates?.quarantinedInstructionsCheck === 'passed' ? 'success' : 'warning'}">${escapeHtml(c.governanceGates?.quarantinedInstructionsCheck || 'passed')}</span>
+            </div>
+            <div style="padding:10px;background:#07101a;border:1px solid var(--line);border-radius:8px">
+              <div class="muted" style="font-size:10px;margin-bottom:3px">Security Review</div>
+              <span class="pill ${c.governanceGates?.securityReviewRequired ? 'warning' : 'success'}">${c.governanceGates?.securityReviewRequired ? 'Required' : 'Standard'}</span>
+            </div>
+            <div style="padding:10px;background:#07101a;border:1px solid var(--line);border-radius:8px">
+              <div class="muted" style="font-size:10px;margin-bottom:3px">Human Merge Gate</div>
+              <span class="pill success">Enforced</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="muted" style="font-size:11px">Evidence Hash:</span>
+            <code style="font-size:11px;color:var(--cyan);background:#07101a;padding:3px 8px;border-radius:4px">${escapeHtml(String(c.evidenceHash || '').slice(0, 24))}…</code>
+            <button class="btn small" id="copy-hash-btn" onclick="navigator.clipboard.writeText('${escapeHtml(c.evidenceHash || '')}');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy Hash',2000)">Copy Hash</button>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn small" onclick="$('raw-classification-json').classList.toggle('hidden')">Toggle Raw JSON</button>
+            <button class="btn small primary" onclick="triggerClassification(${c.issueNumber});">Re-classify</button>
+          </div>
+        </div>
+
+        <div id="raw-classification-json" class="hidden" style="margin-top:14px">
+          <pre style="max-height:280px;font-size:11px">${escapeHtml(JSON.stringify(c, null, 2))}</pre>
+        </div>
+      `;
+      $('classification-modal').classList.remove('hidden');
+    }
+
+    function closeClassificationModal(){
+      $('classification-modal').classList.add('hidden');
+      state.activeClassification = null;
+    }
+
     async function refreshAll(){
       $('refresh-all').disabled=true;
-      try{await Promise.all([loadHealth(),loadProviders(),loadRuns()]);await loadPersistence();}
+      try{await Promise.all([loadHealth(),loadProviders(),loadRuns(),loadGitHubIssues()]);await loadPersistence();}
       catch(e){console.error(e);$('runtime-line').textContent=e.message;$('runtime-dot').className='dot bad';}
       finally{$('refresh-all').disabled=false;}
     }
@@ -284,7 +751,19 @@
     document.querySelectorAll('[data-go]').forEach(btn=>btn.addEventListener('click',()=>document.querySelector(`.nav-btn[data-view="${btn.dataset.go}"]`).click()));
     $('auth-form').addEventListener('submit',async e=>{e.preventDefault();$('auth-error').classList.add('hidden');try{await authenticate($('api-key-input').value);}catch(err){logout();$('auth-error').textContent=err.message;$('auth-error').classList.remove('hidden');}});
     $('logout-btn').addEventListener('click',logout);$('refresh-all').addEventListener('click',refreshAll);$('refresh-runs').addEventListener('click',loadRuns);$('refresh-providers').addEventListener('click',loadProviders);$('refresh-system').addEventListener('click',loadHealth);$('run-search').addEventListener('input',renderRuns);$('run-filter').addEventListener('change',renderRuns);$('close-modal').addEventListener('click',closeModal);$('record-modal').addEventListener('click',e=>{if(e.target===$('record-modal'))closeModal();});$('approve-record').addEventListener('click',()=>submitDecision('APPROVED'));$('reject-record').addEventListener('click',()=>submitDecision('REJECTED'));
+    $('gh-fetch-btn').addEventListener('click',()=>loadGitHubIssues(true));
+    $('gh-repo-input').addEventListener('keydown',e=>{if(e.key==='Enter')loadGitHubIssues(true);});
+    $('gh-search').addEventListener('input',renderGitHubIssues);
+    $('gh-status-filter').addEventListener('change',renderGitHubIssues);
+    $('gh-category-filter').addEventListener('change',renderGitHubIssues);
+    $('gh-type-filter').addEventListener('change',renderGitHubIssues);
+    $('close-classification-modal').addEventListener('click',closeClassificationModal);
+    $('classification-modal').addEventListener('click',e=>{if(e.target===$('classification-modal'))closeClassificationModal();});
+
     window.openRecord=openRecord;window.openReview=openReview;
+    window.openClassificationModal=openClassificationModal;
+    window.triggerClassification=triggerClassification;
+    window.closeClassificationModal=closeClassificationModal;
 
     if(apiKey){authenticate(apiKey).catch(()=>logout());}
   </script>

@@ -1,0 +1,170 @@
+[
+  {
+    "repo": "ohi-stack/omos-site",
+    "issueNumber": 50,
+    "classification": {
+      "classificationId": "tc_issue_50_1789085733736",
+      "stage": "Task Classification",
+      "stageCode": "02",
+      "canonicalLifecycle": [
+        "ISSUE",
+        "CLASSIFY",
+        "ASSIGN",
+        "IMPLEMENT",
+        "PULL_REQUEST",
+        "INDEPENDENT_REVIEW",
+        "CI_TESTS",
+        "OMOS_GOVERNANCE",
+        "HUMAN_APPROVAL",
+        "MERGE",
+        "DEPLOY",
+        "PRODUCTION_PROOF",
+        "ENGINEERING_RECORD"
+      ],
+      "issue": {
+        "number": 50,
+        "title": "[Production Evidence] OMOS canonical host not aligned with main",
+        "author": "onegodian",
+        "htmlUrl": "https://github.com/ohi-stack/omos-site/issues/50",
+        "labels": [],
+        "isPullRequest": false,
+        "state": "open",
+        "createdAt": null
+      },
+      "categorization": {
+        "category": "Infrastructure",
+        "confidence": 0.88,
+        "priority": "High",
+        "complexity": "Trivial",
+        "rationale": "Build, runtime environment, deployment pipeline, or infrastructure alignment task.",
+        "affectedModules": [
+          "general-system"
+        ],
+        "targetBranch": "infra/issue-50-production-evidence-omos-canonic",
+        "acceptanceCriteria": [
+          "Resolve problem statement: \"[Production Evidence] OMOS canonical host not aligned with main\"",
+          "Verify code passes npm run check and test suites without regression",
+          "Provide deployment and verification evidence in Engineering Record"
+        ]
+      },
+      "assignment": {
+        "recommendedAgent": {
+          "agentId": "OMOS-DEV-DEPLOY-0001",
+          "name": "Deployment Agent",
+          "role": "Infrastructure & Deployment Alignment",
+          "provider": "provider_neutral"
+        },
+        "recommendedReviewer": {
+          "agentId": "OMOS-DEV-REVIEW-0001",
+          "name": "Independent Review Agent",
+          "role": "Independent Verification"
+        },
+        "coordinatorAgent": {
+          "agentId": "OMOS-DEV-COORD-0001",
+          "name": "OMOS Engineering Coordinator"
+        }
+      },
+      "governanceGates": {
+        "quarantinedInstructionsDetected": false,
+        "quarantinedList": [],
+        "requiresSecurityReview": false,
+        "affectsProductionSecrets": false,
+        "requiresHumanGateBeforeMerge": true,
+        "rule1Enforced": "Cross-agent review required: author cannot authorize own changes"
+      },
+      "audit": {
+        "classifiedAt": "2026-09-11T00:15:33.736Z",
+        "classifiedBy": "admin",
+        "repo": "ohi-stack/omos-site",
+        "evidenceHash": "sha256:ace766b2a584928668f7bcbaf894814933e4a2f38a7bada8aedfbf1cfe9745d4"
+      }
+    },
+    "updatedAt": "2026-09-11T00:15:33.736Z"
+  },
+  {
+    "repo": "ohi-stack/omos-site",
+    "issueNumber": 52,
+    "classification": {
+      "classificationId": "tc_issue_52_1789086020265",
+      "stage": "Task Classification",
+      "stageCode": "02",
+      "canonicalLifecycle": [
+        "ISSUE",
+        "CLASSIFY",
+        "ASSIGN",
+        "IMPLEMENT",
+        "PULL_REQUEST",
+        "INDEPENDENT_REVIEW",
+        "CI_TESTS",
+        "OMOS_GOVERNANCE",
+        "HUMAN_APPROVAL",
+        "MERGE",
+        "DEPLOY",
+        "PRODUCTION_PROOF",
+        "ENGINEERING_RECORD"
+      ],
+      "issue": {
+        "number": 52,
+        "title": "Converge OMOS live site on current main",
+        "author": "ohi-stack",
+        "htmlUrl": "https://github.com/ohi-stack/omos-site/pull/52",
+        "labels": [],
+        "isPullRequest": false,
+        "state": "open",
+        "createdAt": null
+      },
+      "categorization": {
+        "category": "Release",
+        "confidence": 0.86,
+        "priority": "Medium",
+        "complexity": "Complex",
+        "rationale": "Release governance, convergence, or deployment coordination milestone.",
+        "affectedModules": [
+          "ui-frontend",
+          "runtime-orchestrator",
+          "persistence-store",
+          "model-adapters",
+          "documentation",
+          "ci-testing",
+          "security-governance"
+        ],
+        "targetBranch": "release/issue-52-converge-omos-live-site-on-curre",
+        "acceptanceCriteria": [
+          "Human approval remains required before production deployment."
+        ]
+      },
+      "assignment": {
+        "recommendedAgent": {
+          "agentId": "OMOS-DEV-DEPLOY-0001",
+          "name": "Deployment Agent",
+          "role": "Infrastructure & Deployment Alignment",
+          "provider": "provider_neutral"
+        },
+        "recommendedReviewer": {
+          "agentId": "OMOS-DEV-REVIEW-0001",
+          "name": "Independent Review Agent",
+          "role": "Independent Verification"
+        },
+        "coordinatorAgent": {
+          "agentId": "OMOS-DEV-COORD-0001",
+          "name": "OMOS Engineering Coordinator"
+        }
+      },
+      "governanceGates": {
+        "quarantinedInstructionsDetected": false,
+        "quarantinedList": [],
+        "requiresSecurityReview": true,
+        "affectsProductionSecrets": true,
+        "requiresHumanGateBeforeMerge": true,
+        "rule1Enforced": "Cross-agent review required: author cannot authorize own changes"
+      },
+      "audit": {
+        "classifiedAt": "2026-09-11T00:20:20.265Z",
+        "classifiedBy": "default-dev",
+        "repo": "ohi-stack/omos-site",
+        "evidenceHash": "sha256:8c654f4f329ca24ebb564a46f7f25b4068f4da43a3c9a11d40a406f6f370fc84"
+      }
+    },
+    "updatedAt": "2026-09-11T00:20:20.265Z"
+  }
+]

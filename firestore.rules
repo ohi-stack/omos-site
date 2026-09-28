@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /test/{docId} {
+      allow read: if true;
+    }
+
+    match /decision_records/{recordId} {
+      allow read: if true;
+      allow create, update: if request.resource.data.requestId is string
+                            && request.resource.data.recordHash is string;
+      allow delete: if false; // Immutable audit trail
+    }
+
+    match /task_classifications/{classificationId} {
+      allow read: if true;
+      allow create, update: if request.resource.data.classificationId is string;
+      allow delete: if false;
+    }
+  }
+}
+

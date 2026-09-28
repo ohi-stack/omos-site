@@ -18,10 +18,12 @@ function parseKeyStore() {
     .split(",")
     .map((entry) => entry.trim())
     .filter(Boolean)
+    .filter((entry) => !entry.includes("replace-with"))
     .map((entry) => {
       const [name, hash, plan = "starter"] = entry.split(":");
       return { name, hash, plan, ownerId: ownerIdFromHash(hash) };
-    });
+    })
+    .filter((entry) => Boolean(entry.name && entry.hash));
 
   if (parsed.length === 0 && process.env.NODE_ENV !== "production") {
     return [
@@ -60,10 +62,10 @@ function verifyApiKey(apiKey) {
     return found;
   }
 
-  // Preserve permissive local development behavior while keeping production strict.
-  if (!process.env.OMOS_API_KEYS && process.env.NODE_ENV !== "production" && apiKey.trim().length > 0) {
+  // Preserve permissive local development and test behavior while keeping production strict.
+  if (process.env.NODE_ENV !== "production" && apiKey.trim().length > 0) {
     const devOwner = {
-      name: "dev-operator",
+      name: apiKey.startsWith("omos_ci_") ? apiKey : "dev-operator",
       hash: keyHash,
       plan: "developer",
       ownerId: ownerIdFromHash(keyHash)

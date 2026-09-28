@@ -1,1 +1,305 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Model Connectors — OMOS</title></head><body><main style="max-width:1160px;margin:0 auto;padding:64px 24px"><p style="color:#f0d98a;text-transform:uppercase;letter-spacing:.14em;font-weight:800">Models • Connector Health • Council Providers</p><h1>OMOS Model Connectors</h1><p style="max-width:900px;font-size:19px;line-height:1.7">The Model Gateway shows which model providers are configured for OMOS and, where separately verified, their health. Configuration alone is not proof that a provider can execute successfully right now.</p><section id="provider-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:34px 0"><article data-provider="openai" style="padding:22px;border:1px solid rgba(255,255,255,.1);border-radius:18px"><h2>OpenAI / GPT-6 Astra</h2><p class="status">Checking runtime…</p><p>Current source includes the native GPT-6 Astra adapter contract and CI coverage. Live availability still depends on the deployed revision, server configuration, authorization flags, and successful provider execution.</p></article><article data-provider="anthropic" style="padding:22px;border:1px solid rgba(255,255,255,.1);border-radius:18px"><h2>Anthropic Claude</h2><p class="status">Checking runtime…</p></article><article data-provider="gemini" style="padding:22px;border:1px solid rgba(255,255,255,.1);border-radius:18px"><h2>Google Gemini</h2><p class="status">Checking runtime…</p></article><article data-provider="xai" style="padding:22px;border:1px solid rgba(255,255,255,.1);border-radius:18px"><h2>xAI Grok</h2><p class="status">Checking runtime…</p></article><article style="padding:22px;border:1px solid rgba(240,217,138,.3);border-radius:18px"><h2>OLLM</h2><p><strong>DEFINED / RUNTIME PENDING</strong></p><p>OLLM is intended to become a first-class native provider after health, inference, model/version identity, provenance, and evaluation tests pass.</p><p><a href="/ollm">OLLM Overview</a></p></article></section><section style="margin:42px 0;padding:24px;border:1px solid rgba(240,217,138,.28);border-radius:18px;background:rgba(240,217,138,.04)"><p style="color:#f0d98a;font-weight:800;text-transform:uppercase;letter-spacing:.1em">Important connector distinction</p><h2>Developer app connections are not OMOS runtime connectors.</h2><p>Connecting GitHub, Drive, Stripe, Supabase, WordPress, or other tools inside ChatGPT, Claude, Gemini, Codex, Antigravity, or another developer application can help build and review OMOS. Those connections do not automatically make that model or service a live OMOS Council provider.</p><p>For manual copy-and-paste between consumer chat applications to disappear, OMOS itself must hold a server-side provider connection to each authorized model API, test that connection, normalize its response, record provenance, and expose its health without exposing credentials.</p><p><strong>Runtime target:</strong> OpenAI ↔ OMOS · Anthropic ↔ OMOS · Gemini ↔ OMOS · xAI ↔ OMOS. Each Council run should record which providers were requested, configured, completed, failed, simulated, degraded, and actually used.</p></section><h2>Connection testing and health target</h2><p>A production connector should distinguish configuration from execution. The target health vocabulary is <strong>CONNECTED</strong>, <strong>NOT_CONFIGURED</strong>, <strong>DEGRADED</strong>, and <strong>UNAVAILABLE</strong>. OMOS should expose safe per-provider connection tests, active model identity, last health check, latency, usage metadata where available, sanitized errors, and provider request/provenance identifiers.</p><p>The planned operational API family is <code>GET /api/v1/connectors/models</code>, <code>GET /api/v1/connectors/models/:provider</code>, and authenticated <code>POST /api/v1/connectors/models/:provider/test</code>. Until those live request tests are implemented and deployed, the current provider API should be read as configuration/runtime-availability metadata rather than verified connectivity.</p><h2>GPT-6 Astra authorization boundary</h2><p>Source support for Astra capabilities does not automatically authorize web search, file search, code execution, computer use, hosted shell access, or MCP activity. Those capabilities remain explicitly gated through OMOS connection/adaptation policy and human approval where required.</p><p><a href="https://github.com/ohi-stack/omos-site/blob/main/src/adapters/openai.js">Inspect Astra adapter ↗</a> · <a href="https://github.com/ohi-stack/omos-site/blob/main/tests/openai-astra-adapter.test.js">Inspect contract test ↗</a></p><h2>Normalized provider contract</h2><p style="line-height:1.7">A production-grade connector should report provider, model, capabilities, availability, health, authentication state without exposing secrets, invoke/stream/review/retry/cancel behavior, latency, token or usage data, estimated cost where supported, provider request ID, errors, and provenance. Provider configuration alone is not proof of a successful live request.</p><h2>Graceful degradation</h2><p>If a requested provider fails, OMOS should not silently substitute it. The run should record requested providers, completed providers, failed providers, and a <strong>DEGRADED</strong> Council state where appropriate. Human review remains required when the failure materially changes the result.</p><h2>Security boundary</h2><p>Provider API keys and credentials remain server-side. Browser pages may display connection state and non-sensitive health metadata, but must never receive raw provider secrets.</p><h2>Connection architecture</h2><p><strong>Model Gateway</strong> = who OMOS reasons with. <strong>Data / Action / Environment Gateway</strong> = what OMOS can securely read, invoke, synchronize, or operate. These remain separate authorization surfaces even when both use common adapter patterns.</p><p style="margin-top:30px"><a href="/council">Council Overview</a> · <a href="/connections/">Connections & Adaptation</a> · <a href="/api/v1/providers">Provider API</a> · <a href="/developers">Developer Hub</a> · <a href="/ask/">Ask OMOS</a></p></main><script>(async()=>{try{const r=await fetch('/api/v1/providers',{cache:'no-store'});const j=await r.json();const providers=Array.isArray(j.providers)?j.providers:[];for(const p of providers){const card=document.querySelector(`[data-provider="${String(p.provider||'').toLowerCase()}"]`);if(!card)continue;const el=card.querySelector('.status');const state=p.status||'unknown';el.innerHTML=`<strong>${String(state).replaceAll('_',' ').toUpperCase()}</strong><br>Configured: ${p.configured?'yes':'no'}<br>Health verified: ${p.healthVerified?'yes':'no'}`;}}catch(e){document.querySelectorAll('#provider-grid .status').forEach(el=>el.textContent='Runtime status unavailable from this browser session.');}})();</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Models & Council Synthesis — OMOS</title>
+<style>
+:root {
+  --bg: #040508;
+  --panel: rgba(14, 18, 26, 0.88);
+  --panel-deep: rgba(7, 9, 13, 0.94);
+  --gold: #e3be69;
+  --gold-bright: #ffe39c;
+  --cyan: #55d7ff;
+  --purple: #9d72ff;
+  --text: #f8f4ea;
+  --muted: #aaa6b5;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-gold: rgba(227, 190, 105, 0.22);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 50% -10%, rgba(119, 82, 209, 0.18), transparent 34rem),
+    linear-gradient(rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(180deg, #030508 0%, #06080d 45%, #030508 100%);
+  background-size: 100% 100%, 44px 44px, 44px 44px, 100% 100%;
+  font-family: Arial, Helvetica, ui-sans-serif, system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+.wrap {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.hero {
+  margin-bottom: 48px;
+}
+
+.eyebrow {
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 0 4px rgba(85, 215, 255, 0.14), 0 0 16px rgba(85, 215, 255, 0.85);
+  display: inline-block;
+}
+
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(42px, 6.8vw, 84px);
+  line-height: 0.95;
+  margin: 12px 0 20px;
+  letter-spacing: -0.045em;
+  font-weight: 400;
+  color: #f8f4ea;
+}
+
+h1 span {
+  background: linear-gradient(90deg, var(--gold-bright), #ccb5ff 55%, var(--cyan));
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.hero-sub {
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.68;
+  max-width: 860px;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+.card {
+  background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 26px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.card:hover {
+  border-color: var(--line-gold);
+  transform: translateY(-2px);
+}
+
+.card h2 {
+  font-family: Georgia, serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 8px 0 10px;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  background: rgba(227, 190, 105, 0.1);
+  border: 1px solid var(--line-gold);
+}
+
+.section-title {
+  font-family: Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+  color: #f8f4ea;
+  margin: 48px 0 20px;
+}
+
+.matrix-card {
+  background: linear-gradient(180deg, var(--panel), var(--panel-deep));
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 32px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+  margin-bottom: 40px;
+}
+
+.matrix-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.matrix-item {
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.matrix-item strong {
+  display: block;
+  font-size: 16px;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+  color: #08080a;
+  font-weight: 800;
+  font-size: 14px;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(227, 190, 105, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 26px rgba(227, 190, 105, 0.45);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 900px) {
+  .grid-4 { grid-template-columns: 1fr 1fr; }
+  .matrix-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 540px) {
+  .grid-4 { grid-template-columns: 1fr; }
+  .wrap { padding: 24px 16px 60px; }
+  .matrix-card { padding: 22px; }
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="hero">
+    <div class="eyebrow"><span class="live-dot"></span>COUNCIL OF MODELS • MULTI-PROVIDER SYNTHESIS</div>
+    <h1>Four Independent Architectures.<br><span>One Governed Review.</span></h1>
+    <p class="hero-sub">OMOS does not rely on a single foundation model or proprietary walled garden. By dispatching governed inquiries to four top frontier reasoning engines simultaneously, OMOS evaluates models against each other, extracting shared truth while filtering isolated hallucinations.</p>
+  </header>
+
+  <section class="grid-4">
+    <article class="card">
+      <span class="badge">Provider 01</span>
+      <h2>OpenAI</h2>
+      <p>Standard for broad world knowledge, instruction following, and advanced tool calling. Serves as one of four primary independent generation nodes.</p>
+    </article>
+
+    <article class="card">
+      <span class="badge">Provider 02</span>
+      <h2>Anthropic</h2>
+      <p>Recognized for nuanced reasoning, constitutional alignment, long-form coherence, and meticulous structural constraint adherence.</p>
+    </article>
+
+    <article class="card">
+      <span class="badge">Provider 03</span>
+      <h2>Google</h2>
+      <p>Large multimodal context capabilities, rapid information retrieval, and search-grounded deep analytical reasoning.</p>
+    </article>
+
+    <article class="card">
+      <span class="badge">Provider 04</span>
+      <h2>xAI</h2>
+      <p>Unfiltered analytical perspectives, real-time current events synthesis, and alternative hypothesis formulation.</p>
+    </article>
+  </section>
+
+  <h2 class="section-title">The 4×4 Cross-Evaluation Matrix</h2>
+
+  <section class="matrix-card">
+    <p style="color:var(--muted);font-size:16px;line-height:1.6;margin:0">In a standard setup, querying four models produces four disconnected answers. In OMOS, each model is re-prompted with the other three anonymized answers. This cross-review exposes subtle flaws that no single prompt could detect:</p>
+
+    <div class="matrix-grid">
+      <div class="matrix-item">
+        <strong style="color:var(--cyan)">Agreement Zones</strong>
+        <p>Core claims and facts endorsed independently by all four providers, representing high-probability factual consensus.</p>
+      </div>
+      <div class="matrix-item">
+        <strong style="color:#ff7a7a">Contradictions</strong>
+        <p>Direct factual or logical conflicts identified between providers, flagged immediately for human review.</p>
+      </div>
+      <div class="matrix-item">
+        <strong style="color:var(--gold-bright)">Missing Angles & Omissions</strong>
+        <p>Crucial points identified by one model that were overlooked or omitted by others during initial generation.</p>
+      </div>
+      <div class="matrix-item">
+        <strong style="color:var(--purple)">Novel Insights</strong>
+        <p>Unique lateral connections or creative problem-solving steps generated by an individual system that survive scrutiny.</p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a class="btn-primary" href="/ask/">Run Council in Ask OMOS</a>
+      <a class="btn-secondary" href="/ohi-output-pipeline">Inspect Review Pipeline →</a>
+    </div>
+  </section>
+</main>
+</body>
+</html>

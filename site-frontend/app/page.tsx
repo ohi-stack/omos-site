@@ -45,70 +45,72 @@ const navigationGroups = [
   {
     label: "OMOS",
     links: [
-      { label: "Overview", href: "#top" },
-      { label: "Production status", href: "#production" },
-      { label: "Architecture", href: "#architecture" },
-      { label: "Algorithm", href: "#algorithm" },
-      { label: "Standards", href: "#standards" },
+      { label: "Overview", href: "/" },
+      { label: "Architecture", href: "/omos" },
+      { label: "Algorithm", href: "/algorithm" },
+      { label: "Protocol", href: "/protocol" },
+      { label: "Digital Sanctuary", href: "/digital-sanctuary" },
+      { label: "Roadmap & Notes", href: "/latest-news" },
     ],
   },
   {
     label: "Workspace",
     links: [
-      { label: "Ask OMOS", href: "#pipeline" },
-      { label: "Layer 1", href: "#pipeline" },
-      { label: "Align", href: "#algorithm" },
-      { label: "Council", href: "#pipeline" },
-      { label: "Synthesize", href: "#pipeline" },
-      { label: "Record", href: "#record" },
-      { label: "History", href: "#record" },
+      { label: "Ask OMOS", href: "/ask/" },
+      { label: "Workspace Home", href: "/workspace" },
+      { label: "Decision Records", href: "/dashboard" },
+      { label: "Run History", href: "/dashboard" },
+      { label: "Artifacts", href: "/artifacts" },
     ],
   },
   {
-    label: "Council",
+    label: "Models",
     links: [
-      { label: "Council workspace", href: "#pipeline" },
-      { label: "Engineering Council", href: "#engineering-council" },
-      { label: "Review rules", href: "#engineering-council" },
-      { label: "Human approval gate", href: "#record" },
-    ],
-  },
-  {
-    label: "OLLM",
-    links: [
-      { label: "Model council", href: "#pipeline" },
-      { label: "Independent outputs", href: "#pipeline" },
-      { label: "Cross-model review", href: "#pipeline" },
-      { label: "O-H-I output", href: "#pipeline" },
-      { label: "Runtime environment", href: "#environment" },
+      { label: "AI Council", href: "/models" },
+      { label: "Output Pipeline", href: "/ohi-output-pipeline" },
+      { label: "OHI Synthesis", href: "/ohi" },
+      { label: "Provider Status", href: "/api/v1/providers" },
+      { label: "Council Runs", href: "/dashboard" },
     ],
   },
   {
     label: "Tools",
     links: [
-      { label: "Algorithm lab", href: "#algorithm" },
-      { label: "Decision review", href: "#record" },
-      { label: "Timekeeping tools", href: "#products" },
-      { label: "Developer kit", href: "#products" },
+      { label: "Tools Home", href: "/tools" },
+      { label: "Layer 1 Intake", href: "/tools" },
+      { label: "Alignment Engine", href: "/algorithm" },
+      { label: "Timekeeping (OTS)", href: "/tools" },
+      { label: "Verification", href: "/tools" },
     ],
   },
   {
     label: "Developers",
     links: [
-      { label: "System architecture", href: "#architecture" },
-      { label: "Environment contract", href: "#environment" },
-      { label: "Engineering workflow", href: "#engineering-council" },
-      { label: "Documents", href: "#library" },
+      { label: "Developer Hub", href: "/developers" },
+      { label: "API Manifest", href: "/api/manifest" },
+      { label: "Runtime Health", href: "/api/health" },
+      { label: "Documentation", href: "/docs" },
       { label: "GitHub repository", href: "https://github.com/ohi-stack/omos-site", external: true },
     ],
   },
   {
-    label: "Pricing",
+    label: "Resources",
     links: [
-      { label: "Product catalog", href: "#products" },
-      { label: "Developer Kit", href: "#products" },
-      { label: "Prompt systems", href: "#products" },
-      { label: "Tools & standards", href: "#products" },
+      { label: "Documentation Center", href: "/docs" },
+      { label: "Artifacts Library", href: "/artifacts" },
+      { label: "Build Notes", href: "/latest-news" },
+      { label: "Protocol Specification", href: "/protocol" },
+      { label: "Legal & Compliance", href: "/legal" },
+    ],
+  },
+  {
+    label: "Shop",
+    links: [
+      { label: "OMOS Shop", href: "/shop" },
+      { label: "Products & Downloads", href: "/shop" },
+      { label: "Pricing Plans", href: "/pricing" },
+      { label: "OneGodian.com", href: "https://onegodian.com", external: true },
+      { label: "Contact", href: "/contact" },
     ],
   },
 ];
@@ -426,6 +428,33 @@ export default function Home() {
     return () => window.clearTimeout(timer);
   }, [pipelineStage, running]);
 
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+      }
+    }
+    function handleResize() {
+      if (window.innerWidth > 1180) {
+        setMenuOpen(false);
+      }
+    }
+    function handleClickOutside(e: MouseEvent) {
+      const header = document.querySelector(".site-header");
+      if (header && !header.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("resize", handleResize);
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleResize);
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   const progress = useMemo(
     () => `${((pipelineStage + 1) / stages.length) * 100}%`,
     [pipelineStage],
@@ -453,7 +482,7 @@ export default function Home() {
       <div className="ambient ambient-two" />
 
       <header className="site-header">
-        <a className="brand" href="#top" aria-label="OMOS home">
+        <a className="brand" href="/" aria-label="OMOS home">
           <img
             className={logoFailed ? "brand-logo is-hidden" : "brand-logo"}
             src="https://onegodian-omos.onegodian.chatgpt.site/omos-logo-gold.png"
@@ -508,13 +537,13 @@ export default function Home() {
             ))}
           </div>
           <div className="nav-actions">
-            <a href="#production" onClick={() => setMenuOpen(false)}>
+            <a href="/dashboard" onClick={() => setMenuOpen(false)}>
               Runtime
             </a>
-            <a href="https://omos.onegodian.com/dashboard/" onClick={() => setMenuOpen(false)}>
+            <a href="/dashboard" onClick={() => setMenuOpen(false)}>
               Sign In
             </a>
-            <a className="nav-cta" href="#pipeline" onClick={() => setMenuOpen(false)}>
+            <a className="nav-cta" href="/ask/" onClick={() => setMenuOpen(false)}>
               ASK OMOS
             </a>
           </div>
@@ -526,7 +555,7 @@ export default function Home() {
           <span className="live-dot" />
           Repository audit • September 4, 2026 • Human-governed
         </div>
-        <h1>
+        <h1 className="animate-fade-in transition-all duration-700">
           Built in the repo.
           <br />
           Separated from hype.
@@ -540,11 +569,11 @@ export default function Home() {
           verify the canonical production deployment.
         </p>
         <div className="hero-actions">
-          <a className="button button-primary" href="#production">
+          <a className="button button-primary animate-fade-in-delayed transition-all duration-700" href="#production">
             Review production evidence <span aria-hidden="true">↘</span>
           </a>
           <a
-            className="button button-quiet"
+            className="button button-quiet animate-fade-in-delayed-2 transition-all duration-700"
             href="https://github.com/ohi-stack/omos-site"
             target="_blank"
             rel="noreferrer"
@@ -1603,15 +1632,19 @@ export default function Home() {
           />
         </div>
         <div className="footer-links">
-          <a href="#production">Production status</a>
-          <a href="#architecture">Architecture</a>
-          <a href="#algorithm">Algorithm</a>
-          <a href="#standards">Standards</a>
-          <a href="#environment">Environment</a>
-          <a href="#products">Products</a>
-          <a href="#record">Record</a>
-          <a href="#engineering-council">Engineering Council</a>
-          <a href="#library">Documents</a>
+          <a href="/dashboard">Production status</a>
+          <a href="/omos">Architecture</a>
+          <a href="/algorithm">Algorithm</a>
+          <a href="/protocol">Protocol</a>
+          <a href="/models">Models</a>
+          <a href="/tools">Tools</a>
+          <a href="/docs">Documentation</a>
+          <a href="/artifacts">Artifacts</a>
+          <a href="/shop">Products</a>
+          <a href="/developers">Engineering Council</a>
+          <a href="/ask/">Ask OMOS</a>
+          <a href="/legal">Legal</a>
+          <a href="/contact">Contact</a>
         </div>
         <p className="footer-legal">
           OMOS and the OneGodian Algorithm are founder-authored private
