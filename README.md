@@ -255,3 +255,8 @@ Canonical action boundary:
 ```text
 Platform telemetry → Quantum-OHI analysis → recommendation → ACC approval/workflow → authoritative service → audit/verification
 ```
+
+
+## Route boundaries
+
+Public navigation is limited to OMOS, OHI, Models, Tools, Artifacts, Docs, and Shop. `/dashboard` is the authenticated user/developer workspace. `/admin` is a restricted control-plane surface and is intentionally excluded from the public navigation and sitemap.
