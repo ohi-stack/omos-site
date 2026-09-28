@@ -3,7 +3,7 @@ const https = require("https");
 const assert = require("assert");
 
 const BASE_URL = process.env.OMOS_BASE_URL || "http://localhost:3000";
-const CANONICAL_NAV = ["OMOS", "Workspace", "Council", "OLLM", "Tools", "Developers", "Pricing"];
+const CANONICAL_NAV = ["OMOS", "OHI", "Models", "Tools", "Artifacts", "Docs", "Shop"];
 
 function request(path) {
   const url = new URL(path, BASE_URL);
@@ -151,7 +151,7 @@ async function run() {
   assert.equal(manifest.ui?.sharedHeader, true, "manifest must advertise shared header");
   assert.equal(manifest.ui?.sharedFooter, true, "manifest must advertise shared footer");
   assert.equal(manifest.ui?.megaMenu, true, "manifest must advertise mega menu");
-  assert.deepEqual(manifest.navigation?.map((item) => item.label), CANONICAL_NAV, "manifest must expose the canonical seven-item mega menu");
+  assert.deepEqual(manifest.navigation?.map((item) => item.label), CANONICAL_NAV, "manifest must expose the canonical seven-item public mega menu");
   assert.ok(manifest.routes?.public?.includes("/ask/"), "manifest must advertise /ask/");
   assert.ok(manifest.routes?.public?.includes("/reference-run"), "manifest must advertise /reference-run");
   assert.ok(manifest.routes?.public?.includes("/belief-mapper"), "manifest must advertise /belief-mapper");
