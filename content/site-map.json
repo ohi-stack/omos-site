@@ -2,11 +2,24 @@
   "site": {
     "name": "OMOS — OneGodian Metaphysical Operating System",
     "canonical_domain": "https://omos.onegodian.com",
+    "wordpress_presentation_domain": "https://omos.onegodian.org",
     "status": "functional",
     "version": "1.1.0-content-map",
-    "updated": "2026-09-10",
+    "updated": "2026-09-19",
     "public_proposition": "Make Better Decisions With AI.",
-    "maturity_rule": "Conceptual → Prototype → Functional → Verified → Production; deployed behavior must be proven separately from repository implementation."
+    "maturity_rule": "Conceptual → Prototype → Functional → Verified → Production; repository implementation, deployment, and production proof are separate states."
+  },
+  "canonical_registry": {
+    "core_page_count": 30,
+    "odin_source": "config/omos-odin-pages.json",
+    "human_sitemap": "docs/OMOS-SITEMAP-2026-09-19.md",
+    "policy": "Thirty ODIN-addressable core pages remain the canonical page registry. Supporting application/API routes do not increase the core-page count until formally assigned an ODIN identity."
+  },
+  "ecosystem_registry": {
+    "source": "config/ecosystem-core-page-counts.json",
+    "tracked_platforms": 11,
+    "registered_core_pages": 386,
+    "rule": "Registry count is not production-verification status."
   },
   "primary_navigation": [
     { "label": "OMOS", "href": "/omos" },
@@ -22,60 +35,97 @@
     { "label": "Sign In", "href": "/dashboard" },
     { "label": "Ask OMOS", "href": "/ask/" }
   ],
-  "canonical_workflow": ["ask", "layer1", "alignment", "council_review", "governed_synthesis", "human_gate", "decision_record", "history"],
-  "routes": [
-    { "path": "/", "purpose": "Customer entry, platform explanation, evidence status, architecture, product pathways, and build maturity." },
-    { "path": "/omos", "purpose": "OMOS operating model, architecture, Algorithm, O-H-I, standards, connectors, and maturity." },
-    { "path": "/workspace", "purpose": "Customer-facing Ask → Distill → Align → Council → Synthesize → Human Gate → Record → History workflow." },
-    { "path": "/council", "purpose": "Independent model outputs, cross-model review, signal mapping, governed synthesis, degraded-state rules, and human review." },
-    { "path": "/ollm", "purpose": "OneGodian LLM architecture and first-class future OMOS provider contract; runtime participation remains capability-gated." },
-    { "path": "/models", "purpose": "Model connector control center for OpenAI/GPT-6 Astra, Anthropic, Gemini, xAI, and future OLLM configuration, health, and provenance." },
-    { "path": "/tools", "purpose": "Layer 1, Alignment, Identity, Verification, Intelligence, and developer/runtime tools." },
-    { "path": "/belief-mapper", "purpose": "Seven-dimensional belief-reflection and journey-stage product specification with privacy and maturity boundaries." },
-    { "path": "/developers", "purpose": "APIs, Model Gateway, Data/Action/Environment Gateway, MCP status, Engineering Council, risk classes, and runtime interfaces." },
-    { "path": "/reference-run", "purpose": "OMOS-REF-0001 production-proof standard." },
-    { "path": "/pricing", "purpose": "Outcome-based launch pricing and capability-gated entitlement boundaries." },
-    { "path": "/shop", "purpose": "Products/services presentation and OneGodian.com commerce bridge." },
-    { "path": "/ohi", "purpose": "O-H-I multi-model comparison, critique, dissent preservation, synthesis, and human-reviewed output layer." },
-    { "path": "/ohi-output-pipeline", "purpose": "Cross-model review pipeline and synthesis explanation." },
-    { "path": "/protocol", "purpose": "OneGodian Protocol™ definitions, identity semantics, interoperability, and human-authority guidance." },
-    { "path": "/algorithm", "purpose": "OneGodian Algorithm™ Observe → Distill → Align → Select → Execute → Verify." },
-    { "path": "/artifacts", "purpose": "Architecture, evidence, standards, media, and specialized research including ODIN-SCI-0004." },
-    { "path": "/docs", "purpose": "Documentation center for capability, production proof, engineering, connectors, commerce, OTS-V5, and research." },
-    { "path": "/dashboard", "purpose": "Runtime health, provider state, Council runs, Decision Record history, and verification surfaces." },
-    { "path": "/latest-news", "purpose": "Build notes, releases, implementation milestones, and current production-certification status." },
-    { "path": "/digital-sanctuary", "purpose": "Immersive OneGodian/OMOS conceptual experience." },
-    { "path": "/legal", "purpose": "Public-safe entity, authority, evidence, timekeeping, and professional-advice boundaries." },
-    { "path": "/contact", "purpose": "Product support, implementation, developer, commerce, and ecosystem routing." },
-    { "path": "/ask/", "purpose": "Flagship operational Ask OMOS workspace." }
+  "canonical_workflow": [
+    "input",
+    "layer1",
+    "alignment",
+    "council_review",
+    "governed_synthesis",
+    "human_gate",
+    "decision_record",
+    "history"
   ],
+  "supporting_public_routes": [
+    { "path": "/workspace", "role": "customer workspace" },
+    { "path": "/council", "role": "multi-model governed review" },
+    { "path": "/ollm", "role": "OneGodian LLM product/provider boundary" },
+    { "path": "/models", "role": "Model Gateway and provider status" },
+    { "path": "/models/openai", "role": "OpenAI connector presentation" },
+    { "path": "/models/anthropic", "role": "Anthropic connector presentation" },
+    { "path": "/models/gemini", "role": "Gemini connector presentation" },
+    { "path": "/models/xai", "role": "xAI connector presentation" },
+    { "path": "/ask/", "role": "flagship governed Ask OMOS workspace" },
+    { "path": "/reference-run", "role": "OMOS-REF-0001 production-proof standard" },
+    { "path": "/omos-ref-0001", "role": "reference-run evidence surface" },
+    { "path": "/connections", "role": "Connection & Adaptation Layer" },
+    { "path": "/engineering-council", "role": "Engineering Council workflow" },
+    { "path": "/mcp", "role": "OneGodian MCP architecture and conformance" },
+    { "path": "/council-provenance", "role": "Council provenance" },
+    { "path": "/oru/", "role": "Oru’Valen continuity/context application surface" },
+    { "path": "/artifacts", "role": "specifications, evidence and source artifacts" },
+    { "path": "/algorithm", "role": "OneGodian Algorithm explanation" },
+    { "path": "/digital-sanctuary", "role": "specialized OneGodian/OMOS experience" },
+    { "path": "/pricing", "role": "capability-gated product ladder" },
+    { "path": "/shop", "role": "OneGodian.com commerce bridge" },
+    { "path": "/latest-news", "role": "build notes and release status" },
+    { "path": "/legal", "role": "legal/compliance boundaries" },
+    { "path": "/contact", "role": "support and implementation routing" }
+  ],
+  "runtime_api": {
+    "public_safe": [
+      { "method": "GET", "path": "/health" },
+      { "method": "GET", "path": "/manifest" },
+      { "method": "GET", "path": "/api/health" },
+      { "method": "GET", "path": "/api/manifest" },
+      { "method": "GET", "path": "/api/v1/providers" },
+      { "method": "GET", "path": "/api/v1/persistence" },
+      { "method": "GET", "path": "/api/oru.json" }
+    ],
+    "authenticated": [
+      { "method": "POST", "path": "/process" },
+      { "method": "POST", "path": "/api/v1/council/run" },
+      { "method": "GET", "path": "/api/v1/council/runs" },
+      { "method": "GET", "path": "/api/v1/council/runs/:id" },
+      { "method": "POST", "path": "/api/v1/council/runs/:id/human-decision" }
+    ]
+  },
   "model_gateway": {
     "purpose": "Who OMOS reasons with",
-    "providers": ["openai", "anthropic", "gemini", "xai"],
-    "future_providers": ["ollm"],
-    "provider_states": ["CONNECTED", "NOT_CONFIGURED", "DEGRADED", "UNAVAILABLE"],
-    "council_states": ["LIVE", "HYBRID", "DEGRADED", "SIMULATION"],
-    "rule": "Provider configuration is not the same as a successful live connection test."
+    "providers": ["openai", "anthropic", "gemini", "xai", "ollm"],
+    "rule": "Provider configuration is not a successful live provider test; live, degraded, simulation, and unverified states must remain explicit."
   },
-  "data_action_environment_gateway": {
-    "purpose": "What OMOS may securely read, synchronize, invoke, or operate",
-    "connector_classes": ["github", "google_drive", "wordpress", "stripe", "postgresql_or_supabase_compatible", "qrv", "onegodian_apis", "acc"],
-    "required_record_fields": ["source", "permissions", "sync_direction", "object_type", "external_id", "omos_id", "timestamps", "provenance", "conflict_policy", "health", "last_sync", "audit_events"],
-    "rule": "Synchronization does not establish truth, ownership, or authority."
+  "connection_and_adaptation": {
+    "classes": ["model", "data", "action", "environment"],
+    "mcp_standard": "OG-MCP-STD-1.0",
+    "rule": "MCP provides interoperability; OMOS governs runtime use; ACC may orchestrate separately authorized execution; connected domain systems remain their own sources of record."
+  },
+  "wordpress_architecture": {
+    "canonical_runtime": "https://omos.onegodian.com",
+    "presentation_client": "https://omos.onegodian.org",
+    "specialized_plugin": "OMOS Core Tools v1.5.0+",
+    "shared_plugin": "OneGodian Platform Plugin",
+    "shared_targets": [
+      "https://onegodian.org",
+      "https://onegodian.com",
+      "https://quantumohi.com"
+    ],
+    "optional_shared_target": "https://u.onegodian.org",
+    "consequential_action_path": "OMOS → Human Gate → ACC → acc-wp-adapter → WordPress/WooCommerce",
+    "rule": "WordPress presentation and synchronization do not create a second OMOS runtime or Decision Record authority."
   },
   "source_repositories": [
-    { "repository": "ohi-stack/omos-site", "role": "canonical OMOS runtime and public site", "authority": "primary implementation" },
-    { "repository": "ohi-stack/OneGodian-Metaphysical-Operating-System-AI-Studio", "role": "historical/parallel OMOS site planning and WordPress support", "authority": "reconciled source" },
-    { "repository": "ohi-stack/onegodian-protocol", "role": "Protocol, Algorithm, Belief Mapper, interoperability specifications", "authority": "specification source" },
-    { "repository": "ohi-stack/onegodian-llm", "role": "OLLM product/provider architecture", "authority": "product source" },
-    { "repository": "ohi-stack/acc-oruvalen", "role": "Oru continuity/context and ACC execution boundary", "authority": "integration source" },
-    { "repository": "ohi-stack/onegodian-api", "role": "broader OneGodian API and commerce service boundary", "authority": "integration source" },
-    { "repository": "ohi-stack/onegodian-science", "role": "scientific claim classification and evidence discipline", "authority": "research source" }
+    { "repository": "ohi-stack/omos-site", "role": "canonical OMOS runtime, public site, WordPress plugin source and production evidence", "authority": "primary implementation" },
+    { "repository": "ohi-stack/onegodian-platform-plugin", "role": "shared cross-property WordPress platform/status bridge", "authority": "WordPress integration" },
+    { "repository": "ohi-stack/acc", "role": "canonical ACC execution control plane", "authority": "execution control" },
+    { "repository": "ohi-stack/acc-wp-adapter", "role": "governed WordPress/WooCommerce action adapter", "authority": "authorized action path" },
+    { "repository": "ohi-stack/onegodian-llm", "role": "OLLM service/provider boundary", "authority": "model product source" },
+    { "repository": "ohi-stack/onegodian-protocol", "role": "Protocol, Algorithm and interoperability specification source", "authority": "specification source" },
+    { "repository": "ohi-stack/OneGodian-Metaphysical-Operating-System-AI-Studio", "role": "historical/parallel site planning and WordPress support", "authority": "non-runtime supporting source" }
   ],
   "external_platform_targets": [
-    { "domain": "https://onegodian.com", "role": "private commerce, product checkout, and commercial OneGodian platform" },
-    { "domain": "https://onegodian.org", "role": "public identity, civil/cultural/educational and institutional introduction" },
-    { "domain": "https://u.onegodian.com", "role": "education, courses, certifications and training" },
+    { "domain": "https://onegodian.org", "role": "public identity, education and institutional introduction" },
+    { "domain": "https://onegodian.com", "role": "private commerce, checkout and product platform" },
+    { "domain": "https://u.onegodian.org", "role": "education, courses and training" },
     { "domain": "https://app.onegodian.com", "role": "application/console surface" },
     { "domain": "https://quantumohi.com", "role": "advanced O-H-I / enterprise governance and infrastructure layer" },
     { "domain": "https://qrv.network", "role": "verification and credential infrastructure" },
@@ -83,11 +133,11 @@
   ],
   "public_rules": [
     "Model agreement is not factual verification.",
-    "Provider configuration is not a successful live connection test.",
+    "Provider configuration is not a successful live provider test.",
     "Repository implementation is not deployment proof.",
+    "WordPress presentation is not runtime authority.",
     "Human authorization remains required for consequential external actions.",
-    "Secrets remain server-side and outside public payloads, logs, Decision Records, and source control.",
-    "UTC is canonical system time; Gregorian is controlling for civil/legal references; OneGodian Time is supplemental.",
-    "Scientific claims are classified according to actual evidence and independent validation."
+    "Secrets remain server-side and outside public payloads, logs, Decision Records and source control.",
+    "UTC is canonical system time; Gregorian controls civil/legal references; OneGodian Time is supplemental."
   ]
 }
