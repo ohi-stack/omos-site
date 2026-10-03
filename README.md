@@ -128,6 +128,16 @@ The current provider-neutral architecture supports connectors for:
 
 Council behavior preserves independent outputs, cross-review, agreement, contradiction, missing information/evidence, novel insight, supported dissent, provenance, and uncertainty.
 
+## OneGodian Intelligence Portability Standard (OIPS)
+
+OMOS now defines a provider-independent portability contract:
+
+**Instructions / Rules → Knowledge / RAG → Skills → Tools / Actions → Tests / Verification**
+
+Canonical OneGodian knowledge and executable capability must remain independent of any provider-specific assistant format. RAG retrieves authoritative, scoped context; skills compose reusable task behavior; tools execute through governed API/MCP connectors; and provider-independent tests verify behavior and evidence. Provider runtimes are adapters rather than sources of truth.
+
+See `docs/ONEGODIAN-INTELLIGENCE-PORTABILITY-STANDARD.md`.
+
 ## Connection & Adaptation Layer
 
 OMOS groups external integrations into:
