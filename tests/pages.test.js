@@ -84,6 +84,11 @@ async function expectConvergencePages() {
     ["/workspace", "Turn a difficult question into a reviewable decision."],
     ["/council", "Multiple models. One governed review."],
     ["/ollm", "OneGodian LLM"],
+    ["/onegodian-llm", "Language models generate."],
+    ["/llm", "Language models generate."],
+    ["/architecture", "Portable intelligence, not provider lock-in."],
+    ["/frequency-standard", "432 Hz"],
+    ["/founder-framework", "Discipline before declaration."],
     ["/models", "OpenAI / GPT-6 Astra"],
     ["/tools", "Capability rule"],
     ["/developers", "Canonical Engineering Council"],
@@ -128,7 +133,7 @@ async function expectOruSurfaces() {
 
 async function run() {
   const publicRoutes = [
-    "/", "/omos", "/workspace", "/council", "/ollm", "/ohi", "/models", "/tools",
+    "/", "/omos", "/workspace", "/council", "/ollm", "/onegodian-llm", "/llm", "/architecture", "/frequency-standard", "/founder-framework", "/ohi", "/models", "/tools",
     "/belief-mapper", "/developers", "/reference-run", "/pricing", "/artifacts", "/docs", "/shop",
     "/latest-news", "/dashboard", "/legal", "/contact", "/protocol", "/algorithm",
     "/digital-sanctuary", "/ohi-output-pipeline"
@@ -155,6 +160,11 @@ async function run() {
   assert.ok(manifest.routes?.public?.includes("/ask/"), "manifest must advertise /ask/");
   assert.ok(manifest.routes?.public?.includes("/reference-run"), "manifest must advertise /reference-run");
   assert.ok(manifest.routes?.public?.includes("/belief-mapper"), "manifest must advertise /belief-mapper");
+  assert.ok(manifest.routes?.public?.includes("/onegodian-llm"), "manifest must advertise /onegodian-llm");
+  assert.ok(manifest.routes?.public?.includes("/architecture"), "manifest must advertise /architecture");
+  assert.equal(manifest.links?.platformApi, "https://api.onegodian.org", "manifest must point to canonical platform API");
+  assert.equal(manifest.appBridge, undefined, "retired app bridge must not remain in manifest");
+  assert.ok(manifest.wordpressPlugin?.shortcodes?.includes("[omos_about_llm]"), "manifest must advertise OneGodian LLM shortcode");
   assert.deepEqual(manifest.orchestration?.stages, ["ask","layer1","alignment","council_review","governed_synthesis","human_gate","decision_record"], "manifest must preserve canonical governed runtime stages");
 
   const providers = await expectJson("/api/v1/providers");
