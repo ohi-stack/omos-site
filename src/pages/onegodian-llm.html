@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OneGodian LLM™ — The Intelligence Layer of OMOS</title>
+<meta name="description" content="OneGodian LLM is the model-agnostic language-model synthesis layer integrated into OMOS, O-H-I, ACC, and the OneGodian Platform.">
+<style>
+:root{--gold:#d8b35a;--gold2:#f0d98a;--violet:#8f6cff;--cyan:#54e4dc;--panel:rgba(255,255,255,.045);--line:rgba(216,179,90,.22);--muted:rgba(245,241,232,.72)}
+.ollm-wrap{max-width:1180px;margin:0 auto;padding:10px 24px 80px}.ollm-hero{padding:42px 0 28px}.ollm-kicker{display:inline-flex;gap:9px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:9px 14px;color:var(--gold2);font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:11px;background:rgba(216,179,90,.06)}.ollm-hero h1{font-size:clamp(42px,7vw,82px);line-height:.98;letter-spacing:-.05em;margin:20px 0 18px}.ollm-hero h1 span{color:var(--gold2)}.ollm-lead{max-width:920px;font-size:20px;color:var(--muted)}.ollm-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}.ollm-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 17px;border-radius:999px;text-decoration:none;font-weight:800;border:1px solid var(--line);color:#f5f1e8;background:rgba(255,255,255,.035)}.ollm-btn.primary{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#080706;border-color:transparent}
+.ollm-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:28px}.ollm-card{grid-column:span 4;border:1px solid var(--line);border-radius:24px;padding:22px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.025));box-shadow:0 24px 80px rgba(0,0,0,.18);transition:transform .25s ease,border-color .25s ease}.ollm-card:hover{transform:translateY(-4px);border-color:rgba(240,217,138,.48)}.ollm-card.wide{grid-column:span 6}.ollm-card.full{grid-column:1/-1}.ollm-card h2,.ollm-card h3{margin:0 0 10px;color:#fff}.ollm-card p,.ollm-card li{color:var(--muted)}.ollm-card .tag{color:var(--gold2);font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:800}
+.arch{display:grid;grid-template-columns:repeat(7,minmax(110px,1fr));gap:10px;align-items:center;margin-top:18px}.node{min-height:112px;border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:16px;background:rgba(255,255,255,.035);display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}.node:before{content:"";position:absolute;inset:-30%;background:radial-gradient(circle,rgba(143,108,255,.13),transparent 58%);animation:pulse 4s ease-in-out infinite}.node b,.node span{position:relative}.node b{color:#fff}.node span{font-size:12px;color:var(--muted);margin-top:5px}.arrow{text-align:center;color:var(--gold);font-size:24px}
+.council{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}.model{border:1px solid rgba(84,228,220,.18);border-radius:18px;padding:16px;background:rgba(84,228,220,.035)}.model b{display:block;color:#fff}.model small{color:var(--muted)}.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:16px}.flow div{border-radius:16px;padding:16px;border:1px solid rgba(143,108,255,.2);background:rgba(143,108,255,.04);text-align:center}.flow strong{display:block;color:#fff}.flow span{font-size:12px;color:var(--muted)}
+.status{border-left:3px solid var(--gold);padding:14px 16px;background:rgba(216,179,90,.055);border-radius:0 16px 16px 0;color:var(--muted)}.api{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;background:#050507;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;overflow:auto;color:#d9ddff;white-space:pre-wrap}
+@keyframes pulse{0%,100%{transform:scale(.96);opacity:.55}50%{transform:scale(1.08);opacity:1}}
+@media(max-width:900px){.ollm-card,.ollm-card.wide{grid-column:1/-1}.arch{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}.council{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr}}
+@media(max-width:560px){.council{grid-template-columns:1fr}.ollm-wrap{padding-left:16px;padding-right:16px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="ollm-wrap">
+<section class="ollm-hero">
+<div class="ollm-kicker">OneGodian LLM™ • OMOS Intelligence Layer</div>
+<h1>Language models generate.<br><span>OneGodian intelligence governs the workflow.</span></h1>
+<p class="ollm-lead">OneGodian LLM™ is the model-agnostic synthesis and integration layer that coordinates approved language-model capabilities inside the OneGodian architecture. It connects context, model selection, synthesis, verification, policy checks, and structured output without making any single provider the authority over OneGodian identity, records, or human decisions.</p>
+<div class="ollm-actions"><a class="ollm-btn primary" href="/ohi-output-pipeline">View O-H-I Pipeline →</a><a class="ollm-btn" href="/models">Inspect Model Connectors</a><a class="ollm-btn" href="/api/manifest">Runtime Manifest</a></div>
+</section>
+<section class="ollm-grid">
+<article class="ollm-card full"><div class="tag">Canonical capability chain</div><h2>How OneGodian LLM fits inside OMOS</h2>
+<div class="arch"><div class="node"><b>Instructions</b><span>identity, policy, scope, permissions</span></div><div class="arrow">→</div><div class="node"><b>Knowledge / RAG</b><span>authoritative, versioned context</span></div><div class="arrow">→</div><div class="node"><b>LLM Synthesis</b><span>provider execution + comparison</span></div><div class="arrow">→</div><div class="node"><b>Verification</b><span>O-H-I / policy / evidence checks</span></div></div>
+<div class="arch" style="margin-top:10px"><div class="node"><b>Human Request</b><span>purpose and decision context</span></div><div class="arrow">→</div><div class="node"><b>ACC</b><span>permissioned orchestration</span></div><div class="arrow">→</div><div class="node"><b>api.OneGodian.org</b><span>authorized platform execution</span></div><div class="arrow">→</div><div class="node"><b>Records / Tools</b><span>ODIN, QR-V, plugins, services</span></div></div></article>
+<article class="ollm-card wide"><div class="tag">Model council</div><h2>Multiple providers, no single-provider authority</h2><p>OMOS may compare outputs from configured model providers. Provider configuration is not the same as verified availability, and model agreement is not treated as factual verification.</p><div class="council"><div class="model"><b>OpenAI</b><small>adapter / model gateway</small></div><div class="model"><b>Anthropic</b><small>adapter / model gateway</small></div><div class="model"><b>Gemini</b><small>adapter / model gateway</small></div><div class="model"><b>xAI</b><small>adapter / model gateway</small></div></div></article>
+<article class="ollm-card wide"><div class="tag">Authority boundary</div><h2>Human authority remains final</h2><p>The Synthesis Engine coordinates model capabilities. O-H-I evaluates and contextualizes. ACC governs authorized actions. The OneGodian API executes approved operations. ODIN / QR-V preserve authoritative identifiers and provenance where applicable.</p><div class="status"><strong>Production discipline:</strong> repository code, configured providers, deployment, and verified production operation are separate states and must not be conflated.</div></article>
+<article class="ollm-card full"><div class="tag">O-H-I governed flow</div><h2>Input → synthesis → verification → structured output</h2><div class="flow"><div><strong>1. Context</strong><span>retrieve relevant source material</span></div><div><strong>2. Execute</strong><span>run approved provider/model paths</span></div><div><strong>3. Compare</strong><span>agreement, dissent, missing evidence</span></div><div><strong>4. Verify</strong><span>policy, source, maturity, authority</span></div><div><strong>5. Output</strong><span>structured, traceable result</span></div></div></article>
+<article class="ollm-card"><div class="tag">Documentation</div><h3>Architecture</h3><p>Portable instructions, Knowledge/RAG, skills, actions, verification, and provider adapters.</p><a class="ollm-btn" href="/architecture">Open architecture</a></article>
+<article class="ollm-card"><div class="tag">Standards</div><h3>OneGodian Algorithm™</h3><p>Observe, distill, align, select, execute, and verify within documented maturity and authority boundaries.</p><a class="ollm-btn" href="/algorithm">Open Algorithm</a></article>
+<article class="ollm-card"><div class="tag">Founder framework</div><h3>Human-centered operating discipline</h3><p>Founder and enterprise framing for disciplined, documented, long-horizon execution without replacing civil or institutional authority.</p><a class="ollm-btn" href="/founder-framework">Open framework</a></article>
+<article class="ollm-card full"><div class="tag">Developer / API</div><h2>Integration surfaces</h2><p>OMOS exposes public runtime health and manifest endpoints, model-provider state, persistence state, and authenticated Council/runtime execution interfaces. Cross-platform services integrate through the OneGodian API backbone rather than the retired standalone app architecture.</p><div class="api">GET /api/health
+GET /api/manifest
+GET /api/v1/providers
+GET /api/v1/persistence
+
+POST /api/v1/council/run
+GET  /api/v1/council/runs
+POST /api/v1/council/runs/:id/human-decision</div></article>
+</section>
+</main>
+</body>
+</html>
