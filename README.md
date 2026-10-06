@@ -255,3 +255,7 @@ Canonical action boundary:
 ```text
 Platform telemetry → Quantum-OHI analysis → recommendation → ACC approval/workflow → authoritative service → audit/verification
 ```
+
+## OneGodian LLM Synthesis Engine™ integration
+
+This repository follows the shared model-agnostic synthesis, OIPS portability, authority, provenance, and human-approval contract documented in [`docs/LLM-SYNTHESIS-ENGINE-INTEGRATION.md`](docs/LLM-SYNTHESIS-ENGINE-INTEGRATION.md). The canonical Synthesis Engine code authority remains `ohi-stack/onegodian-llm`; this repository implements only its own integration boundary.
