@@ -3,7 +3,7 @@
 Public site, governed runtime, documentation, and WordPress-bridge source for **OMOS — OneGodian Metaphysical Operating System™**.
 
 **Canonical governed runtime:** `https://omos.onegodian.com`  
-**Current runtime version:** `1.1.0`  
+**Current runtime version:** `1.2.0`  
 **Project operating contract:** `docs/OMOS-PROJECT-OPERATING-CONTRACT.md`
 
 ## What OMOS is
@@ -16,7 +16,7 @@ Canonical responsibility boundaries:
 - **OneGodian Algorithm™** — evaluation and decision logic: **Observe → Distill → Align → Select → Execute → Verify**.
 - **OHI™** — multi-model comparison, critique, contradiction detection, supported dissent, governed synthesis.
 - **OMOS™** — runtime, orchestration, interfaces, persistence, Decision Records, APIs, connectors, history, auditability.
-- **OLLM™** — OneGodian model/intelligence provider layer inside OMOS.
+- **OneGodian LLM Synthesis Engine™ / OLLM™** — model-agnostic synthesis and provider-coordination software integrated with OMOS; it does not own identity, registry, verification, or human authority.
 - **ACC™** — operational command/execution console at `https://acc.onegodian.com`.
 
 ## Canonical product flow
@@ -67,6 +67,11 @@ Persistent actions prioritize Runtime/System Status, Sign In, and **ASK OMOS**.
 /workspace
 /council
 /ollm
+/onegodian-llm
+/llm
+/architecture
+/frequency-standard
+/founder-framework
 /tools
 /developers
 /pricing
@@ -150,12 +155,12 @@ Current client/sync targets include:
 - OneGodian.org
 - OneGodian.com
 - QuantumOHI.com
-- U.OneGodian.org where applicable
+- u.OneGodian.com where applicable
 - OMOS public WordPress presentation surfaces where intentionally deployed
 
 Protected provider/database credentials stay server-side.
 
-The shared WordPress architecture uses the OneGodian Platform Plugin and OMOS Core Tools/bridge work. Consequential external actions remain subject to the authorized ACC/execution path.
+The shared WordPress architecture uses the OneGodian Platform Plugin and OMOS Core Tools/bridge work. Cross-platform services route through `api.OneGodian.org`; consequential external actions remain subject to authorized ACC/execution controls where required.
 
 ## UI/UX standard
 
@@ -189,6 +194,9 @@ Repository materials include or map:
 - OneGodian Algorithm whitepaper
 - OneGodian AI System Prompt
 - OneGodian Frequency Standard
+- Founder & CEO Perspective / founder operating framework
+- OneGodian Intelligence Portability Standard (OIPS)
+- OMOS Phase I source artifact index (`docs/source-artifact-index.md`)
 - OHI Output Pipeline
 - Quantum-OHI API intelligence and ACC authority boundary
 - Agent Authority Model
