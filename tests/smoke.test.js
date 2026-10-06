@@ -53,6 +53,9 @@ async function run() {
   const manifest = await checkJson("/manifest", { id: "omos-site", name: "OMOS Runtime" });
   assert.ok(manifest.routes.public.includes("/dashboard"));
   assert.ok(manifest.wordpressPlugin.compatibleHosts.length >= 1);
+  assert.ok(manifest.routes.public.includes("/onegodian-llm"));
+  assert.strictEqual(manifest.links.platformApi, "https://api.onegodian.org");
+  assert.strictEqual(manifest.appBridge, undefined);
 
   await checkJson("/api/manifest", { id: "omos-site", name: "OMOS Runtime" });
 
@@ -61,6 +64,11 @@ async function run() {
     ["/omos", "OMOS"],
     ["/ohi", "OHI"],
     ["/models", "Model"],
+    ["/onegodian-llm", "Language models generate."],
+    ["/llm", "Language models generate."],
+    ["/architecture", "Portable intelligence"],
+    ["/frequency-standard", "432 Hz"],
+    ["/founder-framework", "Discipline before declaration."],
     ["/tools", "Tools"],
     ["/artifacts", "Artifacts"],
     ["/docs", "Docs"],
