@@ -1,0 +1,32 @@
+{
+  "repository": "ohi-stack/omos-site",
+  "sharedOwner": "ohi-stack",
+  "editors": [
+    "chatgpt",
+    "claude",
+    "gemini",
+    "grok"
+  ],
+  "sections": {
+    "wordpress-plugin": [
+      "wordpress-plugin/",
+      "plugins/",
+      "wordpress/plugin-architecture/"
+    ],
+    "wordpress-content": [
+      "wordpress-content/",
+      "wordpress/pages/"
+    ],
+    "woocommerce": [
+      "woocommerce/"
+    ],
+    "ai-router": [
+      "ai-router/",
+      "src/adapters/",
+      "src/connections/"
+    ],
+    "docs": [
+      "docs/"
+    ]
+  }
+}
