@@ -1,0 +1,24 @@
+{
+  "editor": "chatgpt",
+  "sections": [
+    "wordpress-plugin",
+    "wordpress-content",
+    "woocommerce",
+    "ai-router",
+    "docs"
+  ],
+  "sharedFiles": [
+    "AGENTS.md",
+    ".github/CODEOWNERS",
+    ".github/workflows/edit-scope.yml",
+    "agents/claude/AGENTS.md",
+    "agents/claude/README.md",
+    "agents/gemini/AGENTS.md",
+    "agents/gemini/README.md",
+    "agents/grok/AGENTS.md",
+    "agents/grok/README.md",
+    "config/repository-sections.json",
+    "scripts/check-edit-scope.cjs",
+    "tests/edit-scope.test.cjs"
+  ]
+}
