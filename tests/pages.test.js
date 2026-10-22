@@ -82,7 +82,7 @@ async function expectBlackGoldStandard() {
 async function expectConvergencePages() {
   const checks = [
     ["/workspace", "Turn a difficult question into a reviewable decision."],
-    ["/council", "Multiple models. One governed review."],
+    ["/council", "CGCG — The Council of Models"],
     ["/ollm", "OneGodian LLM"],
     ["/onegodian-llm", "Language models generate."],
     ["/llm", "Language models generate."],
