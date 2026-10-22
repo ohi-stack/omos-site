@@ -1,16 +1,17 @@
-# CGCG — Original Model Contribution Archives
+# CGCG — Council of Models: Participant Content Sections
 
-**Scope:** Historical contributions of the first four model assistants in the OneGodian/OMOS project.
-**Public index:** /cgcg
-**Section routes:** /cgcg/claude, /cgcg/gemini, /cgcg/chatgpt, /cgcg/grok
+**Scope:** The first four AI participants of the CGCG Council of Models and their dedicated content sections.
+**Canonical Council home:** /council
+**Contribution index:** /council/contributions
+**Section routes:** /council/claude, /council/gemini, /council/chatgpt, /council/grok
 **Operator:** ONEGODIAN, LLC; founder-controlled adaptation and publishing.
 **Status:** Curated historical content, not live model output or production verification.
 
 ## Meaning and source discipline
 
-**C + G + C + G → O** records the original sequence **Claude → Gemini → ChatGPT → Grok → OMOS**. It is an organizing convention for the OneGodian multi-model development history. The assistants supplied distinct analyses, drafts, recommendations and technical proposals; they are not portrayed as legal owners, incorporated participants, or independent authors of the OneGodian body of work.
+**C + G + C + G → O** identifies the **CGCG Council of Models**: **Claude + Gemini + ChatGPT + Grok**, participating within OMOS. The Council is the parent system; the four dedicated pages are its model-specific contribution sections. The assistants supplied distinct analyses, drafts, recommendations and technical proposals; they are not portrayed as legal owners, incorporated participants, or independent authors of the OneGodian body of work.
 
-These are **content libraries**, not replacements for the canonical Council of Models runtime, OneGodian Algorithm, O-H-I synthesis, Human Gate or Decision Records.
+The Council includes both operational multi-model comparison and historical contribution content. The dedicated pages curate existing work and do not represent separate Councils, a second runtime, or four independent governing bodies. They do not replace the OneGodian Algorithm, O-H-I synthesis, Human Gate or Decision Records.
 
 The initial material was curated from the project archive *Copy of All 4 Answers* (including March 24–25, 2026 interactions) and later OMOS development discussions. Curated summaries are **not verbatim transcripts**, and linking to an OMOS route does not imply the original source PDF is public there.
 
@@ -47,11 +48,13 @@ Model agreement does not constitute factual verification. The origin and authors
 
 ## Routing and implementation
 
-- GET /cgcg — index with four model content cards.
-- GET /cgcg/{claude|gemini|chatgpt|grok} — each model's historical archive.
-- GET /api/cgcg — public collection metadata, not a model invocation.
-- GET /manifest — includes public routes and historicalContributions.
-- Council mega menu, global footer and Council overview expose archive links.
+- GET /council — canonical Council overview, identifies CGCG and the four participants.
+- GET /council/contributions — index with four model content cards.
+- GET /council/{claude|gemini|chatgpt|grok} — each participant's dedicated Council content section.
+- GET /api/v1/council/contributions — public Council content metadata, not a model invocation.
+- Legacy /cgcg path variants redirect to their canonical Council equivalents.
+- GET /manifest — includes public routes and council.contributions.
+- Council mega menu, global footer, and Council overview expose all four dedicated sections.
 - public/cgcg.css provides responsive layouts and keyboard focus treatment.
 - tests/pages.test.js includes route, shell, source label and archive order checks.
 
