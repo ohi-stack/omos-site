@@ -59,6 +59,18 @@ The canonical seven-part customer-first navigation is:
 
 Persistent actions prioritize Runtime/System Status, Sign In, and **ASK OMOS**.
 
+## CGCG founding contribution archives
+
+OMOS preserves the recorded outputs and proposals of its first four participating assistants under a founder-curated **CGCG** collection: **Claude + Gemini + ChatGPT + Grok → OMOS**. The content archive is distinct from the live Council of Models:
+
+- /cgcg — all recorded contributions
+- /cgcg/claude — foundational drafting and identity-governance content
+- /cgcg/gemini — patterns, synthesis and processing concepts
+- /cgcg/chatgpt — architecture, documentation and implementation process
+- /cgcg/grok — specifications, edge cases and future integration forecasts
+
+Source and attribution rules: [CGCG Contributions](docs/CGCG-CONTRIBUTIONS.md). Historical model suggestions must not be represented as operational code, independent legal authorship, provider endorsement or verified factual conclusions.
+
 ## Main runtime surfaces
 
 ```text
