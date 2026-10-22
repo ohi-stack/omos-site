@@ -210,8 +210,8 @@ function top(title,description){
 }
 function close(){return '</body></html>';}
 function nav(active){
- return '<nav class="cgcg-tabs" aria-label="CGCG contribution sections"><a '+(!active?'aria-current="page" ':'')+'href="/cgcg">All contributions</a>'+
-   providers.map(p=>'<a '+(active===p.slug?'aria-current="page" ':'')+'href="/cgcg/'+p.slug+'">'+esc(p.letter+' — '+p.name)+'</a>').join('')+'</nav>';
+ return '<nav class="cgcg-tabs" aria-label="CGCG Council member sections"><a '+(!active?'aria-current="page" ':'')+'href="/council/contributions">All Council contributions</a>'+
+   providers.map(p=>'<a '+(active===p.slug?'aria-current="page" ':'')+'href="/council/'+p.slug+'">'+esc(p.letter+' — '+p.name)+'</a>').join('')+'</nav>';
 }
 function recordHtml(record){
  return '<article class="cgcg-record"><div class="cgcg-record-meta"><span>'+esc(record.type)+'</span><span>'+esc(record.status)+'</span><span>'+esc(record.date)+'</span></div>'+
@@ -219,30 +219,30 @@ function recordHtml(record){
   '<a class="cgcg-link" href="'+esc(record.link)+'">'+esc(record.linkText)+' →</a></article>';
 }
 function baseHeading(label,title,desc){
- return '<main class="cgcg-page"><header class="cgcg-hero"><p class="cgcg-eyebrow">OMOS • Council history • '+esc(label)+'</p>'+
+ return '<main class="cgcg-page"><header class="cgcg-hero"><p class="cgcg-eyebrow">OMOS • CGCG Council of Models • '+esc(label)+'</p>'+
   '<h1>'+esc(title)+'</h1><p>'+esc(desc)+'</p><p class="cgcg-formula" aria-label="CGCG sequence">Claude + Gemini + ChatGPT + Grok → OMOS</p></header>';
 }
 function renderCgcgPage(route){
  const key=String(route||"").split("/")[2]||"";
  const p=providers.find(item=>item.slug===key);
  if(!p){
-  return top("CGCG — Council Contributions","Historical CGCG contribution archive for Claude, Gemini, ChatGPT and Grok")+
-   baseHeading("Source library","Four perspectives. Four content archives.","The first CGCG Council records are organized as four distinct collections of ideas, drafts, frameworks and engineering recommendations that informed OMOS.")+
+  return top("CGCG — Council Contributions","CGCG Council contribution archive for Claude, Gemini, ChatGPT and Grok")+
+   baseHeading("Council contribution library","CGCG — The Council of Models","CGCG is the OMOS Council of Models: Claude, Gemini, ChatGPT and Grok. Their contributions are organized into dedicated Council sections; these recorded materials support the Council\'s development history and do not imply live provider execution.")+
    nav("")+'<section class="cgcg-grid" aria-label="Model contribution collections">'+providers.map(item=>
-   '<article class="cgcg-provider"><div class="cgcg-initial">'+esc(item.letter)+'</div><p class="cgcg-provider-name">'+esc(item.name)+' <small>— '+esc(item.provider)+'</small></p><h2>'+esc(item.focus)+'</h2><p>'+esc(item.summary)+'</p><a class="cgcg-link" href="/cgcg/'+item.slug+'">View '+esc(item.name)+' records →</a></article>').join('')+
+   '<article class="cgcg-provider"><div class="cgcg-initial">'+esc(item.letter)+'</div><p class="cgcg-provider-name">'+esc(item.name)+' <small>— '+esc(item.provider)+'</small></p><h2>'+esc(item.focus)+'</h2><p>'+esc(item.summary)+'</p><a class="cgcg-link" href="/council/'+item.slug+'">View '+esc(item.name)+' records →</a></article>').join('')+
    '</section>'+disclaimer()+'</main>'+close();
  }
  return top(p.name+" contributions","Recorded "+p.name+" contributions to the OMOS project")+
-  baseHeading(p.name+" • "+p.provider,p.name+" contribution archive",p.summary)+nav(p.slug)+
+  baseHeading(p.name+" • "+p.provider,p.name+" Council section",p.summary)+nav(p.slug)+
   '<section class="cgcg-collection"><div class="cgcg-section-heading"><h2>Recorded work and proposals</h2><p>Separate historical records from adopted architecture and verified runtime features.</p></div>'+
   p.records.map(recordHtml).join('')+'</section>'+
-  '<p class="cgcg-back"><a href="/cgcg">← All CGCG archives</a> · <a href="/council">Council of Models</a> · <a href="/models">Provider status</a></p>'+
+  '<p class="cgcg-back"><a href="/council/contributions">← All Council contributions</a> · <a href="/council">Council overview</a> · <a href="/models">Provider status</a></p>'+
   disclaimer()+'</main>'+close();
 }
 function disclaimer(){
  return '<aside class="cgcg-disclaimer"><h2>Attribution, authority and evidence</h2><p>These are curated summaries of recorded AI-assisted project conversations, not independent claims of invention, copyright ownership, provider endorsement or factual validation. OneGodian framework authorship and publication are founder-controlled through ONEGODIAN, LLC. Proposals are not assumed to be adopted. Historical model output is separate from live provider connectivity, code deployment and production certification.</p><p>Archive entries should be cross-checked against original conversations, documents, commits and acceptance evidence before any formal attribution or status upgrade.</p></aside>';
 }
 function listCgcgSections(){
- return providers.map(p=>({id:p.slug,model:p.name,provider:p.provider,route:"/cgcg/"+p.slug,focus:p.focus,recordCount:p.records.length}));
+ return providers.map(p=>({id:p.slug,model:p.name,provider:p.provider,route:"/council/"+p.slug,focus:p.focus,recordCount:p.records.length}));
 }
 module.exports={renderCgcgPage,listCgcgSections};
