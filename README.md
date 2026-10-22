@@ -59,17 +59,18 @@ The canonical seven-part customer-first navigation is:
 
 Persistent actions prioritize Runtime/System Status, Sign In, and **ASK OMOS**.
 
-## CGCG founding contribution archives
+## CGCG — Council of Models
 
-OMOS preserves the recorded outputs and proposals of its first four participating assistants under a founder-curated **CGCG** collection: **Claude + Gemini + ChatGPT + Grok → OMOS**. The content archive is distinct from the live Council of Models:
+**CGCG is the OMOS Council itself:** **Claude + Gemini + ChatGPT + Grok**. Each of the first four model participants has a dedicated Council content section for its documented contributions, proposals, drafts and engineering concepts. The Council's operational model comparison and cross-review remains governed by OMOS.
 
-- /cgcg — all recorded contributions
-- /cgcg/claude — foundational drafting and identity-governance content
-- /cgcg/gemini — patterns, synthesis and processing concepts
-- /cgcg/chatgpt — architecture, documentation and implementation process
-- /cgcg/grok — specifications, edge cases and future integration forecasts
+- /council — canonical CGCG Council overview
+- /council/contributions — Council content index
+- /council/claude — foundational drafting and identity-governance content
+- /council/gemini — patterns, synthesis and processing concepts
+- /council/chatgpt — architecture, documentation and implementation process
+- /council/grok — specifications, edge cases and future integration forecasts
 
-Source and attribution rules: [CGCG Contributions](docs/CGCG-CONTRIBUTIONS.md). Historical model suggestions must not be represented as operational code, independent legal authorship, provider endorsement or verified factual conclusions.
+Historical /cgcg shortcuts redirect to the canonical Council routes. Attribution and maturity requirements: [CGCG Council Contributions](docs/CGCG-CONTRIBUTIONS.md). Historical model suggestions must not be represented as operational code, independent legal authorship, provider endorsement or verified factual conclusions.
 
 ## Main runtime surfaces
 
