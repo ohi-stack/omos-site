@@ -131,9 +131,28 @@ async function expectOruSurfaces() {
   assert.equal(profile.maturity?.deployment_status, "requires_separate_proof", "source implementation must not imply deployment proof");
 }
 
+async function expectCgcgArchives() {
+  const models = ["claude", "gemini", "chatgpt", "grok"];
+  const hub = await expectShell("/cgcg");
+  for (const id of models) {
+    assert.ok(hub.body.includes('/cgcg/' + id), 'CGCG hub missing provider: ' + id);
+    const page = await expectShell('/cgcg/' + id);
+    assert.ok(page.body.includes('contribution archive'), 'CGCG ' + id + ' missing title');
+    assert.ok(page.body.includes('Recorded source:'), 'CGCG ' + id + ' missing record provenance');
+    assert.ok(page.body.includes('not independent claims'), 'CGCG ' + id + ' missing authority disclaimer');
+    assert.ok(page.body.includes('aria-current="page"'), 'CGCG ' + id + ' missing current-page navigation');
+  }
+  const stylesheet = await expectOk("/cgcg.css");
+  assert.ok(stylesheet.body.includes('prefers-reduced-motion'), 'CGCG stylesheet missing reduced-motion handling');
+  const metadata = await expectJson("/api/cgcg");
+  assert.equal(metadata.providerEndorsement, false, "Archive metadata must not claim provider endorsement");
+  assert.deepEqual(metadata.sections.map(x => x.id), models, "CGCG sections must preserve founding sequence");
+  assert.ok(metadata.sections.every(x => x.recordCount >= 4), "Each CGCG collection must expose at least four historical records");
+}
+
 async function run() {
   const publicRoutes = [
-    "/", "/omos", "/workspace", "/council", "/ollm", "/onegodian-llm", "/llm", "/architecture", "/frequency-standard", "/founder-framework", "/ohi", "/models", "/tools",
+    "/", "/omos", "/workspace", "/council", "/cgcg", "/cgcg/claude", "/cgcg/gemini", "/cgcg/chatgpt", "/cgcg/grok", "/ollm", "/onegodian-llm", "/llm", "/architecture", "/frequency-standard", "/founder-framework", "/ohi", "/models", "/tools",
     "/belief-mapper", "/developers", "/reference-run", "/pricing", "/artifacts", "/docs", "/shop",
     "/latest-news", "/dashboard", "/legal", "/contact", "/protocol", "/algorithm",
     "/digital-sanctuary", "/ohi-output-pipeline"
@@ -144,12 +163,13 @@ async function run() {
     else await expectShell(route);
   }
   await expectHomeNavigation();
+  await expectCgcgArchives();
   await expectAskWorkspace();
   await expectBlackGoldStandard();
   await expectConvergencePages();
   await expectOruSurfaces();
 
-  const apiRoutes = ["/api/health", "/api/manifest", "/api/v1/providers", "/api/v1/persistence", "/api/oru.json"];
+  const apiRoutes = ["/api/health", "/api/manifest", "/api/v1/providers", "/api/v1/persistence", "/api/cgcg", "/api/oru.json"];
   for (const route of apiRoutes) await expectJson(route);
 
   const manifest = await expectJson("/api/manifest");
@@ -157,6 +177,7 @@ async function run() {
   assert.equal(manifest.ui?.sharedFooter, true, "manifest must advertise shared footer");
   assert.equal(manifest.ui?.megaMenu, true, "manifest must advertise mega menu");
   assert.deepEqual(manifest.navigation?.map((item) => item.label), CANONICAL_NAV, "manifest must expose the canonical seven-item mega menu");
+  assert.deepEqual(manifest.historicalContributions?.sections?.map(x => x.id), ["claude","gemini","chatgpt","grok"], "manifest must expose CGCG archival sections");
   assert.ok(manifest.routes?.public?.includes("/ask/"), "manifest must advertise /ask/");
   assert.ok(manifest.routes?.public?.includes("/reference-run"), "manifest must advertise /reference-run");
   assert.ok(manifest.routes?.public?.includes("/belief-mapper"), "manifest must advertise /belief-mapper");
