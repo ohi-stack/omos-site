@@ -133,18 +133,24 @@ async function expectOruSurfaces() {
 
 async function expectCgcgArchives() {
   const models = ["claude", "gemini", "chatgpt", "grok"];
-  const hub = await expectShell("/cgcg");
+  const landing = await expectShell("/council");
+  assert.ok(landing.body.includes("CGCG — The Council of Models"), "CGCG must be the Council itself");
+  const hub = await expectShell("/council/contributions");
   for (const id of models) {
-    assert.ok(hub.body.includes('/cgcg/' + id), 'CGCG hub missing provider: ' + id);
-    const page = await expectShell('/cgcg/' + id);
-    assert.ok(page.body.includes('contribution archive'), 'CGCG ' + id + ' missing title');
+    assert.ok(hub.body.includes('/council/' + id), 'CGCG hub missing provider: ' + id);
+    const page = await expectShell('/council/' + id);
+    assert.ok(page.body.includes('Council section'), 'CGCG ' + id + ' missing title');
     assert.ok(page.body.includes('Recorded source:'), 'CGCG ' + id + ' missing record provenance');
     assert.ok(page.body.includes('not independent claims'), 'CGCG ' + id + ' missing authority disclaimer');
     assert.ok(page.body.includes('aria-current="page"'), 'CGCG ' + id + ' missing current-page navigation');
   }
   const stylesheet = await expectOk("/cgcg.css");
   assert.ok(stylesheet.body.includes('prefers-reduced-motion'), 'CGCG stylesheet missing reduced-motion handling');
-  const metadata = await expectJson("/api/cgcg");
+  const metadata = await expectJson("/api/v1/council/contributions");
+  assert.equal(metadata.name, "CGCG — Council of Models", "the contribution endpoint must belong to CGCG Council");
+  const redirect = await request("/cgcg/claude");
+  assert.equal(redirect.statusCode, 308, "legacy member path must permanently redirect");
+  assert.equal(redirect.headers.location, "/council/claude", "legacy path must point to Council canonical route");
   assert.equal(metadata.providerEndorsement, false, "Archive metadata must not claim provider endorsement");
   assert.deepEqual(metadata.sections.map(x => x.id), models, "CGCG sections must preserve founding sequence");
   assert.ok(metadata.sections.every(x => x.recordCount >= 4), "Each CGCG collection must expose at least four historical records");
@@ -152,7 +158,7 @@ async function expectCgcgArchives() {
 
 async function run() {
   const publicRoutes = [
-    "/", "/omos", "/workspace", "/council", "/cgcg", "/cgcg/claude", "/cgcg/gemini", "/cgcg/chatgpt", "/cgcg/grok", "/ollm", "/onegodian-llm", "/llm", "/architecture", "/frequency-standard", "/founder-framework", "/ohi", "/models", "/tools",
+    "/", "/omos", "/workspace", "/council", "/council/contributions", "/council/claude", "/council/gemini", "/council/chatgpt", "/council/grok", "/ollm", "/onegodian-llm", "/llm", "/architecture", "/frequency-standard", "/founder-framework", "/ohi", "/models", "/tools",
     "/belief-mapper", "/developers", "/reference-run", "/pricing", "/artifacts", "/docs", "/shop",
     "/latest-news", "/dashboard", "/legal", "/contact", "/protocol", "/algorithm",
     "/digital-sanctuary", "/ohi-output-pipeline"
@@ -169,7 +175,7 @@ async function run() {
   await expectConvergencePages();
   await expectOruSurfaces();
 
-  const apiRoutes = ["/api/health", "/api/manifest", "/api/v1/providers", "/api/v1/persistence", "/api/cgcg", "/api/oru.json"];
+  const apiRoutes = ["/api/health", "/api/manifest", "/api/v1/providers", "/api/v1/persistence", "/api/v1/council/contributions", "/api/oru.json"];
   for (const route of apiRoutes) await expectJson(route);
 
   const manifest = await expectJson("/api/manifest");
@@ -177,7 +183,7 @@ async function run() {
   assert.equal(manifest.ui?.sharedFooter, true, "manifest must advertise shared footer");
   assert.equal(manifest.ui?.megaMenu, true, "manifest must advertise mega menu");
   assert.deepEqual(manifest.navigation?.map((item) => item.label), CANONICAL_NAV, "manifest must expose the canonical seven-item mega menu");
-  assert.deepEqual(manifest.historicalContributions?.sections?.map(x => x.id), ["claude","gemini","chatgpt","grok"], "manifest must expose CGCG archival sections");
+  assert.deepEqual(manifest.council?.contributions?.sections?.map(x => x.id), ["claude","gemini","chatgpt","grok"], "manifest must expose all CGCG Council member sections");
   assert.ok(manifest.routes?.public?.includes("/ask/"), "manifest must advertise /ask/");
   assert.ok(manifest.routes?.public?.includes("/reference-run"), "manifest must advertise /reference-run");
   assert.ok(manifest.routes?.public?.includes("/belief-mapper"), "manifest must advertise /belief-mapper");
