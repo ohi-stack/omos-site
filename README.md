@@ -59,6 +59,19 @@ The canonical seven-part customer-first navigation is:
 
 Persistent actions prioritize Runtime/System Status, Sign In, and **ASK OMOS**.
 
+## CGCG — Council of Models
+
+**CGCG is the OMOS Council itself:** **Claude + Gemini + ChatGPT + Grok**. Each of the first four model participants has a dedicated Council content section for its documented contributions, proposals, drafts and engineering concepts. The Council's operational model comparison and cross-review remains governed by OMOS.
+
+- /council — canonical CGCG Council overview
+- /council/contributions — Council content index
+- /council/claude — foundational drafting and identity-governance content
+- /council/gemini — patterns, synthesis and processing concepts
+- /council/chatgpt — architecture, documentation and implementation process
+- /council/grok — specifications, edge cases and future integration forecasts
+
+Historical /cgcg shortcuts redirect to the canonical Council routes. Attribution and maturity requirements: [CGCG Council Contributions](docs/CGCG-CONTRIBUTIONS.md). Historical model suggestions must not be represented as operational code, independent legal authorship, provider endorsement or verified factual conclusions.
+
 ## Main runtime surfaces
 
 ```text
