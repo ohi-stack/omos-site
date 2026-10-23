@@ -1,0 +1,12 @@
+const {test}=require('node:test');
+const assert=require('node:assert/strict');
+const {validate}=require('../scripts/check-edit-scope.cjs');
+const map={editors:['chatgpt','claude','gemini','grok'],sections:{docs:['docs/'],router:['src/adapters/']}};
+const task={editor:'chatgpt',sections:['docs'],sharedFiles:[]};
+test('permits assigned section and own editor notes',()=>assert.deepEqual(validate(map,task,['docs/a.md','agents/chatgpt/README.md']),[]));
+test('rejects another code section',()=>assert.match(validate(map,task,['src/adapters/openai.js']).join(),/outside/));
+test('rejects another editor even with shared declaration',()=>assert.match(validate(map,{...task,sharedFiles:['agents/claude/README.md']},['agents/claude/README.md']).join(),/another editor/));
+test('requires exact declaration for shared files',()=>{assert.match(validate(map,task,['server.js']).join(),/shared/);assert.deepEqual(validate(map,{...task,sharedFiles:['server.js']},['server.js']),[])});
+test('rejects scope typos and missing editor',()=>{assert.match(validate(map,{...task,sections:['typo']},[]).join(),/Unknown section/);assert.match(validate(map,{...task,editor:''},[]).join(),/editor/)});
+test('rejects traversal and prefix confusion',()=>{assert.match(validate(map,task,['docs/../server.js']).join(),/Invalid path/);assert.match(validate(map,task,['docs-elsewhere/a.md']).join(),/shared/)});
+test('shared declaration cannot authorize an unassigned code section',()=>assert.match(validate(map,{...task,sharedFiles:['src/adapters/openai.js']},['src/adapters/openai.js']).join(),/outside/));

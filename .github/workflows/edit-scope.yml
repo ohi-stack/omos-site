@@ -1,0 +1,30 @@
+name: OMOS Edit Scope
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+permissions:
+  contents: read
+jobs:
+  edit-scope:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Scope regression tests
+        run: node --test tests/edit-scope.test.cjs
+      - name: Validate task against base policy
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git diff --name-only "$BASE_SHA" HEAD | grep -Fx '.agent-task.json'
+          if git cat-file -e "$BASE_SHA:scripts/check-edit-scope.cjs" 2>/dev/null; then
+            git show "$BASE_SHA:scripts/check-edit-scope.cjs" > /tmp/omos-check-edit-scope.cjs
+            node /tmp/omos-check-edit-scope.cjs "$BASE_SHA"
+          else
+            OMOS_SCOPE_BOOTSTRAP=true node scripts/check-edit-scope.cjs "$BASE_SHA"
+          fi

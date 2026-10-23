@@ -80,3 +80,7 @@ Do not silently merge contradictory source states.
 ## Definition of done for agent work
 
 A coding task is done only when the implementation exists on the task branch, relevant tests pass, documentation/config templates are updated when required, security/authorization boundaries are preserved, and the PR contains enough evidence for an independent reviewer and human approver to evaluate it.
+
+## Repository sections and editor isolation
+
+Read `docs/REPOSITORY-OWNERSHIP.md` and `config/repository-sections.json` before editing. Keep one canonical implementation, declare the task editor and assigned sections in `.agent-task.json`, and preserve other editors’ work. Shared-file changes require exact declarations and human owner review. Do not force-push or replace whole files to resolve another editor’s changes.

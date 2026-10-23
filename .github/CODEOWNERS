@@ -1,0 +1,3 @@
+# Human owner for shared files and cross-section integration.
+# Enable required code-owner review in branch protection to enforce approval.
+* @ohi-stack
