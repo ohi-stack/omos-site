@@ -4,12 +4,14 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - 'plugins/omos-core-tools-v1.5.0/**'
+      - 'plugins/omos-core-tools-v1.6.0/**'
+      - 'tests/wordpress-members-integration-contract.test.js'
       - '.github/workflows/wordpress-plugin-ci.yml'
   push:
     branches: [main]
     paths:
-      - 'plugins/omos-core-tools-v1.5.0/**'
+      - 'plugins/omos-core-tools-v1.6.0/**'
+      - 'tests/wordpress-members-integration-contract.test.js'
       - '.github/workflows/wordpress-plugin-ci.yml'
 
 jobs:
@@ -26,7 +28,7 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
       - name: Lint plugin PHP
-        run: find plugins/omos-core-tools-v1.5.0 -name '*.php' -print0 | xargs -0 -n1 php -l
+        run: find plugins/omos-core-tools-v1.6.0 -name '*.php' -print0 | xargs -0 -n1 php -l
 
   contract:
     runs-on: ubuntu-latest
@@ -39,7 +41,7 @@ jobs:
         run: |
           node <<'NODE'
           const fs = require('fs');
-          const path = 'plugins/omos-core-tools-v1.5.0/plugin-manifest.json';
+          const path = 'plugins/omos-core-tools-v1.6.0/plugin-manifest.json';
           const manifest = JSON.parse(fs.readFileSync(path, 'utf8'));
           const expected = [
             '[omos_manifest]',
@@ -53,26 +55,29 @@ jobs:
             '[omos_ohi_pipeline]',
             '[omos_unity_dashboard]'
           ];
-          if (manifest.plugin.version !== '1.5.0') throw new Error('manifest version mismatch');
+          if (manifest.plugin.version !== '1.6.0') throw new Error('manifest version mismatch');
           if (manifest.plugin.public_surface !== 'https://omos.onegodian.org') throw new Error('public surface mismatch');
           if (manifest.plugin.governed_runtime !== 'https://omos.onegodian.com') throw new Error('runtime surface mismatch');
           if (JSON.stringify(manifest.canonical_shortcodes) !== JSON.stringify(expected)) throw new Error('canonical shortcode registry drift');
           if (manifest.architecture.wordpress_role !== 'presentation-and-integration-client') throw new Error('WordPress authority drift');
-          const core = fs.readFileSync('plugins/omos-core-tools-v1.5.0/includes/class-omos-shortcodes.php', 'utf8');
+          const core = fs.readFileSync('plugins/omos-core-tools-v1.6.0/includes/class-omos-shortcodes.php', 'utf8');
           for (const shortcode of expected) {
             const tag = shortcode.slice(1, -1);
             if (!core.includes(`'${tag}'`)) throw new Error(`missing shortcode ${shortcode}`);
           }
           console.log('OMOS WordPress plugin contract OK');
           NODE
+      - name: Validate Members / INO Platform integration contract
+        run: node tests/wordpress-members-integration-contract.test.js
       - name: Reject provider credentials in WordPress plugin
         run: |
-          if grep -RInE 'OPENAI_API_KEY|ANTHROPIC_API_KEY|GEMINI_API_KEY|XAI_API_KEY' plugins/omos-core-tools-v1.5.0; then
+          if grep -RInE 'OPENAI_API_KEY|ANTHROPIC_API_KEY|GEMINI_API_KEY|XAI_API_KEY' plugins/omos-core-tools-v1.6.0; then
             echo 'Provider credential reference found in WordPress plugin.' >&2
             exit 1
           fi
       - name: Verify safe WordPress transport and sync routes
         run: |
-          grep -q 'wp_safe_remote_request' plugins/omos-core-tools-v1.5.0/includes/class-omos-runtime-client.php
-          grep -q "'/sync'" plugins/omos-core-tools-v1.5.0/includes/class-omos-core-tools.php
-          grep -q "'/shortcodes'" plugins/omos-core-tools-v1.5.0/includes/class-omos-core-tools.php
+          grep -q 'wp_safe_remote_request' plugins/omos-core-tools-v1.6.0/includes/class-omos-runtime-client.php
+          grep -q "'/sync'" plugins/omos-core-tools-v1.6.0/includes/class-omos-core-tools.php
+          grep -q "'/shortcodes'" plugins/omos-core-tools-v1.6.0/includes/class-omos-core-tools.php
+          grep -q "'/members'" plugins/omos-core-tools-v1.6.0/includes/class-omos-core-tools.php
