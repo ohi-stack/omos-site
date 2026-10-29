@@ -1,0 +1,319 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://omos.onegodian.com/schemas/objective-thinking-result.schema.json",
+  "title": "OMOS Objective Thinking Result v1.0 Draft",
+  "description": "Proposed structured assessment output; not deployed or production-certified.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "mode",
+    "question",
+    "source_access",
+    "claims",
+    "alternatives",
+    "gates",
+    "assessment",
+    "verification_plan",
+    "human_review_required"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0-draft"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "enum": [
+        "review",
+        "decision-support",
+        "pre-action"
+      ]
+    },
+    "question": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_access": {
+      "enum": [
+        "none",
+        "user-provided-only",
+        "retrieved-not-validated",
+        "retrieved-and-reviewed"
+      ]
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "statement",
+          "kind",
+          "evidence_status",
+          "source_ids",
+          "short_rationale"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "statement": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "observation",
+              "supported-fact",
+              "source-reported-claim",
+              "assumption",
+              "opinion",
+              "inference",
+              "normative-belief",
+              "instruction"
+            ]
+          },
+          "evidence_status": {
+            "enum": [
+              "supported",
+              "partially-supported",
+              "unverified",
+              "contradicted",
+              "not-empirically-testable"
+            ]
+          },
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "short_rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "origin",
+          "accessed_and_read"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "origin": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string"
+          },
+          "accessed_and_read": {
+            "type": "boolean"
+          },
+          "retrieved_at_utc": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "relevant_excerpt": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "alternatives": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "hypothesis",
+          "discriminating_test"
+        ],
+        "properties": {
+          "hypothesis": {
+            "type": "string"
+          },
+          "discriminating_test": {
+            "type": "string"
+          },
+          "evidence_for": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence_against": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "bias_flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "council": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "agreement",
+        "dissent",
+        "verification_independent"
+      ],
+      "properties": {
+        "agreement": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dissent": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "verification_independent": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "gates": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "gate",
+          "status",
+          "reason"
+        ],
+        "properties": {
+          "gate": {
+            "enum": [
+              "evidence",
+              "law-and-safety",
+              "consent-and-privacy",
+              "authority-and-scope",
+              "minimum-confidence"
+            ]
+          },
+          "status": {
+            "enum": [
+              "pass",
+              "fail",
+              "review-required",
+              "unknown"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "conclusion",
+        "uncertainties",
+        "counterfactual",
+        "recommended_next_step"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "supported",
+            "conditional",
+            "insufficient-evidence",
+            "disputed",
+            "blocked"
+          ]
+        },
+        "conclusion": {
+          "type": "string"
+        },
+        "uncertainties": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "counterfactual": {
+          "type": "string"
+        },
+        "recommended_next_step": {
+          "type": "string"
+        }
+      }
+    },
+    "verification_plan": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "human_review_required": {
+      "type": "boolean"
+    },
+    "approval_status": {
+      "enum": [
+        "not-requested",
+        "pending",
+        "approved",
+        "rejected"
+      ]
+    },
+    "record_reference": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "run_timestamps": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "gregorian": {
+          "type": "string"
+        },
+        "ots_v5": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
