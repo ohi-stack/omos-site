@@ -1,0 +1,368 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://omos.onegodian.com/schemas/omos-rsi-improvement-record.schema.json",
+  "title": "OMOS RSI Improvement Record (Draft v0.1)",
+  "description": "Proposed audit record for bounded, human-governed persistent skill improvements; does not implement an RSI runtime.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "improvement_id",
+    "mode",
+    "scope",
+    "objective",
+    "baseline",
+    "candidate",
+    "evaluator",
+    "experiment",
+    "gates",
+    "decision",
+    "rollback",
+    "authorization",
+    "status"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0-draft"
+    },
+    "improvement_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "enum": [
+        "inspect",
+        "propose",
+        "experiment",
+        "promote"
+      ]
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowed_targets",
+        "forbidden_targets",
+        "risk_level"
+      ],
+      "properties": {
+        "allowed_targets": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "forbidden_targets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "risk_level": {
+          "enum": [
+            "low",
+            "moderate",
+            "high",
+            "critical"
+          ]
+        }
+      }
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "baseline": {
+      "$ref": "#/$defs/artifact"
+    },
+    "candidate": {
+      "$ref": "#/$defs/artifact"
+    },
+    "evaluator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "frozen_sha256",
+        "holdout_separated",
+        "frozen_before_test"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "frozen_sha256": {
+          "$ref": "#/$defs/hash"
+        },
+        "holdout_separated": {
+          "type": "boolean"
+        },
+        "frozen_before_test": {
+          "type": "boolean"
+        },
+        "rubric_description": {
+          "type": "string"
+        }
+      }
+    },
+    "experiment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "executed",
+        "environment",
+        "metrics",
+        "runs",
+        "limitations"
+      ],
+      "properties": {
+        "executed": {
+          "type": "boolean"
+        },
+        "environment": {
+          "type": "string"
+        },
+        "metrics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "baseline_value",
+              "candidate_value",
+              "direction"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "baseline_value": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "candidate_value": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "direction": {
+                "enum": [
+                  "higher-is-better",
+                  "lower-is-better"
+                ]
+              },
+              "unit": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "runs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "configuration_version": {
+          "type": "string"
+        }
+      }
+    },
+    "gates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "gate",
+          "result",
+          "reason"
+        ],
+        "properties": {
+          "gate": {
+            "enum": [
+              "evaluation-integrity",
+              "regression",
+              "safety",
+              "privacy",
+              "authority",
+              "reproducibility",
+              "approval"
+            ]
+          },
+          "result": {
+            "enum": [
+              "pass",
+              "fail",
+              "unknown",
+              "not-run",
+              "review-required"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "rationale"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "propose",
+            "reject",
+            "revert",
+            "inconclusive",
+            "needs-human-review",
+            "approved-for-promotion"
+          ]
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "independent_reviewer_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "rollback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reference",
+        "tested"
+      ],
+      "properties": {
+        "reference": {
+          "type": "string"
+        },
+        "tested": {
+          "type": "boolean"
+        }
+      }
+    },
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "human_approval_required",
+        "human_approval_recorded"
+      ],
+      "properties": {
+        "human_approval_required": {
+          "type": "boolean"
+        },
+        "human_approval_recorded": {
+          "type": "boolean"
+        },
+        "approval_reference": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "authorized_scope": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "status": {
+      "enum": [
+        "spec-only",
+        "proposed",
+        "tested",
+        "awaiting-human-review",
+        "rejected",
+        "approved-not-deployed",
+        "promoted",
+        "reverted"
+      ]
+    },
+    "timestamps": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "gregorian": {
+          "type": "string"
+        },
+        "ots_v5": {
+          "type": "string"
+        }
+      }
+    },
+    "decision_record_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "ref",
+        "sha256"
+      ],
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "ref": {
+          "type": "string"
+        },
+        "sha256": {
+          "$ref": "#/$defs/hash"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
