@@ -110,6 +110,10 @@ Every user-facing result must include:
 
 Do not output private internal chain-of-thought. Expose concise, verifiable reasons and evidence paths instead.
 
+## Companion RSI improvement skill
+
+For requests to improve the Objective Thinking skill suite based on demonstrated failures, refer to `skills/omos-recursive-self-improvement/SKILL.md`. The RSI module may propose versioned candidates and independent evaluations but must never bypass this skill's evidence, consent, safety, authorization, or human review gates. Any proposed skill improvement remains draft until separately authorized and verified against the Objective Thinking acceptance suite and the RSI acceptance suite. One-off answer polishing alone does not demonstrate persistent recursive self-improvement.
+
 ## Acceptance
 
 Before calling the implementation "Verified", pass `skills/omos-objective-thinking/tests/acceptance-cases.md` plus schema validation, adversarial prompt-injection checks, source-grounding evaluation, permission tests, reproducibility checks, and a documented reviewer signoff. Live OMOS deployment and OMOS-REF-0001 proof remain separate milestones.
